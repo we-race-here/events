@@ -1,6 +1,7 @@
 """
 Base settings to build other settings files upon.
 """
+import os
 from pathlib import Path
 
 import environ
@@ -11,9 +12,9 @@ APPS_DIR = BASE_DIR / "events"
 env = environ.Env()
 
 READ_DOT_ENV_FILE = env.bool("DJANGO_READ_DOT_ENV_FILE", default=False)
-if READ_DOT_ENV_FILE:
+if os.getenv("DJANGO_SETTINGS_MODULE") == "config.settings.local":
     # OS environment variables take precedence over variables from .env
-    env.read_env(str(BASE_DIR / ".env"))
+    env.read_env(BASE_DIR / ".envs" / ".local" / ".django")
 
 # GENERAL
 # ------------------------------------------------------------------------------
