@@ -82,9 +82,6 @@ EMAIL_SUBJECT_PREFIX = env(
 # Django Admin URL regex.
 ADMIN_URL = env("DJANGO_ADMIN_URL")
 
-# WhiteNoise
-INSTALLED_APPS = ["whitenoise.runserver_nonstatic"] + INSTALLED_APPS
-
 
 # Anymail
 # ------------------------------------------------------------------------------
