@@ -5,8 +5,16 @@
 {% block head_title %}{% translate "Verify Your E-mail Address" %}{% endblock %}
 
 {% block inner %}
-    <h1>{% translate "Verify Your E-mail Address" %}</h1>
 
-    <p>{% blocktranslate %}We have sent an e-mail to you for verification. Follow the link provided to finalize the signup process. Please contact us if you do not receive it within a few minutes.{% endblocktranslate %}</p>
+<div class="h-full">
+  <h1 class="text-4xl font-bold">{% translate "Verify Your E-mail Address" %}</h1>
 
+<p class="mt-4 text-lg">{% blocktranslate %}We have sent an e-mail to you for verification. Follow the link provided to finalize the signup process. Please contact us if you do not receive it within a few minutes.{% endblocktranslate %}</p>
+
+<div class="flex justify-center">
+  <button type="button" onclick="location.href='{% url 'home' %}'" class="px-4 py-2 text-xs font-medium text-center text-white bg-red-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                  Back To Home
+  </button>
+</div>
+</div>
 {% endblock %}
