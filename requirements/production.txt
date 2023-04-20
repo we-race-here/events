@@ -8,3 +8,6 @@ psycopg2==2.9.6  # https://github.com/psycopg/psycopg2
 # Django
 # ------------------------------------------------------------------------------
 django-anymail[sendgrid]==9.1  # https://github.com/anymail/django-anymail
+
+# logging
+rollbar==0.16.3
