@@ -2,16 +2,16 @@
 Not migrating
 - class OrganizationMemberOrg(models.Model):
 """
-import decimal
 from datetime import timedelta
 from pathlib import Path
 
+from cerberus import Validator
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from django.utils import timezone
-from jsonschema import Validator
+# from jsonschema import Validator TODO: what is this?
 from model_utils.tracker import FieldTracker
 from phonenumber_field.modelfields import PhoneNumberField
 from simple_history.models import HistoricalRecords
@@ -72,7 +72,7 @@ class OrganizationMember(models.Model):
     # status = models.CharField(max_length=16, null=True, choices=STATUS_CHOICES)
     datetime = models.DateTimeField(auto_now_add=True)
     history = HistoricalRecords()
-    _tracker = FieldTracker() # TODO: do we need this?
+    _tracker = FieldTracker()  # TODO: do we need this?
 
     class Meta:
         unique_together = [['organization', 'member']]
@@ -103,7 +103,7 @@ class OrganizationMember(models.Model):
     def save(self, *args, **kwargs):
         if not self.is_active:
             self.is_active = None
-        # TODO: Remove unsued fields
+        # TODO: Remove unused fields
         # if not self.org_member_uid:
         #     self.org_member_uid = None
         # if self.is_master_admin:
@@ -117,60 +117,88 @@ class OrganizationMember(models.Model):
         return super().save(*args, **kwargs)
 
     def __str__(self):
-        return f'{self.organization} - {self.member}'
+        return f'{self.organization} - {self.member} - {self.is_admin} - {self.is_active} - {self.start_date} - {self.exp_date}'
 
 
-@FieldsTracking.register()
+# @FieldsTracking.register() TODO: do we need this?
 class Organization(models.Model):
     """
-
-    prefs: Json field
-    - banner_image: The image to use as the banner
-    - information_board_content: The content to show on the information board or long description
+    name: Name of the organization
+    type: Regional, Club, Promoter, advocacy_volunteer. This effects some views.
+    social_media: Social media links
+    website: URL to the website, facebook, ...
+    phone = PhoneNumberField(max_length=50, null=True, blank=True)
+    phone_verified: Verify so that we can send sms messages.
+    email: Email address
+    email_verified: We don't need to implement verification now.
+    address: Street address
+    country: Country, default USA
+    city: City
+    state: State default Colorado
+    zipcode: Zipcode
+    about: Short unformated text.
+    details: Long formated text. TODO: New field, form prefs.information_board_content
+    logo: Small image
+    hero: larger banner, hero image TODO: New field, form prefs.banner_image
+    signup_config: TODO: remove this
+    membership_plans: TODO: remove this
+    member_fields_schema: TODO: remove this
+    verified = models.BooleanField(default=False)
+    prefs = models.JSONField(null=True, blank=True, editable=True)
+    - banner_image: TODO: Move to hero
+    - information_board_content: TODO: move to details
+    members = models.ManyToManyField('Member', related_name='organizations', through=OrganizationMember)
+    member_orgs: TODO: remove this, do not implement now.
+    membership_open: True, False, if allowing new members
+    approved: New orgs must be approved by BC is_staff
+    rss_url: TODO: remove this
+    waiver_text: This is shown on the join org page and useer must agree to it.
+    _tracker: TODO, do we need this?
     """
-    PERIODS_DAYS = {'1week': 7, '1month': 30, '3month': 120, '6month': 180, '1year': 365, '2year': 730}
-    MEMBER_FIELDS_SCHEMA_VALIDATOR = {
-        'type': 'list', 'empty': True, 'required': False,
-        'schema': {
-            'type': 'dict', 'schema': {
-                'name': {'type': 'string', 'required': True, 'nullable': False, 'empty': False},
-                'title': {'type': 'string', 'required': True, 'nullable': False, 'empty': False},
-                'type': {
-                    'type': 'string', 'required': True, 'nullable': False, 'empty': False,
-                    'allowed': [
-                        'integer', 'float', 'number', 'string', 'text', 'boolean', 'percent', 'date', 'time', 'datetime'
-                    ]
-                },
-                'required': {'type': 'boolean', 'required': False, 'default': False},
-                'private': {'type': 'boolean', 'required': False, 'default': False},
-                'choices': {
-                    'type': 'list', 'required': False, 'nullable': True, 'empty': True,
-                    'schema': {
-                        'type': 'dict', 'empty': False,
-                        'schema': {'title': {'type': 'string'}, 'value': {}}
-                    }
-                },
-                'multiple': {'type': 'boolean', 'required': False, 'default': False},
-            }
-        },
-    }
-
-    MEMBERSHIP_PLAN_SCHEMA_VALIDATOR = {
-        'type': 'list', 'empty': True, 'required': False,
-        'schema': {
-            'type': 'dict', 'schema': {
-                'id': {'type': 'string', 'required': True, 'nullable': False, 'empty': False},
-                'title': {'type': 'string', 'required': False, 'nullable': True, 'empty': True},
-                'period': {
-                    'type': 'string', 'required': True, 'nullable': False, 'empty': False,
-                    'allowed': ['1week', '1month', '3month', '6month', '1year', '2year']
-                },
-                'price': {
-                    'type': 'decimal', 'required': True, 'nullable': False, 'empty': False, 'coerce': decimal.Decimal
-                },
-            }
-        },
-    }
+    # TODO: No custom pricing membership fields or plans.
+    # PERIODS_DAYS = {'1week': 7, '1month': 30, '3month': 120, '6month': 180, '1year': 365, '2year': 730}
+    # MEMBER_FIELDS_SCHEMA_VALIDATOR = {
+    #     'type': 'list', 'empty': True, 'required': False,
+    #     'schema': {
+    #         'type': 'dict', 'schema': {
+    #             'name': {'type': 'string', 'required': True, 'nullable': False, 'empty': False},
+    #             'title': {'type': 'string', 'required': True, 'nullable': False, 'empty': False},
+    #             'type': {
+    #                 'type': 'string', 'required': True, 'nullable': False, 'empty': False,
+    #                 'allowed': [
+    #                     'integer', 'float', 'number', 'string', 'text', 'boolean', 'percent', 'date', 'time', 'datetime'
+    #                 ]
+    #             },
+    #             'required': {'type': 'boolean', 'required': False, 'default': False},
+    #             'private': {'type': 'boolean', 'required': False, 'default': False},
+    #             'choices': {
+    #                 'type': 'list', 'required': False, 'nullable': True, 'empty': True,
+    #                 'schema': {
+    #                     'type': 'dict', 'empty': False,
+    #                     'schema': {'title': {'type': 'string'}, 'value': {}}
+    #                 }
+    #             },
+    #             'multiple': {'type': 'boolean', 'required': False, 'default': False},
+    #         }
+    #     },
+    # }
+    #
+    # MEMBERSHIP_PLAN_SCHEMA_VALIDATOR = {
+    #     'type': 'list', 'empty': True, 'required': False,
+    #     'schema': {
+    #         'type': 'dict', 'schema': {
+    #             'id': {'type': 'string', 'required': True, 'nullable': False, 'empty': False},
+    #             'title': {'type': 'string', 'required': False, 'nullable': True, 'empty': True},
+    #             'period': {
+    #                 'type': 'string', 'required': True, 'nullable': False, 'empty': False,
+    #                 'allowed': ['1week', '1month', '3month', '6month', '1year', '2year']
+    #             },
+    #             'price': {
+    #                 'type': 'decimal', 'required': True, 'nullable': False, 'empty': False, 'coerce': decimal.Decimal
+    #             },
+    #         }
+    #     },
+    # }
 
     SOCIAL_MEDIA_SCHEMA = {
         'youtube': {
@@ -213,72 +241,75 @@ class Organization(models.Model):
     signup_config = models.JSONField(null=True, blank=True)
     membership_plans = models.JSONField(null=True, blank=True)
     member_fields_schema = models.JSONField(null=True, blank=True)
+    # TODO: remove I dont know what this is for
     verified = models.BooleanField(default=False)
-    prefs = models.JSONField(null=True, blank=True, editable=True)
+    # TODO: banner_image and Info board are moved out. Is there anything else here?
+    # prefs = models.JSONField(null=True, blank=True, editable=True)
     members = models.ManyToManyField('Member', related_name='organizations', through=OrganizationMember)
     # member_orgs = models.ManyToManyField('Organization', related_name='organizations', through=OrganizationMemberOrg)
     membership_open = models.BooleanField(default=False, null=True, blank=True)
     approved = models.BooleanField(default=False, null=True)  # New orgs must be approved by BC staff
+    # TODO: remove RSS feed
     rss_url = models.TextField(default=None, null=True, blank=True)
     waiver_text = models.TextField(default=None, null=True, blank=True)
     _tracker = FieldTracker()
 
-    @property
-    def normalized_member_fields_schema(self):
-        from events.helpers import (date_coerce, time_coerce, datetime_coerce, float_safe_coerce,
-                                    number_safe_coerce, integer_safe_coerce)
-        coerces = {
-            'integer': integer_safe_coerce,
-            'float': float_safe_coerce,
-            'number': number_safe_coerce,
-            'date': date_coerce,
-            'time': time_coerce,
-            'datetime': datetime_coerce,
-        }
-        schema = {}
-        for f in (self.member_fields_schema or []):
-            d = dict(type=f.get('type'))
-
-            # type
-            if d['type'] == 'percent':
-                d['type'] = 'integer'
-                d['min'] = 0
-                d['max'] = 100
-            elif d['type'] == 'text':
-                d['type'] = 'string'
-            if d['type'] in coerces:
-                d['coerce'] = coerces[d['type']]
-
-            # required
-            required = f.get('required') is True
-            d['required'] = required
-            d['nullable'] = not required
-            d['empty'] = not required
-
-            # choices
-            choices = f.get('choices')
-            if choices:
-                d['allowed'] = [c.get('value') for c in choices]
-            if f.get('multiple'):
-                schema[f['name']] = {
-                    'type': 'list', 'schema': d, 'required': required, 'nullable': not required, 'empty': not required
-                }
-            else:
-                schema[f['name']] = d
-
-        return schema
+    # @property
+    # def normalized_member_fields_schema(self): TODO: remove
+    #     from events.helpers import (date_coerce, time_coerce, datetime_coerce, float_safe_coerce,
+    #                                 number_safe_coerce, integer_safe_coerce)
+    #     coerces = {
+    #         'integer': integer_safe_coerce,
+    #         'float': float_safe_coerce,
+    #         'number': number_safe_coerce,
+    #         'date': date_coerce,
+    #         'time': time_coerce,
+    #         'datetime': datetime_coerce,
+    #     }
+    #     schema = {}
+    #     for f in (self.member_fields_schema or []):
+    #         d = dict(type=f.get('type'))
+    #
+    #         # type
+    #         if d['type'] == 'percent':
+    #             d['type'] = 'integer'
+    #             d['min'] = 0
+    #             d['max'] = 100
+    #         elif d['type'] == 'text':
+    #             d['type'] = 'string'
+    #         if d['type'] in coerces:
+    #             d['coerce'] = coerces[d['type']]
+    #
+    #         # required
+    #         required = f.get('required') is True
+    #         d['required'] = required
+    #         d['nullable'] = not required
+    #         d['empty'] = not required
+    #
+    #         # choices
+    #         choices = f.get('choices')
+    #         if choices:
+    #             d['allowed'] = [c.get('value') for c in choices]
+    #         if f.get('multiple'):
+    #             schema[f['name']] = {
+    #                 'type': 'list', 'schema': d, 'required': required, 'nullable': not required, 'empty': not required
+    #             }
+    #         else:
+    #             schema[f['name']] = d
+    #
+    #     return schema
 
     def save(self, *args, **kwargs):
         if self.email:
             self.email = self.email.lower()
 
-        if self.member_fields_schema:
-            v = Validator({'member_fields_schema': self.MEMBER_FIELDS_SCHEMA_VALIDATOR}, purge_unknown=True)
-            if not v.validate({'member_fields_schema': self.member_fields_schema}):
-                raise ValidationError({'member_fields_schema': str(v.errors)})
-            self.member_fields_schema = v.document['member_fields_schema']
-        else:
-            self.member_fields_schema = []
+        # if self.member_fields_schema: TODO: remove
+        #     v = Validator({'member_fields_schema': self.MEMBER_FIELDS_SCHEMA_VALIDATOR}, purge_unknown=True)
+        #     if not v.validate({'member_fields_schema': self.member_fields_schema}):
+        #         raise ValidationError({'member_fields_schema': str(v.errors)})
+        #     self.member_fields_schema = v.document['member_fields_schema']
+        # else:
+        #     self.member_fields_schema = []
 
         if self.social_media:
             v = Validator(self.SOCIAL_MEDIA_SCHEMA, allow_unknown=True)
@@ -288,13 +319,13 @@ class Organization(models.Model):
         else:
             self.social_media = {}
 
-        if self.membership_plans:
-            v = Validator({'membership_plans': self.MEMBERSHIP_PLAN_SCHEMA_VALIDATOR}, allow_unknown=True)
-            if not v.validate({'membership_plans': self.membership_plans}):
-                raise ValidationError({'membership_plans': str(v.errors)})
-            self.membership_plans = v.document['membership_plans']
-        else:
-            self.membership_plans = []
+        # if self.membership_plans: TODO: remove
+        #     v = Validator({'membership_plans': self.MEMBERSHIP_PLAN_SCHEMA_VALIDATOR}, allow_unknown=True)
+        #     if not v.validate({'membership_plans': self.membership_plans}):
+        #         raise ValidationError({'membership_plans': str(v.errors)})
+        #     self.membership_plans = v.document['membership_plans']
+        # else:
+        #     self.membership_plans = []
 
         return super().save(*args, **kwargs)
 
@@ -303,6 +334,36 @@ class Organization(models.Model):
 
 
 class Member(models.Model):
+    """
+    first_name:
+    last_name:
+    gender: see options
+    birth_date:
+    phone:
+    phone_verified: Verify so we can send sms
+    email:
+    email_verified: Required to on new account to login.
+    address1:
+    address2:
+    country:
+    city:
+    state:
+    zipcode:
+    weight: save value in KG
+    height: save value in CM
+    social_media = models.JSONField(null=True, blank=True)
+    TODO: I dont think we have anything in more data.
+    more_data = models.JSONField(null=True, blank=True)
+    TODO: Remove is_verified: I think this is related to verified email or sms. it could be a @property
+    is_verified = models.BooleanField(default=None, null=True)
+    TODO: Remove Draft. this was the status before a email or sms was verified, remove
+    draft = models.BooleanField(default=False, null=False, editable=False)
+    TODO: rename: usac_license_number to usac_license
+    usac_license_number = models.IntegerField(null=True, blank=True, unique=True)
+    TODO: rename: usac_license_number_verified to usac_license_verified
+    usac_license_number_verified = models.BooleanField(default=False)
+    user = models.OneToOneField(User, on_delete=models.SET_NULL, related_name='member', null=True, blank=True)
+    """
     SOCIAL_MEDIA_SCHEMA = {
         'zwift': {
             'type': 'string', 'required': False, 'nullable': True, 'meta': {'title': 'Zwift'}
@@ -356,11 +417,13 @@ class Member(models.Model):
                                  validators=[MinValueValidator(1), MaxValueValidator(3)])
 
     social_media = models.JSONField(null=True, blank=True)
-    more_data = models.JSONField(null=True, blank=True)
+    # TODO: Are we using more_data?
+    # more_data = models.JSONField(null=True, blank=True)
+    # TODO: need some way to mark a user has verified email (Draft oris_verified
     is_verified = models.BooleanField(default=None, null=True)
-    draft = models.BooleanField(default=False, null=False, editable=False)
-    usac_license_number = models.IntegerField(null=True, blank=True, unique=True)
-    usac_license_number_verified = models.BooleanField(default=False)
+    # draft = models.BooleanField(default=False, null=False, editable=False)
+    usac_license = models.IntegerField(null=True, blank=True, unique=True)
+    usac_license_verified = models.BooleanField(default=False)
     user = models.OneToOneField(User, on_delete=models.SET_NULL, related_name='member', null=True, blank=True)
 
     @property
@@ -400,8 +463,8 @@ class Member(models.Model):
         if self.email:
             self.email = self.email.lower()
         if not self.usac_license_number:
-            self.usac_license_number = None
-            self.usac_license_number_verified = False
+            self.usac_license = None
+            self.usac_license_verified = False
 
         if self.social_media:
             v = Validator(self.SOCIAL_MEDIA_SCHEMA, allow_unknown=True)
@@ -432,7 +495,8 @@ class Member(models.Model):
             self.save()
 
     class Meta:
+        # TODO: what about user name? is it forced to email?
         unique_together = (('email', 'email_verified'), ('phone', 'phone_verified'),)
 
     def __str__(self):
-        return f'{self.first_name} {self.last_name}'
+        return f'{self.first_name} {self.last_name} {self.email}'
