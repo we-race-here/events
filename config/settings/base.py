@@ -70,6 +70,8 @@ THIRD_PARTY_APPS = [
     "allauth",
     "allauth.account",
     "allauth.socialaccount",
+    "simple-history",
+    "turnstile",
 ]
 
 LOCAL_APPS = [
@@ -131,6 +133,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    'simple_history.middleware.HistoryRequestMiddleware',
 ]
 
 # STATIC
@@ -245,7 +248,6 @@ LOGGING = {
     "root": {"level": "INFO", "handlers": ["console"]},
 }
 
-
 # django-allauth
 # ------------------------------------------------------------------------------
 ACCOUNT_ALLOW_REGISTRATION = env.bool("DJANGO_ACCOUNT_ALLOW_REGISTRATION", True)
@@ -267,7 +269,6 @@ ACCOUNT_FORMS = {"signup": "events.users.forms.UserSignupForm"}
 SOCIALACCOUNT_ADAPTER = "events.users.adapters.SocialAccountAdapter"
 # https://django-allauth.readthedocs.io/en/latest/forms.html
 SOCIALACCOUNT_FORMS = {"signup": "events.users.forms.UserSocialSignupForm"}
-
 
 # Your stuff...
 # ------------------------------------------------------------------------------

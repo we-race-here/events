@@ -17,3 +17,5 @@ crispy-bootstrap5==0.7  # https://github.com/django-crispy-forms/crispy-bootstra
 django-redis==5.2.0  # https://github.com/jazzband/django-redis
 django-simple-history==3.3.0
 django-turnstile==0.1.0
+django-phonenumber-field==7.0.2
+pyotp==2.8.0

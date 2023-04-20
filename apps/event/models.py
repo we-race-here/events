@@ -22,13 +22,15 @@ def event_attachment_file_path_func(instance, filename):
 
 class Event(models.Model):
     """
-    Name: This is the event name or Title
-    Description: This is a short un formated text about the event
-    Start_date:
-    End_date:
-    organizer_email: This is private
-    Address info: ...
-    Website: Event website, facebook page....
+    Name: This is the event name. Migration, no change
+    Description: This is a short un formated text about the event. Migration, no change
+    Start_date: date and time. Migration, no change
+    End_date: date and time.   Migration, no change
+    organizer_email: Migration, no change
+    country: defaults to usa. Migration, no change
+    city: city, nearestm of the event. Migration, no change
+    state: state of the event. Migration, no change
+    Website: Event website, facebook page.... Migration, no change
     registration_website: Where a user would register for the event.
     logo: Small image, logo for the event.
     Tags: List of event types
