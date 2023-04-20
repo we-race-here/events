@@ -74,7 +74,8 @@ THIRD_PARTY_APPS = [
 
 LOCAL_APPS = [
     "events.users",
-    "apps.usac"
+    "apps.usac",
+    "apps.event"
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
