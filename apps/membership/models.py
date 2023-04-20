@@ -25,48 +25,70 @@ def organization_logo_file_path_func(instance, filename):
 
 
 class OrganizationMember(models.Model):
-    STATUS_ACCEPT = 'accept'
-    STATUS_REJECT = 'reject'
-    STATUS_WAITING = 'waiting'
-    STATUS_CHOICES = (
-        (STATUS_ACCEPT, 'Accept'),
-        (STATUS_REJECT, 'Reject'),
-        (STATUS_WAITING, 'Waiting'),
-    )
+    """
+    organization: key to Organization the member record is for.
+    member: key to Member the member record is for.
+    is_admin: the Member is an admin of the Organization.
+    is_master_admin: TODO: Remove this!
+    membership_price: TODO: Remove this!
+    membership_plan: TODO: Remove this!
+    is_active: The member has a active/current membership, not expired. There is a background script that updates this
+        from the expiration date. Admins are always active.
+    org_member_uid: TODO: I dont think we need this.
+    start_date: Join date, This is the date of first join.
+    exp_date: Default is members are renewed evenry calendar year. Jan 1 - Dec 31
+    # TODO: Remove member_fields
+    member_fields: custom field the Org defiines for the member. This is a JSONField.
+    # TODO: remove status. This was used when inviting members to join an organization.
+    status = models.CharField(max_length=16, null=True, choices=STATUS_CHOICES)
+    datetime = models.DateTimeField(auto_now_add=True)
+    history: tacks changes to the record
+    _tracker = FieldTracker()
+    """
+    # STATUS_ACCEPT = 'accept'
+    # STATUS_REJECT = 'reject'
+    # STATUS_WAITING = 'waiting'
+    # STATUS_CHOICES = (
+    #     (STATUS_ACCEPT, 'Accept'),
+    #     (STATUS_REJECT, 'Reject'),
+    #     (STATUS_WAITING, 'Waiting'),
+    # )
     organization = models.ForeignKey('Organization', on_delete=models.CASCADE)
     member = models.ForeignKey('Member', on_delete=models.CASCADE)
     is_admin = models.BooleanField(default=False)
-    is_master_admin = models.BooleanField(default=False)
-    membership_price = models.DecimalField(max_digits=8, decimal_places=2, null=True)  # TODO: Drop me!
-    membership_plan = models.JSONField(null=True, blank=True, editable=False)
+    # TODO: Migrate all is_master_admin to is_admin
+    # is_master_admin = models.BooleanField(default=False)
+    # TODO: Removing membership pricing for now, may reimplement later.
+    # membership_price = models.DecimalField(max_digits=8, decimal_places=2, null=True)  # TODO: Drop me!
+    # membership_plan = models.JSONField(null=True, blank=True, editable=False)
     is_active = models.BooleanField(default=True, null=True)
-    org_member_uid = models.CharField(max_length=256, null=True, blank=True)
+    #  TODO: Remove org_member_uid
+    # org_member_uid = models.CharField(max_length=256, null=True, blank=True)
     start_date = models.DateField(null=True)
     exp_date = models.DateField(null=True)
-    member_fields = models.JSONField(null=True, blank=True)
-    status = models.CharField(max_length=16, null=True, choices=STATUS_CHOICES)
+    # TODO: Remove member_fields
+    # member_fields = models.JSONField(null=True, blank=True)
+    # TODO: remove status. This was used when inviting members to join an organization.
+    # status = models.CharField(max_length=16, null=True, choices=STATUS_CHOICES)
     datetime = models.DateTimeField(auto_now_add=True)
     history = HistoricalRecords()
-    _tracker = FieldTracker()
+    _tracker = FieldTracker() # TODO: do we need this?
 
     class Meta:
-        unique_together = (
-            ('organization', 'member', 'is_active'),
-            ('organization', 'org_member_uid', 'is_active')
-        )
+        unique_together = [['organization', 'member']]
 
-    def jsonify_entry_form(self):
-        for f in (self.organization.member_fields_schema or []):
-            name = f['name']
-            value = self.member_fields.get(name)
-            if not value:
-                continue
-            if f['type'] == 'time':
-                self.member_fields[name] = value.strftime('%H:%M:%S')
-            elif f['type'] == 'date':
-                self.member_fields[name] = value.strftime('%Y-%m-%d')
-            elif f['type'] == 'datetime':
-                self.member_fields[name] = value.isoformat()
+    # def jsonify_entry_form(self):
+    #     for f in (self.organization.member_fields_schema or []):
+    #         name = f['name']
+    #         value = self.member_fields.get(name)
+    #         if not value:
+    #             continue
+    #         if f['type'] == 'time':
+    #             self.member_fields[name] = value.strftime('%H:%M:%S')
+    #         elif f['type'] == 'date':
+    #             self.member_fields[name] = value.strftime('%Y-%m-%d')
+    #         elif f['type'] == 'datetime':
+    #             self.member_fields[name] = value.isoformat()
 
     def is_expired(self):
         if not self.exp_date:
@@ -81,16 +103,17 @@ class OrganizationMember(models.Model):
     def save(self, *args, **kwargs):
         if not self.is_active:
             self.is_active = None
-        if not self.org_member_uid:
-            self.org_member_uid = None
-        if self.is_master_admin:
-            self.is_admin = True
-        if self.member_fields and not kwargs.pop('_ignore_member_fields', False):
-            v = Validator(self.organization.normalized_member_fields_schema, allow_unknown=True)
-            if not v.validate(self.member_fields or {}):
-                raise ValidationError({'member_fields': str(v.errors)})
-            self.member_fields = v.document
-            self.jsonify_entry_form()
+        # TODO: Remove unsued fields
+        # if not self.org_member_uid:
+        #     self.org_member_uid = None
+        # if self.is_master_admin:
+        #     self.is_admin = True
+        # if self.member_fields and not kwargs.pop('_ignore_member_fields', False):
+        #     v = Validator(self.organization.normalized_member_fields_schema, allow_unknown=True)
+        #     if not v.validate(self.member_fields or {}):
+        #         raise ValidationError({'member_fields': str(v.errors)})
+        #     self.member_fields = v.document
+        #     self.jsonify_entry_form()
         return super().save(*args, **kwargs)
 
     def __str__(self):
