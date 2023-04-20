@@ -1,19 +1,22 @@
-from django.core.validators import MinValueValidator
-from django.db import models
+from pathlib import Path
+
 from django.contrib.auth import get_user_model
 from django.contrib.postgres.fields import ArrayField
 from django.core.exceptions import ValidationError
-
+from django.core.validators import MinValueValidator
+from django.db import models
 from membership.models import Organization, Member
 
 User = get_user_model()
 
+
 def event_logo_file_path_func(instance, filename):
-    from wrh_organization.helpers.utils import get_random_upload_path
+    from events.helpers import get_random_upload_path
     return get_random_upload_path(str(Path('uploads', 'cycling_org', 'event', 'logo')), filename)
 
+
 def event_attachment_file_path_func(instance, filename):
-    from wrh_organization.helpers.utils import get_random_upload_path
+    from events.helpers import get_random_upload_path
     return get_random_upload_path(str(Path('uploads', 'cycling_org', 'event_attachment')), filename)
 
 
@@ -64,7 +67,7 @@ class Event(models.Model):
         null=True,
         blank=True
     )
-    more_data = models.JSONField(null=True, blank=True, encoder=JSONEncoder)
+    more_data = models.JSONField(null=True, blank=True)
     organization = models.ForeignKey(Organization, on_delete=models.SET_NULL, null=True, related_name='events')
     source = models.CharField(max_length=16, null=True, editable=False)
     prefs = models.JSONField(null=True, blank=True, editable=False)
@@ -125,6 +128,8 @@ class Race(models.Model):
 
     def __str__(self):
         return self.name
+
+
 class RaceResult(models.Model):
     FINISH_STATUS_OK = 'ok'
     FINISH_STATUS_DNS = 'dns'
@@ -158,12 +163,28 @@ class RaceResult(models.Model):
     def __str__(self):
         return f'{self.place}-{self.rider}'
 
+
+# TODO: consider removing this.
+class Category(models.Model):
+    title = models.CharField(max_length=256, unique=True)
+    organization = models.ForeignKey(Organization, on_delete=models.CASCADE, related_name='categories')
+    create_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    create_datetime = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name_plural = 'Categories'
+        unique_together = (('title', 'organization'),)
+
+    def __str__(self):
+        return self.title
+
+
 class RaceSeries(models.Model):
     name = models.CharField(max_length=256)
     events = models.ManyToManyField(Event, related_name='race_series')
     races = models.ManyToManyField(Race, related_name='race_series')
     # TODO: use a json field to define categories for a race series
-    categories = models.JSONField(null=True, blank=False)
+    # categories = models.JSONField(null=True, blank=False)
     categories = models.ManyToManyField(Category, related_name='race_series')
     points_map = models.JSONField(null=True, blank=True)
     organization = models.ForeignKey(Organization, on_delete=models.CASCADE, related_name='race_series')
@@ -175,6 +196,7 @@ class RaceSeries(models.Model):
 
     def __str__(self):
         return self.name
+
 
 class RaceSeriesResult(models.Model):
     race_series = models.ForeignKey(RaceSeries, on_delete=models.CASCADE)
@@ -197,17 +219,3 @@ class RaceSeriesResult(models.Model):
 
     def __str__(self):
         return f'{self.category}-{self.place}'
-
-# TODO: consider removing this.
-# class Category(models.Model):
-#     title = models.CharField(max_length=256, unique=True)
-#     organization = models.ForeignKey(Organization, on_delete=models.CASCADE, related_name='categories')
-#     create_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
-#     create_datetime = models.DateTimeField(auto_now_add=True)
-#
-#     class Meta:
-#         verbose_name_plural = 'Categories'
-#         unique_together = (('title', 'organization'),)
-#
-#     def __str__(self):
-#         return self.title
