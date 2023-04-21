@@ -14,8 +14,6 @@ urlpatterns = [
     # User management
     path("users/", include("events.users.urls", namespace="users")),
     path("accounts/", include("allauth.urls")),
-    path('accounts/signups/', TurnstileSignupView.as_view(), name='account_signup'),
-    path('accounts/login/', TurnstileLoginView.as_view(), name='account_login'),
     # Your stuff: custom urls includes go here
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
