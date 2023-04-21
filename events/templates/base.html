@@ -43,7 +43,7 @@
       <nav class="container mx-auto py-4">
         <div class="flex justify-end items-center">
           <div class="mr-4">
-            <a href="#" class="font-semibold" style="color: #86a4a2;">BICYCLE
+            <a href="https://www.bicyclecolorado.org/" target="_blank" class="font-semibold" style="color: #86a4a2;">BICYCLE
               COLORADO ADVOCACY</a>
           </div>
           <div  class="flex justify-end">
@@ -80,15 +80,16 @@
         <div class="container mx-auto">
           <ul class="flex justify-between items-center text-black">
             <li>
+               <a href="{% url 'home'%}">
               <img
                 src="https://www.bicyclecolorado.org/wp-content/uploads/2023/03/BC_EventSupport_2023_600px-sociallogo-1.png"
-                alt="Your Alt Text" class="object-scale-down h-30 w-20">
+                alt="Logo" class="object-scale-down h-30 w-20"></a>
             </li>
 
             <div>
               <ul class="flex justify-between pl-3">
                 <li>
-                  <a href="#">
+                  <a href="{% url  'event:event_list'%}">
                     <span class="ml-4 text-green-800 font-semibold uppercase
                       hover:text-green-600">Events</span>
                   </a>

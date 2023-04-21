@@ -4,16 +4,26 @@ from django.contrib import admin
 from django.urls import include, path
 from django.views import defaults as default_views
 from django.views.generic import TemplateView
+from apps.event.models import Event
 
+
+class HomePageView(TemplateView):
+    template_name = "pages/home.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['events'] = Event.objects.all()  # Or apply any filter/query based on your requirements
+        return context
 
 urlpatterns = [
-    path("", TemplateView.as_view(template_name="pages/home.html"), name="home"),
+    path("", HomePageView.as_view(), name="home"),
     path("about/", TemplateView.as_view(template_name="pages/about.html"), name="about"),
     # Django Admin, use {% url 'admin:index' %}
     path(settings.ADMIN_URL, admin.site.urls),
     # User management
     path("users/", include("events.users.urls", namespace="users")),
     path("accounts/", include("allauth.urls")),
+    path("event/", include("apps.event.urls")),
     # Your stuff: custom urls includes go here
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

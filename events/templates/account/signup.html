@@ -33,20 +33,42 @@
                 <input type="hidden" name="remember" value="true">
                 <div class=" shadow-sm -space-y-px">
                   {% for field in form %}
-                    {% if field.name != 'turnstile'%}
-                     <div class="" style="margin-top:5px">
-                        <input id="{{ field.auto_id }}"
-                               type="{{ field.field.widget.input_type }}"
-                              name="{{ field.html_name }}"
-                              value="{{ field.value|default:'' }}"
-                               autocomplete="email" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md  rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                               placeholder="{{ field.label }}">
-                       {% for error in field.errors %}
-                        <p class="text-red-500 text-xs italic mt-1">{{ error }}</p>
-                      {% endfor %}
-                    </div>
+                    {% if field.field.widget.input_type in "email,password,text" %}
+                         <div class="" style="margin-top:5px">
+                            <input id="{{ field.auto_id }}"
+                                   type="{{ field.field.widget.input_type }}"
+                                  name="{{ field.html_name }}"
+                                  value="{{ field.value|default:'' }}"
+                                   autocomplete="email" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md  rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                                   placeholder="{{ field.label }}">
+                           {% for error in field.errors %}
+                            <p class="text-red-500 text-xs italic mt-1">{{ error }}</p>
+                          {% endfor %}
+                        </div>
+                    {% elif field.field.widget.input_type == 'date' %}
+                        <input id="{{ field.auto_id }}" type="{{ field.field.widget.input_type }}" name="{{ field.html_name }}" value="{{ field.value|default:'' }}" class="mt2 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    {% elif field.field.widget.input_type == 'select' %}
+                      <select id="{{ field.auto_id }}"  name="{{ field.html_name }}" class="shadow appearance-none border rounded w-full py-2 px-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                        {% for choice in field.field.choices %}
+                          <option value="{{ choice.0 }}" {% if field.value == choice.0 %}selected{% endif %}>{{ choice.1 }}</option>
+                        {% endfor %}
+                      </select>
                     {% endif %}
                 {% endfor %}
+
+                  {% for field in form %}
+                    {% if field.field.widget.input_type == 'checkbox' %}
+                      <div class="mb-4">
+                        <label class="inline-flex items-center">
+                          {{ field }}
+                          <span class="ml-2 text-gray-700 text-sm font-bold">{{ field.label }}</span>
+                        </label>
+                        {% for error in field.errors %}
+                          <p class="text-red-500 text-xs italic mt-1">{{ error }}</p>
+                        {% endfor %}
+                      </div>
+                    {% endif %}
+                  {% endfor %}
 
 
                 </div>
