@@ -5,6 +5,8 @@ from django.urls import include, path
 from django.views import defaults as default_views
 from django.views.generic import TemplateView
 
+from events.users.custom_allauth_views import TurnstileSignupView, TurnstileLoginView
+
 urlpatterns = [
     path("", TemplateView.as_view(template_name="pages/home.html"), name="home"),
     path("about/", TemplateView.as_view(template_name="pages/about.html"), name="about"),
@@ -13,6 +15,8 @@ urlpatterns = [
     # User management
     path("users/", include("events.users.urls", namespace="users")),
     path("accounts/", include("allauth.urls")),
+    path('accounts/signups/', TurnstileSignupView.as_view(), name='account_signup'),
+    path('accounts/login/', TurnstileLoginView.as_view(), name='account_login'),
     # Your stuff: custom urls includes go here
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

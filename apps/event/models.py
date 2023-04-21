@@ -229,7 +229,7 @@ class RaceSeriesResult(models.Model):
     race_series = models.ForeignKey(RaceSeries, on_delete=models.CASCADE)
     race_result = models.ForeignKey(RaceResult, on_delete=models.CASCADE)
     # TODO: use json field in race series
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    # category = models.ForeignKey(Category, on_delete=models.CASCADE)
     place = models.IntegerField(validators=[MinValueValidator(1)], null=True)
     more_data = models.JSONField(null=True, blank=True)
     organization = models.ForeignKey(Organization, on_delete=models.SET_NULL, null=True)
@@ -237,7 +237,7 @@ class RaceSeriesResult(models.Model):
     create_datetime = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        unique_together = (('race_series', 'race_result', 'category', 'organization'),)
+        unique_together = (('race_series', 'race_result', 'organization'),)
 
     def save(self, *args, **kwargs):
         if not self.more_data:

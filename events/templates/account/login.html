@@ -56,7 +56,12 @@
                 <input type="hidden" name="remember" value="true">
                 <div class=" shadow-sm -space-y-px">
                   {% for field in form %}
-                    {% if field.name != 'turnstile'%}
+                  {% if field.field.widget.input_type == 'checkbox'%}
+                    <label class="inline-flex items-center">
+                      <input type="checkbox" class="form-checkbox" />
+                      <span class="ml-2">{{ field.label }}</span>
+                    </label>
+                  {% elif field.name != 'turnstile'%}
                      <div class="" style="margin-top:5px">
                         <input id="{{ field.auto_id }}"
                                type="{{ field.field.widget.input_type }}"
@@ -67,8 +72,10 @@
                     </div>
                     {% endif %}
                 {% endfor %}
+
                 </div>
                 <div class="flex justify-center">
+                                    {{ form.turnstile }}
                 </div>
 
                 <div>
