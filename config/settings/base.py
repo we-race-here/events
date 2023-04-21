@@ -221,7 +221,7 @@ EMAIL_TIMEOUT = 5
 # Django Admin URL.
 ADMIN_URL = "admin/"
 # https://docs.djangoproject.com/en/dev/ref/settings/#admins
-ADMINS = env('ADMIN_EMAIL', list)
+ADMINS = [tuple(admin.strip().rsplit(" ", 1)) for admin in env("ADMINS", default="").split(",") if admin]
 # https://docs.djangoproject.com/en/dev/ref/settings/#managers
 MANAGERS = ADMINS
 
