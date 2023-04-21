@@ -150,11 +150,14 @@ class RaceResult(models.Model):
     """
     rider: ForeignKey to member, create member is no match found.
         Try to match with usac_license, email, or name and date of birth
+    name: Rider name, Combine first and last name is in seperate columns
     TODO: Thinking about race, maybe does not need to be a foregnkey
     race: Another name would be race group or Start group.
     place: Finish place
     finish_status: OK, DNS (Did not start), DNF (Did not finish)
     category: the category the rider is competeing in, might be different from Race.
+    usa_license: USAC license number, optional, used to match to member
+    date_of_birth: Date of birth, optional, used to match to member
     time: Elapsed time in seconds. optional TODO: new field.
     club: Club name, optional TODO: new field. Not linked to model club
     more_data: Extra columns uploaded with result, try to block PPI (email, phone, etc)
@@ -171,10 +174,13 @@ class RaceResult(models.Model):
     )
 
     rider = models.ForeignKey(Member, on_delete=models.SET_NULL, null=True, related_name='race_results')
+    name = models.CharField(max_length=256, null=True, blank=False)
     race = models.ForeignKey(Race, on_delete=models.CASCADE)
     place = models.IntegerField(validators=[MinValueValidator(1)], null=True)
     finish_status = models.CharField(max_length=16, default=FINISH_STATUS_OK, choices=FINISH_STATUS_CHOICES)
     category = models.CharField(max_length=32, null=True, blank=False)
+    usac_license = models.CharField(max_length=32, null=True, blank=True)
+    date_of_birth = models.DateField(null=True, blank=True)
     more_data = models.JSONField(null=True, blank=True)
     # TODO: remove organization, we dont need this.
     # organization = models.ForeignKey(Organization, on_delete=models.SET_NULL, null=True)
