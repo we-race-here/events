@@ -1,0 +1,50 @@
+{% extends "BC/base_dv.html" %}
+{% load static %}
+{% block content %}
+    <section class="content">
+        <div class="event-detail-outer">
+            <div class="container">
+                <div class="profile-detail-inner">
+                    <!-- Left Side Content -->
+                    <div class="profile-detail-left">
+                        {% if object.avatar %}
+                            <img src="{{ object.avatar }}" alt="Profile" title="" class="img-responsive">
+                        {% else %}
+                            <i class="fa-solid fa-user-tie fa-2xl" style="color: #78c4c5;"></i>
+                        {% endif %}
+                    <div class="eventdetail-inner">
+                        <h3>{{ object.first_name }} {{ object.last_name }}</h3>
+                        {% if 'user' in ViewPermissions %}
+                            {% for k, v in object.social_media.items %}
+                                <h5>{{ k }}: {{ v }}</h5>
+                            {% endfor %}
+                        <h4>USAC Licenses:</h4>
+                            License Number: {{ object.usac_license_number }}
+                            {% if object.usac_license_number_verified  %}
+                                <b>Verified:</b>
+                            {% else %}
+                                <b>Not Verified:</b>
+                            {% endif %}
+                            {% for u in USACData %}
+                                <ui>
+                                    <li>Type: <b>{{ u.license_type|default:"N/A" }}</b></li>
+                                <li>Club: {{ u.club|default:"N/A" }}</li>
+                                <li>Area: {{ u.local_association }}</li>
+                                </ui>
+                                <br>
+                            {% endfor %}
+                            {% endif %}
+                        <h5>View Permissions</h5>
+                            <h5>- {{ ViewPermissions }}</h5>
+                    </div>
+                    </div>
+                    <div class="profile-detail-right">
+                        {#TODO: Add race result#}
+                        {#TODO: Add club membership#}
+                        <h5> Race results here </h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

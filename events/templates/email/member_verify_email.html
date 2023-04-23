@@ -1,0 +1,8 @@
+{% load util_tags %}
+
+<p>Hi {{ member.first_name }},</p>
+<p>To verify your email address please enter the Verification code.</p>
+<p>Verification code:</p>
+<p><strong>{{ code }}</strong></p>
+<p></p>
+<p>Notice: this code will expire after {{ expiry }} seconds!</p>

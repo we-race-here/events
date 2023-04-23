@@ -1,0 +1,117 @@
+{% extends "BC/base_dv.html" %}
+{% block content %}
+{% load static %}
+    <section class="content">
+        <!-- search form -->
+<!-- search form -->
+	<div class="listing-searchmember colo-search">
+		<div class="searchmember-formouter">
+			<form action="#" method="post" class="searchmember-form event-filter">
+				<input class="gfield-choice-input" name="filter" type="radio"
+					value="usac_event" id="choice_1">
+
+				<label for="choice_1"  style="white-space: nowrap;padding-right:10px">
+                    <img style="max-width:17px" src="{% static 'images/USACycling_Logo_noborder.svg' %}" alt="My image"/>
+                    USAC Event</label>
+				<input class="gfield-choice-input" name="filter" type="radio"
+					value="featured" id="choice_2">
+
+				<label for="choice_2" id="label_13_8_1">
+                    <img style="max-width:20px" src="{% static 'images/bc-icon.png' %}" alt="My image"/>Featured</label>
+
+
+
+				<select name="event-type" id="filter-events-full-cal">
+					<option value="all">All Events</option>
+					{% for i in EventTypes%}
+					<option value="{{i}}">{{i}}</option>
+					{% endfor %}
+				</select>
+				<input type="submit" class="filter-submit" value="filter">
+
+                <a  href="https://www.bicyclecolorado.org/events-2/submit-an-event/" class="submit_for_event">Submit an Event</a>
+
+			</form>
+			<div class="clearfix"></div>
+		</div>
+	</div>
+
+
+        <div class="colo-events-outer">
+            <div class="container">
+                <div class="coloevents-inner">
+                    <div class="colo-eventsrow">
+                        {% if Event|length >= 1 %}
+                            {% for event in Featured|slice:"4" %}
+                                <div class="colo-eventbox">
+                                    <div class="eventspage-thumbnail">
+                                        {% if event.logo and event.featured_event %}
+                                                <img
+                                                        src="{{ event.logo.url }}"
+                                                        alt="Event Logo" title="" class="img-responsive">
+                                        {% endif %}
+                                    </div>
+                                    <h3><a href="{% url 'events-details-dv' event.id %}"
+                                           class=" ">{{ event.name }}</a>
+                                    </h3>
+                                <div class="text-center" style="display: flex;justify-content: space-evenly;">
+                                    {% if event.is_usac_permitted %}
+                                        <img style="max-width:17px" src="../static/images/USACycling_Logo_noborder.svg" alt="USACycling"
+                                             width="25" height="25">
+                                    {% endif %}
+                                </div>
+                                    <span class="date" style="margin-top:4px;display: flex;justify-content: space-around;">{{ event.start_date }}</span>
+                                    <div class="text-center" style="margin-top:4px;">
+                                    <h5> {% if event.city %} {{ event.city }},&nbsp; {% endif %}{% if event.state %} {{ event.state }}{% endif %} </h5>
+                                    </div>
+                                    {% if event.description %}
+                                        <p>{{ event.description|truncatechars:100 }}</p>
+                                    {% endif %}
+                                    {# <a href="{% url 'events-details-dv' event.id%}"#}
+                                    {# class="viewevent-btn">View Event</a>#}
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <div class="colo-eventsrow">
+                            {% for event in Event %}
+                                <div class="colo-eventbox">
+                                <div class="eventspage-thumbnail">
+                                    {% if event.logo and event.featured_event %}
+                                        <img
+                                                src="{{ event.logo.url }}"
+                                                alt="Event Logo" title="" class="img-responsive">
+                                    {% endif %}
+                                </div>
+                                    <h3><a href="{% url 'events-details-dv' event.id %}"
+                                           class=" ">{{ event.name }}</a>
+                                    </h3>
+                                    <div class="text-center" style="display: flex;justify-content: space-evenly;">
+                                        {% if event.is_usac_permitted %}
+                                        <img style="max-width:17px" src="{% static 'images/USACycling_Logo_noborder.svg' %}" alt="My image"/>
+                                        {% endif %}
+                                        {% if event.featured_event %}
+                                            <img style="max-width:20px" src="{% static 'images/bc-icon.png' %}" alt="My image"/>
+                                        {% endif %}
+                                    </div>
+
+                                    <span class="date" style="margin-top:4px;display: flex;justify-content: space-around;">{{ event.start_date }}</span>
+                                    <div class="text-center" style="margin-top:4px;">
+                                        <h5> {% if event.city %} {{ event.city }},&nbsp; {% endif %}{% if event.state %} {{ event.state }}{% endif %} </h5>
+                                    </div>
+                                    {% if event.description %}
+                                        <p>{{ event.description|truncatechars:100 }}</p>
+                                    {% endif %}
+                                    {# <a href="{% url 'events-details-dv' event.id%}"#}
+                                    {# class="viewevent-btn">View Event</a>#}
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <b>No Events Found</b>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+{% endblock %}

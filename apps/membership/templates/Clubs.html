@@ -1,0 +1,93 @@
+{% extends "BC/base_dv.html" %}
+{% block content %}
+
+    <section class="content">
+        <!-- search form -->
+        <div class="listing-searchmember colo-search">
+            <div class="searchmember-formouter">
+                <form action="#" method="post" class="searchmember-form event-filter">
+                    {% csrf_token %}
+                    <h2>Search: </h2>
+                    <div class="calendarfield-outer">
+                        <div class="cal-input-group">
+                            <input type="text" name="org" class="datepicker" placeholder="Search">
+                        </div>
+                    </div>
+                    <input type="submit" class="filter-submit" value="Search">
+                </form>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+        <!-- blog outer -->
+        <div class="blog-outer">
+            <div class="container">
+                <div class="blog-detail">
+                    <div class="col-sm-12" style="margin-top: 20px;">
+                    </div>
+                    <div id="et-boc" class="et-boc">
+                        <div id="et_builder_outer_content" class="et_builder_outer_content">
+                            {% if Org|length >= 1 %}
+                                {% for org in Org|dictsort:"name" %}
+                                    {% if org.id != 1 %}
+                                        <div class="blogdetail-row">
+                                            <div class="col-sm-12 col-md-7 blogdetail-left">
+                                                <div class="author-thumbnail">
+                                                    {% if org.logo %}
+                                                        <img style="width:100%;
+                                            max-width:60px;" src="{{ org.logo.url }}" alt="">
+                                                    {% endif %}
+                                                </div>
+                                                <div class="blog-post">
+                                                    <ul class="post-list">
+                                                        <li>Type</li>
+                                                        {% if org.type == 'club' %}
+                                                            {% if org.name in USACclub %}
+                                                                <li><span>USAC Club</span></li>
+                                                            {% else %}
+                                                                <li><span>Local Club</span></li>
+                                                            {% endif %}
+                                                        {% else %}
+                                                            <li><span>{{ org.type }}</span></li>
+                                                        {% endif %}
+                                                    </ul>
+                                                    <h4><a href="{% url 'club-details-dv' org.id %}">{{ org.name }}</a></h4>
+                                                    {% if org.about %}
+                                                        <p>{{ org.about }}</p>
+                                                    {% endif %}
+{#                                                    <ul class="catagory-list">#}
+{#                                                        {% if org.website %}#}
+{#                                                            <li><a href="{{ org.website }}">Website</a>#}
+{#                                                            </li>#}
+{#                                                        {% endif %}#}
+{#                                                    </ul>#}
+                                                </div>
+                                                <div class="clearfix"></div>
+                                            </div>
+                                            <div class="col-sm-12 col-md-5 blogdetail-right" style="margin-top:
+                                    20px;">
+                                                <b>{{ org.members.all.count }} </b> Members
+                                            <br>
+                                                {% if not user.username %}
+                                                    <b style="background-color:#e85628; color:white"> &nbsp;Sign in to Join&nbsp; </b>
+                                                {% elif user.member in org.members.all %}
+                                                    <b style="background-color:#5fc7c6; color:white">
+                                                        &nbsp;You are a Member&nbsp; </b>
+                                                {% else %}
+                                                    <b style="background-color:#e85628; color:white"> &nbsp;Opening
+                                                        soon&nbsp; </b>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                            {% else %}
+                                <b>Not Found</b>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+{% endblock %}
