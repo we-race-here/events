@@ -1,0 +1,84 @@
+{% extends 'admin/base_site.html' %}
+{% load i18n admin_urls static admin_modify %}
+{% load util_tags %}
+{% block extrahead %}
+  <style type="text/css">
+    .cancel-btn {
+      padding: 10px 15px !important;
+      background-color: darkgray !important;
+    }
+    .usac-object-section {
+      padding: 10px;
+      background-color: #f3f3f3;
+      border-radius: 5px;
+    }
+    .usac-error-section {
+      padding: 10px;
+      background-color: #f3f3f3;
+      border-radius: 5px;
+      color: red;
+    }
+  </style>
+{% endblock %}
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+<a href="{% url 'admin:index' %}">{% translate 'Home' %}</a>
+&rsaquo; <a href="{% url 'admin:app_list' app_label="cycling_org" %}">Cycling Org</a>
+&rsaquo; <a href="{% url 'admin:cycling_org_member_changelist' %}">Member</a>
+&rsaquo; <a href="{% url 'admin:cycling_org_member_change' object_id=object.pk %}">{{ object|truncatewords:"18" }}</a>
+&rsaquo; <span>USAC License Validation</span>
+</div>
+{% endblock %}
+{% block content %}
+  <h1>Validate USAC License</h1>
+  <h2>{{ object }}</h2>
+  <h3>USAC License#: {{ object.usac_license_number }}</h3>
+  {% if usac_object %}
+    <pre class="usac-object-section">{{ usac_object|pprint }}</pre>
+  {% endif %}
+  {% if error %}
+    <pre class="usac-error-section">Error: {{ error }}</pre>
+  {% endif %}
+  <table>
+    <thead>
+    <tr>
+      <th></th>
+      <th>Name</th>
+      <th>Gender</th>
+      <th>Age</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <th>Bicycle Colorado:</th>
+      <td>{{ object.first_name }} {{ object.last_name }}</td>
+      <td>{{ object.get_gender_display }}</td>
+      <td>{{ object.age }}</td>
+    </tr>
+    <tr>
+      <th>USAC:</th>
+      <td>{{ usac_object.profile_first_name }}</td>
+      <td>{{ usac_object.profile_race_gender }}</td>
+      <td>{{ usac_object.profile_birthdate }}</td>
+    </tr>
+    <tr>
+      <th>Matched?</th>
+      <td>{{ matched.name|yesnoicon }}</td>
+      <td>{{ matched.gender|yesnoicon }}</td>
+      <td>{{ matched.age|yesnoicon }}</td>
+    </tr>
+    </tbody>
+
+  </table>
+  <div>
+    <form action="." method="POST">
+      {% csrf_token %}
+      <div class="submit-row">
+
+        <input type="submit" value="Accept" name="accept">
+        <a class="button cancel-btn" href="..">Cancel</a>
+      </div>
+    </form>
+  </div>
+
+{% endblock %}

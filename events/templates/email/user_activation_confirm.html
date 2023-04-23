@@ -1,0 +1,22 @@
+{# This is the landing page the user arrives at after clicking the email activation link #}
+{% extends "base.html" %}
+
+{% load util_tags %}
+
+{% block content %}
+<v-card>
+  <v-card-title>Activate your account!</v-card-title>
+  <v-card-text>
+    <p>Hi {{ new_user }},</p>
+
+    <p>Welcome to Bicycle Colorado!</p>
+
+    <p>One more step to verify your email and activate your account.</p>
+    <p>Please click on the following button</p>
+    <form action="." method="post">
+      {% csrf_token %}
+      <v-btn class="mr-4" type="submit" color="error">Activate</v-btn>
+    </form>
+  </v-card-text>
+</v-card>
+{% endblock content %}
