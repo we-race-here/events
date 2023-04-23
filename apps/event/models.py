@@ -1,5 +1,6 @@
 from pathlib import Path
 
+import model_utils
 from django.contrib.auth import get_user_model
 from django.contrib.postgres.fields import ArrayField
 from django.core.exceptions import ValidationError
@@ -40,7 +41,7 @@ class Event(models.Model):
     Tags: List of event types
     more_data: Json data: Contains,
     - panels: list of panels, like youtube or maps
-    organization: the org that "ownes" the event
+    organization: the org that "owns" the event, used for sharing permissions.
     source: ?
     prefs: Json field
     - banner_image: The image to use as the banner
@@ -88,6 +89,7 @@ class Event(models.Model):
     shared_org_perms = models.JSONField(null=True, blank=True, editable=False)  # {org_id: 'view|edit'}
     create_datetime = models.DateTimeField(auto_now_add=True)
     update_datetime = models.DateTimeField(auto_now=True)
+    history = HistoricalRecords()
 
     def save(self, *args, **kwargs):
         if self.organizer_email:
@@ -124,10 +126,18 @@ class Race(models.Model):
     name = models.CharField(max_length=256)
     event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name='races')
     start_datetime = models.DateTimeField(null=True)
-    organization = models.ForeignKey(Organization, on_delete=models.SET_NULL, null=True, related_name='races')
+    categories = ArrayField(
+        models.CharField(max_length=100, blank=False),
+        size=50,
+        null=True,
+        blank=False
+    )
+    # TODO: remove Organization
+    # organization = models.ForeignKey(Organization, on_delete=models.SET_NULL, null=True, related_name='races')
     more_data = models.JSONField(null=True, blank=True)
     create_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     create_datetime = models.DateTimeField(auto_now_add=True)
+    history = HistoricalRecords()
 
     class Meta:
         unique_together = (('name', 'event', 'organization'),)
@@ -140,11 +150,14 @@ class RaceResult(models.Model):
     """
     rider: ForeignKey to member, create member is no match found.
         Try to match with usac_license, email, or name and date of birth
+    name: Rider name, Combine first and last name is in seperate columns
     TODO: Thinking about race, maybe does not need to be a foregnkey
     race: Another name would be race group or Start group.
     place: Finish place
     finish_status: OK, DNS (Did not start), DNF (Did not finish)
     category: the category the rider is competeing in, might be different from Race.
+    usa_license: USAC license number, optional, used to match to member
+    date_of_birth: Date of birth, optional, used to match to member
     time: Elapsed time in seconds. optional TODO: new field.
     club: Club name, optional TODO: new field. Not linked to model club
     more_data: Extra columns uploaded with result, try to block PPI (email, phone, etc)
@@ -161,10 +174,13 @@ class RaceResult(models.Model):
     )
 
     rider = models.ForeignKey(Member, on_delete=models.SET_NULL, null=True, related_name='race_results')
+    name = models.CharField(max_length=256, null=True, blank=False)
     race = models.ForeignKey(Race, on_delete=models.CASCADE)
     place = models.IntegerField(validators=[MinValueValidator(1)], null=True)
     finish_status = models.CharField(max_length=16, default=FINISH_STATUS_OK, choices=FINISH_STATUS_CHOICES)
     category = models.CharField(max_length=32, null=True, blank=False)
+    usac_license = models.CharField(max_length=32, null=True, blank=True)
+    date_of_birth = models.DateField(null=True, blank=True)
     more_data = models.JSONField(null=True, blank=True)
     # TODO: remove organization, we dont need this.
     # organization = models.ForeignKey(Organization, on_delete=models.SET_NULL, null=True)
@@ -202,10 +218,11 @@ class RaceResult(models.Model):
 
 
 class RaceSeries(models.Model):
-    name = models.CharField(max_length=256)
+    """
+    name: Race Series name
     events = models.ManyToManyField(Event, related_name='race_series')
     races = models.ManyToManyField(Race, related_name='race_series')
-    # TODO: use a json field to define categories for a race series
+    # TODO: Change category from manytomany to arrayfield
     categories = ArrayField(
         models.CharField(max_length=100, blank=False),
         size=50,
@@ -214,6 +231,26 @@ class RaceSeries(models.Model):
     )
     # categories = models.ManyToManyField(Category, related_name='race_series')
     points_map = models.JSONField(null=True, blank=True)
+    ALGO = model_utils.Choices('Absolute', 'Relative')
+    points_algorithm = models.CharField(choices=ALGO, default=ALGO.Absolute, max_length=16, null=True, blank=False)
+    organization = models.ForeignKey(Organization, on_delete=models.CASCADE, related_name='race_series')
+    create_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    create_datetime = models.DateTimeField(auto_now_add=True)
+    """
+    name = models.CharField(max_length=256)
+    events = models.ManyToManyField(Event, related_name='race_series')
+    races = models.ManyToManyField(Race, related_name='race_series')
+    # TODO: Change category from manytomany to arrayfield
+    categories = ArrayField(
+        models.CharField(max_length=100, blank=False),
+        size=50,
+        null=True,
+        blank=False
+    )
+    # categories = models.ManyToManyField(Category, related_name='race_series')
+    points_map = models.JSONField(null=True, blank=True)
+    ALGO = model_utils.Choices('Absolute', 'Relative')
+    points_algorithm = models.CharField(choices=ALGO, default=ALGO.Absolute, max_length=16, null=True, blank=False)
     organization = models.ForeignKey(Organization, on_delete=models.CASCADE, related_name='race_series')
     create_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     create_datetime = models.DateTimeField(auto_now_add=True)
@@ -224,25 +261,25 @@ class RaceSeries(models.Model):
     def __str__(self):
         return self.name
 
-
-class RaceSeriesResult(models.Model):
-    race_series = models.ForeignKey(RaceSeries, on_delete=models.CASCADE)
-    race_result = models.ForeignKey(RaceResult, on_delete=models.CASCADE)
-    # TODO: use json field in race series
-    # category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    place = models.IntegerField(validators=[MinValueValidator(1)], null=True)
-    more_data = models.JSONField(null=True, blank=True)
-    organization = models.ForeignKey(Organization, on_delete=models.SET_NULL, null=True)
-    create_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
-    create_datetime = models.DateTimeField(auto_now_add=True)
-
-    class Meta:
-        unique_together = (('race_series', 'race_result', 'organization'),)
-
-    def save(self, *args, **kwargs):
-        if not self.more_data:
-            self.more_data = {}
-        return super().save(*args, **kwargs)
-
-    def __str__(self):
-        return f'{self.category}-{self.place}'
+# TODO: Remove, we dont need this.
+# class RaceSeriesResult(models.Model):
+#     race_series = models.ForeignKey(RaceSeries, on_delete=models.CASCADE)
+#     race_result = models.ForeignKey(RaceResult, on_delete=models.CASCADE)
+#     # TODO: use json field in race series
+#     category = models.ForeignKey(Category, on_delete=models.CASCADE)
+#     place = models.IntegerField(validators=[MinValueValidator(1)], null=True)
+#     more_data = models.JSONField(null=True, blank=True)
+#     organization = models.ForeignKey(Organization, on_delete=models.SET_NULL, null=True)
+#     create_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+#     create_datetime = models.DateTimeField(auto_now_add=True)
+#
+#     class Meta:
+#         unique_together = (('race_series', 'race_result', 'category', 'organization'),)
+#
+#     def save(self, *args, **kwargs):
+#         if not self.more_data:
+#             self.more_data = {}
+#         return super().save(*args, **kwargs)
+#
+#     def __str__(self):
+#         return f'{self.category}-{self.place}'
