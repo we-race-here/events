@@ -11,16 +11,16 @@ from events.helpers import admin_url_wrap, USACApi
 
 # Register your models here.
 class OrganizationMemberAdmin(admin.ModelAdmin):
-    list_display = ('id', 'member', 'organization', 'status', 'is_active', 'is_admin')
-    list_filter = ('status', 'is_active', 'is_admin', 'is_master_admin', 'organization')
+    list_display = ('id', 'member', 'organization', 'is_active', 'is_admin')
+    list_filter = ('is_active', 'is_admin', 'organization')
     search_fields = ('member__first_name', 'member__last_name', 'organization__name')
 
 
 class MemberAdmin(admin.ModelAdmin):
     list_display = (
-        'id', 'first_name', 'last_name', 'email', 'usac_license_number', 'usac_license_number_verified', 'draft')
-    search_fields = ('first_name', 'last_name', 'usac_license_number', 'email')
-    list_filter = ('email_verified', 'phone_verified', 'usac_license_number_verified')
+        'id', 'first_name', 'last_name', 'email', 'usac_license', 'usac_license_verified')
+    search_fields = ('first_name', 'last_name', 'usac_license', 'email')
+    list_filter = ('email_verified', 'phone_verified', 'usac_license_verified')
     change_form_template = "admin/cycling_org/member_changeform.html"
 
     def get_urls(self):
