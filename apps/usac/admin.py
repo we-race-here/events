@@ -1,19 +1,20 @@
 import csv
-from datetime import datetime
 import io
 import traceback
+from datetime import datetime
 
 from django.contrib import admin
 from django.shortcuts import render, redirect
-from . import models
-from .models import UsacDownload
 
 from apps.usac.forms import CsvImportForm
+from . import models
+from .models import UsacDownload
 
 
 # Register your models here.
 
 class UsacDownloadAdmin(admin.ModelAdmin):
+    """This defiens the table view of usac recrods"""
     list_display = ('id', 'first_name', 'last_name', 'license_number', 'license_type', 'license_status',
                     'license_expiration')
     list_filter = ('license_type', 'license_status')
@@ -21,12 +22,13 @@ class UsacDownloadAdmin(admin.ModelAdmin):
     change_list_template = "admin/usac/usacdownload_changelist.html"
 
     def import_csv(self, request):
+        """This is the form to import records from a csv"""
         context = {}
         if request.method == "POST":
             csv_file = request.FILES["csv_file"]
             decoded_file = io.StringIO(csv_file.read().decode())
             try:
-                import_rider_license_from_csv(decoded_file)
+                usac_license_from_csv(decoded_file)
             except Exception as e:
                 traceback.print_exc()
                 context['error'] = str(e)
@@ -39,7 +41,9 @@ class UsacDownloadAdmin(admin.ModelAdmin):
             request, "admin/csv_form.html", context
         )
 
-def import_rider_license_from_csv(csv_file, date_format='%m/%d/%Y'):
+
+def usac_license_from_csv(csv_file, date_format='%m/%d/%Y'):
+    "This is the import logic"
     reader = csv.DictReader(csv_file)
     field_names = reader.fieldnames
     for i in range(len(field_names)):
@@ -60,13 +64,15 @@ def import_rider_license_from_csv(csv_file, date_format='%m/%d/%Y'):
     for row in reader:
         # print(f'Importing row #{reader.line_num} ... ', end='')
         try:
-            import_rider_license_row(row, required_fields, date_format=date_format)
+            import_usac_license_row(row, required_fields, date_format=date_format)
             # print('[OK]' if obj else '[SKIP]')
         except Exception:
             # print('[FAIL]')
             traceback.print_exc()
 
-def import_rider_license_row(row, required_fields, date_format='%m/%d/%Y'):
+
+def import_usac_license_row(row, required_fields, date_format='%m/%d/%Y'):
+    """This is the import logic per row"""
     row = {k: (v or None) for k, v in row.items()}
     if not row.get('license_number'):
         return
