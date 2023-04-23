@@ -1,0 +1,21 @@
+{% load util_tags %}
+
+<p>Hi {{ user }},</p>
+
+<p><a href="https://bicyclecolorado.org">Bicycle Colorado</a> is developing a new digital platform to support cycling events, athletes, clubs and teams in Colorado.</p>
+<b>Please <a href="{% ex_url 'cycling_org_rest_api:user_registration-activate' uid=uid token=token scheme='auto' drf=True %}?format=json">
+  Click here to activate!
+</a> your user account Bicycle Colorado.</b>
+
+<p><b>Bicycle Colorado + USA Cycling = Great Racing in 2023!</b></p>
+<p>This year, we are piloting a new shared-membership model with USA Cycling. This means that your Racing Membership at Bicycle Colorado is included with your 2023 USA Cycling Racing Membership! When you activate your account at Bicycle Colorado, we will validate your Racing Membership with Bicycle Colorado. The Bicycle Colorado Racing Membership is similar to the memberships sold in the past by the Bicycle Racing Association of Colorado to support the organization that works to structure, sustain and improve local cycling events—and now that’s us!</p>
+
+<p>Event Support Program
+    <br>-----------------------------
+    <br>Bicycle Colorado
+    <br> <a href="https://bicyclecolorado.org">https://bicyclecolorado.org</a>
+    <br>1525 Market Street, Suite 100
+    <br>Denver, CO 80202
+    <br>United States</p>
+
+

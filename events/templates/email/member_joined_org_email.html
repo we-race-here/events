@@ -1,0 +1,17 @@
+{% load util_tags %}
+{#This email is sent to the user and og admin of a club when a new member joins the club (organization).#}
+
+<b>Hi {{ org }} admin</b>
+<p> {{ user }}, {{ user.member.first_name }}, {{ user.member.last_name }},</p>
+You can view their profile here:
+<a href="{{ host }}/ProfileDetail/{{user.member.id}}">{{ user }} profile detail</a>
+
+<p>Event Support Program
+    <br>-----------------------------
+    <br>Bicycle Colorado
+    <br> <a href="https://bicyclecolorado.org">https://bicyclecolorado.org</a>
+    <br>1525 Market Street, Suite 100
+    <br>Denver, CO 80202
+    <br>United States</p>
+
+
