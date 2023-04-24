@@ -1,14 +1,23 @@
 import csv
+import functools
 import io
 import traceback
 from datetime import datetime
 
 from django.contrib import admin
 from django.shortcuts import render, redirect
+from django.urls import path
 
 from apps.usac.forms import CsvImportForm
 from . import models
 from .models import UsacDownload
+
+def admin_url_wrap(view, admin_site, model_admin=None):
+    def wrapper(*args, **kwargs):
+        return admin_site.admin_view(view)(*args, **kwargs)
+
+    wrapper.model_admin = model_admin
+    return functools.update_wrapper(wrapper, view)
 
 
 # Register your models here.
@@ -20,6 +29,14 @@ class UsacDownloadAdmin(admin.ModelAdmin):
     list_filter = ('license_type', 'license_status')
     search_fields = ('first_name', 'last_name', 'license_number')
     change_list_template = "admin/usac/usacdownload_changelist.html"
+
+    def get_urls(self):
+        urls = super().get_urls()
+        my_urls = [
+            path('import-csv/', admin_url_wrap(self.import_csv, self.admin_site, self),
+                 name="usacycling_riderlicense_importcsv"),
+        ]
+        return my_urls + urls
 
     def import_csv(self, request):
         """This is the form to import records from a csv"""
@@ -77,13 +94,24 @@ def import_usac_license_row(row, required_fields, date_format='%m/%d/%Y'):
     if not row.get('license_number'):
         return
     data_hash = UsacDownload.hashify(row)
-    if UsacDownload.objects.filter(data_hash=data_hash).exists():
+    try:
+        if UsacDownload.objects.filter(data_hash=data_hash).exists():
+            return
+    except:
         return
     db_cols = {c: row.get(c) for c in required_fields}
     if db_cols['birth_date']:
-        db_cols['birth_date'] = datetime.strptime(db_cols['birth_date'], date_format)
+        try:
+            db_cols['birth_date'] = datetime.strptime(db_cols['birth_date'], date_format)
+        except ValueError:
+            # print(f"Invalid birth date: {db_cols['birth_date']}")
+            db_cols['birth_date'] = None
     if db_cols['license_expiration']:
-        db_cols['license_expiration'] = datetime.strptime(db_cols['license_expiration'], date_format)
+        try:
+            db_cols['license_expiration'] = datetime.strptime(db_cols['license_expiration'], date_format)
+        except ValueError:
+            # print(f"license_expiration: {db_cols['license_expiration']}")
+            db_cols['birth_date'] = None
     if db_cols['race_age']:
         db_cols['race_age'] = int(db_cols['race_age'])
     db_cols['data_hash'] = data_hash
