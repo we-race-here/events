@@ -8,7 +8,7 @@ from django.core.validators import MinValueValidator
 from django.db import models
 from simple_history.models import HistoricalRecords
 
-from apps.membership.models import Organization, Member
+from apps.membership.models import Organization
 
 User = get_user_model()
 
@@ -173,7 +173,7 @@ class RaceResult(models.Model):
         (FINISH_STATUS_DNF, 'DNF'),
     )
 
-    rider = models.ForeignKey(Member, on_delete=models.SET_NULL, null=True, related_name='race_results')
+    rider = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='race_results')
     name = models.CharField(max_length=256, null=True, blank=False)
     race = models.ForeignKey(Race, on_delete=models.CASCADE)
     place = models.IntegerField(validators=[MinValueValidator(1)], null=True)
