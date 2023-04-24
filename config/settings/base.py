@@ -17,12 +17,8 @@ if os.getenv("DJANGO_SETTINGS_MODULE") == "config.settings.local":
     envs_path = Path(f"{BASE_DIR}/.envs")
     if envs_path.is_dir():
         env.read_env(BASE_DIR / ".envs" / ".local" / ".django")
-        print("reading from .env/local/.django")
     else:
         env.read_env(BASE_DIR / ".env")
-        print("reading from .env file")
-print(env)
-
 # GENERAL
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#debug
@@ -46,9 +42,10 @@ LOCALE_PATHS = [str(BASE_DIR / "locale")]
 # DATABASES
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#databases
-print(f"BASE_DIR: {BASE_DIR}")
-print(f"datbase url: {env.db('DATABASE_URL')}")
-DATABASES = {"default": env.db("DATABASE_URL")}
+DATABASES = {
+    "default": env.db("DATABASE_URL"),
+    "wrh": env.db("WRH_URL")
+}
 DATABASES["default"]["ATOMIC_REQUESTS"] = True
 # https://docs.djangoproject.com/en/stable/ref/settings/#std:setting-DEFAULT_AUTO_FIELD
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
