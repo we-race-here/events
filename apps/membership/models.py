@@ -8,7 +8,6 @@ from pathlib import Path
 from cerberus import Validator
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
-from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from django.utils import timezone
 # from jsonschema import Validator TODO: what is this?
@@ -54,7 +53,7 @@ class OrganizationMember(models.Model):
     #     (STATUS_WAITING, 'Waiting'),
     # )
     organization = models.ForeignKey('Organization', on_delete=models.CASCADE)
-    member = models.ForeignKey('Member', on_delete=models.CASCADE)
+    user = models.ForeignKey('User', on_delete=models.CASCADE)
     is_admin = models.BooleanField(default=False)
     # TODO: Migrate all is_master_admin to is_admin
     # is_master_admin = models.BooleanField(default=False)
@@ -117,7 +116,7 @@ class OrganizationMember(models.Model):
         return super().save(*args, **kwargs)
 
     def __str__(self):
-        return f'{self.organization} - {self.member} - {self.is_admin} - {self.is_active} - {self.start_date} - {self.exp_date}'
+        return f'{self.organization} - {self.user} - {self.is_admin} - {self.is_active} - {self.start_date} - {self.exp_date}'
 
 
 # @FieldsTracking.register() TODO: do we need this?
@@ -245,7 +244,7 @@ class Organization(models.Model):
     verified = models.BooleanField(default=False)
     # TODO: banner_image and Info board are moved out. Is there anything else here?
     # prefs = models.JSONField(null=True, blank=True, editable=True)
-    members = models.ManyToManyField('Member', related_name='organizations', through=OrganizationMember)
+    user = models.ManyToManyField('User', related_name='organizations', through=OrganizationMember)
     # member_orgs = models.ManyToManyField('Organization', related_name='organizations', through=OrganizationMemberOrg)
     membership_open = models.BooleanField(default=False, null=True, blank=True)
     approved = models.BooleanField(default=False, null=True)  # New orgs must be approved by BC staff
@@ -331,173 +330,3 @@ class Organization(models.Model):
 
     def __str__(self):
         return f'{self.name}'
-
-
-class Member(models.Model):
-    """
-    first_name:
-    last_name:
-    gender: see options
-    birth_date:
-    phone:
-    phone_verified: Verify so we can send sms
-    email:
-    email_verified: Required to on new account to login.
-    address1:
-    address2:
-    country:
-    city:
-    state:
-    zipcode:
-    weight: save value in KG
-    height: save value in CM
-    social_media = models.JSONField(null=True, blank=True)
-    TODO: avitar user.avatar, we can reset this for migration.
-    TODO: I dont think we have anything in more data.
-    more_data = models.JSONField(null=True, blank=True)
-    TODO: Remove is_verified: I think this is related to verified email or sms. it could be a @property
-    is_verified = models.BooleanField(default=None, null=True)
-    TODO: Remove Draft. this was the status before a email or sms was verified, remove
-    draft = models.BooleanField(default=False, null=False, editable=False)
-    TODO: rename: usac_license_number to usac_license
-    usac_license_number = models.IntegerField(null=True, blank=True, unique=True)
-    TODO: rename: usac_license_number_verified to usac_license_verified
-    usac_license_number_verified = models.BooleanField(default=False)
-    user = models.OneToOneField(User, on_delete=models.SET_NULL, related_name='member', null=True, blank=True)
-    """
-    SOCIAL_MEDIA_SCHEMA = {
-        'zwift': {
-            'type': 'string', 'required': False, 'nullable': True, 'meta': {'title': 'Zwift'}
-        },
-        'zwiftpower': {
-            'type': 'string', 'required': False, 'nullable': True, 'meta': {'title': 'Zwift Power'}
-        },
-        'strava': {
-            'type': 'string', 'required': False, 'nullable': True, 'meta': {'title': 'Strava'}
-        },
-        'youtube': {
-            'type': 'string', 'required': False, 'nullable': True, 'meta': {'title': 'Youtube'}
-        },
-        'facebook': {
-            'type': 'string', 'required': False, 'nullable': True, 'meta': {'title': 'Facebook'}
-        },
-        'instagram': {
-            'type': 'string', 'required': False, 'nullable': True, 'meta': {'title': 'Instagram'}
-        },
-    }
-
-    USER_SHARED_FIELDS = ('first_name', 'last_name', 'birth_date', 'gender')
-
-    GENDER_MALE = 'm'
-    GENDER_FEMALE = 'f'
-    GENDER_OTHER = 'o'
-    GENDER_UNKNOWN = 'u'
-    GENDER_CHOICES = (
-        (GENDER_MALE, 'Male'),
-        (GENDER_FEMALE, 'Female'),
-        (GENDER_OTHER, 'Other'),
-        (GENDER_UNKNOWN, 'Unknown'),
-    )
-    first_name = models.CharField(max_length=256)
-    last_name = models.CharField(max_length=256)
-    gender = models.CharField(max_length=1, choices=GENDER_CHOICES, default=GENDER_UNKNOWN)
-    birth_date = models.DateField(null=True, blank=True)
-    phone = PhoneNumberField(max_length=50, null=True, blank=True)
-    phone_verified = models.BooleanField(default=None, null=True)
-    email = models.EmailField(null=True, blank=True)
-    email_verified = models.BooleanField(default=None, null=True)
-    address1 = models.CharField(max_length=256, blank=True, null=True)
-    address2 = models.CharField(max_length=256, blank=True, null=True)
-    country = models.CharField(max_length=128, blank=True, null=True)
-    city = models.CharField(max_length=128, blank=True, null=True)
-    state = models.CharField(max_length=128, blank=True, null=True)
-    zipcode = models.CharField(max_length=10, blank=True, null=True)
-    weight = models.DecimalField('Weight (kg)', max_digits=5, decimal_places=2, null=True, blank=True,
-                                 validators=[MinValueValidator(10), MaxValueValidator(300)])
-    height = models.DecimalField('Height (m)', max_digits=3, decimal_places=2, null=True, blank=True,
-                                 validators=[MinValueValidator(1), MaxValueValidator(3)])
-
-    social_media = models.JSONField(null=True, blank=True)
-    # TODO: Are we using more_data?
-    # more_data = models.JSONField(null=True, blank=True)
-    # TODO: need some way to mark a user has verified email (Draft oris_verified
-    is_verified = models.BooleanField(default=None, null=True)
-    # draft = models.BooleanField(default=False, null=False, editable=False)
-    usac_license = models.IntegerField(null=True, blank=True, unique=True)
-    usac_license_verified = models.BooleanField(default=False)
-    user = models.OneToOneField(User, on_delete=models.SET_NULL, related_name='member', null=True, blank=True)
-
-    @property
-    def age(self):
-        if not self.birth_date:
-            return
-        return timezone.now().year - self.birth_date.year
-
-    def generate_verify_code(self, type='email'):
-        '''
-        :param type: can be "email" or "phone"
-        :return: str of numbers
-        '''
-        from events.helpers import get_member_verify_otp
-        return get_member_verify_otp(self, salt=type).now()
-
-    def check_verify_code(self, code, type='email', valid_window=0):
-        '''
-        :param code: str of numbers
-        :param type: can be "email" or "phone"
-        :return: True if verified else False
-        '''
-        from events.helpers import get_member_verify_otp
-        return get_member_verify_otp(self, salt=type).verify(code, valid_window=valid_window)
-
-    def save(self, *args, **kwargs):
-        if not self.phone:
-            self.phone = None
-        if not self.email:
-            self.email = None
-        if not self.email_verified:
-            self.email_verified = None
-        if not self.phone_verified:
-            self.phone_verified = None
-        if not self.is_verified:
-            self.is_verified = None
-        if self.email:
-            self.email = self.email.lower()
-        if not self.usac_license_number:
-            self.usac_license = None
-            self.usac_license_verified = False
-
-        if self.social_media:
-            v = Validator(self.SOCIAL_MEDIA_SCHEMA, allow_unknown=True)
-            if not v.validate(self.social_media):
-                raise ValidationError({'social_media': str(v.errors)})
-            self.social_media = v.document
-        else:
-            self.social_media = {}
-        return super().save(*args, **kwargs)
-
-    def set_as_verified(self, user, commit=True):
-        self.email_verified = True
-        self.is_verified = True
-        self.draft = False
-        self.user = user
-        member_data = (user.more_data or {}).get('member_data') or {}
-        fields = ('phone', 'address1', 'address2', 'country', 'city', 'state', 'zipcode', 'usac_license_number')
-        member_data = {k: member_data.get(k) for k in fields}
-        member_data.update(first_name=user.first_name, last_name=user.last_name, gender=user.gender,
-                           birth_date=user.birth_date, user=user, email=user.email)
-        for k, v in member_data.items():
-            if k == 'gender' and v is not None:
-                setattr(self, k, v)
-            elif not getattr(self, k, None):
-                setattr(self, k, v)
-
-        if commit:
-            self.save()
-
-    class Meta:
-        # TODO: what about user name? is it forced to email?
-        unique_together = (('email', 'email_verified'), ('phone', 'phone_verified'),)
-
-    def __str__(self):
-        return f'{self.first_name} {self.last_name} {self.email}'
