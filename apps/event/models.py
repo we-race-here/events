@@ -140,7 +140,7 @@ class Race(models.Model):
     history = HistoricalRecords()
 
     class Meta:
-        unique_together = (('name', 'event', 'organization'),)
+        unique_together = (('name', 'event'),)
 
     def __str__(self):
         return self.name
