@@ -53,7 +53,7 @@ class OrganizationMember(models.Model):
     #     (STATUS_WAITING, 'Waiting'),
     # )
     organization = models.ForeignKey('Organization', on_delete=models.CASCADE)
-    user = models.ForeignKey('User', on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     is_admin = models.BooleanField(default=False)
     # TODO: Migrate all is_master_admin to is_admin
     # is_master_admin = models.BooleanField(default=False)
@@ -74,7 +74,7 @@ class OrganizationMember(models.Model):
     _tracker = FieldTracker()  # TODO: do we need this?
 
     class Meta:
-        unique_together = [['organization', 'member']]
+        unique_together = [['organization', 'user']]
 
     # def jsonify_entry_form(self):
     #     for f in (self.organization.member_fields_schema or []):
@@ -244,12 +244,12 @@ class Organization(models.Model):
     verified = models.BooleanField(default=False)
     # TODO: banner_image and Info board are moved out. Is there anything else here?
     # prefs = models.JSONField(null=True, blank=True, editable=True)
-    user = models.ManyToManyField('User', related_name='organizations', through=OrganizationMember)
+    user = models.ManyToManyField(User, related_name='organizations', through=OrganizationMember)
     # member_orgs = models.ManyToManyField('Organization', related_name='organizations', through=OrganizationMemberOrg)
     membership_open = models.BooleanField(default=False, null=True, blank=True)
     approved = models.BooleanField(default=False, null=True)  # New orgs must be approved by BC staff
     # TODO: remove RSS feed
-    rss_url = models.TextField(default=None, null=True, blank=True)
+    # rss_url = models.TextField(default=None, null=True, blank=True)
     waiver_text = models.TextField(default=None, null=True, blank=True)
     _tracker = FieldTracker()
 
