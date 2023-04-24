@@ -352,6 +352,7 @@ class Member(models.Model):
     weight: save value in KG
     height: save value in CM
     social_media = models.JSONField(null=True, blank=True)
+    TODO: avitar user.avatar, we can reset this for migration.
     TODO: I dont think we have anything in more data.
     more_data = models.JSONField(null=True, blank=True)
     TODO: Remove is_verified: I think this is related to verified email or sms. it could be a @property
