@@ -109,7 +109,7 @@ class EventAttachment(models.Model):
     file_name = models.CharField(max_length=256)
     title = models.CharField(max_length=256, null=True, blank=True)
     create_datetime = models.DateTimeField(auto_now_add=True)
-    upload_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    history = HistoricalRecords()
 
     def save(self, *args, **kwargs):
         self.file_name = self.file.name
