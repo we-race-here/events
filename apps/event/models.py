@@ -62,7 +62,7 @@ class Event(models.Model):
         (PUBLISH_TYPE_ORG_PRIVATE, 'Org Private'),
     )
     name = models.CharField(max_length=200)
-    blurb = models.TextField(null=True, blank=True)
+    blurb = models.TextField(max_length=500, null=True, blank=True)
     description = models.TextField(null=True, blank=True)
     start_date = models.DateField(null=False, blank=False)
     end_date = models.DateField(null=True, blank=True)
