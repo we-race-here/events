@@ -5,7 +5,7 @@ from apps.event import models
 
 # Register your models here.
 class RaceAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'event', 'start_datetime',)
+    list_display = ('id', 'name', 'event', 'start_date',)
     search_fields = ('name', 'event__name',)
     list_filter = ('event',)
 
@@ -23,7 +23,7 @@ class RaceSeriesAdmin(admin.ModelAdmin):
 
 
 class EventAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'start_date', 'is_usac_permitted', 'city', 'organization', 'shared_org_perms')
+    list_display = ('id', 'name', 'start_date', 'is_usac_permitted', 'city', 'organization')
     search_fields = ('name',)
     list_filter = ('is_usac_permitted',)
 
