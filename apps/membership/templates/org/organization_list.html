@@ -3,6 +3,25 @@
 {% block inner %}
 <div class="container mx-auto px-4 py-8">
         <h1 class="text-3xl font-bold mb-4">Organizations</h1>
+        <div class="flex justify-between mb-4">
+            <form method="GET" class="flex">
+                <input type="search" name="search" placeholder="Search" value="{{ request.GET.search }}" class="border border-gray-300 py-2 px-4 rounded-l">
+                <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-r">
+                    Search
+                </button>
+            </form>
+            <form method="GET" class="flex">
+                <label for="type" class="mr-2">Filter by type:</label>
+                <select name="type" id="type" class="border border-gray-300 py-2 px-4 rounded" onchange="this.form.submit()">
+                    <option value="">All</option>
+                    {% for type_choice in type_choices %}
+                        <option value="{{ type_choice.0 }}" {% if request.GET.type == type_choice.0 %}selected{% endif %}>{{ type_choice.1 }}</option>
+                    {% endfor %}
+                </select>
+            </form>
+        </div>
+
+<div class="container mx-auto px-4 py-8">
         <table class="min-w-full table-auto">
             <thead>
                 <tr>
