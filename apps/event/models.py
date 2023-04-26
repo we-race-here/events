@@ -14,17 +14,20 @@ User = get_user_model()
 
 def event_logo_file_path_func(instance, filename):
     from events.helpers import get_random_upload_path
-    return get_random_upload_path(str(Path('uploads', 'cycling_org', 'event', 'logo')), filename)
+
+    return get_random_upload_path(str(Path("uploads", "cycling_org", "event", "logo")), filename)
 
 
 def event_hero_file_path_func(instance, filename):
     from events.helpers import get_random_upload_path
-    return get_random_upload_path(str(Path('uploads', 'cycling_org', 'event', 'hero')), filename)
+
+    return get_random_upload_path(str(Path("uploads", "cycling_org", "event", "hero")), filename)
 
 
 def event_attachment_file_path_func(instance, filename):
     from events.helpers import get_random_upload_path
-    return get_random_upload_path(str(Path('uploads', 'cycling_org', 'event_attachment')), filename)
+
+    return get_random_upload_path(str(Path("uploads", "cycling_org", "event_attachment")), filename)
 
 
 class Event(models.Model):
@@ -53,13 +56,14 @@ class Event(models.Model):
     - information_board_content: The content to show on the information board TODO: use Description field
     approved: BC admin must approve event for public viewing.
     """
-    PUBLISH_TYPE_PUBLIC = 'public'
-    PUBLISH_TYPE_ORG_PUBLIC = 'org_public'
-    PUBLISH_TYPE_ORG_PRIVATE = 'org_private'
+
+    PUBLISH_TYPE_PUBLIC = "public"
+    PUBLISH_TYPE_ORG_PUBLIC = "org_public"
+    PUBLISH_TYPE_ORG_PRIVATE = "org_private"
     PUBLISH_TYPE_CHOICES = (
-        (PUBLISH_TYPE_PUBLIC, 'Public'),
-        (PUBLISH_TYPE_ORG_PUBLIC, 'Org Public'),
-        (PUBLISH_TYPE_ORG_PRIVATE, 'Org Private'),
+        (PUBLISH_TYPE_PUBLIC, "Public"),
+        (PUBLISH_TYPE_ORG_PUBLIC, "Org Public"),
+        (PUBLISH_TYPE_ORG_PRIVATE, "Org Private"),
     )
     name = models.CharField(max_length=200)
     blurb = models.TextField(max_length=500, null=True, blank=True)
@@ -74,14 +78,9 @@ class Event(models.Model):
     registration_website = models.URLField(max_length=500, null=True, blank=True)
     logo = models.ImageField(null=True, blank=True, upload_to=event_logo_file_path_func)
     hero = models.ImageField(null=True, blank=True, upload_to=event_hero_file_path_func)
-    tags = ArrayField(
-        models.CharField(max_length=100, blank=True),
-        size=50,
-        null=True,
-        blank=True
-    )
+    tags = ArrayField(models.CharField(max_length=100, blank=True), size=50, null=True, blank=True)
     panels = models.JSONField(null=True, blank=True)
-    organization = models.ForeignKey(Organization, on_delete=models.SET_NULL, null=True, related_name='events')
+    organization = models.ForeignKey(Organization, on_delete=models.SET_NULL, null=True, related_name="events")
     create_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     location_lat = models.FloatField(null=True, blank=True)
     location_lon = models.FloatField(null=True, blank=True)
@@ -104,7 +103,7 @@ class Event(models.Model):
 
 
 class EventAttachment(models.Model):
-    event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name='attachments')
+    event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name="attachments", null=True, blank=False)
     file = models.FileField(upload_to=event_attachment_file_path_func)
     file_name = models.CharField(max_length=256)
     title = models.CharField(max_length=256, null=True, blank=True)
@@ -128,21 +127,17 @@ class Race(models.Model):
     categories: List of categories, can be blank, or used to verify uploaded results if not blank.
 
     """
+
     name = models.CharField(max_length=256)
-    event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name='races')
+    event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name="races", null=True, blank=False)
     start_date = models.DateField(null=True, blank=False)
     start_time = models.TimeField(null=True, blank=True)
-    categories = ArrayField(
-        models.CharField(max_length=100, blank=False),
-        size=50,
-        null=True,
-        blank=False
-    )
+    categories = ArrayField(models.CharField(max_length=100, blank=False), size=50, null=True, blank=False)
     create_datetime = models.DateTimeField(auto_now_add=True)
     history = HistoricalRecords()
 
     class Meta:
-        unique_together = (('name', 'event'),)
+        unique_together = (("name", "event"),)
 
     def __str__(self):
         return f"{self.name}: {self.start_date}"
@@ -166,17 +161,18 @@ class RaceResult(models.Model):
     more_data: Extra columns uploaded with result, try to block PPI (email, phone, etc)
     create_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     create_datetime = models.DateTimeField(auto_now_add=True)"""
-    FINISH_STATUS_OK = 'ok'
-    FINISH_STATUS_DNS = 'dns'
-    FINISH_STATUS_DNF = 'dnf'
+
+    FINISH_STATUS_OK = "ok"
+    FINISH_STATUS_DNS = "dns"
+    FINISH_STATUS_DNF = "dnf"
     FINISH_STATUS_CHOICES = (
-        (FINISH_STATUS_OK, 'OK'),
-        (FINISH_STATUS_DNS, 'DNS'),
-        (FINISH_STATUS_DNF, 'DNF'),
+        (FINISH_STATUS_OK, "OK"),
+        (FINISH_STATUS_DNS, "DNS"),
+        (FINISH_STATUS_DNF, "DNF"),
     )
-    rider = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='race_results')
+    rider = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name="race_results")
     name = models.CharField(max_length=256, null=True, blank=False)
-    race = models.ForeignKey(Race, on_delete=models.CASCADE)
+    race = models.ForeignKey(Race, on_delete=models.CASCADE, null=True, blank=False)
     place = models.IntegerField(validators=[MinValueValidator(1)], null=True)
     finish_status = models.CharField(max_length=16, default=FINISH_STATUS_OK, choices=FINISH_STATUS_CHOICES)
     category = models.CharField(max_length=32, null=True, blank=False)
@@ -186,12 +182,15 @@ class RaceResult(models.Model):
     usac_license = models.CharField(max_length=32, null=True, blank=True)
     club = models.CharField(max_length=256, null=True, blank=True)
     date_of_birth = models.DateField(null=True, blank=True)
-    more_data = models.JSONField(null=True, blank=True, )
+    more_data = models.JSONField(
+        null=True,
+        blank=True,
+    )
     create_datetime = models.DateTimeField(auto_now_add=True)
     history = HistoricalRecords()
 
     class Meta:
-        unique_together = (('rider', 'race'),)
+        unique_together = (("rider", "race"),)
 
     def save(self, *args, **kwargs):
         if not isinstance(self.place, int):
@@ -200,7 +199,7 @@ class RaceResult(models.Model):
         return super().save(*args, **kwargs)
 
     def __str__(self):
-        return f'{self.race}-{self.category}-{self.place}-{self.rider}'
+        return f"{self.race}-{self.category}-{self.place}-{self.rider}"
 
 
 class RaceSeries(models.Model):
@@ -220,23 +219,21 @@ class RaceSeries(models.Model):
     organization = models.ForeignKey(Organization, on_delete=models.CASCADE, related_name='race_series')
     create_datetime = models.DateTimeField(auto_now_add=True)
     """
+
     name = models.CharField(max_length=256)
-    events = models.ManyToManyField(Event, related_name='race_series')
-    races = models.ManyToManyField(Race, related_name='race_series')
-    categories = ArrayField(
-        models.CharField(max_length=100, blank=False),
-        size=50,
-        null=True,
-        blank=False
-    )
+    events = models.ManyToManyField(Event, related_name="race_series")
+    races = models.ManyToManyField(Race, related_name="race_series")
+    categories = ArrayField(models.CharField(max_length=100, blank=False), size=50, null=True, blank=False)
     points_map = models.JSONField(null=True, blank=True)
-    point_system = model_utils.Choices('Absolute', 'Relative')
-    organization = models.ForeignKey(Organization, on_delete=models.CASCADE, related_name='race_series')
+    point_system = model_utils.Choices("Absolute", "Relative")
+    organization = models.ForeignKey(
+        Organization, on_delete=models.CASCADE, related_name="race_series", null=True, blank=False
+    )
     create_datetime = models.DateTimeField(auto_now_add=True)
     history = HistoricalRecords()
 
     class Meta:
-        unique_together = (('name', 'organization'),)
+        unique_together = (("name", "organization"),)
 
     def __str__(self):
         return self.name
