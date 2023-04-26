@@ -41,6 +41,10 @@ class OrganizationListView(ListView):
     def get_queryset(self):
         queryset = super().get_queryset()
 
+        # Sorting
+        sort_by = self.request.GET.get('sort', '')
+        if sort_by:
+            queryset = queryset.order_by(sort_by)
         search_query = self.request.GET.get('search', '')
         type_filter = self.request.GET.get('type', '')
 

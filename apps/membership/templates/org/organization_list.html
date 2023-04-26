@@ -19,6 +19,20 @@
                     {% endfor %}
                 </select>
             </form>
+             <form method="GET" class="flex">
+        <label for="sort" class="mr-2">Sort by:</label>
+        <select name="sort" id="sort" class="border border-gray-300 py-2 px-4 rounded" onchange="this.form.submit()">
+            <option value="">Default</option>
+            <option value="name" {% if request.GET.sort == 'name' %}selected{% endif %}>Name (A-Z)</option>
+            <option value="-name" {% if request.GET.sort == '-name' %}selected{% endif %}>Name (Z-A)</option>
+            <option value="type" {% if request.GET.sort == 'type' %}selected{% endif %}>Type (A-Z)</option>
+            <option value="-type" {% if request.GET.sort == '-type' %}selected{% endif %}>Type (Z-A)</option>
+            <option value="city" {% if request.GET.sort == 'city' %}selected{% endif %}>City (A-Z)</option>
+            <option value="-city" {% if request.GET.sort == '-city' %}selected{% endif %}>City (Z-A)</option>
+            <option value="state" {% if request.GET.sort == 'state' %}selected{% endif %}>State (A-Z)</option>
+            <option value="-state" {% if request.GET.sort == '-state' %}selected{% endif %}>State (Z-A)</option>
+        </select>
+    </form>
         </div>
 
 <div class="container mx-auto px-4 py-8">
