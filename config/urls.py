@@ -24,6 +24,7 @@ urlpatterns = [
     path("users/", include("events.users.urls", namespace="users")),
     path("accounts/", include("allauth.urls")),
     path("", include("apps.event.urls")),
+    path("", include("apps.membership.urls")),
     # Your stuff: custom urls includes go here
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

@@ -1,0 +1,84 @@
+{% extends "account/base.html" %}
+{% load static %}
+{% block inner %}
+<div class="container mx-auto px-4 py-8">
+        <h1 class="text-3xl font-bold mb-4">Organizations</h1>
+        <table class="min-w-full table-auto">
+            <thead>
+                <tr>
+                    <th class="px-4 py-2">Name</th>
+                    <th class="px-4 py-2">Type</th>
+                    <th class="px-4 py-2">Website</th>
+                    <th class="px-4 py-2">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for organization in organizations %}
+                <tr class="{% cycle 'bg-gray-100' 'bg-white' %}">
+                    <td class="px-4 py-2">{{ organization.name }}</td>
+                    <td class="px-4 py-2">{{ organization.get_type_display }}</td>
+                    <td class="px-4 py-2">{{ organization.website }}</td>
+                    <td class="px-4 py-2">
+                        <a href="{% url 'organization_detail' organization.pk %}" class="text-blue-600">View</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <div class="mt-4">
+            <a href="{% url 'create_organization' %}" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+                Create Organization
+            </a>
+        </div>
+
+
+        <div class="mt-8">
+            <nav class="flex justify-center">
+                <ul class="inline-flex list-none">
+                    {% if page_obj.has_previous %}
+                    <li>
+                        <a href="?page=1" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-l">
+                            First
+                        </a>
+                    </li>
+                    <li>
+                        <a href="?page={{ page_obj.previous_page_number }}" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4">
+                            Prev
+                        </a>
+                    </li>
+                    {% endif %}
+
+                    {% for i in paginator.page_range %}
+                        {% if page_obj.number == i %}
+                            <li>
+                                <a href="?page={{ i }}" class="bg-blue-500 text-white font-bold py-2 px-4">
+                                    {{ i }}
+                                </a>
+                            </li>
+                        {% else %}
+                            <li>
+                                <a href="?page={{ i }}" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4">
+                                    {{ i }}
+                                </a>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if page_obj.has_next %}
+                    <li>
+                        <a href="?page={{ page_obj.next_page_number }}" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4">
+                            Next
+                        </a>
+                    </li>
+                    <li>
+                        <a href="?page={{ paginator.num_pages }}" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-r">
+                            Last
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+
+</div>
+{% endblock %}
