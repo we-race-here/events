@@ -1,10 +1,19 @@
+
 from django.db.models import Q
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from .models import Event
 from ..membership.models import OrganizationMember
 from .forms import EventForm
 
+# Create
+class EventCreateView(CreateView):
+    model = Event
+    form_class = EventForm
+    template_name = "event/event_create.html"
+
+# Read
 event_edit_fields = {'PublicFields': ['name', 'start_date','end_date','website', 'city', 'state', 'country'],
                         'UserFields': ['blurb', 'description', 'email', 'registration_website', 'is_usac_permitted', 'permit_no', 'tags'],
                         'OrgAdminFields': ['featured_event', 'publish_type', 'panels'],
@@ -12,8 +21,12 @@ event_edit_fields = {'PublicFields': ['name', 'start_date','end_date','website',
 
 class EventListView(ListView):
     model = Event
-    template_name = 'event/event_list.html'
+    template_name = "event/event_list.html"
 
+class EventDetailView(DetailView):
+    model = Event
+    template_name = "event/event_detail.html"
+    
 class EventCreateView(CreateView):
     """"
     Form fields
@@ -31,9 +44,11 @@ class EventCreateView(CreateView):
     template_name = 'event/event_form.html'
     success_url = reverse_lazy('event:event_list')
 
+# Update
 class EventUpdateView(UpdateView):
     model = Event
     form_class = EventForm
+    template_name = "event/event_update.html"
     # TODO: If user is_staff, approved is set to True
     # TODO: Org admins can only select their own organizations
     # TODO: is_staff can share with any org
@@ -46,7 +61,8 @@ class EventUpdateView(UpdateView):
     template_name = 'event/event_form.html'
     success_url = reverse_lazy('event:event_list')
 
+# Delete
 class EventDeleteView(DeleteView):
     model = Event
-    template_name = 'event/event_confirm_delete.html'
-    success_url = reverse_lazy('event:event_list')
+    template_name = "event/event_delete.html"
+    success_url = reverse_lazy("event_list")
