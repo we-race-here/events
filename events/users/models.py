@@ -1,5 +1,5 @@
 from django.contrib.auth.models import AbstractUser
-from django.core.validators import MinValueValidator, MaxValueValidator
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.db.models import CharField, EmailField
 from django.urls import reverse
@@ -17,35 +17,24 @@ class User(AbstractUser):
     If adding fields that need to be filled at user signup,
     check forms.SignupForm and forms.SocialSignupForms accordingly.
     """
+
     SOCIAL_MEDIA_SCHEMA = {
-        'zwift': {
-            'type': 'string', 'required': False, 'nullable': True, 'meta': {'title': 'Zwift'}
-        },
-        'zwiftpower': {
-            'type': 'string', 'required': False, 'nullable': True, 'meta': {'title': 'Zwift Power'}
-        },
-        'strava': {
-            'type': 'string', 'required': False, 'nullable': True, 'meta': {'title': 'Strava'}
-        },
-        'youtube': {
-            'type': 'string', 'required': False, 'nullable': True, 'meta': {'title': 'Youtube'}
-        },
-        'facebook': {
-            'type': 'string', 'required': False, 'nullable': True, 'meta': {'title': 'Facebook'}
-        },
-        'instagram': {
-            'type': 'string', 'required': False, 'nullable': True, 'meta': {'title': 'Instagram'}
-        },
+        "zwift": {"type": "string", "required": False, "nullable": True, "meta": {"title": "Zwift"}},
+        "zwiftpower": {"type": "string", "required": False, "nullable": True, "meta": {"title": "Zwift Power"}},
+        "strava": {"type": "string", "required": False, "nullable": True, "meta": {"title": "Strava"}},
+        "youtube": {"type": "string", "required": False, "nullable": True, "meta": {"title": "Youtube"}},
+        "facebook": {"type": "string", "required": False, "nullable": True, "meta": {"title": "Facebook"}},
+        "instagram": {"type": "string", "required": False, "nullable": True, "meta": {"title": "Instagram"}},
     }
-    GENDER_MALE = 'm'
-    GENDER_FEMALE = 'f'
-    GENDER_OTHER = 'o'
-    GENDER_UNKNOWN = 'u'
+    GENDER_MALE = "m"
+    GENDER_FEMALE = "f"
+    GENDER_OTHER = "o"
+    GENDER_UNKNOWN = "u"
     GENDER_CHOICES = (
-        (GENDER_MALE, 'Male'),
-        (GENDER_FEMALE, 'Female'),
-        (GENDER_OTHER, 'Other'),
-        (GENDER_UNKNOWN, 'Unknown'),
+        (GENDER_MALE, "Male"),
+        (GENDER_FEMALE, "Female"),
+        (GENDER_OTHER, "Other"),
+        (GENDER_UNKNOWN, "Unknown"),
     )
 
     # First and last name do not cover name patterns around the globe
@@ -67,10 +56,22 @@ class User(AbstractUser):
     city = models.CharField(max_length=128, blank=True, null=True)
     state = models.CharField(max_length=128, blank=True, null=True)
     zipcode = models.CharField(max_length=10, blank=True, null=True)
-    weight = models.DecimalField('Weight (kg)', max_digits=5, decimal_places=2, null=True, blank=True,
-                                 validators=[MinValueValidator(10), MaxValueValidator(300)])
-    height = models.DecimalField('Height (m)', max_digits=3, decimal_places=2, null=True, blank=True,
-                                 validators=[MinValueValidator(1), MaxValueValidator(3)])
+    weight = models.DecimalField(
+        "Weight (kg)",
+        max_digits=5,
+        decimal_places=2,
+        null=True,
+        blank=True,
+        validators=[MinValueValidator(10), MaxValueValidator(300)],
+    )
+    height = models.DecimalField(
+        "Height (m)",
+        max_digits=3,
+        decimal_places=2,
+        null=True,
+        blank=True,
+        validators=[MinValueValidator(1), MaxValueValidator(3)],
+    )
     social_media = models.JSONField(null=True, blank=True)
     opt_in_email = models.BooleanField(default=False, null=True, blank=True)
     terms_of_service = models.BooleanField(default=False, null=True, blank=True)
@@ -89,6 +90,11 @@ class User(AbstractUser):
         if not self.birth_date:
             return
         return timezone.now().year - self.birth_date.year
+
+    @property
+    def full_name(self) -> str:
+        """Return user's full name."""
+        return f"{self.first_name} {self.last_name}"
 
     def get_absolute_url(self) -> str:
         """Get URL for user's detail view.
