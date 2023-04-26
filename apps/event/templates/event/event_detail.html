@@ -40,21 +40,7 @@
                                 {% endif %}
                             {% endfor %}
                         {% endif %}
-                        {% if Races %}
-                            <h4>Race Results</h4>
-                            {% for race in Races %}
-                                <h5>Race Name: {{ race.name }}</h5>
-                                <ul>
-                                    {% for result in RaceResults %}
-                                        {% if result.race == race %}
-                                        <li>{{ result.place }}: {{ result.rider }}</li>
-                                        {% endif %}
-                                    {% endfor %}
-                                </ul>
-                                <br>
-                            {% endfor %}
-                            <br>
-                        {% endif %}
+                        {% include "results/race_result.html" %}
                     </div>
                     <a href="{% url 'event:event_list' %}" class="text-blue-500 mt-4">Back To Events</a>
                 </div>
