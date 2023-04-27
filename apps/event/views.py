@@ -1,10 +1,11 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, DetailView, ListView, UpdateView
 
 from ..membership.models import OrganizationMember
-from .forms import EventForm
-from .models import Event
+from .forms import EventForm, RaceSeriesForm
+from .models import Event, RaceSeries
 
 # Read
 event_edit_fields = {
@@ -48,10 +49,11 @@ class EventCreateView(CreateView):
 
 
 # Update
-class EventUpdateView(UpdateView):
+class EventUpdateView(LoginRequiredMixin, UpdateView):
     model = Event
     form_class = EventForm
     template_name = "event/event_update.html"
+    success_url = reverse_lazy("event:event_list")
 
     # TODO: If user is_staff, approved is set to True
     # TODO: Org admins can only select their own organizations
@@ -63,12 +65,17 @@ class EventUpdateView(UpdateView):
         context["IsOrgAdmin"] = OrganizationMember.objects.filter(Q(user=self.request.user.id) & Q(is_admin=True))
         return context
 
-    template_name = "event/event_form.html"
-    success_url = reverse_lazy("event:event_list")
-
 
 # Delete
-class EventDeleteView(DeleteView):
+class EventDeleteView(LoginRequiredMixin, DeleteView):
     model = Event
     template_name = "event/event_delete.html"
     success_url = reverse_lazy("event_list")
+    # TODO: Only is_staff should be able to delete an event
+
+
+class RaceSeriesCreateView(LoginRequiredMixin, CreateView):
+    model = RaceSeries
+    form_class = RaceSeriesForm
+    template_name = "results/raceseries_form.html"
+    success_url = reverse_lazy("raceseries_list")
