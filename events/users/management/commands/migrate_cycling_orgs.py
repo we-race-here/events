@@ -1,20 +1,22 @@
-from django.core.exceptions import ValidationError
-from django.core.management.base import BaseCommand
 import json
+
 import requests
+from django.core.exceptions import ValidationError
 from django.core.files import File
 from django.core.files.temp import NamedTemporaryFile
+from django.core.management.base import BaseCommand
 
 from apps.membership.models import Organization
-from .wrh import  CyclingOrgOrganization
+
+from .wrh import CyclingOrgOrganization
 
 
 class Command(BaseCommand):
-    help = 'Migrates data from CyclingOrgOrganization to Organization model'
+    help = "Migrates data from CyclingOrgOrganization to Organization model"
 
     def migrate_cycling_org_organizations(self):
         # Get all the instances of CyclingOrgOrganization
-        source_orgs = CyclingOrgOrganization.objects.using('wrh').all()
+        source_orgs = CyclingOrgOrganization.objects.using("wrh").all()
 
         # Loop through each instance
         for src_org in source_orgs:

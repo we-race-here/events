@@ -1,117 +1,252 @@
-{% extends "account/base.html" %}
-{% load static %}
-{% block inner %}
+{% extends "account/base.html" %} {% load static %} {% block inner %}
 <div class="container mx-auto px-4 py-8">
-        <h1 class="text-3xl font-bold mb-4">Organizations</h1>
-        <div class="flex justify-between mb-4">
-            <form method="GET" class="flex">
-                <input type="search" name="search" placeholder="Search" value="{{ request.GET.search }}" class="border border-gray-300 py-2 px-4 rounded-l">
-                <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-r">
-                    Search
-                </button>
-            </form>
-            <form method="GET" class="flex">
-                <label for="type" class="mr-2">Filter by type:</label>
-                <select name="type" id="type" class="border border-gray-300 py-2 px-4 rounded" onchange="this.form.submit()">
-                    <option value="">All</option>
-                    {% for type_choice in type_choices %}
-                        <option value="{{ type_choice.0 }}" {% if request.GET.type == type_choice.0 %}selected{% endif %}>{{ type_choice.1 }}</option>
-                    {% endfor %}
-                </select>
-            </form>
-             <form method="GET" class="flex">
-        <label for="sort" class="mr-2">Sort by:</label>
-        <select name="sort" id="sort" class="border border-gray-300 py-2 px-4 rounded" onchange="this.form.submit()">
-            <option value="">Default</option>
-            <option value="name" {% if request.GET.sort == 'name' %}selected{% endif %}>Name (A-Z)</option>
-            <option value="-name" {% if request.GET.sort == '-name' %}selected{% endif %}>Name (Z-A)</option>
-            <option value="type" {% if request.GET.sort == 'type' %}selected{% endif %}>Type (A-Z)</option>
-            <option value="-type" {% if request.GET.sort == '-type' %}selected{% endif %}>Type (Z-A)</option>
-            <option value="city" {% if request.GET.sort == 'city' %}selected{% endif %}>City (A-Z)</option>
-            <option value="-city" {% if request.GET.sort == '-city' %}selected{% endif %}>City (Z-A)</option>
-            <option value="state" {% if request.GET.sort == 'state' %}selected{% endif %}>State (A-Z)</option>
-            <option value="-state" {% if request.GET.sort == '-state' %}selected{% endif %}>State (Z-A)</option>
-        </select>
+  <h1 class="text-3xl font-bold mb-4">Organizations</h1>
+  <div class="flex justify-between mb-4">
+    <form method="GET" class="flex">
+      <input
+        type="search"
+        name="search"
+        placeholder="Search"
+        value="{{ request.GET.search }}"
+        class="border border-gray-300 py-2 px-4 rounded-l"
+      />
+      <button
+        type="submit"
+        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-r"
+      >
+        Search
+      </button>
     </form>
-        </div>
+    <form method="GET" class="flex">
+      <label for="type" class="mr-2">Filter by type:</label>
+      <select
+        name="type"
+        id="type"
+        class="border border-gray-300 py-2 px-4 rounded"
+        onchange="this.form.submit()"
+      >
+        <option value="">All</option>
+        {% for type_choice in type_choices %}
+        <option
+          value="{{ type_choice.0 }}"
+          {%
+          if
+          request.GET.type=""
+          ="type_choice.0"
+          %}selected{%
+          endif
+          %}
+        >
+          {{ type_choice.1 }}
+        </option>
+        {% endfor %}
+      </select>
+    </form>
+    <form method="GET" class="flex">
+      <label for="sort" class="mr-2">Sort by:</label>
+      <select
+        name="sort"
+        id="sort"
+        class="border border-gray-300 py-2 px-4 rounded"
+        onchange="this.form.submit()"
+      >
+        <option value="">Default</option>
+        <option
+          value="name"
+          {%
+          if
+          request.GET.sort=""
+          ="name"
+          %}selected{%
+          endif
+          %}
+        >
+          Name (A-Z)
+        </option>
+        <option
+          value="-name"
+          {%
+          if
+          request.GET.sort=""
+          ="-name"
+          %}selected{%
+          endif
+          %}
+        >
+          Name (Z-A)
+        </option>
+        <option
+          value="type"
+          {%
+          if
+          request.GET.sort=""
+          ="type"
+          %}selected{%
+          endif
+          %}
+        >
+          Type (A-Z)
+        </option>
+        <option
+          value="-type"
+          {%
+          if
+          request.GET.sort=""
+          ="-type"
+          %}selected{%
+          endif
+          %}
+        >
+          Type (Z-A)
+        </option>
+        <option
+          value="city"
+          {%
+          if
+          request.GET.sort=""
+          ="city"
+          %}selected{%
+          endif
+          %}
+        >
+          City (A-Z)
+        </option>
+        <option
+          value="-city"
+          {%
+          if
+          request.GET.sort=""
+          ="-city"
+          %}selected{%
+          endif
+          %}
+        >
+          City (Z-A)
+        </option>
+        <option
+          value="state"
+          {%
+          if
+          request.GET.sort=""
+          ="state"
+          %}selected{%
+          endif
+          %}
+        >
+          State (A-Z)
+        </option>
+        <option
+          value="-state"
+          {%
+          if
+          request.GET.sort=""
+          ="-state"
+          %}selected{%
+          endif
+          %}
+        >
+          State (Z-A)
+        </option>
+      </select>
+    </form>
+  </div>
 
-<div class="container mx-auto px-4 py-8">
-        <table class="min-w-full table-auto">
-            <thead>
-                <tr>
-                    <th class="px-4 py-2">Name</th>
-                    <th class="px-4 py-2">Type</th>
-                    <th class="px-4 py-2">Website</th>
-                    <th class="px-4 py-2">Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for organization in organizations %}
-                <tr class="{% cycle 'bg-gray-100' 'bg-white' %}">
-                    <td class="px-4 py-2">{{ organization.name }}</td>
-                    <td class="px-4 py-2">{{ organization.get_type_display }}</td>
-                    <td class="px-4 py-2">{{ organization.website }}</td>
-                    <td class="px-4 py-2">
-                        <a href="{% url 'organization_detail' organization.pk %}" class="text-blue-600">View</a>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        <div class="mt-4">
-            <a href="{% url 'create_organization' %}" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
-                Create Organization
+  <div class="container mx-auto px-4 py-8">
+    <table class="min-w-full table-auto">
+      <thead>
+        <tr>
+          <th class="px-4 py-2">Name</th>
+          <th class="px-4 py-2">Type</th>
+          <th class="px-4 py-2">Website</th>
+          <th class="px-4 py-2">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for organization in organizations %}
+        <tr class="{% cycle 'bg-gray-100' 'bg-white' %}">
+          <td class="px-4 py-2">{{ organization.name }}</td>
+          <td class="px-4 py-2">{{ organization.get_type_display }}</td>
+          <td class="px-4 py-2">{{ organization.website }}</td>
+          <td class="px-4 py-2">
+            <a
+              href="{% url 'organization_detail' organization.pk %}"
+              class="text-blue-600"
+              >View</a
+            >
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <div class="mt-4">
+      <a
+        href="{% url 'create_organization' %}"
+        class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+      >
+        Create Organization
+      </a>
+    </div>
+
+    <div class="mt-8">
+      <nav class="flex justify-center">
+        <ul class="inline-flex list-none">
+          {% if page_obj.has_previous %}
+          <li>
+            <a
+              href="?page=1"
+              class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-l"
+            >
+              First
             </a>
-        </div>
-
-
-        <div class="mt-8">
-            <nav class="flex justify-center">
-                <ul class="inline-flex list-none">
-                    {% if page_obj.has_previous %}
-                    <li>
-                        <a href="?page=1" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-l">
-                            First
-                        </a>
-                    </li>
-                    <li>
-                        <a href="?page={{ page_obj.previous_page_number }}" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4">
-                            Prev
-                        </a>
-                    </li>
-                    {% endif %}
-
-                    {% for i in paginator.page_range %}
-                        {% if page_obj.number == i %}
-                            <li>
-                                <a href="?page={{ i }}" class="bg-blue-500 text-white font-bold py-2 px-4">
-                                    {{ i }}
-                                </a>
-                            </li>
-                        {% else %}
-                            <li>
-                                <a href="?page={{ i }}" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4">
-                                    {{ i }}
-                                </a>
-                            </li>
-                        {% endif %}
-                    {% endfor %}
-
-                    {% if page_obj.has_next %}
-                    <li>
-                        <a href="?page={{ page_obj.next_page_number }}" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4">
-                            Next
-                        </a>
-                    </li>
-                    <li>
-                        <a href="?page={{ paginator.num_pages }}" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-r">
-                            Last
-                        </a>
-                    </li>
-                    {% endif %}
-                </ul>
-            </nav>
-        </div>
-
+          </li>
+          <li>
+            <a
+              href="?page={{ page_obj.previous_page_number }}"
+              class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4"
+            >
+              Prev
+            </a>
+          </li>
+          {% endif %} {% for i in paginator.page_range %} {% if page_obj.number
+          == i %}
+          <li>
+            <a
+              href="?page={{ i }}"
+              class="bg-blue-500 text-white font-bold py-2 px-4"
+            >
+              {{ i }}
+            </a>
+          </li>
+          {% else %}
+          <li>
+            <a
+              href="?page={{ i }}"
+              class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4"
+            >
+              {{ i }}
+            </a>
+          </li>
+          {% endif %} {% endfor %} {% if page_obj.has_next %}
+          <li>
+            <a
+              href="?page={{ page_obj.next_page_number }}"
+              class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4"
+            >
+              Next
+            </a>
+          </li>
+          <li>
+            <a
+              href="?page={{ paginator.num_pages }}"
+              class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-r"
+            >
+              Last
+            </a>
+          </li>
+          {% endif %}
+        </ul>
+      </nav>
+    </div>
+  </div>
+  {% endblock %}
 </div>
-{% endblock %}

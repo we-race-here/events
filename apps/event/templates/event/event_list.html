@@ -1,57 +1,43 @@
-{% extends "account/base.html" %}
-
-{% block inner %}
-
-
+{% extends "account/base.html" %} {% block inner %}
 
 <div class="container mx-auto px-4">
-  <h1 class="text-3xl my-4">Events
-
-  </h1>
-<div class="flex justify-end">
-        <a href="{% url 'event:event_create' %}" class="bg-blue-500 text-white py-1 px-1 rounded">Create Event</a>
-
-</div>
+  <h1 class="text-3xl my-4">Events</h1>
+  <div class="flex justify-end">
+    <a
+      href="{% url 'event:event_create' %}"
+      class="bg-blue-500 text-white py-1 px-1 rounded"
+      >Create Event</a
+    >
+  </div>
 
   <div class="container px-2 12 mx-auto">
-
     <div class="flex flex-wrap -m-4">
       {% for event in object_list %}
 
-      <div  class="lg:w-1/4 md:w-1/2 p-4 w-full">
+      <div class="lg:w-1/4 md:w-1/2 p-4 w-full">
         <a class="block relative h-48 rounded overflow-hidden">
-          <img alt="ecommerce" class="object-cover object-center w-full h-full
-            block" src="https://dummyimage.com/420x260">
+          <img
+            alt="ecommerce"
+            class="object-cover object-center w-full h-full block"
+            src="https://dummyimage.com/420x260"
+          />
         </a>
         <div class="mt-4">
           <h3 class="text-gray-500 text-xs tracking-widest title-font mb-1">
-            {% if event.city %}
-              {{ event.city }}
-            {% endif%}
-            {% if event.country %}
-              {{ event.country }}
-            {% endif%}
-            {{ event.start_date }}
-            {% if event.end_date %}
-              -{{ event.end_date }}
-            {% endif%}
+            {% if event.city %} {{ event.city }} {% endif%} {% if event.country
+            %} {{ event.country }} {% endif%} {{ event.start_date }} {% if
+            event.end_date %} -{{ event.end_date }} {% endif%}
           </h3>
           <h2 class="text-gray-900 title-font text-lg font-medium">
-
-            <a href="{% url 'event:event_detail' event.pk %}">{{ event.name }}</a>
+            <a href="{% url 'event:event_detail' event.pk %}"
+              >{{ event.name }}</a
+            >
           </h2>
-          <p class="mt-1">
-            {{ event.description|truncatewords:20 }}
-          </p>
+          <p class="mt-1">{{ event.description|truncatewords:20 }}</p>
         </div>
       </div>
       {% endfor %}
-
     </div>
-
   </div>
-
-
-
 </div>
 {% endblock %}

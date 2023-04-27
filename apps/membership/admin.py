@@ -6,15 +6,14 @@ from django.shortcuts import redirect, render
 from django.urls import path
 
 from apps.membership import models
-from events.helpers import admin_url_wrap, USACApi
+from events.helpers import USACApi, admin_url_wrap
 
 
 # Register your models here.
 class OrganizationMemberAdmin(admin.ModelAdmin):
-    list_display = ('id', 'user', 'organization', 'is_active', 'is_admin')
-    list_filter = ('is_active', 'is_admin', 'organization')
-    search_fields = ('user__first_name', 'user__last_name', 'organization__name')
-
+    list_display = ("id", "user", "organization", "is_active", "is_admin")
+    list_filter = ("is_active", "is_admin", "organization")
+    search_fields = ("user__first_name", "user__last_name", "organization__name")
 
 
 # def get_urls(self):
@@ -78,9 +77,15 @@ class OrganizationMemberAdmin(admin.ModelAdmin):
 
 
 class OrganizationAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'type', 'website',)
-    search_fields = ('name', 'website', 'email', 'phone')
-    list_filter = ('type',)
+    list_display = (
+        "id",
+        "name",
+        "type",
+        "website",
+    )
+    search_fields = ("name", "website", "email", "phone")
+    list_filter = ("type",)
+
 
 admin.site.register(models.Organization, OrganizationAdmin)
 admin.site.register(models.OrganizationMember, OrganizationMemberAdmin)

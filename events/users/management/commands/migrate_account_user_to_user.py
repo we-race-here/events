@@ -1,16 +1,17 @@
 from django.contrib.auth import get_user_model
 from django.core.management.base import BaseCommand
 
-from .wrh import  WrhAccountUser
+from .wrh import WrhAccountUser
 
 User = get_user_model()
 
+
 class Command(BaseCommand):
-    help = 'Migrate WrhAccountUser data to User model in destination database'
+    help = "Migrate WrhAccountUser data to User model in destination database"
 
     def handle(self, *args, **options):
         # Fetch data from source database
-        source_data = WrhAccountUser.objects.using('wrh').all()
+        source_data = WrhAccountUser.objects.using("wrh").all()
 
         # Save data to the destination database
         for record in source_data:

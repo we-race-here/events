@@ -1,19 +1,18 @@
-{% extends 'admin/change_form.html' %}
-{% block extrahead %}
-  <style type="text/css">
-    .verify-usac-btn {
-      background-color: #79aec8 !important;
-      padding: 3px 8px !important;
-      display: block;
-    }
-  </style>
-{% endblock %}
-
-{% block object-tools-items %}
-  {{ block.super }}
-  {% if original.usac_license_number and not original.usac_license_number_verified %}
-  <li>
-    <a class="button verify-usac-btn" href="{% url 'admin:cycling_org_member_validate_usac_license' object_id=original.pk %}">Verify USAC License#</a>
-  </li>
-  {% endif %}
-{% endblock %}
+{% extends 'admin/change_form.html' %} {% block extrahead %}
+<style type="text/css">
+  .verify-usac-btn {
+    background-color: #79aec8 !important;
+    padding: 3px 8px !important;
+    display: block;
+  }
+</style>
+{% endblock %} {% block object-tools-items %} {{ block.super }} {% if
+original.usac_license_number and not original.usac_license_number_verified %}
+<li>
+  <a
+    class="button verify-usac-btn"
+    href="{% url 'admin:cycling_org_member_validate_usac_license' object_id=original.pk %}"
+    >Verify USAC License#</a
+  >
+</li>
+{% endif %} {% endblock %}

@@ -1,19 +1,21 @@
-{% extends "account/base.html" %}
-{% load static %}
-{% block inner %}
- <div class="container mx-auto px-4 py-8">
-        <h1 class="text-3xl font-bold mb-4">{{ organization.name }}</h1>
-        <p>Type: {{ organization.get_type_display }}</p>
-        <p>Website: {{ organization.website }}</p>
-        <p>Email: {{ organization.email }}</p>
-        <!-- Add other fields as needed -->
-        <a href="{% url 'update_organization' organization.id %}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-            Edit
-        </a>
-        <a href="{% url 'delete_organization' organization.id %}" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
-            Delete
-        </a>
-    </div>
+{% extends "account/base.html" %} {% load static %} {% block inner %}
+<div class="container mx-auto px-4 py-8">
+  <h1 class="text-3xl font-bold mb-4">{{ organization.name }}</h1>
+  <p>Type: {{ organization.get_type_display }}</p>
+  <p>Website: {{ organization.website }}</p>
+  <p>Email: {{ organization.email }}</p>
+  <!-- Add other fields as needed -->
+  <a
+    href="{% url 'update_organization' organization.id %}"
+    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+  >
+    Edit
+  </a>
+  <a
+    href="{% url 'delete_organization' organization.id %}"
+    class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+  >
+    Delete
+  </a>
+</div>
 {% endblock %}
-
-

@@ -4,6 +4,7 @@ from django.contrib import admin
 from django.urls import include, path
 from django.views import defaults as default_views
 from django.views.generic import TemplateView
+
 from apps.event.models import Event
 
 
@@ -12,8 +13,9 @@ class HomePageView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['events'] = Event.objects.all()  # Or apply any filter/query based on your requirements
+        context["events"] = Event.objects.all()  # Or apply any filter/query based on your requirements
         return context
+
 
 urlpatterns = [
     path("", HomePageView.as_view(), name="home"),

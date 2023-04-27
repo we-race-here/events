@@ -1,70 +1,84 @@
-{% extends "BC/base_dv.html" %}
-{% block content %}
-    {% load static %}
-    <section class="content">
-        <!-- search form -->
-        <div class="listing-searchmember colo-search">
-            <div class="searchmember-formouter">
-                <form action="#" method="post" class="searchmember-form event-filter">
-                    {% csrf_token %}
-                    <h2>Search: </h2>
-                    <div class="calendarfield-outer">
-                        <div class="cal-input-group">
-                            <input type="text" name="event" class="datepicker" placeholder="Search">
-                        </div>
-                    </div>
-                    <input type="submit" class="filter-submit" value="Search">
-                </form>
-                <div class="clearfix"></div>
-            </div>
+{% extends "BC/base_dv.html" %} {% block content %} {% load static %}
+<section class="content">
+  <!-- search form -->
+  <div class="listing-searchmember colo-search">
+    <div class="searchmember-formouter">
+      <form action="#" method="post" class="searchmember-form event-filter">
+        {% csrf_token %}
+        <h2>Search:</h2>
+        <div class="calendarfield-outer">
+          <div class="cal-input-group">
+            <input
+              type="text"
+              name="event"
+              class="datepicker"
+              placeholder="Search"
+            />
+          </div>
         </div>
-        <div class="blog-outer">
-            <div class="container">
-                <div class="blog-detail">
-                    <div class="col-sm-12" style="margin-top: 20px;">
-                    </div>
-                    <div id="et-boc" class="et-boc">
-                        <div id="et_builder_outer_content" class="et_builder_outer_content">
-                            {% for event in EventsWith %}
-                                <div class="blogdetail-row">
-                                    <div class="col-sm-12 col-md-7 blogdetail-left">
-                                        <div class="author-thumbnail">
-                                            {% if event.logo %}
-                                                <img style="width:100%;
-                                            max-width:60px;" src="{{ org.logo.url }}" alt="">
-                                            {% endif %}
-                                        </div>
-                                        <div class="blog-post">
-                                            <ul class="post-list">
-                                                <li>{{ event.start_date }}</li>
-                                                {% if event.is_usac_permitted %}
-                                                    <img style="max-width:17px"
-                                                         src="{% static 'images/USACycling_Logo_noborder.svg' %}"
-                                                         alt="My image"/>
-                                                {% endif %}
-                                                {% if event.featured_event %}
-                                                    <img style="max-width:20px" src="{% static 'images/bc-icon.png' %}"
-                                                         alt="My image"/>
-                                                {% endif %}
-                                            </ul>
-                                            <h4><a href="{% url 'events-details-dv' event.id %}">{{ event.name }}</a>
-                                            </h4>
-                                            {% if event.description %}
-                                                <p>{{ event.about }}</p>
-                                            {% endif %}
-                                        </div>
-                                        <div class="clearfix"></div>
-                                    </div>
-                                    <div class="col-sm-12 col-md-5 blogdetail-right" style="margin-top:
-                                    20px;">
-                                        <b>Place holder </b> place holder
-                                    </div>
-                                </div>
-                            {% endfor %}
-                        </div>
-                    </div>
+        <input type="submit" class="filter-submit" value="Search" />
+      </form>
+      <div class="clearfix"></div>
+    </div>
+  </div>
+  <div class="blog-outer">
+    <div class="container">
+      <div class="blog-detail">
+        <div class="col-sm-12" style="margin-top: 20px"></div>
+        <div id="et-boc" class="et-boc">
+          <div id="et_builder_outer_content" class="et_builder_outer_content">
+            {% for event in EventsWith %}
+            <div class="blogdetail-row">
+              <div class="col-sm-12 col-md-7 blogdetail-left">
+                <div class="author-thumbnail">
+                  {% if event.logo %}
+                  <img
+                    style="width: 100%; max-width: 60px"
+                    src="{{ org.logo.url }}"
+                    alt=""
+                  />
+                  {% endif %}
                 </div>
+                <div class="blog-post">
+                  <ul class="post-list">
+                    <li>{{ event.start_date }}</li>
+                    {% if event.is_usac_permitted %}
+                    <img
+                      style="max-width: 17px"
+                      src="{% static 'images/USACycling_Logo_noborder.svg' %}"
+                      alt="My image"
+                    />
+                    {% endif %} {% if event.featured_event %}
+                    <img
+                      style="max-width: 20px"
+                      src="{% static 'images/bc-icon.png' %}"
+                      alt="My image"
+                    />
+                    {% endif %}
+                  </ul>
+                  <h4>
+                    <a href="{% url 'events-details-dv' event.id %}"
+                      >{{ event.name }}</a
+                    >
+                  </h4>
+                  {% if event.description %}
+                  <p>{{ event.about }}</p>
+                  {% endif %}
+                </div>
+                <div class="clearfix"></div>
+              </div>
+              <div
+                class="col-sm-12 col-md-5 blogdetail-right"
+                style="margin-top: 20px"
+              >
+                <b>Place holder </b> place holder
+              </div>
             </div>
+            {% endfor %}
+          </div>
         </div>
-    </section>
+      </div>
+    </div>
+  </div>
+</section>
 {% endblock %}

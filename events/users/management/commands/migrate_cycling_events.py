@@ -1,16 +1,16 @@
 from django.core.management.base import BaseCommand
 
-from apps.event.models import Event
+from apps.event.models import Event, User
 from apps.membership.models import Organization
 
-from apps.event.models import User
 from .wrh import CyclingOrgEvent
+
 
 class Command(BaseCommand):
     help = "Migrate data from CyclingOrgEvent to Event model"
 
     def handle(self, *args, **options):
-        for cycling_event in CyclingOrgEvent.objects.using('wrh').all():
+        for cycling_event in CyclingOrgEvent.objects.using("wrh").all():
             org = Organization.objects.get(name=cycling_event.organization.name)
             user = User.objects.get(email=cycling_event.create_by.email)
             event = Event(
@@ -41,6 +41,6 @@ class Command(BaseCommand):
                 publish_type=cycling_event.publish_type,
             )
             event.save()
-            self.stdout.write(self.style.SUCCESS(f'Migrated event: {cycling_event.name}'))
+            self.stdout.write(self.style.SUCCESS(f"Migrated event: {cycling_event.name}"))
 
         self.stdout.write(self.style.SUCCESS("Migration completed successfully"))

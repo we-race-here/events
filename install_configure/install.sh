@@ -10,6 +10,3 @@ cd events
 mkdir .envs/.production/
 cd .envs/.production/
 # Need to put the .django and .postgress files here
-
-
-

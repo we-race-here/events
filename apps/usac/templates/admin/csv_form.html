@@ -1,17 +1,13 @@
-{% extends 'admin/base.html' %}
+{% extends 'admin/base.html' %} {% block content %} {% if error %}
+<pre style="color: red">{{ error }}</pre>
+{% endif %}
+<div>
+  <form action="." method="POST" enctype="multipart/form-data">
+    {{ form.as_p }} {% csrf_token %}
 
-{% block content %}
-  {% if error %}
-    <pre style="color: red">{{ error }}</pre>
-  {% endif %}
-  <div>
-    <form action="." method="POST" enctype="multipart/form-data">
-      {{ form.as_p }}
-      {% csrf_token %}
-
-      <button type="submit">Upload CSV</button>
-    </form>
-  </div>
-  <br/>
+    <button type="submit">Upload CSV</button>
+  </form>
+</div>
+<br />
 
 {% endblock %}

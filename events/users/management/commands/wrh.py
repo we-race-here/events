@@ -13,42 +13,42 @@ class AuthGroup(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'auth_group'
+        db_table = "auth_group"
 
 
 class AuthGroupPermissions(models.Model):
     id = models.BigAutoField(primary_key=True)
     group = models.ForeignKey(AuthGroup, models.DO_NOTHING)
-    permission = models.ForeignKey('AuthPermission', models.DO_NOTHING)
+    permission = models.ForeignKey("AuthPermission", models.DO_NOTHING)
 
     class Meta:
         managed = False
-        db_table = 'auth_group_permissions'
-        unique_together = (('group', 'permission'),)
+        db_table = "auth_group_permissions"
+        unique_together = (("group", "permission"),)
 
 
 class AuthPermission(models.Model):
     name = models.CharField(max_length=255)
-    content_type = models.ForeignKey('DjangoContentType', models.DO_NOTHING)
+    content_type = models.ForeignKey("DjangoContentType", models.DO_NOTHING)
     codename = models.CharField(max_length=100)
 
     class Meta:
         managed = False
-        db_table = 'auth_permission'
-        unique_together = (('content_type', 'codename'),)
+        db_table = "auth_permission"
+        unique_together = (("content_type", "codename"),)
 
 
 class CyclingOrgCategory(models.Model):
     id = models.BigAutoField(primary_key=True)
     title = models.CharField(unique=True, max_length=256)
     create_datetime = models.DateTimeField()
-    create_by = models.ForeignKey('WrhAccountUser', models.DO_NOTHING, blank=True, null=True)
-    organization = models.ForeignKey('CyclingOrgOrganization', models.DO_NOTHING)
+    create_by = models.ForeignKey("WrhAccountUser", models.DO_NOTHING, blank=True, null=True)
+    organization = models.ForeignKey("CyclingOrgOrganization", models.DO_NOTHING)
 
     class Meta:
         managed = False
-        db_table = 'cycling_org_category'
-        unique_together = (('title', 'organization'),)
+        db_table = "cycling_org_category"
+        unique_together = (("title", "organization"),)
 
 
 class CyclingOrgEvent(models.Model):
@@ -64,8 +64,8 @@ class CyclingOrgEvent(models.Model):
     more_data = models.JSONField(blank=True, null=True)
     create_datetime = models.DateTimeField()
     update_datetime = models.DateTimeField()
-    organization = models.ForeignKey('CyclingOrgOrganization', models.DO_NOTHING, blank=True, null=True)
-    create_by = models.ForeignKey('WrhAccountUser', models.DO_NOTHING, blank=True, null=True)
+    organization = models.ForeignKey("CyclingOrgOrganization", models.DO_NOTHING, blank=True, null=True)
+    create_by = models.ForeignKey("WrhAccountUser", models.DO_NOTHING, blank=True, null=True)
     logo = models.CharField(max_length=100, blank=True, null=True)
     registration_website = models.CharField(max_length=500, blank=True, null=True)
     tags = models.TextField(blank=True, null=True)  # This field type is a guess.
@@ -83,7 +83,7 @@ class CyclingOrgEvent(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'cycling_org_event'
+        db_table = "cycling_org_event"
 
 
 class CyclingOrgEventattachment(models.Model):
@@ -93,11 +93,11 @@ class CyclingOrgEventattachment(models.Model):
     title = models.CharField(max_length=256, blank=True, null=True)
     create_datetime = models.DateTimeField()
     event = models.ForeignKey(CyclingOrgEvent, models.DO_NOTHING)
-    upload_by = models.ForeignKey('WrhAccountUser', models.DO_NOTHING, blank=True, null=True)
+    upload_by = models.ForeignKey("WrhAccountUser", models.DO_NOTHING, blank=True, null=True)
 
     class Meta:
         managed = False
-        db_table = 'cycling_org_eventattachment'
+        db_table = "cycling_org_eventattachment"
 
 
 class CyclingOrgFieldstracking(models.Model):
@@ -109,12 +109,12 @@ class CyclingOrgFieldstracking(models.Model):
     refs_repr = models.JSONField(blank=True, null=True)
     datetime = models.DateTimeField()
     user_str_id = models.CharField(max_length=64, blank=True, null=True)
-    content_type = models.ForeignKey('DjangoContentType', models.DO_NOTHING)
-    user = models.ForeignKey('WrhAccountUser', models.DO_NOTHING, blank=True, null=True)
+    content_type = models.ForeignKey("DjangoContentType", models.DO_NOTHING)
+    user = models.ForeignKey("WrhAccountUser", models.DO_NOTHING, blank=True, null=True)
 
     class Meta:
         managed = False
-        db_table = 'cycling_org_fieldstracking'
+        db_table = "cycling_org_fieldstracking"
 
 
 class CyclingOrgFinancialtransaction(models.Model):
@@ -123,11 +123,11 @@ class CyclingOrgFinancialtransaction(models.Model):
     type = models.CharField(max_length=16)
     payment_id = models.CharField(max_length=64)
     create_datetime = models.DateTimeField()
-    user = models.ForeignKey('WrhAccountUser', models.DO_NOTHING)
+    user = models.ForeignKey("WrhAccountUser", models.DO_NOTHING)
 
     class Meta:
         managed = False
-        db_table = 'cycling_org_financialtransaction'
+        db_table = "cycling_org_financialtransaction"
 
 
 class CyclingOrgHistoricalorganizationmember(models.Model):
@@ -147,13 +147,13 @@ class CyclingOrgHistoricalorganizationmember(models.Model):
     history_date = models.DateTimeField()
     history_change_reason = models.CharField(max_length=100, blank=True, null=True)
     history_type = models.CharField(max_length=1)
-    history_user = models.ForeignKey('WrhAccountUser', models.DO_NOTHING, blank=True, null=True)
+    history_user = models.ForeignKey("WrhAccountUser", models.DO_NOTHING, blank=True, null=True)
     member_id = models.BigIntegerField(blank=True, null=True)
     organization_id = models.BigIntegerField(blank=True, null=True)
 
     class Meta:
         managed = False
-        db_table = 'cycling_org_historicalorganizationmember'
+        db_table = "cycling_org_historicalorganizationmember"
 
 
 class CyclingOrgMember(models.Model):
@@ -170,7 +170,7 @@ class CyclingOrgMember(models.Model):
     city = models.CharField(max_length=128, blank=True, null=True)
     state = models.CharField(max_length=128, blank=True, null=True)
     zipcode = models.CharField(max_length=10, blank=True, null=True)
-    user = models.OneToOneField('WrhAccountUser', models.DO_NOTHING, blank=True, null=True)
+    user = models.OneToOneField("WrhAccountUser", models.DO_NOTHING, blank=True, null=True)
     email_verified = models.BooleanField(blank=True, null=True)
     phone_verified = models.BooleanField(blank=True, null=True)
     social_media = models.JSONField(blank=True, null=True)
@@ -184,8 +184,11 @@ class CyclingOrgMember(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'cycling_org_member'
-        unique_together = (('email', 'email_verified'), ('phone', 'phone_verified'),)
+        db_table = "cycling_org_member"
+        unique_together = (
+            ("email", "email_verified"),
+            ("phone", "phone_verified"),
+        )
 
 
 class CyclingOrgOrganization(models.Model):
@@ -217,7 +220,7 @@ class CyclingOrgOrganization(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'cycling_org_organization'
+        db_table = "cycling_org_organization"
 
 
 class CyclingOrgOrganizationmember(models.Model):
@@ -238,8 +241,11 @@ class CyclingOrgOrganizationmember(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'cycling_org_organizationmember'
-        unique_together = (('organization', 'member', 'is_active'), ('organization', 'org_member_uid', 'is_active'),)
+        db_table = "cycling_org_organizationmember"
+        unique_together = (
+            ("organization", "member", "is_active"),
+            ("organization", "org_member_uid", "is_active"),
+        )
 
 
 class CyclingOrgOrganizationmemberorg(models.Model):
@@ -250,14 +256,14 @@ class CyclingOrgOrganizationmemberorg(models.Model):
     is_active = models.BooleanField(blank=True, null=True)
     exp_date = models.DateField(blank=True, null=True)
     member_fields = models.JSONField(blank=True, null=True)
-    member_org = models.ForeignKey(CyclingOrgOrganization, models.DO_NOTHING, related_name='cycling_member')
+    member_org = models.ForeignKey(CyclingOrgOrganization, models.DO_NOTHING, related_name="cycling_member")
     start_date = models.DateField(blank=True, null=True)
     status = models.CharField(max_length=16, blank=True, null=True)
 
     class Meta:
         managed = False
-        db_table = 'cycling_org_organizationmemberorg'
-        unique_together = (('organization', 'member_org', 'is_active'),)
+        db_table = "cycling_org_organizationmemberorg"
+        unique_together = (("organization", "member_org", "is_active"),)
 
 
 class CyclingOrgRace(models.Model):
@@ -265,15 +271,15 @@ class CyclingOrgRace(models.Model):
     name = models.CharField(max_length=256)
     start_datetime = models.DateTimeField(blank=True, null=True)
     event = models.ForeignKey(CyclingOrgEvent, models.DO_NOTHING)
-    create_by = models.ForeignKey('WrhAccountUser', models.DO_NOTHING, blank=True, null=True)
+    create_by = models.ForeignKey("WrhAccountUser", models.DO_NOTHING, blank=True, null=True)
     create_datetime = models.DateTimeField()
     organization = models.ForeignKey(CyclingOrgOrganization, models.DO_NOTHING, blank=True, null=True)
     more_data = models.JSONField(blank=True, null=True)
 
     class Meta:
         managed = False
-        db_table = 'cycling_org_race'
-        unique_together = (('name', 'event', 'organization'),)
+        db_table = "cycling_org_race"
+        unique_together = (("name", "event", "organization"),)
 
 
 class CyclingOrgRaceresult(models.Model):
@@ -281,7 +287,7 @@ class CyclingOrgRaceresult(models.Model):
     place = models.IntegerField(blank=True, null=True)
     more_data = models.JSONField(blank=True, null=True)
     create_datetime = models.DateTimeField()
-    create_by = models.ForeignKey('WrhAccountUser', models.DO_NOTHING, blank=True, null=True)
+    create_by = models.ForeignKey("WrhAccountUser", models.DO_NOTHING, blank=True, null=True)
     organization = models.ForeignKey(CyclingOrgOrganization, models.DO_NOTHING, blank=True, null=True)
     race = models.ForeignKey(CyclingOrgRace, models.DO_NOTHING)
     rider = models.ForeignKey(CyclingOrgMember, models.DO_NOTHING, blank=True, null=True)
@@ -290,8 +296,8 @@ class CyclingOrgRaceresult(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'cycling_org_raceresult'
-        unique_together = (('rider', 'race', 'organization'),)
+        db_table = "cycling_org_raceresult"
+        unique_together = (("rider", "race", "organization"),)
 
 
 class CyclingOrgRaceseries(models.Model):
@@ -299,13 +305,13 @@ class CyclingOrgRaceseries(models.Model):
     name = models.CharField(max_length=256)
     points_map = models.JSONField(blank=True, null=True)
     create_datetime = models.DateTimeField()
-    create_by = models.ForeignKey('WrhAccountUser', models.DO_NOTHING, blank=True, null=True)
+    create_by = models.ForeignKey("WrhAccountUser", models.DO_NOTHING, blank=True, null=True)
     organization = models.ForeignKey(CyclingOrgOrganization, models.DO_NOTHING)
 
     class Meta:
         managed = False
-        db_table = 'cycling_org_raceseries'
-        unique_together = (('name', 'organization'),)
+        db_table = "cycling_org_raceseries"
+        unique_together = (("name", "organization"),)
 
 
 class CyclingOrgRaceseriesCategories(models.Model):
@@ -315,8 +321,8 @@ class CyclingOrgRaceseriesCategories(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'cycling_org_raceseries_categories'
-        unique_together = (('raceseries', 'category'),)
+        db_table = "cycling_org_raceseries_categories"
+        unique_together = (("raceseries", "category"),)
 
 
 class CyclingOrgRaceseriesEvents(models.Model):
@@ -326,8 +332,8 @@ class CyclingOrgRaceseriesEvents(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'cycling_org_raceseries_events'
-        unique_together = (('raceseries', 'event'),)
+        db_table = "cycling_org_raceseries_events"
+        unique_together = (("raceseries", "event"),)
 
 
 class CyclingOrgRaceseriesRaces(models.Model):
@@ -337,8 +343,8 @@ class CyclingOrgRaceseriesRaces(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'cycling_org_raceseries_races'
-        unique_together = (('raceseries', 'race'),)
+        db_table = "cycling_org_raceseries_races"
+        unique_together = (("raceseries", "race"),)
 
 
 class CyclingOrgRaceseriesresult(models.Model):
@@ -347,15 +353,15 @@ class CyclingOrgRaceseriesresult(models.Model):
     more_data = models.JSONField(blank=True, null=True)
     create_datetime = models.DateTimeField()
     category = models.ForeignKey(CyclingOrgCategory, models.DO_NOTHING)
-    create_by = models.ForeignKey('WrhAccountUser', models.DO_NOTHING, blank=True, null=True)
+    create_by = models.ForeignKey("WrhAccountUser", models.DO_NOTHING, blank=True, null=True)
     organization = models.ForeignKey(CyclingOrgOrganization, models.DO_NOTHING, blank=True, null=True)
     race_series = models.ForeignKey(CyclingOrgRaceseries, models.DO_NOTHING)
     race_result = models.ForeignKey(CyclingOrgRaceresult, models.DO_NOTHING)
 
     class Meta:
         managed = False
-        db_table = 'cycling_org_raceseriesresult'
-        unique_together = (('race_series', 'race_result', 'category', 'organization'),)
+        db_table = "cycling_org_raceseriesresult"
+        unique_together = (("race_series", "race_result", "category", "organization"),)
 
 
 class DjangoAdminLog(models.Model):
@@ -364,12 +370,12 @@ class DjangoAdminLog(models.Model):
     object_repr = models.CharField(max_length=200)
     action_flag = models.SmallIntegerField()
     change_message = models.TextField()
-    content_type = models.ForeignKey('DjangoContentType', models.DO_NOTHING, blank=True, null=True)
-    user = models.ForeignKey('WrhAccountUser', models.DO_NOTHING)
+    content_type = models.ForeignKey("DjangoContentType", models.DO_NOTHING, blank=True, null=True)
+    user = models.ForeignKey("WrhAccountUser", models.DO_NOTHING)
 
     class Meta:
         managed = False
-        db_table = 'django_admin_log'
+        db_table = "django_admin_log"
 
 
 class DjangoContentType(models.Model):
@@ -378,8 +384,8 @@ class DjangoContentType(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'django_content_type'
-        unique_together = (('app_label', 'model'),)
+        db_table = "django_content_type"
+        unique_together = (("app_label", "model"),)
 
 
 class DjangoMigrations(models.Model):
@@ -390,7 +396,7 @@ class DjangoMigrations(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'django_migrations'
+        db_table = "django_migrations"
 
 
 class DjangoSession(models.Model):
@@ -400,7 +406,7 @@ class DjangoSession(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'django_session'
+        db_table = "django_session"
 
 
 class DynamicPreferencesGlobalpreferencemodel(models.Model):
@@ -410,8 +416,8 @@ class DynamicPreferencesGlobalpreferencemodel(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'dynamic_preferences_globalpreferencemodel'
-        unique_together = (('section', 'name'),)
+        db_table = "dynamic_preferences_globalpreferencemodel"
+        unique_together = (("section", "name"),)
 
 
 class UsacyclingUsacclub(models.Model):
@@ -430,18 +436,18 @@ class UsacyclingUsacclub(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'usacycling_usacclub'
+        db_table = "usacycling_usacclub"
 
 
 class UsacyclingUsacclubClubTeams(models.Model):
     id = models.BigAutoField(primary_key=True)
     usacclub = models.ForeignKey(UsacyclingUsacclub, models.DO_NOTHING)
-    usacclubteam = models.ForeignKey('UsacyclingUsacclubteam', models.DO_NOTHING)
+    usacclubteam = models.ForeignKey("UsacyclingUsacclubteam", models.DO_NOTHING)
 
     class Meta:
         managed = False
-        db_table = 'usacycling_usacclub_club_teams'
-        unique_together = (('usacclub', 'usacclubteam'),)
+        db_table = "usacycling_usacclub_club_teams"
+        unique_together = (("usacclub", "usacclubteam"),)
 
 
 class UsacyclingUsacclubteam(models.Model):
@@ -456,7 +462,7 @@ class UsacyclingUsacclubteam(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'usacycling_usacclubteam'
+        db_table = "usacycling_usacclubteam"
 
 
 class UsacyclingUsacevent(models.Model):
@@ -481,7 +487,7 @@ class UsacyclingUsacevent(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'usacycling_usacevent'
+        db_table = "usacycling_usacevent"
 
 
 class UsacyclingUsacrider(models.Model):
@@ -536,7 +542,7 @@ class UsacyclingUsacrider(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'usacycling_usacrider'
+        db_table = "usacycling_usacrider"
 
 
 class UsacyclingUsacriderlicense(models.Model):
@@ -558,7 +564,7 @@ class UsacyclingUsacriderlicense(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'usacycling_usacriderlicense'
+        db_table = "usacycling_usacriderlicense"
 
 
 class WrhAccountHistoricaluser(models.Model):
@@ -586,11 +592,11 @@ class WrhAccountHistoricaluser(models.Model):
     history_date = models.DateTimeField()
     history_change_reason = models.CharField(max_length=100, blank=True, null=True)
     history_type = models.CharField(max_length=1)
-    history_user = models.ForeignKey('WrhAccountUser', models.DO_NOTHING, blank=True, null=True)
+    history_user = models.ForeignKey("WrhAccountUser", models.DO_NOTHING, blank=True, null=True)
 
     class Meta:
         managed = False
-        db_table = 'wrh_account_historicaluser'
+        db_table = "wrh_account_historicaluser"
 
 
 class WrhAccountUser(models.Model):
@@ -617,7 +623,7 @@ class WrhAccountUser(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'wrh_account_user'
+        db_table = "wrh_account_user"
 
 
 class WrhAccountUserGroups(models.Model):
@@ -627,8 +633,8 @@ class WrhAccountUserGroups(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'wrh_account_user_groups'
-        unique_together = (('user', 'group'),)
+        db_table = "wrh_account_user_groups"
+        unique_together = (("user", "group"),)
 
 
 class WrhAccountUserUserPermissions(models.Model):
@@ -638,5 +644,5 @@ class WrhAccountUserUserPermissions(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'wrh_account_user_user_permissions'
-        unique_together = (('user', 'permission'),)
+        db_table = "wrh_account_user_user_permissions"
+        unique_together = (("user", "permission"),)

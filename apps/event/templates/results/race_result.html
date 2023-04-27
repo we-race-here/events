@@ -1,17 +1,15 @@
 <!-- results.html -->
 
 {% if Races %}
-    <h4>Race Results</h4>
-    {% for race in Races %}
-        <h5>Race Name: {{ race.name }}</h5>
-        <ul>
-            {% for result in RaceResults %}
-                {% if result.race == race %}
-                <li>{{ result.place }}: {{ result.rider }}</li>
-                {% endif %}
-            {% endfor %}
-        </ul>
-        <br>
-    {% endfor %}
-    <br>
+<h4>Race Results</h4>
+{% for race in Races %}
+<h5>Race Name: {{ race.name }}</h5>
+<ul>
+  {% for result in RaceResults %} {% if result.race == race %}
+  <li>{{ result.place }}: {{ result.rider }}</li>
+  {% endif %} {% endfor %}
+</ul>
+<br />
+{% endfor %}
+<br />
 {% endif %}
