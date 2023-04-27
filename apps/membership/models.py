@@ -10,6 +10,7 @@ from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils import timezone
+
 # from jsonschema import Validator TODO: what is this?
 from phonenumber_field.modelfields import PhoneNumberField
 from simple_history.models import HistoricalRecords
@@ -19,12 +20,14 @@ User = get_user_model()
 
 def organization_logo_file_path_func(instance, filename):
     from events.helpers import get_random_upload_path
-    return get_random_upload_path(str(Path('uploads', 'cycling_org', 'organization', 'logo')), filename)
+
+    return get_random_upload_path(str(Path("uploads", "cycling_org", "organization", "logo")), filename)
 
 
 def organization_hero_file_path_func(instance, filename):
     from events.helpers import get_random_upload_path
-    return get_random_upload_path(str(Path('uploads', 'cycling_org', 'organization', 'hero')), filename)
+
+    return get_random_upload_path(str(Path("uploads", "cycling_org", "organization", "hero")), filename)
 
 
 class OrganizationMember(models.Model):
@@ -45,7 +48,8 @@ class OrganizationMember(models.Model):
     datetime = models.DateTimeField(auto_now_add=True)
     history: tacks changes to the record
     """
-    organization = models.ForeignKey('Organization', on_delete=models.CASCADE)
+
+    organization = models.ForeignKey("Organization", on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     is_admin = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True, null=True)
@@ -55,7 +59,7 @@ class OrganizationMember(models.Model):
     history = HistoricalRecords()
 
     class Meta:
-        unique_together = [['organization', 'user']]
+        unique_together = [["organization", "user"]]
 
     def is_expired(self):
         if not self.exp_date:
@@ -73,7 +77,7 @@ class OrganizationMember(models.Model):
         return super().save(*args, **kwargs)
 
     def __str__(self):
-        return f'{self.organization} - {self.user} - {self.is_admin} - {self.is_active} - {self.start_date} - {self.exp_date}'
+        return f"{self.organization} - {self.user} - {self.is_admin} - {self.is_active} - {self.start_date} - {self.exp_date}"
 
 
 # @FieldsTracking.register() TODO: do we need this?
@@ -111,30 +115,27 @@ class Organization(models.Model):
     waiver_text: This is shown on the join org page and useer must agree to it.
     _tracker: TODO, removed
     """
+
     SOCIAL_MEDIA_SCHEMA = {
-        'youtube': {
-            'type': 'string', 'required': False, 'nullable': True, 'meta': {'title': 'Youtube'}
-        },
-        'facebook': {
-            'type': 'string', 'required': False, 'nullable': True, 'meta': {'title': 'Facebook'}
-        },
-        'instagram': {
-            'type': 'string', 'required': False, 'nullable': True, 'meta': {'title': 'Instagram'}
-        },
+        "youtube": {"type": "string", "required": False, "nullable": True, "meta": {"title": "Youtube"}},
+        "facebook": {"type": "string", "required": False, "nullable": True, "meta": {"title": "Facebook"}},
+        "instagram": {"type": "string", "required": False, "nullable": True, "meta": {"title": "Instagram"}},
     }
 
-    TYPE_REGIONAL = 'regional'
-    TYPE_CLUB = 'club'
-    TYPE_ADVOCACY_VOLUNTEER = 'advocacy_volunteer'
-    TYPE_PROMOTER = 'promoter'
+    TYPE_REGIONAL = "regional"
+    TYPE_CLUB = "club"
+    TYPE_ADVOCACY_VOLUNTEER = "advocacy_volunteer"
+    TYPE_PROMOTER = "promoter"
     TYPE_CHOICES = (
-        (TYPE_REGIONAL, 'Regional'),
-        (TYPE_CLUB, 'Club'),
-        (TYPE_ADVOCACY_VOLUNTEER, 'Advocacy, Volunteer'),
-        (TYPE_PROMOTER, 'Promoter'),
+        (TYPE_REGIONAL, "Regional"),
+        (TYPE_CLUB, "Club"),
+        (TYPE_ADVOCACY_VOLUNTEER, "Advocacy, Volunteer"),
+        (TYPE_PROMOTER, "Promoter"),
     )
     name = models.CharField(max_length=256, unique=True)
     type = models.CharField(max_length=32, choices=TYPE_CHOICES)
+    blurb = models.TextField(max_length=500, null=True, blank=True)
+    description = models.TextField(null=True, blank=True)
     social_media = models.JSONField(null=True, blank=True)
     website = models.URLField(null=True, blank=True)
     phone = PhoneNumberField(max_length=50, null=True, blank=True)
@@ -144,10 +145,9 @@ class Organization(models.Model):
     city = models.CharField(max_length=128, blank=True, null=True)
     state = models.CharField(max_length=128, blank=True, null=True)
     zipcode = models.CharField(max_length=10, blank=True, null=True)
-    about = models.TextField(null=True, blank=True)
     logo = models.ImageField(null=True, blank=True, upload_to=organization_logo_file_path_func)
     hero = models.ImageField(null=True, blank=True, upload_to=organization_hero_file_path_func)
-    user = models.ManyToManyField(User, related_name='organizations', through=OrganizationMember)
+    user = models.ManyToManyField(User, related_name="organizations", through=OrganizationMember)
     membership_open = models.BooleanField(default=False, null=True, blank=True)
     approved = models.BooleanField(default=False, null=True)  # New orgs must be approved by BC staff
     waiver_text = models.TextField(default=None, null=True, blank=True)
@@ -158,11 +158,11 @@ class Organization(models.Model):
         if self.social_media:
             v = Validator(self.SOCIAL_MEDIA_SCHEMA, allow_unknown=True)
             if not v.validate(self.social_media):
-                raise ValidationError({'social_media': str(v.errors)})
+                raise ValidationError({"social_media": str(v.errors)})
             self.social_media = v.document
         else:
             self.social_media = {}
         return super().save(*args, **kwargs)
 
     def __str__(self):
-        return f'{self.name}'
+        return f"{self.name}"
