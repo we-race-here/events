@@ -1,115 +1,122 @@
-{% extends "account/base.html" %}
-{% load static %}
-
-{% block inner %}
+{% extends "account/base.html" %} {% load static %} {% block inner %}
 
 <!-- content -->
 <section class="content">
-    <!-- event detail -->
-    <div class="bg-gray-100 py-10">
-        <div class="container mx-auto px-4">
-            <div class="grid grid-cols-12 gap-8">
-                <!-- Left Side Content -->
-                <div class="col-span-8">
-                    <a href="{% url 'event:event_list' %}" class="text-blue-500">Back To Events</a>
-                    {% if object.prefs.banner_image %}
-                        <img
-                                src="{{ object.prefs.banner_image }}"
-                                alt="Event Banner" title="" class="w-full h-auto">
-                    {% endif %}
-                    <div class="bg-white shadow-lg rounded p-4 mt-4">
-                        <h2 class="text-2xl font-bold">{{ object.name }}</h2>
-                        {% if object.description %}
-                            <p>
-                                {{ object.description }}
-                            </p>
-                        {% endif %}
-                        {% if object.prefs.information_board_content %}
-                            <p>
-                            <hr class="my-4">
-                            {{ object.prefs.information_board_content | safe }}
-                            </p>
-                        {% endif %}
+  <!-- event detail -->
+  <div class="bg-gray-100 py-10">
+    <div class="container mx-auto px-4">
+      <div class="grid grid-cols-12 gap-8">
+        <!-- Left Side Content -->
+        <div class="col-span-8">
+          <a href="{% url 'event:event_list' %}" class="text-blue-500"
+            >Back To Events</a
+          >
+          {% if object.prefs.banner_image %}
+          <img
+            src="{{ object.prefs.banner_image }}"
+            alt="Event Banner"
+            title=""
+            class="w-full h-auto"
+          />
+          {% endif %}
+          <div class="bg-white shadow-lg rounded p-4 mt-4">
+            <h2 class="text-2xl font-bold">{{ object.name }}</h2>
+            {% if object.description %}
+            <p>{{ object.description }}</p>
+            {% endif %} {% if object.prefs.information_board_content %}
 
-                        {% if object.more_data and object.more_data.panels %}
-                            {% for panel in  object.more_data.panels %}
-                                {% if "iframe" in panel.url %}
-                                    {{ panel.url |safe }}
-                                {% else %}
-                                    <iframe src="{{ panel.url }}" height="350" width="100%"></iframe>
-                                {% endif %}
-                            {% endfor %}
-                        {% endif %}
-                        {% include "results/race_result.html" %}
-                    </div>
-                    <a href="{% url 'event:event_list' %}" class="text-blue-500 mt-4">Back To Events</a>
-                </div>
+            <hr class="my-4" />
+            <p>{{ object.prefs.information_board_content | safe }}</p>
 
-                <!-- Right Side Content -->
-                <div class="col-span-4">
-                    <h3 class="text-xl font-bold mb-2">Event Details</h3>
-                    <div class="bg-white shadow-lg rounded p-4">
-                        <div class="mb-4">
-                            {% if event.is_usac_permitted %}
-                                <img style="max-width:30px" title="USAC Event"
-                                     src="{% static 'images/USACycling_Logo_noborder.svg' %}" alt="My image"/>
-                            {% endif %}
-                            {% if event.featured_event %}
-                                <img width="30" height="30" title="Featured Event"
-                                     src="{% static 'images/bc-icon.png' %}" alt="My image"/>
-                            {% endif %}
-                        </div>
-                        <h4>When: </h4>
-
-                        <h5>{{ object.start_date }} - {{ object.end_date }}</h5>
-
-
-                    </div>
-                    {% if object.website %}
-                        <a href="{{ object.website }}" class="bg-blue-500 text-white py-2 px-4 rounded block mt-4 text-center"
-                           target="_blank"
-                        >Event
-                                                  Website</a>
-                    {% endif %}
-                    {% if object.registration_website %}
-                        <a href="{{ object.registration_website }}" class="bg-blue-500 text-white py-2 px-4 rounded block mt-4 text-center"
-                           target="_blank"
-                        >Registration</a>
-                    {% endif %}
-                    <div class="bg-white shadow-lg rounded p-4 mt-4">
-                        <h4>Location</h4>
-                        <h5><span>
-                            {% if object.city %} {{ object.city }}, {% endif %}
-                            {% if object.state %} {{ object.state }}{% endif %}
-                        </span></h5>
-                    </div>
-                    {% if object.location_lat and object.location_lon %}
-
-                        <div class="event-map mt-4">
-                            <iframe frameborder="0" style="border:0;width:100%;height:300px;"
-                                    src="https://www.google.com/maps/embed/v1/place?key={{ GOOGLE_MAP_API_TOKEN }}&q=
-                        {{ object.location_lat }} , {{ object.location_lon }} &zoom=16"
-                                    allowfullscreen></iframe>
-                        </div>
-                    {% endif %}
-                    <div class="bg-white shadow-lg rounded p-4 mt-4">
-                        <h4>Event Files</h4>
-                        {% if object.attachments.count >= 1 %}
-                            {% for attachment in object.attachments.all %}
-                                <a target="_blank" href="{{ attachment.file.url }}">{{ attachment.file_name }}</a>
-                            {% endfor %}
-                        {% else %}
-                            <p>No Files</p>
-                        {% endif %}
-                    </div>
-                </div>
-                <div class="clearfix"></div>
-            </div>
+            {% endif %} {% if object.more_data and object.more_data.panels %} {%
+            for panel in object.more_data.panels %} {% if "iframe" in panel.url
+            %} {{ panel.url |safe }} {% else %}
+            <iframe src="{{ panel.url }}" height="350" width="100%"></iframe>
+            {% endif %} {% endfor %} {% endif %} {% include
+            "results/race_result.html" %}
+          </div>
+          <a href="{% url 'event:event_list' %}" class="text-blue-500 mt-4"
+            >Back To Events</a
+          >
         </div>
+
+        <!-- Right Side Content -->
+        <div class="col-span-4">
+          <h3 class="text-xl font-bold mb-2">Event Details</h3>
+          <div class="bg-white shadow-lg rounded p-4">
+            <div class="mb-4">
+              {% if event.is_usac_permitted %}
+              <img
+                style="max-width: 30px"
+                title="USAC Event"
+                src="{% static 'images/USACycling_Logo_noborder.svg' %}"
+                alt="My image"
+              />
+              {% endif %} {% if event.featured_event %}
+              <img
+                width="30"
+                height="30"
+                title="Featured Event"
+                src="{% static 'images/bc-icon.png' %}"
+                alt="My image"
+              />
+              {% endif %}
+            </div>
+            <h4>When:</h4>
+
+            <h5>{{ object.start_date }} - {{ object.end_date }}</h5>
+          </div>
+          {% if object.website %}
+          <a
+            href="{{ object.website }}"
+            class="bg-blue-500 text-white py-2 px-4 rounded block mt-4 text-center"
+            target="_blank"
+            >Event Website</a
+          >
+          {% endif %} {% if object.registration_website %}
+          <a
+            href="{{ object.registration_website }}"
+            class="bg-blue-500 text-white py-2 px-4 rounded block mt-4 text-center"
+            target="_blank"
+            >Registration</a
+          >
+          {% endif %}
+          <div class="bg-white shadow-lg rounded p-4 mt-4">
+            <h4>Location</h4>
+            <h5>
+              <span>
+                {% if object.city %} {{ object.city }}, {% endif %} {% if
+                object.state %} {{ object.state }}{% endif %}
+              </span>
+            </h5>
+          </div>
+          {% if object.location_lat and object.location_lon %}
+
+          <div class="event-map mt-4">
+            <iframe
+              style="border: 0; width: 100%; height: 300px"
+              src="https://www.google.com/maps/embed/v1/place?key={{ GOOGLE_MAP_API_TOKEN }}&q=
+                        {{ object.location_lat }} , {{ object.location_lon }} &zoom=16"
+              allowfullscreen
+            ></iframe>
+          </div>
+          {% endif %}
+          <div class="bg-white shadow-lg rounded p-4 mt-4">
+            <h4>Event Files</h4>
+            {% if object.attachments.count >= 1 %} {% for attachment in
+            object.attachments.all %}
+            <a target="_blank" href="{{ attachment.file.url }}"
+              >{{ attachment.file_name }}</a
+            >
+            {% endfor %} {% else %}
+            <p>No Files</p>
+            {% endif %}
+          </div>
+        </div>
+        <div class="clearfix"></div>
+      </div>
     </div>
-
-
+  </div>
 </section>
-
 
 {% endblock %}
