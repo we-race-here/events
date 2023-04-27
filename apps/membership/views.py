@@ -1,5 +1,6 @@
 # views.py
 from django.contrib.auth import get_user_model
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.mail import send_mail
 from django.db.models import Q
 from django.template.loader import render_to_string
@@ -15,7 +16,7 @@ from .models import Organization
 User = get_user_model()
 
 
-class CreateOrganizationView(CreateView):
+class CreateOrganizationView(LoginRequiredMixin, CreateView):
     model = Organization
     form_class = OrganizationForm
     template_name = "org/create_organization.html"
@@ -60,7 +61,7 @@ class OrganizationDetailView(DetailView):
     template_name = "org/organization_detail.html"
 
 
-class UpdateOrganizationView(UpdateView):
+class UpdateOrganizationView(LoginRequiredMixin, UpdateView):
     model = Organization
     form_class = OrganizationForm
     template_name = "org/update_organization.html"
@@ -71,7 +72,7 @@ class UpdateOrganizationView(UpdateView):
         return context
 
 
-class DeleteOrganizationView(DeleteView):
+class DeleteOrganizationView(LoginRequiredMixin, DeleteView):
     model = Organization
     template_name = "org/delete_organization.html"
     success_url = reverse_lazy("organizations")
