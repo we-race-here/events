@@ -19,8 +19,6 @@ services:
       - ./.envs/.production/.django
       - ./.envs/.production/.postgres
     command: /start
-    ports:
-      - '0.0.0.0:9018:5000'
 
   traefik:
     build:
@@ -32,7 +30,8 @@ services:
     volumes:
       - production_traefik:/etc/traefik/acme
     ports:
-      - '0.0.0.0:9019:80'
+      - '0.0.0.0:80:80'
+      - '0.0.0.0:443:443'
 
   redis:
     image: redis:6
