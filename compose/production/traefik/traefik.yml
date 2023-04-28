@@ -28,7 +28,7 @@ certificatesResolvers:
 http:
   routers:
     web-secure-router:
-      rule: 'Host(`example.com`))'
+      rule: 'Host(`example.com`)'
       entryPoints:
         - web-secure
       middlewares:
