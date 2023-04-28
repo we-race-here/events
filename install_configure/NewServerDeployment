@@ -1,0 +1,16 @@
+# Log into SSH
+git clone https://github.com/we-race-here/events.git
+cd events
+
+# Install docker container, Skip if already installed
+sh install_configure/deploy_docker_one_time.sh
+
+mkdir -p  .envs/.production/
+vi .envs/.production/.django
+vi .envs/.production/.postgres
+# Config email and domain
+vi compose/production/traefik/traefik.yml
+# Provide valid email address in email section ; line no 22
+# Update DNS name in , line 31 and 42
+docker-compose -f production.yml build
+docker-compose -f production.yml up -d
