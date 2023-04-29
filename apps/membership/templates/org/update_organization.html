@@ -3,6 +3,8 @@
 {% block inner %}
  <div class="container mx-auto px-4 py-8">
         <h1 class="text-3xl font-bold mb-4">Update Organization</h1>
+   <!-- TODO: Only is_staff or admin of org can update -->
+         <p class="text-gray-600 mb-6">Update your organization's information.</p>
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
             {{ form.as_p }}
@@ -12,5 +14,3 @@
         </form>
     </div>
 {% endblock %}
-
-
