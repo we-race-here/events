@@ -1,22 +1,22 @@
 {% extends "account/base.html" %} {% load static %} {% block inner %}
-<div class="container mx-auto px-4 py-8">
-  <h1 class="text-3xl font-bold mb-4">Create Organization</h1>
-  {% if user.is_authenticated %}
-  <p>
-    New organizations will be approved by an admin at Bicycle Colorado,
-    typically in 1 business day.
-  </p>
-  <form method="post" enctype="multipart/form-data">
-    {% csrf_token %} {{ form.as_p }}
-    <button
-      type="submit"
-      class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-    >
-      Save
-    </button>
-  </form>
-  {% else %}
-  <p>You must be logged in to create an organization.</p>
-  {% endif %}
-</div>
+  <div class="container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold mb-4">Create Organization</h1>
+    {% if user.is_authenticated %}
+      <p>
+        New organizations will be approved by an admin at Bicycle Colorado,
+        typically in 1 business day.
+      </p>
+      <form method="post" enctype="multipart/form-data">
+        {% csrf_token %} {{ form.as_p }}
+        <button
+            type="submit"
+            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+        >
+          Save
+        </button>
+      </form>
+    {% else %}
+      <p>You must be logged in to create an organization.</p>
+    {% endif %}
+  </div>
 {% endblock %}

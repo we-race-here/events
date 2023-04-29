@@ -11,7 +11,7 @@ from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 
 from .forms import OrganizationForm
-from .models import Organization
+from .models import Organization, OrganizationMember
 
 User = get_user_model()
 
@@ -59,6 +59,13 @@ class CreateOrganizationView(LoginRequiredMixin, CreateView):
 class OrganizationDetailView(DetailView):
     model = Organization
     template_name = "org/organization_detail.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["OrgAdmins"] = OrganizationMember.objects.filter(
+            Q(user=self.request.user.id) & Q(is_admin=True) & Q(organization=self.object.organization)
+        )
+        return context
 
 
 class UpdateOrganizationView(LoginRequiredMixin, UpdateView):

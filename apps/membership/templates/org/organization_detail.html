@@ -7,6 +7,11 @@
         <p>Website: {{ organization.website }}</p>
         <p>Email: {{ organization.email }}</p>
         <!-- Add other fields as needed -->
+
+   {% if OrgAdmins or user.is_staff %}
+   {#   TODO: add admin menu#}
+   {% endif %}
+
         <a href="{% url 'update_organization' organization.id %}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
             Edit
         </a>
@@ -15,5 +20,3 @@
         </a>
     </div>
 {% endblock %}
-
-
