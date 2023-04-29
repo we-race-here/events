@@ -47,19 +47,21 @@
             </thead>
             <tbody>
                 {% for organization in organizations %}
-                <tr class="{% cycle 'bg-gray-100' 'bg-white' %}">
-                    <td class="px-4 py-2">{{ organization.name }}</td>
-                    <td class="px-4 py-2">{{ organization.get_type_display }}</td>
-                    <td class="px-4 py-2">{{ organization.website }}</td>
-                    <td class="px-4 py-2">
-                        <a href="{% url 'organization_detail' organization.pk %}" class="text-blue-600">View</a>
-                    </td>
-                </tr>
+                  {% if organization.id != 1 %}
+                  <tr class="{% cycle 'bg-gray-100' 'bg-white' %}">
+                      <td class="px-4 py-2">{{ organization.name }}</td>
+                      <td class="px-4 py-2">{{ organization.get_type_display }}</td>
+                      <td class="px-4 py-2">{{ organization.website }}</td>
+                      <td class="px-4 py-2">
+                          <a href="{% url 'organization_detail' organization.pk %}" class="text-blue-600">View</a>
+                      </td>
+                  </tr>
+                  {% endif %}
                 {% endfor %}
             </tbody>
         </table>
         <div class="mt-4">
-            <a href="{% url 'create_organization' %}" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+            <a href="{% url 'membership:create_organization' %}" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
                 Create Organization
             </a>
         </div>
