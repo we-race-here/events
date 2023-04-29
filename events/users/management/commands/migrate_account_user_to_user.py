@@ -1,16 +1,17 @@
 from django.contrib.auth import get_user_model
 from django.core.management.base import BaseCommand
 
-from .wrh import  WrhAccountUser
+from .wrh import WrhAccountUser
 
 User = get_user_model()
 
+
 class Command(BaseCommand):
-    help = 'Migrate WrhAccountUser data to User model in destination database'
+    help = "Migrate WrhAccountUser data to User model in destination database"
 
     def handle(self, *args, **options):
         # Fetch data from source database
-        source_data = WrhAccountUser.objects.using('wrh').all()
+        source_data = WrhAccountUser.objects.using("wrh").all()
 
         # Save data to the destination database
         for record in source_data:
@@ -22,6 +23,7 @@ class Command(BaseCommand):
                 is_superuser=record.is_superuser,
                 email=record.email,
                 # username=None,  # User model does not use 'username'
+                # TODO: We must use first and last name
                 name=f"{record.first_name} {record.last_name}",
                 is_staff=record.is_staff,
                 is_active=record.is_active,
