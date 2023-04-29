@@ -114,9 +114,9 @@ class OrganizationListView(ListView):
         queryset = super().get_queryset()
 
         # Filter only if OrganizationMember
-        user = self.request.user
-        if user.is_authenticated:
-            queryset = queryset.filter(organizationmember__user=user)
+        # user = self.request.user
+        # if user.is_authenticated:
+        #     queryset = queryset.filter(organizationmember__user=user)
 
         # Sorting
         sort_by = self.request.GET.get("sort", "")
