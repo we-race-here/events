@@ -3,7 +3,12 @@
 -r base.txt
 
 gunicorn==20.1.0  # https://github.com/benoitc/gunicorn
+
 psycopg2==2.9.6  # https://github.com/psycopg/psycopg2
+# Keeping psycopg2 for now
+#  see https://learndjango.com/tutorials/psycopg3-binary-and-django-42-installation-quick-t
+# psycopg-binary==3.1.8
+# psycopg==3.1.8
 
 # Django
 # ------------------------------------------------------------------------------
