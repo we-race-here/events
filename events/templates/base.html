@@ -52,19 +52,19 @@
           </div>
           <div  class="flex justify-end">
             {% if request.user.is_authenticated %}
-                <a  class="text-green-400
-                  hover:text-green-300" href="{% url 'users:detail' request.user.pk %}">
-                  {% translate "My Profile" %}</i>
+                <a  class="text-orange-400
+                  hover:text-300" href="{% url 'users:detail' request.user.pk %}">
+                  {% translate request.user.email %}</i>
                 </a>
                 {# URL provided by django-allauth/account/urls.py #}
-                <a  class="text-green-400
-                  hover:text-green-300" href="{% url 'account_logout' %}">
-                  Sign Out<i class="fas fa-sign-out-alt"></i>
+                <a title="Sign Out"  class="ml-2 text-orange-400
+                  hover:text-300" href="{% url 'account_logout' %}">
+                  <i class="fas fa-sign-out-alt"></i>
                 </a>
               {% else %}
                 {% if ACCOUNT_ALLOW_REGISTRATION %}
                 {# URL provided by django-allauth/account/urls.py #}
-                <button type="button" onclick="location.href='{% url 'account_signup' %}'" class="px-4 py-2 text-xs font-medium text-center text-white bg-red-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                <button type="button"  onclick="location.href='{% url 'account_signup' %}'" class="px-4 py-2 text-xs font-medium text-center text-white bg-red-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                   {% translate "Sign Up" %}
                 </button>
 
