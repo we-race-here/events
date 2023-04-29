@@ -12,10 +12,10 @@
    {#   TODO: add admin menu#}
    {% endif %}
 
-        <a href="{% url 'update_organization' organization.id %}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+        <a href="{% url 'membership:update_organization' organization.id %}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
             Edit
         </a>
-        <a href="{% url 'delete_organization' organization.id %}" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+        <a href="{% url 'membership:delete_organization' organization.id %}" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
             Delete
         </a>
     </div>
