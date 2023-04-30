@@ -1,5 +1,8 @@
 from .base import *  # noqa
-from .base import env
+from .base import MIDDLEWARE, env
+
+# add to middleware
+MIDDLEWARE += ["rollbar.contrib.django.middleware.RollbarNotifierMiddleware"]
 
 # GENERAL
 # ------------------------------------------------------------------------------
@@ -135,3 +138,14 @@ LOGGING = {
 
 # Your stuff...
 # ------------------------------------------------------------------------------
+# Add rollbar configuration to .production/.django or .development/.django add the following lines
+# ROLLBAR_ACCESS_TOKEN=XXXXXX
+# ENVIROMENT=production or ENVIROMENT=development
+# BRANCH=dev-server or BRANCH=main
+
+ROLLBAR = {
+    "access_token": env("ROLLBAR_ACCESS_TOKEN"),
+    "environment": env("ENVIROMENT"),
+    "branch": env("BRANCH"),
+    "root": "/",
+}
