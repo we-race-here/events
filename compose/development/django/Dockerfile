@@ -5,7 +5,7 @@ FROM python:3.11.3-slim-bullseye as python
 # Python build stage
 FROM python as python-build-stage
 
-ARG BUILD_ENVIRONMENT=develoment
+ARG BUILD_ENVIRONMENT=development
 
 # Install apt packages
 RUN apt-get update && apt-get install --no-install-recommends -y \
@@ -25,7 +25,7 @@ RUN pip wheel --wheel-dir /usr/src/app/wheels  \
 # Python 'run' stage
 FROM python as python-run-stage
 
-ARG BUILD_ENVIRONMENT=develoment
+ARG BUILD_ENVIRONMENT=development
 ARG APP_HOME=/app
 
 ENV PYTHONUNBUFFERED 1
@@ -57,12 +57,12 @@ RUN pip install --no-cache-dir --no-index --find-links=/wheels/ /wheels/* \
   && rm -rf /wheels/
 
 
-COPY --chown=django:django ./compose/develoment/django/entrypoint /entrypoint
+COPY --chown=django:django ./compose/development/django/entrypoint /entrypoint
 RUN sed -i 's/\r$//g' /entrypoint
 RUN chmod +x /entrypoint
 
 
-COPY --chown=django:django ./compose/develoment/django/start /start
+COPY --chown=django:django ./compose/development/django/start /start
 RUN sed -i 's/\r$//g' /start
 RUN chmod +x /start
 
