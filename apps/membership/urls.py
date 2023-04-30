@@ -7,6 +7,7 @@ from .views import (
     OrganizationDetailView,
     OrganizationListView,
     UpdateOrganizationView,
+    JoinOrganizationView
 )
 
 app_name = "membership"
@@ -17,4 +18,7 @@ urlpatterns = [
     path("org/<int:pk>/", OrganizationDetailView.as_view(), name="organization_detail"),
     path("org/<int:pk>/update/", UpdateOrganizationView.as_view(), name="update_organization"),
     path("org/<int:pk>/delete/", DeleteOrganizationView.as_view(), name="delete_organization"),
+    path('org/join', JoinOrganizationView.as_view(), name='join_organization'),
+    path('org/join/<int:organization_id>/', JoinOrganizationView.as_view(), name='join_organization_from_details'),
+
 ]

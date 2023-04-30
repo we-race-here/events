@@ -3,15 +3,18 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.mail import send_mail
 from django.db.models import Q
+from django.shortcuts import redirect, render
 from django.template.loader import render_to_string
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.utils.html import strip_tags
 from django.views.generic import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
+from django.views.generic.edit import FormView
 
 from .forms import OrganizationForm
 from .models import Organization, OrganizationMember
+from .forms import OrganizationMemberJoinForm
 
 User = get_user_model()
 
@@ -22,38 +25,47 @@ class CreateOrganizationView(LoginRequiredMixin, CreateView):
     template_name = "org/create_organization.html"
 
     def form_valid(self, form):
-        form.instance.user = self.request.user
-        if self.request.user.is_staff:
-            form.instance.approved = True
-        else:
-            form.instance.approved = False
-            # TODO: is it possible to get the Org id so that we can link to the org detail page from the email?
-            html_message = render_to_string(
-                "org/new_org_email.html",
-                {
-                    "TYPE": form.cleaned_data["type"],
-                    "NAME": form.cleaned_data["name"],
-                    "BYNAME": self.resquest.user.full_name,
-                },
-            )
-            plain_message = strip_tags(html_message)
-            # Thsi email is to the submitter
-            send_mail(
-                f"New {form.cleaned_data['type']} named: {form.cleaned_data['name']} is waiting approval",
-                plain_message,
-                "donotreply@bicyclecolorado.org",
-                [self.request.user.email],
-                html_message=html_message,
-            )
-            # This email is to the staff
-            send_mail(
-                f"New {form.cleaned_data['type']} named: {form.cleaned_data['name']} is waiting approval",
-                plain_message,
-                "donotreply@bicyclecolorado.org",
-                [user.email for user in User.objects.filter(is_staff=True)],
-                html_message=html_message,
-            )
-        return super().form_valid(form)
+        organization = form.save(commit=False)
+        organization.approved = self.request.user.is_staff
+        organization.save()
+
+        # Create a new OrganizationMember instance with is_admin set to True
+        organization_member = OrganizationMember(
+            user=self.request.user,
+            organization=organization,
+            is_admin=True
+        )
+        organization_member.save()
+
+        # TODO: is it possible to get the Org id so that we can link to the org detail page from the email?
+        # Use - organization
+        html_message = render_to_string(
+            "org/new_org_email.html",
+            {
+                "TYPE": form.cleaned_data["type"],
+                "NAME": form.cleaned_data["name"],
+                "BYNAME": self.request.user.full_name,
+            },
+        )
+        plain_message = strip_tags(html_message)
+        # This email is to the submitter
+        send_mail(
+            f"New {form.cleaned_data['type']} named: {form.cleaned_data['name']} is waiting approval",
+            plain_message,
+            "donotreply@bicyclecolorado.org",
+            [self.request.user.email],
+            html_message=html_message,
+        )
+        # This email is to the staff
+        send_mail(
+            f"New {form.cleaned_data['type']} named: {form.cleaned_data['name']} is waiting approval",
+            plain_message,
+            "donotreply@bicyclecolorado.org",
+            [user.email for user in User.objects.filter(is_staff=True)],
+            html_message=html_message,
+        )
+        return redirect("membership:organizations")
+
 
 
 class OrganizationDetailView(DetailView):
@@ -63,7 +75,7 @@ class OrganizationDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["OrgAdmins"] = OrganizationMember.objects.filter(
-            Q(user=self.request.user.id) & Q(is_admin=True) & Q(organization=self.object.organization)
+            Q(user=self.request.user.id) & Q(is_admin=True) & Q(organization=self.object)
         )
         return context
 
@@ -73,6 +85,8 @@ class UpdateOrganizationView(LoginRequiredMixin, UpdateView):
     form_class = OrganizationForm
     template_name = "org/update_organization.html"
 
+    def get_success_url(self):
+        return reverse("membership:organizations")
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
@@ -99,6 +113,11 @@ class OrganizationListView(ListView):
     def get_queryset(self):
         queryset = super().get_queryset()
 
+        # Filter only if OrganizationMember
+        # user = self.request.user
+        # if user.is_authenticated:
+        #     queryset = queryset.filter(organizationmember__user=user)
+
         # Sorting
         sort_by = self.request.GET.get("sort", "")
         if sort_by:
@@ -118,3 +137,22 @@ class OrganizationListView(ListView):
             queryset = queryset.filter(type=type_filter)
 
         return queryset
+
+
+
+class JoinOrganizationView(FormView):
+    template_name = 'org/join_organization.html'
+    form_class = OrganizationMemberJoinForm
+    success_url = reverse_lazy('membership:organizations')
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user'] = self.request.user
+        organization_id = self.kwargs.get('organization_id')
+        if organization_id:
+            kwargs['organization'] = Organization.objects.get(pk=organization_id)
+        return kwargs
+
+    def form_valid(self, form):
+        form.save()
+        return super().form_valid(form)

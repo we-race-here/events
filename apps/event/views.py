@@ -50,7 +50,7 @@ class EventCreateView(CreateView):
         return context
 
     # TODO: send email to user and staff
-    template_name = "event_form.html"
+    template_name = "event/event_form.html"
     success_url = reverse_lazy("event:event_list")
 
 

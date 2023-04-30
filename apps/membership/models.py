@@ -80,7 +80,6 @@ class OrganizationMember(models.Model):
         return f"{self.organization} - {self.user} - {self.is_admin} - {self.is_active} - {self.start_date} - {self.exp_date}"
 
 
-# @FieldsTracking.register() TODO: do we need this?
 class Organization(models.Model):
     """
     name: Name of the organization
