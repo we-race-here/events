@@ -1,0 +1,47 @@
+version: '3'
+
+volumes:
+  production_traefik: {}
+  production_django_media: {}
+
+services:
+  django:
+    build:
+      context: .
+      dockerfile: ./compose/development/django/Dockerfile
+
+    image: events_production_django
+    volumes:
+      - production_django_media:/app/events/media
+    depends_on:
+      - redis
+    env_file:
+      - ./.envs/.development/.django
+      - ./.envs/.development/.postgres
+    command: /start
+
+  traefik:
+    build:
+      context: .
+      dockerfile: ./compose/development/traefik/Dockerfile
+    image: events_production_traefik
+    depends_on:
+      - django
+    volumes:
+      - production_traefik:/etc/traefik/acme
+    ports:
+      - '0.0.0.0:80:80'
+      - '0.0.0.0:443:443'
+
+  redis:
+    image: redis:6
+
+  nginx:
+    build:
+      context: .
+      dockerfile: ./compose/development/nginx/Dockerfile
+    image: events_local_nginx
+    depends_on:
+      - django
+    volumes:
+      - production_django_media:/usr/share/nginx/media:ro
