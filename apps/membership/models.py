@@ -83,7 +83,7 @@ class OrganizationMember(models.Model):
 class Organization(models.Model):
     """
     name: Name of the organization
-    type: Regional, Club, Promoter, advocacy_volunteer. This effects some views.
+    type: Club, Promoter, advocacy_volunteer. This effects some views.
     social_media: Social media links
     website: URL to the website, facebook, ...
     phone = PhoneNumberField(max_length=50, null=True, blank=True)
@@ -121,12 +121,10 @@ class Organization(models.Model):
         "instagram": {"type": "string", "required": False, "nullable": True, "meta": {"title": "Instagram"}},
     }
 
-    TYPE_REGIONAL = "regional"
     TYPE_CLUB = "club"
     TYPE_ADVOCACY_VOLUNTEER = "advocacy_volunteer"
     TYPE_PROMOTER = "promoter"
     TYPE_CHOICES = (
-        (TYPE_REGIONAL, "Regional"),
         (TYPE_CLUB, "Club"),
         (TYPE_ADVOCACY_VOLUNTEER, "Advocacy, Volunteer"),
         (TYPE_PROMOTER, "Promoter"),
