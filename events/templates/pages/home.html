@@ -40,7 +40,7 @@ While we are still developing our systems, please sign up for an account with th
             {{ event.city }}
             {{ event.country }} {{ event.start_date }}-{{ event.end_date }}
           </h3>
-          <h2 class="text-gray-900 title-font text-lg font-medium">{{ event.name }}</h2>
+          <h2 class="text-gray-900 title-font text-lg font-medium"><a href="{% url 'event:event_detail' event.pk %}">{{ event.name }}</a></h2>
           <p class="mt-1">
             {{ event.description|truncatewords:20 }}
           </p>
