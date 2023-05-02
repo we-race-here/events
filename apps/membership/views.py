@@ -3,18 +3,16 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.mail import send_mail
 from django.db.models import Q
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect
 from django.template.loader import render_to_string
-from django.urls import reverse_lazy, reverse
+from django.urls import reverse, reverse_lazy
 from django.utils.html import strip_tags
 from django.views.generic import ListView
 from django.views.generic.detail import DetailView
-from django.views.generic.edit import CreateView, DeleteView, UpdateView
-from django.views.generic.edit import FormView
+from django.views.generic.edit import CreateView, DeleteView, FormView, UpdateView
 
-from .forms import OrganizationForm
+from .forms import OrganizationForm, OrganizationMemberJoinForm
 from .models import Organization, OrganizationMember
-from .forms import OrganizationMemberJoinForm
 
 User = get_user_model()
 
@@ -30,11 +28,7 @@ class CreateOrganizationView(LoginRequiredMixin, CreateView):
         organization.save()
 
         # Create a new OrganizationMember instance with is_admin set to True
-        organization_member = OrganizationMember(
-            user=self.request.user,
-            organization=organization,
-            is_admin=True
-        )
+        organization_member = OrganizationMember(user=self.request.user, organization=organization, is_admin=True)
         organization_member.save()
 
         # TODO: is it possible to get the Org id so that we can link to the org detail page from the email?
@@ -67,7 +61,6 @@ class CreateOrganizationView(LoginRequiredMixin, CreateView):
         return redirect("membership:organizations")
 
 
-
 class OrganizationDetailView(DetailView):
     model = Organization
     template_name = "org/organization_detail.html"
@@ -87,6 +80,7 @@ class UpdateOrganizationView(LoginRequiredMixin, UpdateView):
 
     def get_success_url(self):
         return reverse("membership:organizations")
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
@@ -103,7 +97,10 @@ class OrganizationListView(ListView):
     model = Organization
     template_name = "org/organization_list.html"
     context_object_name = "organizations"
-    paginate_by = 10  # Change this to the desired number of items per page
+    paginate_by = 10
+    ordering = ["name"]
+
+    # Change this to the desired number of items per page
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -139,18 +136,17 @@ class OrganizationListView(ListView):
         return queryset
 
 
-
 class JoinOrganizationView(FormView):
-    template_name = 'org/join_organization.html'
+    template_name = "org/join_organization.html"
     form_class = OrganizationMemberJoinForm
-    success_url = reverse_lazy('membership:organizations')
+    success_url = reverse_lazy("membership:organizations")
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
-        kwargs['user'] = self.request.user
-        organization_id = self.kwargs.get('organization_id')
+        kwargs["user"] = self.request.user
+        organization_id = self.kwargs.get("organization_id")
         if organization_id:
-            kwargs['organization'] = Organization.objects.get(pk=organization_id)
+            kwargs["organization"] = Organization.objects.get(pk=organization_id)
         return kwargs
 
     def form_valid(self, form):
