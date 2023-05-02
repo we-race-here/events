@@ -19,7 +19,29 @@ event_edit_fields = {
 class EventListView(ListView):
     model = Event
     template_name = "event/event_list.html"
+    context_object_name = "events"
+    # paginate_by = 10  # Change this to the desired number of items per page
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        # Sorting
+        sort_by = self.request.GET.get("sort", "")
+        if sort_by:
+            queryset = queryset.order_by(sort_by)
+        search_query = self.request.GET.get("search", "")
+
+        if search_query:
+            queryset = queryset.filter(
+                Q(name__icontains=search_query)
+                | Q(website__icontains=search_query)
+                | Q(city__icontains=search_query)
+                | Q(state__icontains=search_query)
+            )
+        return queryset
 
 class EventDetailView(DetailView):
     model = Event
