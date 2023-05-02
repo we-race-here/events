@@ -59,7 +59,7 @@ class Command(BaseCommand):
             dest_org.approved = src_org.approved
             dest_org.waiver_text = src_org.waiver_text
 
-            # TODO: Load admins
+            # TODO: Migrate Org admins
 
             # Save the new instance
             try:
