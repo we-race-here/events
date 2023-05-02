@@ -2,7 +2,6 @@
 {% load static %}
 
 {% block inner %}
-
   <!-- content -->
   <section class="content">
     <!-- event detail -->
@@ -123,8 +122,9 @@
       </div>
     </div>
 
-
+  <!-- Race Results -->
+    {% if Races %}
+      {% include 'results/race_result.html' %}
+    {% endif %}
   </section>
-
-
 {% endblock %}

@@ -8,7 +8,7 @@ from django.views.generic import CreateView, DeleteView, DetailView, ListView, U
 
 from ..membership.models import OrganizationMember
 from .forms import EventForm, RaceSeriesForm, UploadRaceResults
-from .models import Event, Race, RaceSeries
+from .models import Event, Race, RaceResult, RaceSeries
 from .validators import ImportResults
 
 User = get_user_model()
@@ -49,9 +49,19 @@ class EventListView(ListView):
             )
         return queryset
 
+
 class EventDetailView(DetailView):
     model = Event
     template_name = "event/event_detail.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["EventAdmin"] = OrganizationMember.objects.filter(
+            Q(user=self.request.user.id) & Q(is_admin=True) & Q(organization=self.object.organization)
+        )
+        context["Races"] = Race.objects.filter(event=context["object"])
+        context["RaceResults"] = RaceResult.objects.filter(race__in=context["Races"])
+        return context
 
 
 # Create
