@@ -1,11 +1,17 @@
+from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
+from django.http import HttpResponse
+from django.shortcuts import get_object_or_404, render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, DetailView, ListView, UpdateView
 
 from ..membership.models import OrganizationMember
-from .forms import EventForm, RaceSeriesForm
-from .models import Event, RaceSeries
+from .forms import EventForm, RaceSeriesForm, UploadRaceResults
+from .models import Event, Race, RaceSeries
+from .validators import ImportResults
+
+User = get_user_model()
 
 # Read
 event_edit_fields = {
@@ -83,3 +89,30 @@ class RaceSeriesCreateView(LoginRequiredMixin, CreateView):
     form_class = RaceSeriesForm
     template_name = "results/raceseries_form.html"
     success_url = reverse_lazy("raceseries_list")
+
+
+def ImportRaceResults(request, event_pk):
+    if request.method == "POST":
+        form = UploadRaceResults(request.POST, request.FILES)
+        if form.is_valid():
+            csv_file = request.FILES["results_file"]
+            decoded_file = csv_file.read().decode("utf-8").splitlines()
+            ir = ImportResults(decoded_file)
+            ir.read_csv()
+            ir.pii_check()
+            ir.check_columns()
+            if ir.errors:
+                # TODO: need a html page for this
+                return HttpResponse(f"Please correct there errors: {ir.errors}")
+            else:
+                # TODO: Save results to database
+                del form.cleaned_data["results_file"]
+                Race.objects.create(**form.cleaned_data)
+                # TODO, save file data to RaceResults
+                return HttpResponse("Results imported successfully")
+        else:
+            return HttpResponse(f"Form is not valid: {form.errors}")
+    elif request.method == "GET":
+        get_object_or_404(Event, id=event_pk)  # GET method - render upload form
+        form = UploadRaceResults(initial={"event": event_pk})
+        return render(request, "results/import_race_results.html", {"form": form})
