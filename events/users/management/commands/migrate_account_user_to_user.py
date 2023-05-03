@@ -22,9 +22,8 @@ class Command(BaseCommand):
                 last_login=record.last_login,
                 is_superuser=record.is_superuser,
                 email=record.email,
-                # username=None,  # User model does not use 'username'
-                # TODO: We must use first and last name
-                name=f"{record.first_name} {record.last_name}",
+                first_name=record.first_name,
+                last_name=record.last_name,
                 is_staff=record.is_staff,
                 is_active=record.is_active,
                 date_joined=record.date_joined,

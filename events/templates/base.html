@@ -53,9 +53,15 @@
       </div>
       <div class="flex justify-end">
         {% if request.user.is_authenticated %}
+          {% if request.user.avatar %}
+            <img
+                src="{{ request.user.avatar.url }}"
+                class="w-7 rounded-full"
+                alt="Avatar"/>
+          {% endif %}
           <a class="text-orange-400
                   hover:text-300" href="{% url 'users:detail' request.user.pk %}">
-            {% translate request.user.email %}</i>
+            <i>{% translate request.user.email %}</i>
           </a>
           {# URL provided by django-allauth/account/urls.py #}
           <a title="Sign Out" class="ml-2 text-orange-400
@@ -81,6 +87,8 @@
       </div>
     </div>
   </nav>
+  <hr class="h-px bg-gray-200 border-0 dark:bg-gray-700">
+  <!-- Second level navigation -->
   <hr class="h-px bg-gray-200 border-0 dark:bg-gray-700">
   <!-- Second level navigation -->
   <nav class="bg-white-600">

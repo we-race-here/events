@@ -145,8 +145,8 @@ class Organization(models.Model):
     city = models.CharField(max_length=128, blank=True, null=True)
     state = models.CharField(max_length=128, blank=True, null=True)
     zipcode = models.CharField(max_length=10, blank=True, null=True)
-    logo = models.ImageField(null=True, blank=True, upload_to=organization_logo_file_path_func)
-    hero = models.ImageField(null=True, blank=True, upload_to=organization_hero_file_path_func)
+    logo = models.ImageField(null=True, blank=True, max_length=500, upload_to=organization_logo_file_path_func)
+    hero = models.ImageField(null=True, blank=True, max_length=500, upload_to=organization_hero_file_path_func)
     user = models.ManyToManyField(User, related_name="organizations", through=OrganizationMember)
     membership_open = models.BooleanField(default=False, null=True, blank=True)
     approved = models.BooleanField(default=False, null=True)  # New orgs must be approved by BC staff
