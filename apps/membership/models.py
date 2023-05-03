@@ -120,11 +120,12 @@ class Organization(models.Model):
         "facebook": {"type": "string", "required": False, "nullable": True, "meta": {"title": "Facebook"}},
         "instagram": {"type": "string", "required": False, "nullable": True, "meta": {"title": "Instagram"}},
     }
-
+    TYPE_REGIONAL = "regional"
     TYPE_CLUB = "club"
     TYPE_ADVOCACY_VOLUNTEER = "advocacy_volunteer"
     TYPE_PROMOTER = "promoter"
     TYPE_CHOICES = (
+        (TYPE_REGIONAL, "Regional"),
         (TYPE_CLUB, "Club"),
         (TYPE_ADVOCACY_VOLUNTEER, "Advocacy, Volunteer"),
         (TYPE_PROMOTER, "Promoter"),

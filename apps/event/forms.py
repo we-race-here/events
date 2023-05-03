@@ -28,9 +28,9 @@ class EventForm(forms.ModelForm):
 
     class Meta:
         model = Event
+        css = "block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
         fields = [
             "name",
-            "featured_event",
             "blurb",
             "description",
             "start_date",
@@ -44,15 +44,24 @@ class EventForm(forms.ModelForm):
             "state",
             "country",
             "tags",
-            "panels",
             "organization",
             "publish_type",
-            "approved",
+            "featured_event",
         ]
         widgets = {
-            "name": Textarea(attrs={"cols": 80, "rows": 20}),
-            "blurb": Textarea(attrs={"cols": 80, "rows": 100}),
-            "description": Textarea(attrs={"cols": 80, "rows": 200}),
+            'name': forms.TextInput(attrs={'class': css}),
+            'blurb': forms.TextInput(attrs={'class': css}),
+            'description': forms.Textarea(attrs={'class': css}),
+            'start_date': forms.Textarea(attrs={'class': css}),
+            'email': forms.TextInput(attrs={'class': css}),
+            'website': forms.TextInput(attrs={'class': css}),
+            'registration_website': forms.TextInput(attrs={'class': css}),
+            'permit_no': forms.TextInput(attrs={'class': css}),
+            'city': forms.TextInput(attrs={'class': css}),
+            'state': forms.TextInput(attrs={'class': css}),
+            'country': forms.TextInput(attrs={'class': css}),
+            'tags': forms.TextInput(attrs={'class': css}),
+
         }
 
 
