@@ -12,9 +12,14 @@
           <!-- Left Side Content -->
           <div class="col-span-8">
             <a href="{% url 'event:event_list' %}" class="text-blue-500">Back To Events</a>
-            {% if object.prefs.banner_image %}
+            {% if object.hero %}
               <img
                 src="{{ object.prefs.banner_image }}"
+                alt="Event Banner" title="" class="w-full h-auto">
+            {% endif %}
+            {% if object.logo %}
+              <img
+                src="{{ object.logo.url }}"
                 alt="Event Banner" title="" class="w-full h-auto">
             {% endif %}
             <div class="bg-white shadow-lg rounded p-4 mt-4">

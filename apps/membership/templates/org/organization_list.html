@@ -76,10 +76,12 @@
                           {% if organization.id != 1 %}
                         <tr tabindex="0" class="focus:outline-none h-16 border border-gray-100 dark:border-gray-600  rounded">
                                 <td>
-
                                 </td>
                                 <td class="">
                                     <div class="flex items-center pl-5">
+                                       {% if organization.logo %}
+                                        <img alt="ecommerce" class="w-[30px] h-[30px] object-cover object-center" src="{{organization.logo.url}}">
+                                        {%endif%}
                                         <p class="text-base font-medium leading-none text-gray-700 dark:text-white  mr-2">{{ organization.name }}</p>
                                           {% if  organization.website %}
                                             <a target="_blank" href="{{organization.website}}">
