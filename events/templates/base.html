@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Event Management">
 
-    <link rel="icon" href="{% static 'images/favicons/favicon.ico' %}">
+    <link rel="icon" href="{% static 'images/favicons/favicon.png' %}">
 
     {% block css %}
     <!-- Latest compiled and minified Bootstrap CSS -->
@@ -44,10 +44,10 @@
 
     <header class="bg-white">
       <!-- First level navigation -->
-      <nav class="container mx-auto py-4">
+      <nav class="container mx-auto py-4 bord">
         <div class="flex justify-end items-center">
           <div class="mr-4">
-            <a href="https://www.bicyclecolorado.org/" target="_blank" class="font-semibold" style="color: #86a4a2;">BICYCLE
+            <a href="https://www.bicyclecolorado.org/" target="_blank" class="inline-block text-md px-2 py-2 leading-none border rounded font-semibold uppercase text-green-800 border-white hover:border-transparent hover:text-white hover:bg-black mt-4 lg:mt-0" >BICYCLE
               COLORADO ADVOCACY</a>
           </div>
           <div  class="flex justify-end">
@@ -64,13 +64,13 @@
               {% else %}
                 {% if ACCOUNT_ALLOW_REGISTRATION %}
                 {# URL provided by django-allauth/account/urls.py #}
-                <button type="button"  onclick="location.href='{% url 'account_signup' %}'" class="px-4 py-2 text-xs font-medium text-center text-white bg-red-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                  {% translate "Sign Up" %}
+                <button type="button"  onclick="location.href='{% url 'account_signup' %}'" class="px-4 py-2 text-xs font-medium text-center text-white bg-orange-600 rounded-lg hover:bg-orange-700 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-orange-600 dark:hover:bg-orange-700 dark:focus:ring-orange-800">
+                  {% translate "JOIN" %}
                 </button>
 
               {% endif %}
                   {# URL provided by django-allauth/account/urls.py #}
-                  <button style="margin-left:4px" type="button" onclick="location.href='{% url 'account_login' %}'" class="px-4 py-2 text-xs font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                  <button style="margin-left:4px" type="button" onclick="location.href='{% url 'account_login' %}'" class="px-4 py-2 text-xs font-medium text-center text-white bg-lime-400 rounded-lg hover:bg-lime-600 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-lime-600 dark:hover:bg-lime-300 dark:focus:ring-lime-400">
                     {% translate "Sign In" %}
                   </button>
               {% endif %}
@@ -78,42 +78,38 @@
           </div>
         </div>
       </nav>
-
+<hr class="h-px bg-gray-200 border-0 dark:bg-gray-700">
       <!-- Second level navigation -->
       <nav class="bg-white-600">
         <div class="container mx-auto">
           <ul class="flex justify-between items-center text-black">
             <li>
                <a href="{% url 'home'%}">
-              <img
+              <img class="object-scale-down h-30 w-20"
                 src="https://www.bicyclecolorado.org/wp-content/uploads/2023/03/BC_EventSupport_2023_600px-sociallogo-1.png"
-                alt="Logo" class="object-scale-down h-30 w-20"></a>
+                alt="Logo"></a>
             </li>
 
             <div>
-              <ul class="flex justify-between pl-3">
+              <ul class="flex justify-between pl-2">
                 <li>
                   <a href="{% url  'event:event_list' %}">
-                    <span class="ml-4 text-green-800 font-semibold uppercase
-                      hover:text-green-600">Events</span>
+                    <span class="inline-block text-lg px-2 py-2 leading-none border rounded font-semibold uppercase text-green-800 border-white hover:border-transparent hover:text-white hover:bg-black mt-4 lg:mt-0">Events</span>
                   </a>
                 </li>
                 <li>
                   <a href="#">
-                    <span class="ml-4 text-green-800 font-semibold uppercase
-                      hover:text-green-600">Results</span>
+                    <span class="inline-block text-lg px-2 py-2 leading-none border rounded font-semibold uppercase text-green-800 border-white hover:border-transparent hover:text-white hover:bg-black mt-4 lg:mt-0">Results</span>
                   </a>
                 </li>
                 <li>
                   <a href="{% url 'membership:organizations' %}">
-                    <span class="ml-4 text-green-800 font-semibold uppercase
-                      hover:text-green-600">Clubs</span>
+                    <span class="inline-block text-lg px-2 py-2 leading-none border rounded font-semibold uppercase text-green-800 border-white hover:border-transparent hover:text-white hover:bg-black mt-4 lg:mt-0">Clubs</span>
                   </a>
                 </li>
                 <li>
-                  <a href="#">
-                    <span class="ml-4 text-green-800 font-semibold uppercase
-                      hover:text-green-600">Event and Racing Info</span>
+                  <a href="https://www.bicyclecolorado.org/events-2/event-support/" target="_blank">
+                    <span class="inline-block text-lg px-2 py-2 leading-none border rounded font-semibold uppercase text-green-800 border-white hover:border-transparent hover:text-white hover:bg-black mt-4 lg:mt-0">EVENT SUPPORT PROGRAM</span>
                   </a>
                 </li>
               </ul>
