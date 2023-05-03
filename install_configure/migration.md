@@ -3,3 +3,5 @@
 python manage.py migrate_account_user_to_user
 python manage.py migrate_cycling_orgs
 python manage.py migrate_cycling_events
+
+docker-compose -f development.yml run --rm django python manage.py migrate_cycling_events
