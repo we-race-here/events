@@ -44,9 +44,48 @@
       </div>
     </div>
   </section>
+  <!-- Start Race Series list -->
+  <div class="sm:px-6 w-full my-5">
+    <div class="bg-white dark:bg-gray-900  py-4 md:py-7 px-4 md:px-8 xl:px-10">
+      <div class="mt-7 overflow-x-auto">
+        <div class="sm:flex items-center justify-center">
+          <h2 class="capitalize title-font sm:text-2xl text-1xl mb-3 font-medium text-gray-900">Current Race Series and
+            cups</h2>
+        </div>
+        <table class="w-full whitespace-nowrap">
+          <tbody>
+          {% for series in RaceSeries %}
+            <tr tabindex="0" class="focus:outline-none h-16 border border-gray-100 dark:border-gray-600  rounded">
+              <td class="">
+                <div class="flex items-center pl-5">
+                  <a class="text-base font-medium leading-none text-orange-600 hover:text-orange-800 dark:text-white  mr-2"
+                     href="">{{ series.name }}</a>
+                </div>
+              </td>
+              <td>
+                Event: {{ series.events.count }}
+              </td>
+              <td>
+                Race: {{ series.races.count }}
+              </td>
+              <td>
+                Categories: {{ series.categories }}
+              </td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- End Race Series list -->
   <!-- Start search -->
   <div class="sm:px-6 w-full">
     <div class="bg-white dark:bg-gray-900  py-4 md:py-7 px-4 md:px-8 xl:px-10">
+      <div class="sm:flex items-center justify-center">
+        <h2 class="capitalize title-font sm:text-2xl text-1xl mb-3 font-medium text-gray-900">Events with results</h2>
+      </div>
       <div class="sm:flex items-center justify-between">
         <form method="GET" class="flex">
           <input type="search" name="search" placeholder="Search" value="{{ request.GET.search }}"

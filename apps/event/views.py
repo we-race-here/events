@@ -59,12 +59,12 @@ class EventResultListView(ListView):
     context_object_name = "events"
 
     # paginate_by = 10  # Change this to the desired number of items per page
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["RaceSeries"] = RaceSeries.objects.all()
 
-    # def get_context_data(self, **kwargs):
-    #     context = super().get_context_data(**kwargs)
-    #
-    #     return context
-    #
+        return context
+
     def get_queryset(self):
         queryset = Event.objects.filter(
             Q(start_date__lte=date.today()) & Q(Exists(Race.objects.filter(event=OuterRef("pk"))))
