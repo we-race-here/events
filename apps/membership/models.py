@@ -15,6 +15,8 @@ from django.utils import timezone
 from phonenumber_field.modelfields import PhoneNumberField
 from simple_history.models import HistoricalRecords
 
+from apps.usac.models import UsacDownload
+
 User = get_user_model()
 
 
@@ -160,6 +162,10 @@ class Organization(models.Model):
         else:
             self.social_media = {}
         return super().save(*args, **kwargs)
+
+    @property
+    def is_usac(self):
+        return UsacDownload.objects.filter(data__club=self.name).exists()
 
     def __str__(self):
         return f"{self.name}"

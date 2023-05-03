@@ -130,7 +130,11 @@
                 </td>
                 <td class="pl-24">
                   <div class="flex items-center">
-                    <i class="fa-solid fa-person-biking fa-sm" style="color: #5ec5c5;"></i>
+                    {% if organization.is_usac %}
+                      <img src="{% static "images/USACycling_Logo.svg" %}" style="max-width:17px" alt="usac">
+                    {% else %}
+                      <i class="fa-solid fa-person-biking fa-sm" style="color: #5ec5c5;"></i>
+                    {% endif %}
                     <p class="text-sm leading-none text-gray-600 dark:text-gray-200  ml-2">{{ organization.get_type_display }}</p>
                   </div>
                 </td>
