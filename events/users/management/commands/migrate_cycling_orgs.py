@@ -26,7 +26,8 @@ class Command(BaseCommand):
             if existing_org:
                 print(f"Organization {src_org.name} already exists. Skipping migration.")
                 continue
-
+            print(src_org.logo)
+            print(src_org.prefs.get('banner_image') if src_org.prefs and src_org.prefs.get('banner_image') else None)
             # Create a new instance of the Organization model
             dest_org = Organization()
 
@@ -44,17 +45,8 @@ class Command(BaseCommand):
             dest_org.city = src_org.city
             dest_org.state = src_org.state
             dest_org.zipcode = src_org.zipcode
-            # # TODO: migrate hero (banner_image) from prefs and logo
-            # if src_org.logo:
-            #     logo_url = src_org.logo
-            #     try:
-            #         with NamedTemporaryFile(delete=True) as temp_logo:
-            #             temp_logo.write(requests.get(logo_url).content)
-            #             temp_logo.flush()
-            #             dest_org.logo.save(f"{src_org.name}_logo", File(temp_logo))
-            #     except Exception as e:
-            #         print(f"Error saving logo for organization {src_org.name}: {e}")
-            # dest_org.hero = src_org.prefs.get('banner_image') if src_org.prefs and src_org.prefs.get('banner_image') else None
+            dest_org.logo = src_org.logo
+            dest_org.hero = src_org.prefs.get('banner_image') if src_org.prefs and src_org.prefs.get('banner_image') else None
             dest_org.membership_open = src_org.membership_open
             dest_org.approved = src_org.approved
             dest_org.waiver_text = src_org.waiver_text

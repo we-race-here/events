@@ -115,8 +115,14 @@
             {% if organization.id != 1 and organization.type != "promoter" %}
               <tr tabindex="0" class="focus:outline-none h-16 border border-gray-100 dark:border-gray-600  rounded">
                 <td>
+                  {% if organization.logo %}
+              <img class="w-[75px] h-[75px] object-cover object-center" src="{{organization.logo.url}}" alt="Your Image Description">
+              {%else%}
                   <img alt="ecommerce" class="object-cover object-center w-full h-full block"
                        src="https://dummyimage.com/75x75">
+              {% endif%}
+
+
                 </td>
                 <td class="">
                   <div class="flex items-center pl-5">

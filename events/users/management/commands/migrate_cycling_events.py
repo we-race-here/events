@@ -29,7 +29,7 @@ class Command(BaseCommand):
                 registration_website=cycling_event.registration_website,
                 logo=cycling_event.logo,
                 # TODO: Add logic to migrate hero image
-                # hero=cycling_event.hero,  # Add logic to migrate hero image
+                hero=cycling_event.prefs.get('banner_image') if cycling_event.prefs else None,  # Add logic to migrate hero image
                 tags=cycling_event.tags,
                 # TODO: Add logic to migrate panels from more_data
                 # panels=cycling_event.more_data,  # Add logic to migrate panels from more_data

@@ -52,6 +52,10 @@
           </div>
           <div  class="flex justify-end">
             {% if request.user.is_authenticated %}
+            <img
+              src="{{request.user.avatar.url}}"
+              class="w-7 rounded-full"
+              alt="Avatar" />
                 <a  class="text-orange-400
                   hover:text-300" href="{% url 'users:detail' request.user.pk %}">
                   {% translate request.user.email %}</i>

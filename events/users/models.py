@@ -7,9 +7,14 @@ from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from phonenumber_field.modelfields import PhoneNumberField
 from simple_history.models import HistoricalRecords
-
+import os
+from pathlib import Path
 from events.users.managers import UserManager
 
+from events.helpers import get_random_upload_path
+
+def avatar_file_path_func(instance, filename):
+    return get_random_upload_path(str(Path('uploads', 'account', 'user', 'avatar')), filename)
 
 class User(AbstractUser):
     """
@@ -39,16 +44,16 @@ class User(AbstractUser):
 
     # First and last name do not cover name patterns around the globe
     # TODO: We need to use first and last name to match with USAC data.
-    name = CharField(_("Name of User"), blank=True, max_length=255)
-    first_name = None  # type: ignore
-    last_name = None  # type: ignore
+    name = None
+    # first_name = None  # type: ignore
+    # last_name = None  # type: ignore
     email = EmailField(_("email address"), unique=True)
     username = None  # type: ignore
     usac_license = models.IntegerField(null=True, blank=True, unique=True)
     usac_license_verified = models.BooleanField(default=False)
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES, default=GENDER_UNKNOWN)
     birth_date = models.DateField(null=True, blank=True)
-    avatar = models.ImageField(blank=True, null=True)
+    avatar = models.ImageField(blank=True, null=True, upload_to=avatar_file_path_func)
     phone = PhoneNumberField(max_length=50, null=True, blank=True)
     phone_verified = models.BooleanField(default=None, null=True)
     address1 = models.CharField(max_length=256, blank=True, null=True)
