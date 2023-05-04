@@ -97,10 +97,19 @@ class EventForm(forms.ModelForm):
 
 
 class RaceSeriesForm(forms.ModelForm):
+    events = forms.ModelMultipleChoiceField(
+        widget=forms.CheckboxSelectMultiple, queryset=Event.objects.all().order_by("name")
+    )
+
     class Meta:
         model = RaceSeries
+        ordering = ["name"]
         fields = "__all__"
         widgets = {"events": forms.CheckboxSelectMultiple(choices=Event.objects.all().order_by("name"))}
+
+
+class AddEventToRaceSeriesForm(forms.ModelForm):
+    pass
 
 
 class ImportResults(forms.ModelForm):
