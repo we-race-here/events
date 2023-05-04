@@ -78,6 +78,7 @@ THIRD_PARTY_APPS = [
     "allauth.socialaccount",
     "simple_history",
     "turnstile",
+    "ckeditor"
 ]
 
 LOCAL_APPS = [
@@ -140,6 +141,8 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     'simple_history.middleware.HistoryRequestMiddleware',
+    "django.middleware.clickjacking.XFrameOptionsMiddleware"
+
 ]
 
 # STATIC
@@ -235,7 +238,7 @@ SESSION_COOKIE_HTTPONLY = True
 # https://docs.djangoproject.com/en/dev/ref/settings/#csrf-cookie-httponly
 CSRF_COOKIE_HTTPONLY = True
 # https://docs.djangoproject.com/en/dev/ref/settings/#x-frame-options
-X_FRAME_OPTIONS = "DENY"
+X_FRAME_OPTIONS = "SAMEORIGIN"
 
 # EMAIL
 # ------------------------------------------------------------------------------
@@ -303,3 +306,11 @@ SOCIALACCOUNT_FORMS = {"signup": "events.users.forms.UserSocialSignupForm"}
 
 # Your stuff...
 # ------------------------------------------------------------------------------
+
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': 'Full',
+        'height': 300,
+        'width': 800,
+    },
+}

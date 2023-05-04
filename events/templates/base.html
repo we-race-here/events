@@ -25,6 +25,7 @@
   ================================================== -->
   {# Placed at the top of the document so pages load faster with defer #}
   {% block javascript %}
+  <script src="{% static 'ckeditor/ckeditor.js' %}"></script>
     <!-- usefathon analytics -->
     {% if 'events.bicyclecolorado.org' in request.get_host %}
       <script src="https://cdn.usefathom.com/script.js" data-site="ARATEZFL" defer></script>
@@ -42,7 +43,7 @@
 
 <body class="bg-gray-100 min-h-screen">
 
-<header class="bg-white">
+<header class="bg-white relative">
   <!-- First level navigation -->
   <nav class="container mx-auto py-4 bord">
     <div class="flex justify-end items-center">
@@ -91,17 +92,19 @@
   <!-- Second level navigation -->
   <hr class="h-px bg-gray-200 border-0 dark:bg-gray-700">
   <!-- Second level navigation -->
-  <nav class="bg-white-600">
+  <nav class="bg-white-600 py-6 ">
     <div class="container mx-auto">
       <ul class="flex justify-between items-center text-black">
-        <li>
+        <!-- Add the logo inside a new 'logo-container' div -->
+        <div class="logo-container mt-2">
           <a href="{% url 'home' %}">
-            <img class="object-scale-down h-30 w-20"
+            <img class="object-scale-down h-auto w-40 rounded-full"
                  src="https://www.bicyclecolorado.org/wp-content/uploads/2023/03/BC_EventSupport_2023_600px-sociallogo-1.png"
                  alt="Logo"></a>
+        </div>
+        <li >
         </li>
-
-        <div>
+        <div >
           <ul class="flex justify-between pl-2">
             <li>
               <a href="{% url  'event:event_list' %}">
@@ -136,7 +139,7 @@
 </header>
 
 <!-- Content -->
-<main class="container mx-auto mt-10">
+<main class="container mx-auto mt-7">
   <section>
     <!--   Content Goes here     -->
     {% block content %}
@@ -211,4 +214,13 @@
     {% endcomment %}
 {% endblock inline_javascript %}
 </body>
+<style>
+  .logo-container {
+    position: absolute;
+    left: 1rem;
+    top: -20px; /* Adjust this value to control the vertical position of the logo */
+    left: 0px; /* Adjust this value to control the vertical position of the logo */
+
+  }
+</style>
 </html>
