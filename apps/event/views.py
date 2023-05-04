@@ -1,6 +1,8 @@
+from datetime import date
+
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.db.models import Q
+from django.db.models import Exists, OuterRef, Q
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse_lazy
@@ -26,6 +28,7 @@ class EventListView(ListView):
     model = Event
     template_name = "event/event_list.html"
     context_object_name = "events"
+
     # paginate_by = 10  # Change this to the desired number of items per page
 
     def get_context_data(self, **kwargs):
@@ -40,6 +43,33 @@ class EventListView(ListView):
             queryset = queryset.order_by(sort_by)
         search_query = self.request.GET.get("search", "")
 
+        if search_query:
+            queryset = queryset.filter(
+                Q(name__icontains=search_query)
+                | Q(website__icontains=search_query)
+                | Q(city__icontains=search_query)
+                | Q(state__icontains=search_query)
+            )
+        return queryset
+
+
+class EventResultListView(ListView):
+    model = Event
+    template_name = "results/events_results_list.html"
+    context_object_name = "events"
+
+    # paginate_by = 10  # Change this to the desired number of items per page
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["RaceSeries"] = RaceSeries.objects.all()
+
+        return context
+
+    def get_queryset(self):
+        queryset = Event.objects.filter(
+            Q(start_date__lte=date.today()) & Q(Exists(Race.objects.filter(event=OuterRef("pk"))))
+        ).order_by("-start_date")
+        search_query = self.request.GET.get("search", "")
         if search_query:
             queryset = queryset.filter(
                 Q(name__icontains=search_query)

@@ -2,200 +2,213 @@
 <!DOCTYPE html>
 {% get_current_language as LANGUAGE_CODE %}
 <html lang="{{ LANGUAGE_CODE }}">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>{% block title %}Events{% endblock title %}</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Event Management">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>{% block title %}Events{% endblock title %}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Event Management">
 
-    <link rel="icon" href="{% static 'images/favicons/favicon.png' %}">
+  <link rel="icon" href="{% static 'images/favicons/favicon.png' %}">
 
-    {% block css %}
+  {% block css %}
     <!-- Latest compiled and minified Bootstrap CSS -->
-<!--    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css" integrity="sha512-GQGU0fMMi238uA+a/bdWJfpUGKUkBdgfFdgBm72SUQ6BeyWjoY/ton0tEjH+OSH9iP4Dfh+7HM0I9f5eR0L/4w==" crossorigin="anonymous" referrerpolicy="no-referrer" />-->
+    <!--    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css" integrity="sha512-GQGU0fMMi238uA+a/bdWJfpUGKUkBdgfFdgBm72SUQ6BeyWjoY/ton0tEjH+OSH9iP4Dfh+7HM0I9f5eR0L/4w==" crossorigin="anonymous" referrerpolicy="no-referrer" />-->
     <!-- Your stuff: Third-party CSS libraries go here -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://kit.fontawesome.com/cd872d1046.js"
-      crossorigin="anonymous"></script>
+            crossorigin="anonymous"></script>
     <!-- This file stores project-specific CSS -->
     <link href="{% static 'css/project.css' %}" rel="stylesheet">
-    {% endblock %}
-    <!-- Le javascript
-    ================================================== -->
-    {# Placed at the top of the document so pages load faster with defer #}
-    {% block javascript %}
-      <!-- usefathon analytics -->
-        {% if 'events.bicyclecolorado.org' in request.get_host %}
-            <script src="https://cdn.usefathom.com/script.js" data-site="ARATEZFL" defer></script>
-        {% endif %}
-      <!-- Bootstrap JS -->
-<!--      <script defer src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.min.js" integrity="sha512-OvBgP9A2JBgiRad/mM36mkzXSXaJE9BEIENnVEmeZdITvwT09xnxLtT4twkCa8m/loMbPHsvPl0T8lRGVBwjlQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>-->
-      <!-- Your stuff: Third-party javascript libraries go here -->
+  {% endblock %}
+  <!-- Le javascript
+  ================================================== -->
+  {# Placed at the top of the document so pages load faster with defer #}
+  {% block javascript %}
+    <!-- usefathon analytics -->
+    {% if 'events.bicyclecolorado.org' in request.get_host %}
+      <script src="https://cdn.usefathom.com/script.js" data-site="ARATEZFL" defer></script>
+    {% endif %}
+    <!-- Bootstrap JS -->
+    <!--      <script defer src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.min.js" integrity="sha512-OvBgP9A2JBgiRad/mM36mkzXSXaJE9BEIENnVEmeZdITvwT09xnxLtT4twkCa8m/loMbPHsvPl0T8lRGVBwjlQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>-->
+    <!-- Your stuff: Third-party javascript libraries go here -->
 
-      <!-- place project specific Javascript in this file -->
-<!--      <script defer src="{% static 'js/project.js' %}"></script>-->
+    <!-- place project specific Javascript in this file -->
+    <!--      <script defer src="{% static 'js/project.js' %}"></script>-->
 
-    {% endblock javascript %}
+  {% endblock javascript %}
 
-  </head>
+</head>
 
-  <body class="bg-gray-100 min-h-screen">
+<body class="bg-gray-100 min-h-screen">
 
-    <header class="bg-white">
-      <!-- First level navigation -->
-      <nav class="container mx-auto py-4 bord">
-        <div class="flex justify-end items-center">
-          <div class="mr-4">
-            <a href="https://www.bicyclecolorado.org/" target="_blank" class="inline-block text-md px-2 py-2 leading-none border rounded font-semibold uppercase text-green-800 border-white hover:border-transparent hover:text-white hover:bg-black mt-4 lg:mt-0" >BICYCLE
-              COLORADO ADVOCACY</a>
-          </div>
-          <div  class="flex justify-end">
-            {% if request.user.is_authenticated %}
-            <img
-              src="{{request.user.avatar.url}}"
-              class="w-7 rounded-full"
-              alt="Avatar" />
-                <a  class="text-orange-400
-                  hover:text-300" href="{% url 'users:detail' request.user.pk %}">
-                  {% translate request.user.email %}</i>
-                </a>
-                {# URL provided by django-allauth/account/urls.py #}
-                <a title="Sign Out"  class="ml-2 text-orange-400
-                  hover:text-300" href="{% url 'account_logout' %}">
-                  <i class="fas fa-sign-out-alt"></i>
-                </a>
-              {% else %}
-                {% if ACCOUNT_ALLOW_REGISTRATION %}
-                {# URL provided by django-allauth/account/urls.py #}
-                <button type="button"  onclick="location.href='{% url 'account_signup' %}'" class="px-4 py-2 text-xs font-medium text-center text-white bg-orange-600 rounded-lg hover:bg-orange-700 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-orange-600 dark:hover:bg-orange-700 dark:focus:ring-orange-800">
-                  {% translate "JOIN" %}
-                </button>
-
-              {% endif %}
-                  {# URL provided by django-allauth/account/urls.py #}
-                  <button style="margin-left:4px" type="button" onclick="location.href='{% url 'account_login' %}'" class="px-4 py-2 text-xs font-medium text-center text-white bg-lime-400 rounded-lg hover:bg-lime-600 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-lime-600 dark:hover:bg-lime-300 dark:focus:ring-lime-400">
-                    {% translate "Sign In" %}
-                  </button>
-              {% endif %}
-
-          </div>
-        </div>
-      </nav>
-<hr class="h-px bg-gray-200 border-0 dark:bg-gray-700">
-      <!-- Second level navigation -->
-      <nav class="bg-white-600">
-        <div class="container mx-auto">
-          <ul class="flex justify-between items-center text-black">
-            <li>
-               <a href="{% url 'home'%}">
-              <img class="object-scale-down h-30 w-20"
-                src="https://www.bicyclecolorado.org/wp-content/uploads/2023/03/BC_EventSupport_2023_600px-sociallogo-1.png"
-                alt="Logo"></a>
-            </li>
-
-            <div>
-              <ul class="flex justify-between pl-2">
-                <li>
-                  <a href="{% url  'event:event_list' %}">
-                    <span class="inline-block text-lg px-2 py-2 leading-none border rounded font-semibold uppercase text-green-800 border-white hover:border-transparent hover:text-white hover:bg-black mt-4 lg:mt-0">Events</span>
-                  </a>
-                </li>
-                <li>
-                  <a href="#">
-                    <span class="inline-block text-lg px-2 py-2 leading-none border rounded font-semibold uppercase text-green-800 border-white hover:border-transparent hover:text-white hover:bg-black mt-4 lg:mt-0">Results</span>
-                  </a>
-                </li>
-                <li>
-                  <a href="{% url 'membership:organizations' %}">
-                    <span class="inline-block text-lg px-2 py-2 leading-none border rounded font-semibold uppercase text-green-800 border-white hover:border-transparent hover:text-white hover:bg-black mt-4 lg:mt-0">Clubs</span>
-                  </a>
-                </li>
-                <li>
-                  <a href="https://www.bicyclecolorado.org/events-2/event-support/" target="_blank">
-                    <span class="inline-block text-lg px-2 py-2 leading-none border rounded font-semibold uppercase text-green-800 border-white hover:border-transparent hover:text-white hover:bg-black mt-4 lg:mt-0">EVENT SUPPORT PROGRAM</span>
-                  </a>
-                </li>
-              </ul>
-            </div>
-
-          </ul>
-        </div>
-      </nav>
-    </header>
-
-    <!-- Content -->
-    <main class="container mx-auto mt-10">
-      <section>
-        <!--   Content Goes here     -->
-         {% block content %}
-         {% endblock %}
-      </section>
-    </main>
-
-    <footer class="py-16 px-4" style="background-color:#cbdc6c">
-      <div class="container mx-auto">
-        <div class="flex flex-wrap justify-center mb-20">
-
-          <ul class="flex items-center space-x-8">
-            <li>
-              <a href="#" class="text-green-800 font-semibold uppercase
-                hover:text-green-600">CONTACT US/CONTACTENOS</a>
-            </li>
-            <li>
-              <a href="#" class="text-green-800 font-semibold uppercase
-                hover:text-green-600">WHAT WE DO</a>
-            </li>
-            <li>
-              <a href="#" class="text-green-800 font-semibold uppercase
-                hover:text-green-600">MEET THE TEAM</a>
-            </li>
-            <li>
-              <a href="#" class="text-green-800 font-semibold uppercase
-                hover:text-green-600">BECOME A BICYCLE ADVOCATE</a>
-            </li>
-            <li>
-              <a href="#" class="text-green-800 font-semibold uppercase
-                hover:text-green-600">GO FOR A RIDE</a>
-            </li>
-            <li>
-              <a href="#" class="text-green-800 font-semibold uppercase
-                hover:text-green-600">PRIVACY POLICY</a>
-            </li>
-          </ul>
-
-        </div>
-        <div class="flex justify-center"> <!-- Add flex and justify-center here -->
-          <a href="#" class="w-28 h-28 mb-12">
-            <img class="w-27 h-auto"
-              src="https://www.bicyclecolorado.org/wp-content/uploads/2016/11/logo-footer-svg.svg"
-              alt="Footer Logo">
-          </a>
-        </div>
-        <ul class="flex justify-center items-center space-x-4">
-          <li class="text-gray-800 font-medium">© 2023 Bicycle Colorado, a
-            501(c)3 non profit organization</li>
-          <li class="text-gray-800 font-medium">|</li>
-          <li class="text-red-800 font-medium">1525 Market Street #100, Denver,
-            Colo. 80202</li>
-          <li class="text-gray-800 font-medium">|</li>
-          <li class="text-gray-800 font-medium">
-            <span class="text-orange-600">Tax ID #84-1201078</span>
-          </li>
-        </ul>
+<header class="bg-white">
+  <!-- First level navigation -->
+  <nav class="container mx-auto py-4 bord">
+    <div class="flex justify-end items-center">
+      <div class="mr-4">
+        <a href="https://www.bicyclecolorado.org/" target="_blank"
+           class="inline-block text-md px-2 py-2 leading-none border rounded font-semibold uppercase text-green-800 border-white hover:border-transparent hover:text-white hover:bg-black mt-4 lg:mt-0">BICYCLE
+          COLORADO ADVOCACY</a>
       </div>
-    </footer>
+      <div class="flex justify-end">
+        {% if request.user.is_authenticated %}
+          {% if request.user.avatar %}
+            <img
+                src="{{ request.user.avatar.url }}"
+                class="w-7 rounded-full"
+                alt="Avatar"/>
+          {% endif %}
+          <a class="text-orange-400
+                  hover:text-300" href="{% url 'users:detail' request.user.pk %}">
+            <i>{% translate request.user.email %}</i>
+          </a>
+          {# URL provided by django-allauth/account/urls.py #}
+          <a title="Sign Out" class="ml-2 text-orange-400
+                  hover:text-300" href="{% url 'account_logout' %}">
+            <i class="fas fa-sign-out-alt"></i>
+          </a>
+        {% else %}
+          {% if ACCOUNT_ALLOW_REGISTRATION %}
+            {# URL provided by django-allauth/account/urls.py #}
+            <button type="button" onclick="location.href='{% url 'account_signup' %}'"
+                    class="px-4 py-2 text-xs font-medium text-center text-white bg-orange-600 rounded-lg hover:bg-orange-700 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-orange-600 dark:hover:bg-orange-700 dark:focus:ring-orange-800">
+              {% translate "JOIN" %}
+            </button>
 
-    {% block modal %}{% endblock modal %}
+          {% endif %}
+          {# URL provided by django-allauth/account/urls.py #}
+          <button style="margin-left:4px" type="button" onclick="location.href='{% url 'account_login' %}'"
+                  class="px-4 py-2 text-xs font-medium text-center text-white bg-lime-400 rounded-lg hover:bg-lime-600 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-lime-600 dark:hover:bg-lime-300 dark:focus:ring-lime-400">
+            {% translate "Sign In" %}
+          </button>
+        {% endif %}
 
-    {% block inline_javascript %}
-    {% comment %}
+      </div>
+    </div>
+  </nav>
+  <hr class="h-px bg-gray-200 border-0 dark:bg-gray-700">
+  <!-- Second level navigation -->
+  <hr class="h-px bg-gray-200 border-0 dark:bg-gray-700">
+  <!-- Second level navigation -->
+  <nav class="bg-white-600">
+    <div class="container mx-auto">
+      <ul class="flex justify-between items-center text-black">
+        <li>
+          <a href="{% url 'home' %}">
+            <img class="object-scale-down h-30 w-20"
+                 src="https://www.bicyclecolorado.org/wp-content/uploads/2023/03/BC_EventSupport_2023_600px-sociallogo-1.png"
+                 alt="Logo"></a>
+        </li>
+
+        <div>
+          <ul class="flex justify-between pl-2">
+            <li>
+              <a href="{% url  'event:event_list' %}">
+                <span
+                    class="inline-block text-lg px-2 py-2 leading-none border rounded font-semibold uppercase text-green-800 border-white hover:border-transparent hover:text-white hover:bg-black mt-4 lg:mt-0">Events</span>
+              </a>
+            </li>
+            <li>
+              <a href="{% url "event:events_results_list" %}">
+                <span
+                    class="inline-block text-lg px-2 py-2 leading-none border rounded font-semibold uppercase text-green-800 border-white hover:border-transparent hover:text-white hover:bg-black mt-4 lg:mt-0">Results</span>
+              </a>
+            </li>
+            <li>
+              <a href="{% url 'membership:organizations' %}">
+                <span
+                    class="inline-block text-lg px-2 py-2 leading-none border rounded font-semibold uppercase text-green-800 border-white hover:border-transparent hover:text-white hover:bg-black mt-4 lg:mt-0">Clubs</span>
+              </a>
+            </li>
+            <li>
+              <a href="https://www.bicyclecolorado.org/events-2/event-support/" target="_blank">
+                <span
+                    class="inline-block text-lg px-2 py-2 leading-none border rounded font-semibold uppercase text-green-800 border-white hover:border-transparent hover:text-white hover:bg-black mt-4 lg:mt-0">EVENT SUPPORT PROGRAM</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+
+      </ul>
+    </div>
+  </nav>
+</header>
+
+<!-- Content -->
+<main class="container mx-auto mt-10">
+  <section>
+    <!--   Content Goes here     -->
+    {% block content %}
+    {% endblock %}
+  </section>
+</main>
+
+<footer class="py-16 px-4" style="background-color:#cbdc6c">
+  <div class="container mx-auto">
+    <div class="flex flex-wrap justify-center mb-20">
+
+      <ul class="flex items-center space-x-8">
+        <li>
+          <a href="#" class="text-green-800 font-semibold uppercase
+                hover:text-green-600">CONTACT US/CONTACTENOS</a>
+        </li>
+        <li>
+          <a href="#" class="text-green-800 font-semibold uppercase
+                hover:text-green-600">WHAT WE DO</a>
+        </li>
+        <li>
+          <a href="#" class="text-green-800 font-semibold uppercase
+                hover:text-green-600">MEET THE TEAM</a>
+        </li>
+        <li>
+          <a href="#" class="text-green-800 font-semibold uppercase
+                hover:text-green-600">BECOME A BICYCLE ADVOCATE</a>
+        </li>
+        <li>
+          <a href="#" class="text-green-800 font-semibold uppercase
+                hover:text-green-600">GO FOR A RIDE</a>
+        </li>
+        <li>
+          <a href="#" class="text-green-800 font-semibold uppercase
+                hover:text-green-600">PRIVACY POLICY</a>
+        </li>
+      </ul>
+
+    </div>
+    <div class="flex justify-center"> <!-- Add flex and justify-center here -->
+      <a href="#" class="w-28 h-28 mb-12">
+        <img class="w-27 h-auto"
+             src="https://www.bicyclecolorado.org/wp-content/uploads/2016/11/logo-footer-svg.svg"
+             alt="Footer Logo">
+      </a>
+    </div>
+    <ul class="flex justify-center items-center space-x-4">
+      <li class="text-gray-800 font-medium">© 2023 Bicycle Colorado, a
+        501(c)3 non profit organization
+      </li>
+      <li class="text-gray-800 font-medium">|</li>
+      <li class="text-red-800 font-medium">1525 Market Street #100, Denver,
+        Colo. 80202
+      </li>
+      <li class="text-gray-800 font-medium">|</li>
+      <li class="text-gray-800 font-medium">
+        <span class="text-orange-600">Tax ID #84-1201078</span>
+      </li>
+    </ul>
+  </div>
+</footer>
+
+{% block modal %}{% endblock modal %}
+
+{% block inline_javascript %}
+  {% comment %}
     Script tags with only code, no src (defer by default). To run
     with a "defer" so that you run inline code:
     <script>
       window.addEventListener('DOMContentLoaded', () => {/* Run whatever you want */});
     </script>
     {% endcomment %}
-    {% endblock inline_javascript %}
-  </body>
+{% endblock inline_javascript %}
+</body>
 </html>

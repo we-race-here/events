@@ -29,77 +29,71 @@
     </div>
   </section>
   <!--- End top into section -->
-  <!--- Start event list -->
- <div class="sm:px-6 w-full">
-             <div class="px-4 md:px-10 py-4 md:py-7">
-                 <div class="flex items-center justify-between">
-                     <p tabindex="0" class="focus:outline-none text-base sm:text-lg md:text-xl lg:text-2xl font-bold leading-normal text-gray-800 dark:text-white">Events</p>
-                     <div class="py-3 px-4 flex items-center text-sm font-medium leading-none text-gray-600 dark:text-gray-200  bg-gray-200 dark:bg-gray-800  hover:bg-gray-300   dark:hover:bg-gray-700  cursor-pointer rounded">
-                       <form method="GET" class="flex">
+  <div class="bg-white dark:bg-gray-900  py-4 md:py-7 px-4 md:px-8 xl:px-10">
+    <div class="sm:flex items-center justify-between">
+      <div class="flex items-center">
+        <form method="GET" class="flex">
+          <input type="search" name="search" placeholder="Search" value="{{ request.GET.search }}"
+                 class="border border-gray-300 py-2 px-4 rounded-l">
+          <button type="submit" class="bg-cyan-600 hover:bg-cyan-800 text-white font-bold py-2 px-4 rounded-r">
+            Search
+          </button>
+        </form>
+      </div>
+      <!-- filter form -->
+      <div
+          class="py-3 px-4 flex items-center text-sm font-medium leading-none text-gray-600 dark:text-gray-200  bg-gray-200 dark:bg-gray-800  hover:bg-gray-300   dark:hover:bg-gray-700  cursor-pointer rounded">
+        <form method="GET" class="flex">
 
-                         <p>Sort By:</p>
-                         <select name="sort" id="sort" aria-label="select" class="focus:text-indigo-600 focus:outline-none bg-transparent ml-1" onchange="this.form.submit()">
-                             <option class="text-sm text-indigo-800" value="">Default</option>
-                             <option class="text-sm text-indigo-800" value="name" {% if request.GET.sort == 'name' %}selected{% endif %}>Name (A-Z)</option>
-                             <option class="text-sm text-indigo-800" value="-name" {% if request.GET.sort == '-name' %}selected{% endif %}>Name (Z-A)</option>
-                             <option class="text-sm text-indigo-800" value="type" {% if request.GET.sort == 'type' %}selected{% endif %}>Type (A-Z)</option>
-                             <option class="text-sm text-indigo-800" value="-type" {% if request.GET.sort == '-type' %}selected{% endif %}>Type (Z-A)</option>
-                             <option class="text-sm text-indigo-800" value="city" {% if request.GET.sort == 'city' %}selected{% endif %}>City (A-Z)</option>
-                             <option class="text-sm text-indigo-800" value="-city" {% if request.GET.sort == '-city' %}selected{% endif %}>City (Z-A)</option>
-                             <option class="text-sm text-indigo-800" value="state" {% if request.GET.sort == 'state' %}selected{% endif %}>State (A-Z)</option>
-                             <option class="text-sm text-indigo-800" value="-state" {% if request.GET.sort == '-state' %}selected{% endif %}>State (Z-A)</option>
-                         </select>
-                     </form>
-                       <form  method="GET" class=" ml-5 flex">
+          <p>Sort By:</p>
+          <select name="sort" id="sort" aria-label="select"
+                  class="focus:text-indigo-600 focus:outline-none bg-transparent ml-1" onchange="this.form.submit()">
+            <option class="text-sm text-indigo-800" value="">Default</option>
+            <option class="text-sm text-indigo-800" value="name" {% if request.GET.sort == 'name' %}selected{% endif %}>
+              Name (A-Z)
+            </option>
+            <option class="text-sm text-indigo-800" value="-name"
+                    {% if request.GET.sort == '-name' %}selected{% endif %}>Name (Z-A)
+            </option>
+            <option class="text-sm text-indigo-800" value="type" {% if request.GET.sort == 'type' %}selected{% endif %}>
+              Type (A-Z)
+            </option>
+            <option class="text-sm text-indigo-800" value="-type"
+                    {% if request.GET.sort == '-type' %}selected{% endif %}>Type (Z-A)
+            </option>
+            <option class="text-sm text-indigo-800" value="city" {% if request.GET.sort == 'city' %}selected{% endif %}>
+              City (A-Z)
+            </option>
+            <option class="text-sm text-indigo-800" value="-city"
+                    {% if request.GET.sort == '-city' %}selected{% endif %}>City (Z-A)
+            </option>
+            <option class="text-sm text-indigo-800" value="state"
+                    {% if request.GET.sort == 'state' %}selected{% endif %}>State (A-Z)
+            </option>
+            <option class="text-sm text-indigo-800" value="-state"
+                    {% if request.GET.sort == '-state' %}selected{% endif %}>State (Z-A)
+            </option>
+          </select>
+        </form>
+        <form method="GET" class=" ml-5 flex">
 
-                         <p>Filter by type:</p>
-                         <select name="type" id="type" class="focus:text-indigo-600 focus:outline-none bg-transparent ml-1" onchange="this.form.submit()">
-                           <option value="">All</option>
-                           {% for type_choice in type_choices %}
-                               <option value="{{ type_choice.0 }}" {% if request.GET.type == type_choice.0 %}selected{% endif %}>{{ type_choice.1 }}</option>
-                           {% endfor %}
-                       </select>
-                     </form>
-
-                     </div>
-                 </div>
-             </div>
-             <div class="bg-white dark:bg-gray-900  py-4 md:py-7 px-4 md:px-8 xl:px-10">
-                 <div class="sm:flex items-center justify-between">
-                     <div class="flex items-center">
-                       <form method="GET" class="flex">
-                         <input type="search" name="search" placeholder="Search" value="{{ request.GET.search }}" class="border border-gray-300 py-2 px-4 rounded-l">
-                         <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-r">
-                             Search
-                         </button>
-                     </form>
-                         <a class="rounded-full focus:outline-none focus:ring-2  focus:bg-indigo-50 focus:ring-indigo-800" href=" javascript:void(0)">
- <!--                            <div class="py-2 px-8 bg-indigo-100 text-indigo-700 rounded-full">-->
- <!--                                <p>All</p>-->
- <!--                            </div>-->
-                         </a>
- <!--                        <a class="rounded-full focus:outline-none focus:ring-2 focus:bg-indigo-50 focus:ring-indigo-800 ml-4 sm:ml-8" href="javascript:void(0)">-->
- <!--                            <div class="py-2 px-8 text-gray-600 dark:text-gray-200  hover:text-indigo-700 hover:bg-indigo-100 rounded-full ">-->
- <!--                                <p>Done</p>-->
- <!--                            </div>-->
- <!--                        </a>-->
- <!--                        <a class="rounded-full focus:outline-none focus:ring-2 focus:bg-indigo-50 focus:ring-indigo-800 ml-4 sm:ml-8" href="javascript:void(0)">-->
- <!--                            <div class="py-2 px-8 text-gray-600 dark:text-gray-200  hover:text-indigo-700 hover:bg-indigo-100 rounded-full ">-->
- <!--                                <p>Pending</p>-->
- <!--                            </div>-->
- <!--                        </a>-->
-                     </div>
-
-                     <button href="{% url 'event:event_create' %}" class="focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600 mt-4 sm:mt-0 inline-flex items-start justify-start px-6 py-3 bg-indigo-700 hover:bg-indigo-600 focus:outline-none rounded">
-                         <p class="text-sm font-medium leading-none text-white">
-                         <a href="{% url 'event:event_create' %}" >
-                         Create Event
-                           </a></p>
-                     </button>
-                 </div>
-             </div>
-         </div>
-<br>
+          <p>Filter by type:</p>
+          <select name="type" id="type" class="focus:text-indigo-600 focus:outline-none bg-transparent ml-1"
+                  onchange="this.form.submit()">
+            <option value="">All</option>
+            {% for type_choice in type_choices %}
+              <option value="{{ type_choice.0 }}"
+                      {% if request.GET.type == type_choice.0 %}selected{% endif %}>{{ type_choice.1 }}</option>
+            {% endfor %}
+          </select>
+        </form>
+      </div>
+      <!-- end filter form -->
+    </div>
+  </div>
+  </div>
+  </div>
+  <br>
   <section class="text-gray-600 body-font">
 
     <div class="container px-2 12 mx-auto">
@@ -109,10 +103,12 @@
           <div class="lg:w-1/4 md:w-1/2 p-4 w-full">
             <a class="block relative h-48 rounded overflow-hidden" href="{% url 'event:event_detail' event.pk %}">
               {% if event.logo %}
-              <img class="w-[250px] h-[250px] object-cover object-center" src="{{event.logo.url}}" alt="Your Image Description">
-              {%else%}
-              <img alt="Hero Image" class="object-contain object-center w-full h-full block" src="{% static "images/250x250.png" %}">
-              {% endif%}
+                <img class="object-scale-down max-h-[250px max-h-[250px] object-center" src="{{ event.logo.url }}"
+                     alt="">
+              {% else %}
+                <img alt="Logo" class="object-contain object-center w-full h-full block"
+                     src="{% static "images/250x250.png" %}">
+              {% endif %}
             </a>
             <div class="mt-4">
               <h3 class="text-gray-500 text-sm tracking-widest title-font mb-1 text-center bg-[#e9f1c3]">
@@ -143,7 +139,7 @@
                 {% endif %}
               </h3>
               <p class="mt-1 text-justify">
-                {{ event.description|truncatewords:20 }}
+                {{ event.blurb|truncatewords:20 }}
               </p>
             </div>
           </div>

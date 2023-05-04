@@ -1,0 +1,221 @@
+{% extends "account/base.html" %}
+{% load static %}
+{% block inner %}
+  <section class="text-gray-600 body-font">
+    <div class="container mx-auto flex px-5 py-10 md:flex-row flex-col items-center">
+      <div class="lg:max-w-md lg:w-full md:h-md md:w-1/2 w-5/6 mb-10 md:mb-0 ">
+        <img class="object-cover object-center rounded" alt="hero" src="{% static 'images/team_photo.png' %}">
+      </div>
+      <div
+          class="lg:flex-grow md:w-1/2 lg:pl-24 md:pl-16 flex flex-col md:items-start md:text-left items-center text-center">
+        <h1 class="title-font sm:text-4xl text-3xl mb-4 font-medium text-gray-900">Event Results
+          <br class="hidden lg:inline-block">
+        </h1>
+        <p class="mb-8 leading-relaxed">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+          magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+          consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id
+          est laborum.
+        </p>
+        <div class="flex justify-end">
+          <button href="{% url 'membership:create_organization' %}"
+                  class="mx-3 uppercase focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600 mt-4 sm:mt-0 inline-flex items-start justify-start px-6 py-3 bg-orange-600 hover:bg-orange-800 focus:outline-none rounded">
+            <p class="text-sm font-medium leading-none text-white ">
+              <a href="{% url 'membership:create_organization' %}">
+                Register a Club
+              </a></p>
+          </button>
+          <button href=""
+                  class="mx-3 uppercase focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600 mt-4 sm:mt-0 inline-flex items-start justify-start px-6 py-3 bg-cyan-600 hover:bg-cyan-800 focus:outline-none rounded">
+            <p class="text-sm font-medium leading-none text-white">
+              <a href="{% url 'membership:create_organization' %}">
+                Race Cup and Series compititions
+              </a></p>
+          </button>
+          <button href=""
+                  class="mx-3 uppercase focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600 mt-4 sm:mt-0 inline-flex items-start justify-start px-6 py-3 bg-orange-600 hover:bg-orange-800 focus:outline-none rounded">
+            <p class="text-sm font-medium leading-none text-white">
+              <a href="{% url 'membership:create_organization' %}">
+                JOIN Bicycle Colorado
+              </a></p>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- Start Race Series list -->
+  <div class="sm:px-6 w-full my-5">
+    <div class="bg-white dark:bg-gray-900  py-4 md:py-7 px-4 md:px-8 xl:px-10">
+      <div class="mt-7 overflow-x-auto">
+        <div class="sm:flex items-center justify-center">
+          <h2 class="capitalize title-font sm:text-2xl text-1xl mb-3 font-medium text-gray-900">Current Race Series and
+            cups</h2>
+        </div>
+        <table class="w-full whitespace-nowrap">
+          <tbody>
+          {% for series in RaceSeries %}
+            <tr tabindex="0" class="focus:outline-none h-16 border border-gray-100 dark:border-gray-600  rounded">
+              <td class="">
+                <div class="flex items-center pl-5">
+                  <a class="text-base font-medium leading-none text-orange-600 hover:text-orange-800 dark:text-white  mr-2"
+                     href="">{{ series.name }}</a>
+                </div>
+              </td>
+              <td>
+                Event: {{ series.events.count }}
+              </td>
+              <td>
+                Race: {{ series.races.count }}
+              </td>
+              <td>
+                Categories: {{ series.categories }}
+              </td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- End Race Series list -->
+  <!-- Start search -->
+  <div class="sm:px-6 w-full">
+    <div class="bg-white dark:bg-gray-900  py-4 md:py-7 px-4 md:px-8 xl:px-10">
+      <div class="sm:flex items-center justify-center">
+        <h2 class="capitalize title-font sm:text-2xl text-1xl mb-3 font-medium text-gray-900">Events with results</h2>
+      </div>
+      <div class="sm:flex items-center justify-between">
+        <form method="GET" class="flex">
+          <input type="search" name="search" placeholder="Search" value="{{ request.GET.search }}"
+                 class="border border-gray-300 py-2 px-4 rounded-l">
+          <button type="submit" class="bg-cyan-600 hover:bg-cyan-800 text-white font-bold py-2 px-4 rounded-r">
+            Search
+          </button>
+        </form>
+        <!-- End filter and order -->
+      </div>
+      <div class="mt-7 overflow-x-auto">
+        <table class="w-full whitespace-nowrap">
+          <tbody>
+          {% for event in events %}
+            <tr tabindex="0" class="focus:outline-none h-16 border border-gray-100 dark:border-gray-600  rounded">
+              <td>
+                <img alt="ecommerce" class="object-cover object-center w-full h-full block"
+                     src="https://dummyimage.com/75x75">
+              </td>
+              <td class="">
+                <div class="flex items-center pl-5">
+                  <a class="text-base font-medium leading-none text-orange-600 hover:text-orange-800 dark:text-white  mr-2"
+                     href="{% url 'event:event_detail' event.pk %}">{{ event.name }}</a>
+                </div>
+                <div class="flex items-center pl-5">
+                  <p class="text-base text-xs leading-none text-gray-400 dark:text-white  mr-2">
+                    {{ event.blurb|truncatewords:50 }} </p>
+                </div>
+              </td>
+              <td class="pl-5">
+                <div class="flex items-center">
+                  {% if event.is_usac_permitted %}
+                    <img src="{% static "images/USACycling_Logo.svg" %}" style="max-width:17px" alt="usac">
+                  {% else %}
+                    <i class="fa-solid fa-person-biking fa-sm" style="color: #5ec5c5;"></i>
+                  {% endif %}
+                </div>
+              </td>
+              <td class="flex pl-5">
+                <div class="flex items-center">
+                  {% if event.city %}
+                    {{ event.city }}
+                  {% endif %}
+                  {% if event.state %}
+                    , {{ event.state }}
+                  {% endif %}
+                </div>
+              </td>
+              <td class="">
+                <div class="flex items-center">
+                  {{ event.start_date }} - {{ event.end_date|default:"" }}
+                </div>
+              </td>
+            </tr>
+            <tr class="h-3"></tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <div class="mt-8">
+        <nav class="flex justify-center">
+          <ul class="inline-flex list-none">
+            {% if page_obj.has_previous %}
+              <li>
+                <a href="?page=1" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-l">
+                  First
+                </a>
+              </li>
+              <li>
+                <a href="?page={{ page_obj.previous_page_number }}"
+                   class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4">
+                  Prev
+                </a>
+              </li>
+            {% endif %}
+            {% for i in paginator.page_range %}
+              {% if page_obj.number == i %}
+                <li>
+                  <a href="?page={{ i }}" class="bg-blue-500 text-white font-bold py-2 px-4">
+                    {{ i }}
+                  </a>
+                </li>
+              {% else %}
+                <li>
+                  <a href="?page={{ i }}" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4">
+                    {{ i }}
+                  </a>
+                </li>
+              {% endif %}
+            {% endfor %}
+
+            {% if page_obj.has_next %}
+              <li>
+                <a href="?page={{ page_obj.next_page_number }}"
+                   class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4">
+                  Next
+                </a>
+              </li>
+              <li>
+                <a href="?page={{ paginator.num_pages }}"
+                   class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-r">
+                  Last
+                </a>
+              </li>
+            {% endif %}
+          </ul>
+        </nav>
+      </div>
+
+    </div>
+    <br>
+  </div>
+  <style>
+      .checkbox:checked + .check-icon {
+          display: flex;
+      }
+  </style>
+  <script>
+      function dropdownFunction(element) {
+          var dropdowns = document.getElementsByClassName("dropdown-content");
+          var i;
+          let list = element.parentElement.parentElement.getElementsByClassName("dropdown-content")[0];
+          list.classList.add("target");
+          for (i = 0; i < dropdowns.length; i++) {
+              if (!dropdowns[i].classList.contains("target")) {
+                  dropdowns[i].classList.add("hidden");
+              }
+          }
+          list.classList.toggle("hidden");
+      }
+  </script>
+
+{% endblock %}
