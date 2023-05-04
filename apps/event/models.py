@@ -223,7 +223,6 @@ class RaceSeries(models.Model):
         ("Absolute", "Absolute"),
         ("Relative", "Relative"),
     ]
-
     name = models.CharField(max_length=256)
     events = models.ManyToManyField(Event, related_name="race_series")
     races = models.ManyToManyField(Race, related_name="race_series")
@@ -232,7 +231,7 @@ class RaceSeries(models.Model):
     points_map = models.JSONField(null=True, blank=True)
     point_system = models.CharField(choices=POINTSYSTEM, max_length=16, null=True, blank=False)
     organization = models.ForeignKey(
-        Organization, on_delete=models.CASCADE, related_name="race_series", null=True, blank=False
+        Organization, on_delete=models.CASCADE, related_name="race_series", null=True, blank=True
     )
     create_datetime = models.DateTimeField(auto_now_add=True)
     history = HistoricalRecords()
