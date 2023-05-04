@@ -41,23 +41,6 @@
             Search
           </button>
         </form>
-        <a class="rounded-full focus:outline-none focus:ring-2  focus:bg-indigo-50 focus:ring-indigo-800"
-           href=" javascript:void(0)">
-          <!--                            <div class="py-2 px-8 bg-indigo-100 text-indigo-700 rounded-full">-->
-          <!--                                <p>All</p>-->
-          <!--                            </div>-->
-        </a>
-        <!--                        <a class="rounded-full focus:outline-none focus:ring-2 focus:bg-indigo-50 focus:ring-indigo-800 ml-4 sm:ml-8" href="javascript:void(0)">-->
-        <!--                            <div class="py-2 px-8 text-gray-600 dark:text-gray-200  hover:text-indigo-700 hover:bg-indigo-100 rounded-full ">-->
-        <!--                                <p>Done</p>-->
-        <!--                            </div>-->
-        <!--                        </a>-->
-        <!--                        <a class="rounded-full focus:outline-none focus:ring-2 focus:bg-indigo-50 focus:ring-indigo-800 ml-4 sm:ml-8" href="javascript:void(0)">-->
-        <!--                            <div class="py-2 px-8 text-gray-600 dark:text-gray-200  hover:text-indigo-700 hover:bg-indigo-100 rounded-full ">-->
-        <!--                                <p>Pending</p>-->
-        <!--                            </div>-->
-        <!--                        </a>-->
-        <!-- Filter and Order -->
         <div
             class="py-3 px-4 flex items-center text-sm font-medium leading-none text-gray-600 dark:text-gray-200  bg-gray-200 dark:bg-gray-800  hover:bg-gray-300   dark:hover:bg-gray-700  cursor-pointer rounded">
           <form method="GET" class="flex">
@@ -94,7 +77,6 @@
             </select>
           </form>
           <form method="GET" class=" ml-5 flex">
-
             <p>Filter by type:</p>
             <select name="type" id="type" class="focus:text-indigo-600 focus:outline-none bg-transparent ml-1"
                     onchange="this.form.submit()">
@@ -117,12 +99,10 @@
                 <td>
                   {% if organization.logo %}
               <img class="w-[75px] h-[75px] object-cover object-center" src="{{organization.logo.url}}" alt="Your Image Description">
-              {%else%}
+              {% else %}
                   <img alt="ecommerce" class="object-cover object-center w-full h-full block"
                        src="https://dummyimage.com/75x75">
-              {% endif%}
-
-
+              {% endif %}
                 </td>
                 <td class="">
                   <div class="flex items-center pl-5">
