@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}User: {{ object.name }}{% endblock %}
+
+{% block content %}
+  <div class="mt-7 overflow-x-auto">
+  <div class="flex items-center border-2 justify-center my-5">
+    <h2 class="text-2xl font-bold leading-none text-orange-600">{{ raceseries.name }}</h2>
+  </div>
+  <div class="flex items-center justify-center my-5">
+    <p class="text-base font-medium leading-none text-orange-500  mr-2"> Rich text decription and rules of cup</p>
+  </div>
+  <div class="flex items-center justify-center my-5">
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+      magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+      consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+      Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+  </div>
+  <div class="flex justify-center">
+   <button type="button" onclick="location.href='{% url 'membership:join_organization' %}'"
+        class="inline-flex text-white bg-orange-600 border-0 py-2 px-6 mx-3 focus:outline-none hover:bg-bg-orange-800 rounded text-lg">
+   Join a Club
+ </button>
+    <button href="{% url 'membership:create_organization' %}"
+            class="inline-flex text-white bg-orange-600 border-0 py-2 px-6 mx-3 focus:outline-none hover:bg-bg-orange-800 rounded text-lg"">
+          Register a Club
+    </button>
+ <button type="button" onclick="location.href='{% url 'account_signup' %}'"
+        class="inline-flex text-white bg-orange-600 border-0 py-2 px-6 mx-3 focus:outline-none hover:bg-bg-orange-800 rounded text-lg">
+   JOIN Bicycle Colorado
+ </button>
+  </div>
+  <div class="flex items-center justify-center my-5">
+    <p class="text-base font-medium leading-none text-gray-500  mr-2"> Cup individual and team standings: </p>
+  </div>
+
+  <div class="flex items-center justify-center">
+    <table class="w-1/2 whitespace-nowrap">
+      <tbody>
+      <tr>
+        <th>Place</th>
+        <th>Name</th>
+        <th>Club</th>
+        <th>Points</th>
+        <th>number of events</th>
+      </tr>
+      <tr>
+        <th>1</th>
+        <th>John Smith</th>
+        <th>Worst Club best rider</th>
+        <th>666</th>
+        <th>12</th>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+{% endblock content %}

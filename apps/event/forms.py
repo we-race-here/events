@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.postgres.forms import SimpleArrayField
-from django.forms import CharField, DateField, DateInput, ModelChoiceField, Textarea, TimeField, TimeInput
+from django.forms import CharField, DateField, DateInput, ModelChoiceField, TimeField, TimeInput
 
 from apps.event.models import Event, Race, RaceSeries
 
@@ -81,26 +81,35 @@ class EventForm(forms.ModelForm):
             "featured_event",
         ]
         widgets = {
-            'name': forms.TextInput(attrs={'class': css}),
-            'blurb': forms.TextInput(attrs={'class': css}),
-            'description': forms.Textarea(attrs={'class': css}),
-            'start_date': forms.Textarea(attrs={'class': css}),
-            'email': forms.TextInput(attrs={'class': css}),
-            'website': forms.TextInput(attrs={'class': css}),
-            'registration_website': forms.TextInput(attrs={'class': css}),
-            'permit_no': forms.TextInput(attrs={'class': css}),
-            'city': forms.TextInput(attrs={'class': css}),
-            'state': forms.TextInput(attrs={'class': css}),
-            'country': forms.TextInput(attrs={'class': css}),
-            'tags': forms.TextInput(attrs={'class': css}),
-
+            "name": forms.TextInput(attrs={"class": css}),
+            "blurb": forms.TextInput(attrs={"class": css}),
+            "description": forms.Textarea(attrs={"class": css}),
+            "start_date": forms.Textarea(attrs={"class": css}),
+            "email": forms.TextInput(attrs={"class": css}),
+            "website": forms.TextInput(attrs={"class": css}),
+            "registration_website": forms.TextInput(attrs={"class": css}),
+            "permit_no": forms.TextInput(attrs={"class": css}),
+            "city": forms.TextInput(attrs={"class": css}),
+            "state": forms.TextInput(attrs={"class": css}),
+            "country": forms.TextInput(attrs={"class": css}),
+            "tags": forms.TextInput(attrs={"class": css}),
         }
 
 
 class RaceSeriesForm(forms.ModelForm):
+    events = forms.ModelMultipleChoiceField(
+        widget=forms.CheckboxSelectMultiple, queryset=Event.objects.all().order_by("name")
+    )
+
     class Meta:
         model = RaceSeries
+        ordering = ["name"]
         fields = "__all__"
+        widgets = {"events": forms.CheckboxSelectMultiple(choices=Event.objects.all().order_by("name"))}
+
+
+class AddEventToRaceSeriesForm(forms.ModelForm):
+    pass
 
 
 class ImportResults(forms.ModelForm):

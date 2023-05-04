@@ -8,6 +8,8 @@ from .views import (
     EventResultListView,
     EventUpdateView,
     ImportRaceResults,
+    RaceSeriesDetailView,
+    RaceSeriesCreateView,
 )
 
 app_name = "event"
@@ -20,4 +22,6 @@ urlpatterns = [
     path("events/<int:pk>/delete/", EventDeleteView.as_view(), name="event_delete"),
     path("events/upload_results/<int:event_pk>", ImportRaceResults, name="import_race_results"),
     path("events/results/", EventResultListView.as_view(), name="events_results_list"),
+    path("raceseries/<int:pk>", RaceSeriesDetailView.as_view(), name="raceseries_detail"),
+    path("raceseries/create/", RaceSeriesCreateView.as_view(), name="raceseries_create"),
 ]
