@@ -25,7 +25,7 @@ django-storages[boto3]==1.13.2  # https://github.com/jschneier/django-storages
 # Database
 # This is the new for 4.2 you need both the binary and package.
 psycopg-binary==3.1.9
-psycopg==3.1.8
+psycopg==3.1.9
 
 # old db for 4.1.8
 psycopg2-binary==2.9.6
