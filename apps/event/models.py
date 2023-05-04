@@ -226,7 +226,7 @@ class RaceSeries(models.Model):
     name = models.CharField(max_length=256)
     events = models.ManyToManyField(Event, related_name="race_series")
     races = models.ManyToManyField(Race, related_name="race_series")
-    description = (models.TextField(null=True, blank=True, default=""),)
+    description = models.TextField(null=True, blank=True, default="")
     categories = ArrayField(models.CharField(max_length=100, blank=False), size=50, null=True, blank=False)
     points_map = models.JSONField(null=True, blank=True)
     point_system = models.CharField(choices=POINTSYSTEM, max_length=16, null=True, blank=False)
