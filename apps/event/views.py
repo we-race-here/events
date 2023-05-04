@@ -36,7 +36,7 @@ class EventListView(ListView):
         return context
 
     def get_queryset(self):
-        queryset = super().get_queryset()
+        queryset = super().get_queryset().filter(start_date__gte=date.today()).order_by("start_date")
         # Sorting
         sort_by = self.request.GET.get("sort", "")
         if sort_by:
