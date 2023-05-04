@@ -28,6 +28,14 @@
                   {{ object.blurb }}
                 </p>
               {% endif %}
+
+
+              {% if object.description %}
+              <div>
+                {{ object.description |safe}}
+              </div>
+              {% endif %}
+
               {% if object.prefs.information_board_content %}
                 <p>
                 <hr class="my-4">
