@@ -21,6 +21,7 @@ django-simple-history==3.3.0 # https://github.com/jazzband/django-simple-history
 django-turnstile==0.1.0  # https://gist.github.com/mikeckennedy/66d6298106671a3c6215c9262c102d74
 django-phonenumber-field==7.1.0  # https://github.com/stefanfoulis/django-phonenumber-field
 django-storages[boto3]==1.13.2  # https://github.com/jschneier/django-storages
+django-ckeditor==6.5.1 # https://github.com/django-ckeditor/django-ckeditor
 
 # Database
 # This is the new for 4.2 you need both the binary and package.

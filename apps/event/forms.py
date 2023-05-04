@@ -1,10 +1,13 @@
 from ckeditor.fields import RichTextField
 from ckeditor.widgets import CKEditorWidget
 from django import forms
+from django.contrib.auth import get_user_model
 from django.contrib.postgres.forms import SimpleArrayField
-from django.forms import CharField, DateField, DateInput, ModelChoiceField, TimeField, TimeInput
+from django.forms import CharField, DateField, DateInput, ModelChoiceField, ModelForm, TimeField, TimeInput
 
-from apps.event.models import Event, Race, RaceSeries
+from apps.event.models import Event, Race, RaceResult, RaceSeries
+
+User = get_user_model()
 
 
 class UploadValidateFile(forms.Form):
@@ -59,7 +62,7 @@ class EventForm(forms.ModelForm):
             }
         ),
     )
-    description = forms.CharField(widget=forms.Textarea(attrs={'class': 'ckeditor'}))
+    description = forms.CharField(widget=forms.Textarea(attrs={"class": "ckeditor"}))
 
     class Meta:
         model = Event
@@ -118,3 +121,59 @@ class ImportResults(forms.ModelForm):
     class Meta:
         model = Race
         fields = ["name", "event", "start_date", "start_time", "categories"]
+
+
+class RaceForm(forms.ModelForm):
+    race_series = forms.ModelMultipleChoiceField(
+        widget=forms.CheckboxSelectMultiple, queryset=RaceSeries.objects.all().order_by("name")
+    )
+    event = forms.ModelChoiceField(widget=forms.CheckboxInput, queryset=Event.objects.all().order_by("name"))
+
+    class Meta:
+        model = Race
+        fields = ["name", "event", "start_date", "start_time", "categories", "race_series"]
+        widgets = {
+            "start_date": forms.DateInput(attrs={"type": "date"}),
+            "start_time": forms.TimeInput(attrs={"type": "time"}),
+            "categories": forms.TextInput(attrs={"class": "form-control"}),
+        }
+
+
+class RaceResultForm(ModelForm):
+    class Meta:
+        model = RaceResult
+        fields = [
+            "name",
+        ]
+
+
+#         fields = [
+#             "rider",
+#             "name",
+#             "race",
+#             "place",
+#             "finish_status",
+#             "category",
+#             "time",
+#             "gap",
+#             "bid",
+#             "usac_number",
+#             "club",
+#             "date_of_birth",
+#             "more_data",
+#         ]
+#         widgets = {
+#             # "rider": forms.ModelChoiceField(queryset=User.objects),
+#             "name": forms.CharField(max_length=100),
+#             # "race": forms.ModelChoiceField(queryset=Race.objects),
+#             "place": forms.IntegerField(),
+#             # "finish_status": forms.ChoiceField(),
+#             "category": forms.CharField(max_length=100),
+#             # "time": forms.TimeField(),
+#             # "gap": forms.CharField(max_length=16),
+#             # "bid": forms.CharField(max_length=100),
+#             # "usac_number": forms.IntegerField(),
+#             # "club": forms.CharField(max_length=100),
+#             # "date_of_birth": forms.DateField(),
+#             # "more_data": forms.JSONField(),
+#         }

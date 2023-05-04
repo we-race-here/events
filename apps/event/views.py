@@ -8,10 +8,10 @@ from django.shortcuts import get_object_or_404, render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, DetailView, ListView, UpdateView
 
-from .forms import EventForm, RaceSeriesForm, UploadRaceResults
+from ..membership.models import OrganizationMember
+from .forms import EventForm, RaceForm, RaceResultForm, RaceSeriesForm, UploadRaceResults
 from .models import Event, Race, RaceResult, RaceSeries
 from .validators import ImportResults
-from ..membership.models import OrganizationMember
 
 User = get_user_model()
 
@@ -184,3 +184,17 @@ def ImportRaceResults(request, event_pk):
         get_object_or_404(Event, id=event_pk)  # GET method - render upload form
         form = UploadRaceResults(initial={"event": event_pk})
         return render(request, "results/import_race_results.html", {"form": form})
+
+
+class RaceCreateView(LoginRequiredMixin, CreateView):
+    model = Race
+    form_class = RaceForm
+    context_object_name = "race"
+    template_name = "results/race_create.html"
+
+
+class RaceResultCreateView(LoginRequiredMixin, CreateView):
+    model = RaceResult
+    form_class = RaceResultForm
+    context_object_name = "raceresult"
+    template_name = "results/raceresult_create.html"
