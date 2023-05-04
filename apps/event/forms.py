@@ -1,3 +1,5 @@
+from ckeditor.fields import RichTextField
+from ckeditor.widgets import CKEditorWidget
 from django import forms
 from django.contrib.postgres.forms import SimpleArrayField
 from django.forms import CharField, DateField, DateInput, ModelChoiceField, TimeField, TimeInput
@@ -57,6 +59,7 @@ class EventForm(forms.ModelForm):
             }
         ),
     )
+    description = forms.CharField(widget=forms.Textarea(attrs={'class': 'ckeditor'}))
 
     class Meta:
         model = Event
@@ -83,7 +86,6 @@ class EventForm(forms.ModelForm):
         widgets = {
             "name": forms.TextInput(attrs={"class": css}),
             "blurb": forms.TextInput(attrs={"class": css}),
-            "description": forms.Textarea(attrs={"class": css}),
             "start_date": forms.Textarea(attrs={"class": css}),
             "email": forms.TextInput(attrs={"class": css}),
             "website": forms.TextInput(attrs={"class": css}),
