@@ -1,6 +1,5 @@
 from pathlib import Path
 
-import model_utils
 from django.contrib.auth import get_user_model
 from django.contrib.postgres.fields import ArrayField
 from django.core.validators import MinValueValidator
@@ -220,12 +219,18 @@ class RaceSeries(models.Model):
     create_datetime = models.DateTimeField(auto_now_add=True)
     """
 
+    POINTSYSTEM = [
+        ("Absolute", "Absolute"),
+        ("Relative", "Relative"),
+    ]
+
     name = models.CharField(max_length=256)
     events = models.ManyToManyField(Event, related_name="race_series")
     races = models.ManyToManyField(Race, related_name="race_series")
+    description = (models.TextField(null=True, blank=True, default=""),)
     categories = ArrayField(models.CharField(max_length=100, blank=False), size=50, null=True, blank=False)
     points_map = models.JSONField(null=True, blank=True)
-    point_system = model_utils.Choices("Absolute", "Relative")
+    point_system = models.CharField(choices=POINTSYSTEM, max_length=16, null=True, blank=False)
     organization = models.ForeignKey(
         Organization, on_delete=models.CASCADE, related_name="race_series", null=True, blank=False
     )

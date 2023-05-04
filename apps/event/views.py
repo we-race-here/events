@@ -150,7 +150,13 @@ class RaceSeriesCreateView(LoginRequiredMixin, CreateView):
     model = RaceSeries
     form_class = RaceSeriesForm
     template_name = "results/raceseries_form.html"
-    success_url = reverse_lazy("raceseries_list")
+    success_url = reverse_lazy("event:events_results_list")
+
+
+class RaceSeriesDetailView(DetailView):
+    model = RaceSeries
+    context_object_name = "raceseries"
+    template_name = "results/raceseries_detail.html"
 
 
 def ImportRaceResults(request, event_pk):

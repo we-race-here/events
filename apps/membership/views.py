@@ -51,11 +51,12 @@ class CreateOrganizationView(LoginRequiredMixin, CreateView):
             html_message=html_message,
         )
         # This email is to the staff
+        # [user.email for user in User.objects.filter(is_staff=True)]
         send_mail(
             f"New {form.cleaned_data['type']} named: {form.cleaned_data['name']} is waiting approval",
             plain_message,
             "donotreply@bicyclecolorado.org",
-            [user.email for user in User.objects.filter(is_staff=True)],
+            "developer@bicyclecolorado.org",
             html_message=html_message,
         )
         return redirect("membership:organizations")
