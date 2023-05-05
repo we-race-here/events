@@ -26,7 +26,7 @@ django-ckeditor==6.5.1 # https://github.com/django-ckeditor/django-ckeditor
 # Database
 # This is the new for 4.2 you need both the binary and package.
 psycopg-binary==3.1.9
-psycopg==3.1.8
+psycopg==3.1.9
 
 # old db for 4.1.8
 psycopg2-binary==2.9.6
