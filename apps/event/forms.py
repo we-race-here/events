@@ -1,5 +1,3 @@
-from ckeditor.fields import RichTextField
-from ckeditor.widgets import CKEditorWidget
 from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.postgres.forms import SimpleArrayField
@@ -140,40 +138,36 @@ class RaceForm(forms.ModelForm):
 
 
 class RaceResultForm(ModelForm):
+    rider = forms.ModelChoiceField(widget=forms.CheckboxInput, queryset=User.objects.all().order_by("last_name"))
+    race = forms.ModelChoiceField(widget=forms.CheckboxInput, queryset=Race.objects.all().order_by("start_date"))
+
     class Meta:
         model = RaceResult
         fields = [
+            "rider",
             "name",
+            "race",
+            "place",
+            "finish_status",
+            "category",
+            "time",
+            "gap",
+            "bib_number",
+            "usac_license",
+            "club",
+            "date_of_birth",
+            "more_data",
         ]
-
-
-#         fields = [
-#             "rider",
-#             "name",
-#             "race",
-#             "place",
-#             "finish_status",
-#             "category",
-#             "time",
-#             "gap",
-#             "bid",
-#             "usac_number",
-#             "club",
-#             "date_of_birth",
-#             "more_data",
-#         ]
-#         widgets = {
-#             # "rider": forms.ModelChoiceField(queryset=User.objects),
-#             "name": forms.CharField(max_length=100),
-#             # "race": forms.ModelChoiceField(queryset=Race.objects),
-#             "place": forms.IntegerField(),
-#             # "finish_status": forms.ChoiceField(),
-#             "category": forms.CharField(max_length=100),
-#             # "time": forms.TimeField(),
-#             # "gap": forms.CharField(max_length=16),
-#             # "bid": forms.CharField(max_length=100),
-#             # "usac_number": forms.IntegerField(),
-#             # "club": forms.CharField(max_length=100),
-#             # "date_of_birth": forms.DateField(),
-#             # "more_data": forms.JSONField(),
-#         }
+        widgets = {
+            "name": forms.TextInput(),
+            "place": forms.NumberInput(),
+            "finish_status": forms.TextInput(),
+            "category": forms.TextInput(),
+            "time": forms.TextInput(),
+            "gap": forms.TextInput(),
+            "bib_number": forms.TextInput(),
+            "usac_license": forms.TextInput(),
+            "club": forms.TextInput(),
+            "date_of_birth": forms.DateInput(),
+            "more_data": forms.TextInput(),
+        }
