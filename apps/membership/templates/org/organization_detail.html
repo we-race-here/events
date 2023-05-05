@@ -1,54 +1,83 @@
-{% extends "account/base.html" %}
+{% extends "base.html" %}
 {% load static %}
-{% block inner %}
-    <div class="lg:w-4/6 mx-auto">
-    {% if organization.hero %}
-      <div class="rounded-lg h-64 overflow-hidden">
-        <img alt="" class="object-cover object-center h-full w-full" src="{{organization.hero.url}}">
-      </div>
-    {% endif %}
-      <div class="flex flex-col sm:flex-row mt-10">
-        <div class="sm:w-1/3 text-center sm:pr-8 sm:py-8">
-          <div class="w-20 h-20 rounded-full inline-flex items-center justify-center bg-gray-200 text-gray-400">
+
+{% block title %}Club: {{ object.name }}{% endblock %}
+
+{% block content %}
+  <div class="mt-7 overflow-x-auto">
+    <div class=msgbox>
+      <ul>Messages to team admins go here:
+        <li>Message 1</li>
+        <li>Message 2</li>
+        <li>Message 3</li>
+      </ul>
+    </div>
+    <div class="flex flex-row">
+      <div class="flex flex-col">
+        <div class="flex flex-row justify-center items-center">
+          <div class="flex flex-col ">
             {% if organization.logo %}
-            < img alt="" class="object-cover object-center h-full w-full" src="{{organization.logo.url}}">
+              <img class="org_logo" src="{{ organization.logo.url }}"
+                   alt="avatar">
             {% else %}
-            <i class="fa-solid fa-person-biking fa-xl" style="color: #cedc7b;"></i>
+              <img alt="ecommerce" class="org_logo"
+                   src="https://dummyimage.com/150x150">
             {% endif %}
           </div>
-          <div class="flex flex-col items-center text-center justify-center">
-            <h2 class="font-medium title-font mt-4 text-gray-900 text-lg">{{ organization.name }} - {{ organization.get_type_display }}</h2>
-            <div class="w-12 h-1 bg-indigo-500 rounded mt-2 mb-4"></div>
-            <p class="text-base">{{ organization.blurb }}</p>
+          <div class="flex flex-col m-3 items-center">
+            <div class=" flex flex-row org_name">
+              {{ organization.name }}
+            </div>
+            <div class="flex flex-row br-gray-500 py-2"></div>
+            <div class="flex flex-row">
+              {#<form action="{% url 'membership:join_organization_from_details' organization.id %}" method="post">#}
+              {#            {% csrf_token %}#}
+              <button
+                  href="{% url 'membership:join_organization_from_details' organization.id %}" type="submit"
+                  class="joinbutton">Join Club
+              </button>
+              {#          </form>#}
+            </div>
           </div>
         </div>
-        <div class="sm:w-2/3 sm:pl-8 sm:py-8 sm:border-l border-gray-200 sm:border-t-0 border-t mt-4 pt-4 sm:mt-0 text-center sm:text-left">
-          <p class="leading-relaxed text-lg mb-4">{{ organization.description |safe }}</p>
-
-        <form action="{% url 'membership:join_organization_from_details' organization.id %}" method="post" class="inline-block">
-          {% csrf_token %}
-          <button type="submit" class="bg-indigo-600 text-white font-semibold py-2 px-4 rounded-md hover:bg-indigo-800 transition duration-150 ease-in-out">Join</button>
-        </form>
-
-
-        </div>
-
       </div>
-      {% if OrgAdmins or user.is_staff %}
-        {#   TODO: add admin menu#}
-        <div class="ml-10">
-            <a href="{% url 'membership:update_organization' organization.id %}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-              <i class="far fa-edit mr-2"></i> Edit
-          </a>
-          <a href="{% url 'membership:delete_organization' organization.id %}" class="ml-2 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
-              <i class="far fa-trash-alt mr-2"></i> Delete
-          </a>
-          </div>
-      {% endif %}
-
-
-
     </div>
-      <br>
+    <div class=" flex fex-row">
+      <p class="text-base font-medium leading-none text-gray-500  mr-2"> Race Results: </p>
+    </div>
+    <div class="flex items-center justify-center">
+      <table class="w-1/2 whitespace-nowrap">
+        <tbody>
+        <tr>
+          <th>Date</th>
+          <th>Event</th>
+          <th>Place</th>
+        </tr>
+        <tr>
+          <th>1/1/2023</th>
+          <th>Awesome Event</th>
+          <th>1st</th>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    {#        <form action="{% url 'membership:join_organization_from_details' organization.id %}" method="post" class="inline-block">#}
+    {#          {% csrf_token %}#}
+    {#          <button type="submit" class="bg-indigo-600 text-white font-semibold py-2 px-4 rounded-md hover:bg-indigo-800 transition duration-150 ease-in-out">Join</button>#}
+    {#        </form>#}
+    {##}
+    {#      {% if OrgAdmins or user.is_staff %}#}
+    {#   TODO: add admin menu#}
+    {#        <div class="ml-10">#}
+    {#            <a href="{% url 'membership:update_organization' organization.id %}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">#}
+    {#              <i class="far fa-edit mr-2"></i> Edit#}
+    {#          </a>#}
+    {#          <a href="{% url 'membership:delete_organization' organization.id %}" class="ml-2 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">#}
+    {#              <i class="far fa-trash-alt mr-2"></i> Delete#}
+    {#          </a>#}
+    {#          </div>#}
+    {#      {% endif %}#}
+  </div>
 
 {% endblock %}
