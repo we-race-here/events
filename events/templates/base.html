@@ -20,12 +20,38 @@
             crossorigin="anonymous"></script>
     <!-- This file stores project-specific CSS -->
     <link href="{% static 'css/project.css' %}" rel="stylesheet">
+    <!-- Temparary hack to define custom tailwind css-->
+    <!--    <link href="{% static 'css/tailwind.css' %}" rel="stylesheet">-->
+    <style type="text/tailwindcss">
+        .joinbutton {
+            @apply inline-flex text-white bg-orange-600 border-0 py-2 px-6 m-3 hover:bg-orange-800 rounded;
+        }
+        .org_name {
+            @apply text-base text-xl font-bold leading-none text-orange-600 hover:text-orange-800 mr-2;
+        }
+
+        .ptitle {
+            @apply sm:text-4xl text-3xl mb-4 font-medium text-gray-900;
+        }
+
+        .msgbox {
+            @apply flex items-center border-2 border-orange-600 justify-center my-5;
+        }
+
+        .detailrow {
+            @apply flex items-center justify-center my-5;
+        }
+
+        .org_logo {
+            @apply w-[150px] h-[150px] object-cover object-center;
+        }
+    </style>
   {% endblock %}
   <!-- Le javascript
   ================================================== -->
   {# Placed at the top of the document so pages load faster with defer #}
   {% block javascript %}
-  <script src="{% static 'ckeditor/ckeditor.js' %}"></script>
+    <script src="{% static 'ckeditor/ckeditor.js' %}"></script>
     <!-- usefathon analytics -->
     {% if 'events.bicyclecolorado.org' in request.get_host %}
       <script src="https://cdn.usefathom.com/script.js" data-site="ARATEZFL" defer></script>
@@ -102,9 +128,9 @@
                  src="https://www.bicyclecolorado.org/wp-content/uploads/2023/03/BC_EventSupport_2023_600px-sociallogo-1.png"
                  alt="Logo"></a>
         </div>
-        <li >
+        <li>
         </li>
-        <div >
+        <div>
           <ul class="flex justify-between pl-2">
             <li>
               <a href="{% url  'event:event_list' %}">
@@ -215,12 +241,12 @@
 {% endblock inline_javascript %}
 </body>
 <style>
-  .logo-container {
-    position: absolute;
-    left: 1rem;
-    top: -20px; /* Adjust this value to control the vertical position of the logo */
-    left: 0px; /* Adjust this value to control the vertical position of the logo */
+    .logo-container {
+        position: absolute;
+        left: 1rem;
+        top: -20px; /* Adjust this value to control the vertical position of the logo */
+        left: 0px; /* Adjust this value to control the vertical position of the logo */
 
-  }
+    }
 </style>
 </html>
