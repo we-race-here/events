@@ -1,13 +1,13 @@
 # views.py
 from django.contrib.auth import get_user_model
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.core.mail import send_mail
 from django.db.models import Q
 from django.shortcuts import redirect
 from django.template.loader import render_to_string
 from django.urls import reverse, reverse_lazy
 from django.utils.html import strip_tags
-from django.views.generic import ListView
+from django.views.generic import ListView, TemplateView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, DeleteView, FormView, UpdateView
 
@@ -15,6 +15,11 @@ from .forms import OrganizationForm, OrganizationMemberJoinForm
 from .models import Organization, OrganizationMember
 
 User = get_user_model()
+
+
+class IsStaffMixin(UserPassesTestMixin):
+    def test_func(self):
+        return self.request.user.is_staff
 
 
 class CreateOrganizationView(LoginRequiredMixin, CreateView):
@@ -88,7 +93,7 @@ class UpdateOrganizationView(LoginRequiredMixin, UpdateView):
         return context
 
 
-class DeleteOrganizationView(LoginRequiredMixin, DeleteView):
+class DeleteOrganizationView(LoginRequiredMixin, IsStaffMixin, DeleteView):
     model = Organization
     template_name = "org/delete_organization.html"
     success_url = reverse_lazy("organizations")
@@ -153,3 +158,7 @@ class JoinOrganizationView(FormView):
     def form_valid(self, form):
         form.save()
         return super().form_valid(form)
+
+
+class StaffAdminView(LoginRequiredMixin, IsStaffMixin, TemplateView):
+    pass

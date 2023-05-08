@@ -1,10 +1,11 @@
-from ckeditor.fields import RichTextField
-from ckeditor.widgets import CKEditorWidget
 from django import forms
+from django.contrib.auth import get_user_model
 from django.contrib.postgres.forms import SimpleArrayField
-from django.forms import CharField, DateField, DateInput, ModelChoiceField, TimeField, TimeInput
+from django.forms import CharField, DateField, DateInput, ModelChoiceField, ModelForm, TimeField, TimeInput
 
-from apps.event.models import Event, Race, RaceSeries
+from apps.event.models import Event, Race, RaceResult, RaceSeries
+
+User = get_user_model()
 
 
 class UploadValidateFile(forms.Form):
@@ -59,7 +60,7 @@ class EventForm(forms.ModelForm):
             }
         ),
     )
-    description = forms.CharField(widget=forms.Textarea(attrs={'class': 'ckeditor'}))
+    description = forms.CharField(widget=forms.Textarea(attrs={"class": "ckeditor"}))
 
     class Meta:
         model = Event
@@ -118,3 +119,55 @@ class ImportResults(forms.ModelForm):
     class Meta:
         model = Race
         fields = ["name", "event", "start_date", "start_time", "categories"]
+
+
+class RaceForm(forms.ModelForm):
+    race_series = forms.ModelMultipleChoiceField(
+        widget=forms.CheckboxSelectMultiple, queryset=RaceSeries.objects.all().order_by("name")
+    )
+    event = forms.ModelChoiceField(widget=forms.CheckboxInput, queryset=Event.objects.all().order_by("name"))
+
+    class Meta:
+        model = Race
+        fields = ["name", "event", "start_date", "start_time", "categories", "race_series"]
+        widgets = {
+            "start_date": forms.DateInput(attrs={"type": "date"}),
+            "start_time": forms.TimeInput(attrs={"type": "time"}),
+            "categories": forms.TextInput(attrs={"class": "form-control"}),
+        }
+
+
+class RaceResultForm(ModelForm):
+    rider = forms.ModelChoiceField(widget=forms.CheckboxInput, queryset=User.objects.all().order_by("last_name"))
+    race = forms.ModelChoiceField(widget=forms.CheckboxInput, queryset=Race.objects.all().order_by("start_date"))
+
+    class Meta:
+        model = RaceResult
+        fields = [
+            "rider",
+            "name",
+            "race",
+            "place",
+            "finish_status",
+            "category",
+            "time",
+            "gap",
+            "bib_number",
+            "usac_license",
+            "club",
+            "date_of_birth",
+            "more_data",
+        ]
+        widgets = {
+            "name": forms.TextInput(),
+            "place": forms.NumberInput(),
+            "finish_status": forms.TextInput(),
+            "category": forms.TextInput(),
+            "time": forms.TextInput(),
+            "gap": forms.TextInput(),
+            "bib_number": forms.TextInput(),
+            "usac_license": forms.TextInput(),
+            "club": forms.TextInput(),
+            "date_of_birth": forms.DateInput(),
+            "more_data": forms.TextInput(),
+        }
