@@ -26,6 +26,7 @@
         .joinbutton {
             @apply inline-flex text-white bg-orange-600 border-0 py-2 px-6 m-3 hover:bg-orange-800 rounded;
         }
+
         .org_name {
             @apply text-base text-xl font-bold leading-none text-orange-600 hover:text-orange-800 mr-2;
         }
@@ -83,17 +84,26 @@
           COLORADO ADVOCACY</a>
       </div>
       <div class="flex justify-end">
+        <i class="fa-solid fa-triangle-exclamation fa-shake fa-sm" style="color: #f75b24;"></i>
         {% if request.user.is_authenticated %}
           {% if request.user.avatar %}
             <img
                 src="{{ request.user.avatar.url }}"
-                class="w-7 rounded-full"
+                class="w-7 rounded-full mx-3"
                 alt="Avatar"/>
+          {% else %}
+            <a class="text-orange-400
+                  hover:text-300" href="{% url 'users:detail' request.user.pk %}">
+            {% translate request.user.email %}
+          </a>
+            <i class="fa-solid fa-user"></i>
           {% endif %}
           <a class="text-orange-400
                   hover:text-300" href="{% url 'users:detail' request.user.pk %}">
             <i>{% translate request.user.email %}</i>
           </a>
+          <a class="mx-3" href="{% url 'users:update' %}"><i class="fa-solid fa-user-pen"
+                                                             style="color: #5fc8c8;"></i></a>
           {# URL provided by django-allauth/account/urls.py #}
           <a title="Sign Out" class="ml-2 text-orange-400
                   hover:text-300" href="{% url 'account_logout' %}">
