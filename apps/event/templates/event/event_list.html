@@ -103,8 +103,7 @@
           <div class="lg:w-1/4 md:w-1/2 p-4 w-full">
             <a class="block relative h-48 rounded overflow-hidden" href="{% url 'event:event_detail' event.pk %}">
               {% if event.logo %}
-                <img class="object-scale-down max-h-[250px max-h-[250px] object-center" src="{{ event.logo.url }}"
-                     alt="">
+                <img class="object-scale-down max-h-[250px] mx-auto" src="{{ event.logo.url }}" alt="">
               {% else %}
                 <img alt="Logo" class="object-contain object-center w-full h-full block"
                      src="{% static "images/250x250.png" %}">
