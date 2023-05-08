@@ -4,7 +4,8 @@
 {% block title %}Club: {{ object.name }}{% endblock %}
 
 {% block content %}
-  <div class="mt-7 overflow-x-auto">
+  <!-- message box -->
+  <div class="flex flex-row justify-center border-2 border-orange-600, bg-yellow-50 my-3">
     <div class=msgbox>
       <ul>Messages to team admins go here:
         <li>Message 1</li>
@@ -12,38 +13,68 @@
         <li>Message 3</li>
       </ul>
     </div>
-    <div class="flex flex-row">
+  </div>
+  <!-- row 1 -->
+  <div class="flex flex-row justify-between border-2">
+    {% if organization.hero %}
       <div class="flex flex-col">
-        <div class="flex flex-row justify-center items-center">
-          <div class="flex flex-col ">
-            {% if organization.logo %}
-              <img class="org_logo" src="{{ organization.logo.url }}"
-                   alt="avatar">
-            {% else %}
-              <img alt="ecommerce" class="org_logo"
-                   src="https://dummyimage.com/150x150">
-            {% endif %}
+        <img src="{{ organization.hero.url }}" style="max-width:17px" alt="usac">
+      </div>
+    {% endif %}
+    <div class="flex flex-col">
+      <div class="flex flex-row justify-center items-center">
+        <div class="flex flex-col ">
+          {% if organization.logo %}
+            <img class="org_logo" src="{{ organization.logo.url }}"
+                 alt="avatar">
+          {% else %}
+            <img alt="ecommerce" class="org_logo"
+                 src="https://dummyimage.com/150x150">
+          {% endif %}
+        </div>
+        <div class="flex flex-col m-3 items-center">
+          <div class=" flex flex-row org_name">
+            {{ organization.name }}
           </div>
-          <div class="flex flex-col m-3 items-center">
-            <div class=" flex flex-row org_name">
-              {{ organization.name }}
-            </div>
-            <div class="flex flex-row br-gray-500 py-2"></div>
-            <div class="flex flex-row">
-              {#<form action="{% url 'membership:join_organization_from_details' organization.id %}" method="post">#}
-              {#            {% csrf_token %}#}
-              <button
-                  href="{% url 'membership:join_organization_from_details' organization.id %}" type="submit"
-                  class="joinbutton">Join Club
-              </button>
-              {#          </form>#}
-            </div>
+          <div class="flex flex-row org_location block">
+            {{ organization.city|default:"-" }}, {{ organization.state|default:"-" }}
           </div>
+          {% if organization.is_usac %}
+            <img src="{% static "images/USACycling_Logo.svg" %}" style="max-width:17px" alt="usac">
+          {% endif %}
         </div>
       </div>
     </div>
-    <div class=" flex fex-row">
-      <p class="text-base font-medium leading-none text-gray-500  mr-2"> Race Results: </p>
+    <div class="flex-col text-center">
+      Bicycle Colorado Members: {{ organization.bc_members.count|default:"-" }}
+      <br>
+      USAC Members: {{ organization.usac_members.count|default:"-" }}
+    </div>
+    <div class="flex-col">
+      <div class="flex flex-row justify-center items-center">
+        <form action="{% url 'membership:join_organization_from_details' organization.id %}" method="post">
+          {% csrf_token %}
+          <button
+              href="{% url 'membership:join_organization_from_details' organization.id %}" type="submit"
+              class="joinbutton">Join Club
+          </button>
+        </form>
+      </div>
+            <div class="flex flex-row justify-center items-center">
+        <a href="{% url 'membership:organization_admin' organization.id %}"
+           class="bg-cyan-600 hover:bg-cyan-600 text-white font-bold py-2 px-4 rounded"> Admin
+        </a>
+      </div>
+    </div>
+  </div>
+  <!-- row 2 -->
+  <div class="flex flex-row justify-between border-2 my-3">
+  {{ organization.description|safe }}
+  </div>
+    <!-- Results -->
+
+    <div class=" flex fex-row mt-3 border-2 justify-center">
+      <p class="text-base font-medium leading-none text-gray-500 mr-2"> Race Results: </p>
     </div>
     <div class="flex items-center justify-center">
       <table class="w-1/2 whitespace-nowrap">

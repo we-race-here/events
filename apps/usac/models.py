@@ -9,10 +9,12 @@ from django.db import models
 # class USACClub(models.Model):
 # class USACRider(models.Model):
 
+
 # This model was named
 # class USACRiderLicense(models.Model):
 class UsacDownload(models.Model):
     """This is imported from the racer download"""
+
     license_number = models.IntegerField(db_index=True)
     first_name = models.CharField(max_length=255, blank=True, null=True)
     last_name = models.CharField(max_length=255, blank=True, null=True)
@@ -34,6 +36,12 @@ class UsacDownload(models.Model):
             data = json.dumps(data, sort_keys=True)
         return hashlib.sha1(data.encode()).hexdigest()
 
+    @property
+    def full_name(self):
+        return f"{self.first_name} {self.last_name}"
+
     def __str__(self):
-        return f'{self.first_name} {self.last_name}: {self.license_type}-{self.license_number}[{self.license_status}]'
+        return f"{self.first_name} {self.last_name}: {self.license_type}-{self.license_number}[{self.license_status}]"
+
+
 # Create your models here.
