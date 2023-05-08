@@ -94,7 +94,7 @@
         <table class="w-full whitespace-nowrap">
           <tbody>
           {% for organization in organizations %}
-            {% if organization.id != 1 and organization.type != "promoter" %}
+            {% if organization.name != "Bicycle Colorado" and organization.type != "promoter" %}
               <tr tabindex="0" class="focus:outline-none h-16 border border-gray-100 dark:border-gray-600  rounded">
                 <td>
                   {% if organization.logo %}

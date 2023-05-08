@@ -35,7 +35,7 @@
         }
 
         .msgbox {
-            @apply flex items-center border-2 border-orange-600 justify-center my-5;
+            @apply flex-col items-center justify-center my-5;
         }
 
         .detailrow {
@@ -44,6 +44,10 @@
 
         .org_logo {
             @apply w-[150px] h-[150px] object-cover object-center;
+        }
+
+        .menu_txt {
+            @apply inline-block text-xl mx-2 px-2 py-2 leading-none border rounded font-semibold uppercase text-green-800 border-white hover:border-transparent hover:text-white hover:bg-black mt-4 lg:mt-0;
         }
     </style>
   {% endblock %}
@@ -118,7 +122,7 @@
   <!-- Second level navigation -->
   <hr class="h-px bg-gray-200 border-0 dark:bg-gray-700">
   <!-- Second level navigation -->
-  <nav class="bg-white-600 py-6 ">
+  <nav class="bg-white-600 py-5 ">
     <div class="container mx-auto">
       <ul class="flex justify-between items-center text-black">
         <!-- Add the logo inside a new 'logo-container' div -->
@@ -135,25 +139,25 @@
             <li>
               <a href="{% url  'event:event_list' %}">
                 <span
-                    class="inline-block text-lg px-2 py-2 leading-none border rounded font-semibold uppercase text-green-800 border-white hover:border-transparent hover:text-white hover:bg-black mt-4 lg:mt-0">Events</span>
+                    class="menu_txt">Events</span>
               </a>
             </li>
             <li>
               <a href="{% url "event:events_results_list" %}">
                 <span
-                    class="inline-block text-lg px-2 py-2 leading-none border rounded font-semibold uppercase text-green-800 border-white hover:border-transparent hover:text-white hover:bg-black mt-4 lg:mt-0">Results</span>
+                    class="menu_txt">Results</span>
               </a>
             </li>
             <li>
               <a href="{% url 'membership:organizations' %}">
                 <span
-                    class="inline-block text-lg px-2 py-2 leading-none border rounded font-semibold uppercase text-green-800 border-white hover:border-transparent hover:text-white hover:bg-black mt-4 lg:mt-0">Clubs</span>
+                    class="menu_txt">Clubs</span>
               </a>
             </li>
             <li>
               <a href="https://www.bicyclecolorado.org/events-2/event-support/" target="_blank">
                 <span
-                    class="inline-block text-lg px-2 py-2 leading-none border rounded font-semibold uppercase text-green-800 border-white hover:border-transparent hover:text-white hover:bg-black mt-4 lg:mt-0">EVENT SUPPORT PROGRAM</span>
+                    class="menu_txt">EVENT SUPPORT PROGRAM</span>
               </a>
             </li>
           </ul>

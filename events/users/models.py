@@ -1,20 +1,23 @@
+from pathlib import Path
+
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
-from django.db.models import CharField, EmailField
+from django.db.models import EmailField
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from phonenumber_field.modelfields import PhoneNumberField
 from simple_history.models import HistoricalRecords
-import os
-from pathlib import Path
+
+from apps.usac.models import UsacDownload
+from events.helpers import get_random_upload_path
 from events.users.managers import UserManager
 
-from events.helpers import get_random_upload_path
 
 def avatar_file_path_func(instance, filename):
-    return get_random_upload_path(str(Path('uploads', 'account', 'user', 'avatar')), filename)
+    return get_random_upload_path(str(Path("uploads", "account", "user", "avatar")), filename)
+
 
 class User(AbstractUser):
     """
@@ -110,3 +113,29 @@ class User(AbstractUser):
 
         """
         return reverse("users:detail", kwargs={"pk": self.id})
+
+    @property
+    def usac_status(self):
+        if self.usac_license_verified:
+            rider = UsacDownload.objects.filter(license_number=self.usac_license)
+            status = "verified: "
+            for r in rider:
+                status += f"{r.data.club} - {r.license_status} - {r.license_type}\n"
+            return (status,)
+        elif self.usac_license:
+            try:
+                rider = UsacDownload.objects.get(license_number=self.usac_license)
+                return f"Possible match: {rider.full_name} - {rider.race_age} - {rider.race_gender} - {rider.data.club}"
+            except UsacDownload.DoesNotExist:
+                try:
+                    rider = UsacDownload.objects.get(
+                        firat_name=self.first_name, last_name=self.last_name, race_age=self.age
+                    )
+                    return (
+                        f"Possible match: {rider.full_name} - {rider.race_age} - {rider.race_gender} - "
+                        f"{rider.data.club}"
+                    )
+                except UsacDownload.DoesNotExist:
+                    return "No match found"
+        else:
+            return "No License Number"
