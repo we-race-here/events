@@ -39,17 +39,10 @@
           partners and opt-in to communications. Clubs and organizations can also create accounts to manage their
           members, events and race results.
         </p>
-        <div class="flex justify-center">
-          <button type="button" onclick="location.href='{% url 'account_signup' %}'"
-                  class="inline-flex text-white bg-orange-600 border-0 py-2 px-6 focus:outline-none hover:bg-bg-orange-800 rounded text-lg">
-            JOIN NOW
-          </button>
-        </div>
       </div>
     </div>
   </section>
-  <section>
-    {% include "account/short_signup_form.html" %}
-  </section>
-
+  {% if not request.user.is_authenticated %}
+      {% include "account/short_signup_form.html" %}
+  {% endif %}
 {% endblock %}
