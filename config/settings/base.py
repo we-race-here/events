@@ -42,10 +42,7 @@ LOCALE_PATHS = [str(BASE_DIR / "locale")]
 # DATABASES
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#databases
-DATABASES = {
-    "default": env.db("DATABASE_URL"),
-    "wrh": env.db("WRH_URL")
-}
+DATABASES = {"default": env.db("DATABASE_URL"), "wrh": env.db("WRH_URL")}
 DATABASES["default"]["ATOMIC_REQUESTS"] = True
 # https://docs.djangoproject.com/en/stable/ref/settings/#std:setting-DEFAULT_AUTO_FIELD
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
@@ -78,7 +75,7 @@ THIRD_PARTY_APPS = [
     "allauth.socialaccount",
     "simple_history",
     "turnstile",
-    "ckeditor"
+    "ckeditor",
 ]
 
 LOCAL_APPS = [
@@ -140,9 +137,8 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    'simple_history.middleware.HistoryRequestMiddleware',
-    "django.middleware.clickjacking.XFrameOptionsMiddleware"
-
+    "simple_history.middleware.HistoryRequestMiddleware",
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
 # STATIC
@@ -186,10 +182,13 @@ AWS_S3_MAX_MEMORY_SIZE = env.int(
 AWS_S3_REGION_NAME = env("DJANGO_AWS_S3_REGION_NAME", default=None)
 # https://django-storages.readthedocs.io/en/latest/backends/amazon-S3.html#cloudfront
 AWS_S3_CUSTOM_DOMAIN = env("DJANGO_AWS_S3_CUSTOM_DOMAIN", default=None)
-AWS_S3_ENDPOINT_URL=f"https://{AWS_S3_REGION_NAME}.digitaloceanspaces.com"
+AWS_S3_ENDPOINT_URL = f"https://{AWS_S3_REGION_NAME}.digitaloceanspaces.com"
 # MEDIA
 # ------------------------------------------------------------------------------
 DEFAULT_FILE_STORAGE = "events.utils.storages.MediaRootS3Boto3Storage"
+
+MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/media/"
+DEFAULT_FILE_STORAGE = "hello_django.storage_backends.PublicMediaStorage"
 
 # TEMPLATES
 # ------------------------------------------------------------------------------
@@ -308,9 +307,9 @@ SOCIALACCOUNT_FORMS = {"signup": "events.users.forms.UserSocialSignupForm"}
 # ------------------------------------------------------------------------------
 
 CKEDITOR_CONFIGS = {
-    'default': {
-        'toolbar': 'Full',
-        'height': 300,
-        'width': 800,
+    "default": {
+        "toolbar": "Full",
+        "height": 300,
+        "width": 800,
     },
 }
