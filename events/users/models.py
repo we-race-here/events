@@ -118,7 +118,7 @@ class User(AbstractUser):
     def usac_status(self):
         if self.usac_license_verified:
             rider = UsacDownload.objects.filter(license_number=self.usac_license)
-            status = "verified: "
+            status = "Verified: "
             for r in rider:
                 status += f"{r.data.club} - {r.license_status} - {r.license_type}\n"
             return (status,)
@@ -139,3 +139,18 @@ class User(AbstractUser):
                     return "No match found"
         else:
             return "No License Number"
+
+    @property
+    def alerts(self):
+        m = dict()
+        if "Verified" not in self.usac_status:
+            m["USA Cycling Status"] = self.usac_status
+        if not self.user_agreement_waiver:
+            m["User Agreement Waiver"] = "Not Signed"
+        if not all([self.gender, self.birth_date, self.phone, self.address1, self.city, self.state, self.zipcode]):
+            m["Profile"] = "Incomplete"
+        if m:
+            return m
+        else:
+            m["No Alerts"] = "No Alerts"
+            return m

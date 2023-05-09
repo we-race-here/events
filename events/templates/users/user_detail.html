@@ -33,10 +33,10 @@
   {#</div>#}
   <div class="mt-7 overflow-x-auto">
   <div class="flex items-center border-2 border-orange-600 justify-center my-5">
-    <ul>Messages to user go here:
-      <li>Message 1</li>
-      <li>Message 2</li>
-      <li>Message 3</li>
+    <ul>Hello {{ object.full_name }}
+      {% for a, m in object.alerts.items %}
+        <li>{{ a }}: {{ m }}</li>
+      {% endfor %}
     </ul>
   </div>
   <div class="flex items-center justify-center my-5">

@@ -5,15 +5,23 @@ from django.urls import include, path
 from django.views import defaults as default_views
 from django.views.generic import TemplateView
 
-from apps.event.models import Event
+from events.users.forms import UserSignupForm
 
 
 class HomePageView(TemplateView):
     template_name = "pages/home.html"
+    signup = UserSignupForm()
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["events"] = Event.objects.all()  # Or apply any filter/query based on your requirements
+        # context["events"] = Event.objects.all()  # Or apply any filter/query based on your requirements
+        context["form"] = UserSignupForm()
+
+        if not self.request.user.is_authenticated:
+            pass
+        elif self.request.method == "POST":
+            pass
+        # return render(self.request, "account/short_signup_form.html", context=context)
         return context
 
 

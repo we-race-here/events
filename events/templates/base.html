@@ -81,34 +81,34 @@
       <div class="mr-4">
         <a href="https://www.bicyclecolorado.org/" target="_blank"
            class="inline-block text-md px-2 py-2 leading-none border rounded font-semibold uppercase text-green-800 border-white hover:border-transparent hover:text-white hover:bg-black mt-4 lg:mt-0">BICYCLE
-          COLORADO ADVOCACY</a>
+          COLORADO</a>
       </div>
       <div class="flex justify-end">
-        <i class="fa-solid fa-triangle-exclamation fa-shake fa-sm" style="color: #f75b24;"></i>
         {% if request.user.is_authenticated %}
-          {% if request.user.avatar %}
-            <img
-                src="{{ request.user.avatar.url }}"
-                class="w-7 rounded-full mx-3"
-                alt="Avatar"/>
-          {% else %}
-            <a class="text-orange-400
-                  hover:text-300" href="{% url 'users:detail' request.user.pk %}">
-            {% translate request.user.email %}
-          </a>
-            <i class="fa-solid fa-user"></i>
-          {% endif %}
-          <a class="text-orange-400
-                  hover:text-300" href="{% url 'users:detail' request.user.pk %}">
-            <i>{% translate request.user.email %}</i>
-          </a>
-          <a class="mx-3" href="{% url 'users:update' %}"><i class="fa-solid fa-user-pen"
-                                                             style="color: #5fc8c8;"></i></a>
-          {# URL provided by django-allauth/account/urls.py #}
-          <a title="Sign Out" class="ml-2 text-orange-400
-                  hover:text-300" href="{% url 'account_logout' %}">
-            <i class="fas fa-sign-out-alt"></i>
-          </a>
+          <ul>
+            <li class="group relative dropdown px-4 text-green-800 hover:text-green-900 cursor-pointer font-bold uppercase tracking-wide">
+              {% if request.user.avatar %}
+                <a class="flex" href="{% url 'users:detail' request.user.pk %}">
+                  <img class="w-7 rounded-full mx-3"
+                      src="{{ request.user.avatar.url }}"
+                      alt="Avatar"/> {{ request.user.full_name }}</a>
+              {% else %}
+                <a class="w-7 rounded-full mx-3" href="{% url 'users:detail' request.user.pk %}">
+                <i class="fa-solid fa-user"></i>{{ request.user.full_name }}
+              </a>
+              {% endif %}
+              <div class="group-hover:block dropdown-menu absolute hidden h-auto">
+                <ul class="top-0 w-52 bg-white shadow px-6 py-8">
+                    <li class="py-1"><a class="block text-green-800 font-semibold text-base uppercase hover:text-green-900 hover:underline cursor-pointer"
+                    href="{% url 'users:detail' request.user.pk %}"><i class="fa-solid fa-user px-2"></i>Profile</a></li>
+                    <li class="py-1"><a class="block text-green-800 font-bold text-base uppercase hover:text-green-900 hover:underline cursor-pointer"
+                    href="{% url 'users:update' %}"><i class="fa-solid fa-user-pen px-2"></i>Edit Profile</a></li>
+                  <li class="py-1"><a class="block text-green-800 font-bold text-base uppercase hover:text-green-900 hover:underline cursor-pointer"
+                    href="{% url 'account_logout' %}"><i class="fas fa-sign-out-alt px-2"></i>Sign Out </a></li>
+                </ul>
+              </div>
+            </li>
+          </ul>
         {% else %}
           {% if ACCOUNT_ALLOW_REGISTRATION %}
             {# URL provided by django-allauth/account/urls.py #}
@@ -124,7 +124,6 @@
             {% translate "Sign In" %}
           </button>
         {% endif %}
-
       </div>
     </div>
   </nav>
