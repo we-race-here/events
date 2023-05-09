@@ -187,9 +187,6 @@ AWS_S3_ENDPOINT_URL = f"https://{AWS_S3_REGION_NAME}.digitaloceanspaces.com"
 # ------------------------------------------------------------------------------
 DEFAULT_FILE_STORAGE = "events.utils.storages.MediaRootS3Boto3Storage"
 
-MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/media/"
-DEFAULT_FILE_STORAGE = "hello_django.storage_backends.PublicMediaStorage"
-
 # TEMPLATES
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#templates
