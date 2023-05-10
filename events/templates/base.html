@@ -13,42 +13,12 @@
 
   {% block css %}
     <!-- Your stuff: Third-party CSS libraries go here -->
-    <script src="{% static 'css/project.css' %}"></script>
-    <script src="https://kit.fontawesome.com/cd872d1046.js"
-            crossorigin="anonymous"></script>
+    <script rel="stylesheet" src="{% static 'css/project.css' %}"></script>
+    <script src="https://kit.fontawesome.com/cd872d1046.js" crossorigin="anonymous"></script>
     <!-- This file stores project-specific CSS -->
     <link href="{% static 'css/project.css' %}" rel="stylesheet">
     <!-- Temparary hack to define custom tailwind css-->
     <!--    <link href="{% static 'css/tailwind.css' %}" rel="stylesheet">-->
-    <style type="text/tailwindcss">
-        .joinbutton {
-            @apply inline-flex text-white bg-orange-600 border-0 py-2 px-6 m-3 hover:bg-orange-800 rounded;
-        }
-
-        .org_name {
-            @apply text-base text-xl font-bold leading-none text-orange-600 hover:text-orange-800 mr-2;
-        }
-
-        .ptitle {
-            @apply sm:text-4xl text-3xl mb-4 font-medium text-gray-900;
-        }
-
-        .msgbox {
-            @apply flex-col items-center justify-center my-5;
-        }
-
-        .detailrow {
-            @apply flex items-center justify-center my-5;
-        }
-
-        .org_logo {
-            @apply w-[150px] h-[150px] object-cover object-center;
-        }
-
-        .menu_txt {
-            @apply inline-block text-xl mx-2 px-2 py-2 leading-none border rounded font-semibold uppercase text-green-800 border-white hover:border-transparent hover:text-white hover:bg-black mt-4 lg:mt-0;
-        }
-    </style>
   {% endblock %}
   <!-- Le javascript
   ================================================== -->
@@ -250,6 +220,17 @@
     </script>
     {% endcomment %}
 {% endblock inline_javascript %}
+<script>
+  function hideLoader(image) {
+    // Hide the loader and show the image
+    image.previousElementSibling.classList.add('hidden');
+    image.classList.remove('hidden');
+  }
+
+  // Show the loader initially
+  document.querySelector('.loader').classList.remove('hidden');
+</script>
+
 </body>
 <style>
     .logo-container {

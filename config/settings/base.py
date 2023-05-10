@@ -300,7 +300,7 @@ SOCIALACCOUNT_ADAPTER = "events.users.adapters.SocialAccountAdapter"
 # https://django-allauth.readthedocs.io/en/latest/forms.html
 SOCIALACCOUNT_FORMS = {"signup": "events.users.forms.UserSocialSignupForm"}
 
-# Your stuff...
+# Custom stuff...
 # ------------------------------------------------------------------------------
 
 CKEDITOR_CONFIGS = {
@@ -310,3 +310,10 @@ CKEDITOR_CONFIGS = {
         "width": 800,
     },
 }
+
+# Turnstile Cloudflare
+TURNSTILE_SITEKEY = env("TURNSTILE_SITEKEY", default="")
+TURNSTILE_SECRET = env("TURNSTILE_SECRET", default="")
+
+TURNSTILE_TIMEOUT = 5
+
