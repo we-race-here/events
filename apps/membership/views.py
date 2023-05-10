@@ -70,7 +70,7 @@ class CreateOrganizationView(LoginRequiredMixin, CreateView):
             f"New {form.cleaned_data['type']} named: {form.cleaned_data['name']} is waiting approval",
             plain_message,
             "donotreply@bicyclecolorado.org",
-            "developer@bicyclecolorado.org",
+            ["developer@bicyclecolorado.org"],
             html_message=html_message,
         )
         return redirect("membership:organizations")

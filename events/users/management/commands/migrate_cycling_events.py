@@ -10,15 +10,22 @@ class Command(BaseCommand):
     help = "Migrate data from CyclingOrgEvent to Event model"
 
     def handle(self, *args, **options):
+        Event.objects.all().delete()
         for cycling_event in CyclingOrgEvent.objects.using("wrh").all():
             org = Organization.objects.get(name=cycling_event.organization.name)
             user = User.objects.get(email=cycling_event.create_by.email)
+            description = cycling_event.description
+            # Panel Migration
+            try:
+                for panel in cycling_event.more_data.get('panels', []):
+                    description += f'<p><iframe frameborder="0" height="100%" width="100%"  sandbox="" scrolling="no" src="{panel.get("url")}" "></iframe></p><br>'
+            except Exception as e: pass
             event = Event(
                 # Migrate fields from CyclingOrgEvent to Event
                 name=cycling_event.name,
                 blurb=cycling_event.description,
                 # TODO: Add logic to migrate description from more_data information board
-                description=cycling_event.description,
+                description=description,
                 start_date=cycling_event.start_date,
                 end_date=cycling_event.end_date,
                 email=cycling_event.organizer_email,
@@ -28,11 +35,8 @@ class Command(BaseCommand):
                 website=cycling_event.website,
                 registration_website=cycling_event.registration_website,
                 logo=cycling_event.logo,
-                # TODO: Add logic to migrate hero image
                 hero=cycling_event.prefs.get('banner_image') if cycling_event.prefs else None,  # Add logic to migrate hero image
                 tags=cycling_event.tags,
-                # TODO: Add logic to migrate panels from more_data
-                # panels=cycling_event.more_data,  # Add logic to migrate panels from more_data
                 organization=org,
                 create_by=user,
                 location_lat=cycling_event.location_lat,

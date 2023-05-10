@@ -77,6 +77,8 @@ class EventForm(forms.ModelForm):
             "name",
             "blurb",
             "description",
+            "logo",
+            "hero",
             "start_date",
             "end_date",
             "email",
