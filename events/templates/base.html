@@ -24,6 +24,7 @@
         .joinbutton {
             @apply inline-flex text-white bg-orange-600 border-0 py-2 px-6 m-3 hover:bg-orange-800 rounded;
         }
+
         .org_name {
             @apply text-base text-xl font-bold leading-none text-orange-600 hover:text-orange-800 mr-2;
         }
@@ -33,7 +34,7 @@
         }
 
         .msgbox {
-            @apply flex items-center border-2 border-orange-600 justify-center my-5;
+            @apply flex-col items-center justify-center my-5;
         }
 
         .detailrow {
@@ -42,6 +43,10 @@
 
         .org_logo {
             @apply w-[150px] h-[150px] object-cover object-center;
+        }
+
+        .menu_txt {
+            @apply inline-block text-xl mx-2 px-2 py-2 leading-none border rounded font-semibold uppercase text-green-800 border-white hover:border-transparent hover:text-white hover:bg-black mt-4 lg:mt-0;
         }
     </style>
   {% endblock %}
@@ -74,25 +79,34 @@
       <div class="mr-4">
         <a href="https://www.bicyclecolorado.org/" target="_blank"
            class="inline-block text-md px-2 py-2 leading-none border rounded font-semibold uppercase text-green-800 border-white hover:border-transparent hover:text-white hover:bg-black mt-4 lg:mt-0">BICYCLE
-          COLORADO ADVOCACY</a>
+          COLORADO</a>
       </div>
       <div class="flex justify-end">
         {% if request.user.is_authenticated %}
-          {% if request.user.avatar %}
-            <img
-                src="{{ request.user.avatar.url }}"
-                class="w-7 rounded-full"
-                alt="Avatar"/>
-          {% endif %}
-          <a class="text-orange-400
-                  hover:text-300" href="{% url 'users:detail' request.user.pk %}">
-            <i>{% translate request.user.email %}</i>
-          </a>
-          {# URL provided by django-allauth/account/urls.py #}
-          <a title="Sign Out" class="ml-2 text-orange-400
-                  hover:text-300" href="{% url 'account_logout' %}">
-            <i class="fas fa-sign-out-alt"></i>
-          </a>
+          <ul>
+            <li class="group relative dropdown px-4 text-green-800 hover:text-green-900 cursor-pointer font-bold uppercase tracking-wide">
+              {% if request.user.avatar %}
+                <a class="flex" href="{% url 'users:detail' request.user.pk %}">
+                  <img class="w-7 rounded-full mx-3"
+                      src="{{ request.user.avatar.url }}"
+                      alt="Avatar"/> {{ request.user.full_name }}</a>
+              {% else %}
+                <a class="w-7 rounded-full mx-3" href="{% url 'users:detail' request.user.pk %}">
+                <i class="fa-solid fa-user"></i>{{ request.user.full_name }}
+              </a>
+              {% endif %}
+              <div class="group-hover:block dropdown-menu absolute hidden h-auto">
+                <ul class="top-0 w-52 bg-white shadow px-6 py-8">
+                    <li class="py-1"><a class="block text-green-800 font-semibold text-base uppercase hover:text-green-900 hover:underline cursor-pointer"
+                    href="{% url 'users:detail' request.user.pk %}"><i class="fa-solid fa-user px-2"></i>Profile</a></li>
+                    <li class="py-1"><a class="block text-green-800 font-bold text-base uppercase hover:text-green-900 hover:underline cursor-pointer"
+                    href="{% url 'users:update' %}"><i class="fa-solid fa-user-pen px-2"></i>Edit Profile</a></li>
+                  <li class="py-1"><a class="block text-green-800 font-bold text-base uppercase hover:text-green-900 hover:underline cursor-pointer"
+                    href="{% url 'account_logout' %}"><i class="fas fa-sign-out-alt px-2"></i>Sign Out </a></li>
+                </ul>
+              </div>
+            </li>
+          </ul>
         {% else %}
           {% if ACCOUNT_ALLOW_REGISTRATION %}
             {# URL provided by django-allauth/account/urls.py #}
@@ -108,7 +122,6 @@
             {% translate "Sign In" %}
           </button>
         {% endif %}
-
       </div>
     </div>
   </nav>
@@ -116,7 +129,7 @@
   <!-- Second level navigation -->
   <hr class="h-px bg-gray-200 border-0 dark:bg-gray-700">
   <!-- Second level navigation -->
-  <nav class="bg-white-600 py-6 ">
+  <nav class="bg-white-600 py-5 ">
     <div class="container mx-auto">
       <ul class="flex justify-between items-center text-black">
         <!-- Add the logo inside a new 'logo-container' div -->
@@ -133,25 +146,25 @@
             <li>
               <a href="{% url  'event:event_list' %}">
                 <span
-                    class="inline-block text-lg px-2 py-2 leading-none border rounded font-semibold uppercase text-green-800 border-white hover:border-transparent hover:text-white hover:bg-black mt-4 lg:mt-0">Events</span>
+                    class="menu_txt">Events</span>
               </a>
             </li>
             <li>
               <a href="{% url "event:events_results_list" %}">
                 <span
-                    class="inline-block text-lg px-2 py-2 leading-none border rounded font-semibold uppercase text-green-800 border-white hover:border-transparent hover:text-white hover:bg-black mt-4 lg:mt-0">Results</span>
+                    class="menu_txt">Results</span>
               </a>
             </li>
             <li>
               <a href="{% url 'membership:organizations' %}">
                 <span
-                    class="inline-block text-lg px-2 py-2 leading-none border rounded font-semibold uppercase text-green-800 border-white hover:border-transparent hover:text-white hover:bg-black mt-4 lg:mt-0">Clubs</span>
+                    class="menu_txt">Clubs</span>
               </a>
             </li>
             <li>
               <a href="https://www.bicyclecolorado.org/events-2/event-support/" target="_blank">
                 <span
-                    class="inline-block text-lg px-2 py-2 leading-none border rounded font-semibold uppercase text-green-800 border-white hover:border-transparent hover:text-white hover:bg-black mt-4 lg:mt-0">EVENT SUPPORT PROGRAM</span>
+                    class="menu_txt">EVENT SUPPORT PROGRAM</span>
               </a>
             </li>
           </ul>

@@ -279,3 +279,6 @@ events/media/
 .env
 .envs/*
 .idea
+
+/package-lock.json
+/package.json
