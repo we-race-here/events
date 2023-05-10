@@ -11,6 +11,41 @@ from apps.membership.models import Organization
 User = get_user_model()
 
 
+event_types = tuple(
+    (t, t)
+    for t in [
+        "Road",
+        "Criterium",
+        "Cycle-Cross",
+        "Mountain bike",
+        "Hill Climb",
+        "Time Trial",
+        "Gran Fondo",
+        "Tour",
+        "BMX",
+        "Cycling Camp",
+        "Clinic",
+        "Downhill",
+        "Enduro",
+        "Fat Bike",
+        "Gravel",
+        "Omnium",
+        "Points Race",
+        "Track",
+        "Stage Race",
+        "Team Time Trial",
+        "Virtual",
+        "Dual Slalom",
+        "BC Road Cup",
+        "BC Cycle-Cross Cup",
+        "Collegiate Permitted",
+        "BC State Championships",
+        "Youth",
+        "Fundraiser",
+    ]
+)
+
+
 def event_logo_file_path_func(instance, filename):
     from events.helpers import get_random_upload_path
 
@@ -77,7 +112,9 @@ class Event(models.Model):
     registration_website = models.URLField(max_length=500, null=True, blank=True)
     logo = models.ImageField(null=True, blank=True, upload_to=event_logo_file_path_func)
     hero = models.ImageField(null=True, blank=True, upload_to=event_hero_file_path_func)
-    tags = ArrayField(models.CharField(max_length=100, blank=True), size=50, null=True, blank=True)
+    tags = ArrayField(
+        models.CharField(max_length=100, blank=False, choices=event_types), size=50, null=True, blank=False
+    )
     panels = models.JSONField(null=True, blank=True)
     organization = models.ForeignKey(Organization, on_delete=models.SET_NULL, null=True, related_name="events")
     create_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
