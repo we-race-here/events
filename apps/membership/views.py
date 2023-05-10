@@ -22,6 +22,15 @@ class IsStaffMixin(UserPassesTestMixin):
         return self.request.user.is_staff
 
 
+class IsOrgAdminMixin(UserPassesTestMixin):
+    # TODO: fix this.
+    def test_func(self):
+        OrganizationMember.objects.get(
+            Q(user=self.request.user) & (Q(is_admin=True) | Q(organization__id=self.request))
+        )
+        return self.request.user.is_org_admin
+
+
 class CreateOrganizationView(LoginRequiredMixin, CreateView):
     model = Organization
     form_class = OrganizationForm
@@ -162,3 +171,13 @@ class JoinOrganizationView(FormView):
 
 class StaffAdminView(LoginRequiredMixin, IsStaffMixin, TemplateView):
     pass
+
+
+class OrganizationAdmin(LoginRequiredMixin, DetailView):
+    template_name = "org/organization_admin.html"
+    model = Organization
+    context_object_name = "org"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context

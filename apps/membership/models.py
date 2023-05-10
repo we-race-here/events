@@ -15,7 +15,7 @@ from django.utils import timezone
 from phonenumber_field.modelfields import PhoneNumberField
 from simple_history.models import HistoricalRecords
 
-from apps.usac.models import UsacDownload
+from ..usac.models import UsacDownload
 
 User = get_user_model()
 
@@ -78,8 +78,15 @@ class OrganizationMember(models.Model):
             self.is_active = None
         return super().save(*args, **kwargs)
 
+    def is_org_admin(self, *args, **kwargs):
+        a = self.organization.organizationmember_set.filter(user=self.kwargs.user, is_admin=True).exists()
+        return a or self.kwargs.user.is_staff
+
     def __str__(self):
-        return f"{self.organization} - {self.user} - {self.is_admin} - {self.is_active} - {self.start_date} - {self.exp_date}"
+        return (
+            f"{self.organization} - {self.user} - {self.is_admin} - {self.is_active} - {self.start_date} - "
+            f"{self.exp_date}"
+        )
 
 
 class Organization(models.Model):
@@ -167,6 +174,14 @@ class Organization(models.Model):
     @property
     def is_usac(self):
         return UsacDownload.objects.filter(data__club=self.name).exists()
+
+    @property
+    def usac_members(self):
+        return UsacDownload.objects.filter(data__club=self.name)
+
+    @property
+    def bc_members(self):
+        return OrganizationMember.objects.filter(organization=self.id)
 
     def __str__(self):
         return f"{self.name}"
