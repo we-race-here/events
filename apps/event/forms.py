@@ -5,6 +5,8 @@ from django.forms import CharField, DateField, DateInput, ModelChoiceField, Mode
 
 from apps.event.models import Event, Race, RaceResult, RaceSeries
 
+from .models import event_types
+
 User = get_user_model()
 
 
@@ -40,6 +42,11 @@ class UploadRaceResults(forms.Form):
 
 
 class EventForm(forms.ModelForm):
+    tags = forms.MultipleChoiceField(
+        widget=forms.CheckboxSelectMultiple,
+        choices=event_types,
+        required=False,
+    )
     start_date = DateField(
         required=True,
         label="Start Date",
@@ -63,6 +70,7 @@ class EventForm(forms.ModelForm):
     description = forms.CharField(widget=forms.Textarea(attrs={"class": "ckeditor"}))
 
     class Meta:
+        print(event_types)
         model = Event
         css = "block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
         fields = [
@@ -95,7 +103,7 @@ class EventForm(forms.ModelForm):
             "city": forms.TextInput(attrs={"class": css}),
             "state": forms.TextInput(attrs={"class": css}),
             "country": forms.TextInput(attrs={"class": css}),
-            "tags": forms.TextInput(attrs={"class": css}),
+            # "tags": forms.SelectMultiple(attrs={"class": css}, choices=event_types),
         }
 
 
