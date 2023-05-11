@@ -11,6 +11,8 @@ from django.views.generic import ListView, TemplateView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, DeleteView, FormView, UpdateView
 
+from ..usac.admin import new_usac_import
+from ..usac.forms import CsvImportForm
 from .forms import OrganizationForm, OrganizationMemberJoinForm
 from .models import Organization, OrganizationMember
 
@@ -181,3 +183,28 @@ class OrganizationAdmin(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         return context
+
+
+class BCAdminView(LoginRequiredMixin, TemplateView):
+    template_name = "admin/bcadmin.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
+
+    def post(self, *args, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if self.request.POST.get("usacdownload", None):
+            form = CsvImportForm(self.request.POST, self.request.FILES)
+            if form.is_valid():
+                csv_file = self.request.FILES["csv_file"]
+                decoded_file = csv_file.read().decode("utf-8").splitlines()
+                context.update(new_usac_import(decoded_file))
+                return self.render_to_response(context)
+        form = CsvImportForm()
+        return self.render_to_response({"context": context, "form": form})
+
+    def get(self, *args, **kwargs):
+        context = super().get_context_data(**kwargs)
+        form = CsvImportForm()
+        return self.render_to_response({"context": context, "form": form})
