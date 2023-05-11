@@ -2,13 +2,13 @@
 from django.urls import path
 
 from .views import (
+    BCAdminView,
     CreateOrganizationView,
     DeleteOrganizationView,
     JoinOrganizationView,
     OrganizationAdmin,
     OrganizationDetailView,
     OrganizationListView,
-    StaffAdminView,
     UpdateOrganizationView,
 )
 
@@ -23,5 +23,5 @@ urlpatterns = [
     path("org/<int:pk>/delete/", DeleteOrganizationView.as_view(), name="delete_organization"),
     path("org/join", JoinOrganizationView.as_view(), name="join_organization"),
     path("org/join/<int:organization_id>/", JoinOrganizationView.as_view(), name="join_organization_from_details"),
-    path("bcadmin/", StaffAdminView.as_view(), name="bcadmin"),
+    path("bcadmin/", BCAdminView.as_view(), name="bcadmin"),
 ]

@@ -1,6 +1,8 @@
 import csv
 import functools
+import hashlib
 import io
+import json
 import traceback
 from datetime import datetime
 
@@ -141,3 +143,81 @@ def import_usac_license_row(row, required_fields, date_format="%m/%d/%Y"):
 
 
 admin.site.register(models.UsacDownload, UsacDownloadAdmin)
+
+
+def hashify_extra(extra: dict) -> str:
+    sextra = json.dumps(extra, sort_keys=True)
+    return hashlib.sha1(sextra.encode()).hexdigest()
+
+
+def new_usac_import(csv_object):
+    """This is for importing usac records from racerdownload a csv"""
+    date_format = "%m/%d/%Y"
+    errors = []
+
+    def field_map(f):
+        return f.lower().strip().replace(" ", "_").replace("#", "number").replace("birthdate", "birth_date")
+
+    required_fields = {
+        "license_number",
+        "first_name",
+        "last_name",
+        "birth_date",
+        "race_age",
+        "race_gender",
+        "sex",
+        "license_expiration",
+        "license_type",
+        "license_status",
+        "local_association",
+    }
+    reader = csv.DictReader(csv_object)
+    reader.fieldnames = [field_map(f) for f in reader.fieldnames]
+    try:
+        assert required_fields.intersection(reader.fieldnames) == required_fields
+    except:
+        # print(required_fields.intersection(_fieldnames).difference(required_fields))
+        raise Exception(
+            f"Missing required fields: {required_fields.intersection(reader.fieldnames).difference(required_fields)}"
+        )
+    try:
+        assert "license_number" in reader.fieldnames
+    except:
+        # print("license_number not in fieldnames: [f for f in _fieldnames if 'license' in f.lower)]")
+        raise Exception("license_number not in fieldnames")
+    success = 0
+    attempted = 0
+    for row in reader:
+        attempted += 1
+        try:
+            try:
+                row["birth_date"] = datetime.strptime(row["birth_date"], date_format)
+            except:
+                errors.append(f"Invalid birth_date: {row['license_number']}: {row['birth_date']}")
+                row["birth_date"] = None
+            try:
+                row["license_expiration"] = datetime.strptime(row["license_expiration"], date_format)
+            except:
+                errors.append(f"Invalid license_expiration: {row['license_number']}: {row['license_expiration']}")
+                row["license_expiration"] = None
+
+            reqs = {k: (v or None) for k, v in row.items() if k in required_fields}
+            extra = {k: (v or None) for k, v in row.items() if k not in required_fields}
+            reqs["data_hash"] = hashify_extra(extra)
+            # try:
+            #     d = UsacDownload.objects.filter(**reqs)
+            #     if d.count() > 1:
+            #         errors.append(f"Error: Too many matches for {row['license_number']}")
+            #         continue
+            # except Exception as e:
+            #     errors.append(f"Error {row['license_number']}: {e}")
+            #     continue
+            # # TODO: Save results to database
+            # del form.cleaned_data["results_file"]
+            # Race.objects.create(**form.cleaned_data)
+            # # TODO, save file data to RaceResults
+            success += 1
+        except:
+            errors.append(f"Unknown Error: {row['license_number']}")
+    total = success + attempted
+    return {"total": total, "success": success, "attempted": attempted, "errors": errors}
