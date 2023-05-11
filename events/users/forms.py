@@ -3,6 +3,7 @@ from allauth.socialaccount.forms import SignupForm as SocialSignupForm
 from django.contrib.auth import forms as admin_forms
 from django.contrib.auth import get_user_model
 from django.forms import BooleanField, CharField, CheckboxInput, ChoiceField, DateField, DateInput, EmailField
+from django.forms.forms import Form
 from django.utils.translation import gettext_lazy as _
 from turnstile.fields import TurnstileField
 

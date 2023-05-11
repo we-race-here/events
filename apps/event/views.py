@@ -9,7 +9,7 @@ from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, DetailView, ListView, TemplateView, UpdateView
 
 from ..membership.models import OrganizationMember
-from .forms import EventForm, RaceForm, RaceResultForm, RaceSeriesForm, UploadRaceResults
+from .forms import EventForm, RaceForm, RaceResultForm, RaceResultsImport, RaceSeriesForm
 from .models import Event, Race, RaceResult, RaceSeries
 from .validators import ImportResults
 
@@ -166,9 +166,9 @@ class RaceSeriesDetailView(DetailView):
     template_name = "results/raceseries_detail.html"
 
 
-def ImportRaceResults(request, event_pk):
+def RaceResultsImportView(request, event_pk):
     if request.method == "POST":
-        form = UploadRaceResults(request.POST, request.FILES)
+        form = RaceResultsImport(request.POST, request.FILES)
         if form.is_valid():
             csv_file = request.FILES["results_file"]
             decoded_file = csv_file.read().decode("utf-8").splitlines()
@@ -189,7 +189,7 @@ def ImportRaceResults(request, event_pk):
             return HttpResponse(f"Form is not valid: {form.errors}")
     elif request.method == "GET":
         get_object_or_404(Event, id=event_pk)  # GET method - render upload form
-        form = UploadRaceResults(initial={"event": event_pk})
+        form = RaceResultsImport(initial={"event": event_pk})
         return render(request, "results/import_race_results.html", {"form": form})
 
 
