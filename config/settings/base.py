@@ -314,6 +314,7 @@ CKEDITOR_CONFIGS = {
 # Turnstile Cloudflare
 TURNSTILE_SITEKEY = env("TURNSTILE_SITEKEY", default="")
 TURNSTILE_SECRET = env("TURNSTILE_SECRET", default="")
-
 TURNSTILE_TIMEOUT = 5
 
+# Google Map Api key
+GOOGLE_MAP_API_TOKEN = env("GOOGLE_MAP_API_TOKEN", default="")

@@ -1,5 +1,6 @@
 from datetime import date
 
+from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Exists, OuterRef, Q
@@ -98,6 +99,7 @@ class EventDetailView(DetailView):
         )
         context["Races"] = Race.objects.filter(event=context["object"])
         context["RaceResults"] = RaceResult.objects.filter(race__in=context["Races"])
+        context["GOOGLE_MAP_API_TOKEN"] = settings.GOOGLE_MAP_API_TOKEN
         return context
 
 
