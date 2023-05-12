@@ -155,6 +155,17 @@ class EventDeleteView(LoginRequiredMixin, DeleteView):
     # TODO: Only is_staff should be able to delete an event
 
 
+class RaceSeriesUpdateView(LoginRequiredMixin, UpdateView):
+    model = RaceSeries
+    form_class = RaceSeriesForm
+    template_name = "results/raceseries_form.html"
+    success_url = reverse_lazy("event:events_results_list")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
+
+
 class RaceSeriesCreateView(LoginRequiredMixin, CreateView):
     model = RaceSeries
     form_class = RaceSeriesForm
@@ -166,6 +177,7 @@ class RaceSeriesDetailView(DetailView):
     model = RaceSeries
     context_object_name = "raceseries"
     template_name = "results/raceseries_detail.html"
+    ordering = ["start_date"]
 
 
 def RaceResultsImportView(request, event_pk):

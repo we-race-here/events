@@ -19,10 +19,12 @@ class RaceResultsImport(forms.Form):
     raceseries = ModelChoiceField(queryset=RaceSeries.objects.all(), label="Select a Race Series(s)")
     category_validation = forms.ChoiceField(choices=(("same", "Same"), ("mixed", "Mixed")), label="Category validation")
     category_raceseries = forms.BooleanField(label="Require the category(s) to match those in Race Series")
+    license_validation = forms.BooleanField(label="Validate License if a number, otherwise ignore")
+    club_validation = forms.BooleanField(label="Validate Club (match or blank")
     # categories = SimpleArrayField(CharField(max_length=256), )
     start_date = DateField(
         required=True,
-        label="Start Date (optional)",
+        label="Start Date",
         widget=DateInput(
             attrs={
                 "type": "Date",
@@ -31,8 +33,8 @@ class RaceResultsImport(forms.Form):
         ),
     )
     start_time = TimeField(
-        required=True,
-        label="Start Time",
+        required=False,
+        label="Start Time (optional)",
         widget=TimeInput(
             attrs={
                 "type": "time",
@@ -40,8 +42,6 @@ class RaceResultsImport(forms.Form):
             }
         ),
     )
-    license_validation = forms.BooleanField(label="Validate License if a number, otherwise ignore")
-    club_validation = forms.BooleanField(label="Validate Club (match or blank")
     results_file = forms.FileField()
 
 

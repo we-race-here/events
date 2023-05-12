@@ -80,10 +80,14 @@
         {% else %}
           {% if ACCOUNT_ALLOW_REGISTRATION %}
             {# URL provided by django-allauth/account/urls.py #}
-            <button type="button" onclick="location.href='{% url 'account_signup' %}'"
+{#            <button type="button" onclick="location.href='{% url 'account_signup' %}'"#}
+{#                    class="px-4 py-2 text-xs font-medium text-center text-white bg-orange-600 rounded-lg hover:bg-orange-700 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-orange-600 dark:hover:bg-orange-700 dark:focus:ring-orange-800">#}
+{#              {% translate "JOIN" %}#}
+{#            </button>#}
+            <button type="button" onclick="location.href='{% url 'home' %}#join'"
                     class="px-4 py-2 text-xs font-medium text-center text-white bg-orange-600 rounded-lg hover:bg-orange-700 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-orange-600 dark:hover:bg-orange-700 dark:focus:ring-orange-800">
               {% translate "JOIN" %}
-            </button>
+            </button>`
 
           {% endif %}
           {# URL provided by django-allauth/account/urls.py #}

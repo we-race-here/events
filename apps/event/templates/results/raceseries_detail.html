@@ -5,8 +5,10 @@
 
 {% block content %}
   <div class="mt-7 overflow-x-auto">
-  <div class="flex items-center border-2 justify-center my-5">
-    <h2 class="text-2xl font-bold leading-none text-orange-600">{{ raceseries.name }}</h2>
+  <div class="flex flex-col border-2 justify-center my-5 items-center">
+    <div><h2 class="text-2xl font-bold leading-none text-orange-600">{{ raceseries.name }}</h2></div>
+    <div><a class="text_sm text-orange-600 hover:text-orange-800 hover:underline"
+    href="{% url 'event:raceseries_update' object.pk %}"> Edit Race Series </a></div>
   </div>
   <div class="flex items-center justify-center my-5">
     <p class="text-base font-medium leading-none text-gray-500  mr-2"> {{ raceseries.description }}</p>
@@ -25,6 +27,13 @@
         class="inline-flex text-white bg-orange-600 border-0 py-2 px-6 mx-3 focus:outline-none hover:bg-orange-800 rounded text-lg">
    JOIN Bicycle Colorado
  </button>
+  </div>
+  <div class="flex flex-row justify-start bg-white m-4">
+  {% for e in  object.events.all %}
+  <div class="p-2 m-3 rounded border border-gray-100">
+    <a href="{% url 'event:event_detail' e.pk %}">{{ e.name }}<br>{{ e.start_date }}</a>
+  </div>
+  {% endfor %}
   </div>
   <div class="flex items-center justify-center my-5">
     <p class="text-base font-medium leading-none text-gray-500  mr-2"> Cup individual and team standings: </p>
