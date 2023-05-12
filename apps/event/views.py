@@ -191,7 +191,8 @@ def RaceResultsImportView(request, event_pk):
             return HttpResponse(f"Form is not valid: {form.errors}")
     elif request.method == "GET":
         get_object_or_404(Event, id=event_pk)  # GET method - render upload form
-        form = RaceResultsImport(initial={"event": event_pk})
+        raceseries = RaceSeries.objects.filter(events__id=event_pk)
+        form = RaceResultsImport(initial={"event": event_pk, "raceseries": raceseries})
         return render(request, "results/import_race_results.html", {"form": form})
 
 

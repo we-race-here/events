@@ -1,6 +1,5 @@
 from django import forms
 from django.contrib.auth import get_user_model
-from django.contrib.postgres.forms import SimpleArrayField
 from django.forms import CharField, DateField, DateInput, ModelChoiceField, ModelForm, TimeField, TimeInput
 
 from apps.event.models import Event, Race, RaceResult, RaceSeries
@@ -15,12 +14,15 @@ class UploadValidateFile(forms.Form):
 
 
 class RaceResultsImport(forms.Form):
-    event = ModelChoiceField(queryset=Event.objects.all())
-    name = CharField(max_length=100)
-    categories = SimpleArrayField(CharField(max_length=256))
+    name = CharField(max_length=100, label="Name: ")
+    event = ModelChoiceField(queryset=Event.objects.all(), label="Choose and Event: ")
+    raceseries = ModelChoiceField(queryset=RaceSeries.objects.all(), label="Select a Race Series(s)")
+    category_validation = forms.ChoiceField(choices=(("same", "Same"), ("mixed", "Mixed")), label="Category validation")
+    category_raceseries = forms.BooleanField(label="Require the category(s) to match those in Race Series")
+    # categories = SimpleArrayField(CharField(max_length=256), )
     start_date = DateField(
         required=True,
-        label="Start Date",
+        label="Start Date (optional)",
         widget=DateInput(
             attrs={
                 "type": "Date",
@@ -38,6 +40,8 @@ class RaceResultsImport(forms.Form):
             }
         ),
     )
+    license_validation = forms.BooleanField(label="Validate License if a number, otherwise ignore")
+    club_validation = forms.BooleanField(label="Validate Club (match or blank")
     results_file = forms.FileField()
 
 
