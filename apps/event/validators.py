@@ -1,4 +1,5 @@
 import csv
+from typing import Literal
 
 from django.contrib.auth import get_user_model
 from django.core import serializers
@@ -27,11 +28,17 @@ class ImportResults:
     more_data = models.JSONField(null=True, blank=True, )
     """
 
-    def __init__(self, file: list[str, ...], dry_run: bool = True, categories: list = None, usac: bool = False):
+    def __init__(
+        self,
+        file: list[str, ...],
+        category_validation: Literal["same", "mixed"] = "same",
+        license_validation: bool = False,
+        club_validation: bool = False,
+    ):
         self.file = file
-        self.dry_run = dry_run
-        self.categories = categories
-        self.usac = usac
+        self.category_validation = category_validation
+        self.license_validation = license_validation
+        self.club_validation = club_validation
         self.columns = None
         self.pii_fields = {"email", "phone", "address", "birth", "dob"}
         self.pii_columns = []
@@ -40,6 +47,7 @@ class ImportResults:
         self.errors = []
         self.warnings = []
         self.messages = []
+        self.all_clubs = {j.get("club") for j in UsacDownload.objects.values("data")}
 
     def pii_check(self):
         """Check if pii field is in part of any column name.
@@ -59,38 +67,42 @@ class ImportResults:
             errors.append('Column name "Category" is required')
         if ("Name" not in self.columns) and (("First Name" not in self.columns) and ("Last Name" not in self.columns)):
             errors.append('Column name "Name" or "First Name" and "Last Name" is required')
-        if self.usac and ("License" not in self.columns):
+        if self.license_validation and ("License" not in self.columns):
             errors.append('Column name "License" is required')
-        if self.usac and ("Club" not in self.columns):
+        if self.license_validation and ("Club" not in self.columns):
             errors.append('Column name "Club" is required USAC results. It may be blank')
-        if self.usac and ("First Name" not in self.columns) and ("Last Name" not in self.columns):
+        if self.license_validation and ("First Name" not in self.columns) and ("Last Name" not in self.columns):
             errors.append('Column name "First Name" and "Last Name" is required for USAC results')
-        if "_Place" in self.columns or "_license" in self.columns:
-            errors.append('Column names "_Place" and "_License" are reserved')
-        if self.categories:
-            mismatch = self.data_categories.difference(self.categories)
-            if mismatch:
-                errors.append(f"Unexpect or missing categories: {mismatch}")
+
         self.errors += errors
         return errors
 
     def usac_lookup(self, row):
         """Match user to results"""
         if "License" in self.columns and row["License"]:
-            usac_license_match = UsacDownload.objects.filter(license_number=row["License"])
-            return serializers.serialize("json", usac_license_match)
+            UsacDownload.objects.filter(license_number=row["License"])
         else:
             print(row["License"], row["_License"])
             return None
 
+    def usac_club_lookup(self, row):
+        """Match user to results"""
+        rider = UsacDownload.objects.filter(license_number=row["license"])
+        if rider and row["club"] in [c.lower() for c in rider.values_list("data", flat=True)]:
+            return "matches_rider"
+        elif row["club"] in self.all_clubs:
+            return "Valid club, but does not match rider"
+        else:
+            return "Club not found in USAC database"
+
     def user_lookup(self, row):
         """Match user to results"""
-        if "License" in self.columns and row["License"]:
+        if "license" in self.columns and row["license"]:
             try:
-                usac_license_match = User.objects.get(usac_license=row["License"])
+                usac_license_match = User.objects.get(usac_license=row["license"])
                 return serializers.serialize("json", usac_license_match)
             except ObjectDoesNotExist:
-                return []
+                return None
         else:
             return None
 
@@ -98,26 +110,25 @@ class ImportResults:
         """Read CSV file and return list of dictionaries"""
         reader = csv.DictReader(self.file, delimiter=",", quotechar='"')
         self.columns = reader.fieldnames
-        base = {"_Place": None, "_License": None}
+        reader.fieldnames = [col.strip().lower().replace(" ", "_") for col in reader.fieldnames]
         for row in reader:
+            row = {k: v.strip().lower() for k, v in row.items()}
+            self.data_categories.add(row["category"])
             try:
-                self.data_categories.add(row["Category"])
-            except KeyError:
-                pass
-            try:
-                row["Place"] = int(row["Place"])
+                row["place"] = int(row["place"])
+                row["finish_status"] = "OK"
             except ValueError:
-                row["_Place"] = row["Place"]
-                row["Place"] = None
-            try:
-                row["License"] = int(row["License"])
-            except ValueError:
-                row["_License"] = row["License"]
-                row["License"] = None
-            base.update(row)
-            base["usac"] = self.usac_lookup(base)
-            base["user"] = self.user_lookup(base)
-            self.data.append(base)
+                row["finish_status"] = row["place"]
+                row["palce"] = None
+            if isinstance(row["license_number"], int):
+                row["license_validation"] = self.usac_lookup(row)
+            else:
+                row["license_validation"] = row["license_number"]
+            if self.club_validation:
+                row["club_validation"] = self.usac_club_lookup(row)
+            self.data_categories.add(row["category"])
+        print(self.data_categories)
+        # return self.data_categories
 
 
 # def usac_license_on_record(license_number: str) -> str:

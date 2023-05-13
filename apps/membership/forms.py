@@ -11,6 +11,7 @@ class OrganizationForm(forms.ModelForm):
         fields = [
             "name",
             "type",
+            "blurb",
             "description",
             "website",
             "phone",

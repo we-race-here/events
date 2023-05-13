@@ -42,7 +42,9 @@
       </div>
     </div>
   </section>
+  <section id="join">
   {% if not request.user.is_authenticated %}
       {% include "account/short_signup_form.html" %}
   {% endif %}
+  </section>
 {% endblock %}

@@ -1,5 +1,6 @@
 from datetime import date
 
+from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Exists, OuterRef, Q
@@ -98,6 +99,7 @@ class EventDetailView(DetailView):
         )
         context["Races"] = Race.objects.filter(event=context["object"])
         context["RaceResults"] = RaceResult.objects.filter(race__in=context["Races"])
+        context["GOOGLE_MAP_API_TOKEN"] = settings.GOOGLE_MAP_API_TOKEN
         return context
 
 
@@ -153,6 +155,17 @@ class EventDeleteView(LoginRequiredMixin, DeleteView):
     # TODO: Only is_staff should be able to delete an event
 
 
+class RaceSeriesUpdateView(LoginRequiredMixin, UpdateView):
+    model = RaceSeries
+    form_class = RaceSeriesForm
+    template_name = "results/raceseries_form.html"
+    success_url = reverse_lazy("event:events_results_list")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
+
+
 class RaceSeriesCreateView(LoginRequiredMixin, CreateView):
     model = RaceSeries
     form_class = RaceSeriesForm
@@ -164,6 +177,7 @@ class RaceSeriesDetailView(DetailView):
     model = RaceSeries
     context_object_name = "raceseries"
     template_name = "results/raceseries_detail.html"
+    ordering = ["start_date"]
 
 
 def RaceResultsImportView(request, event_pk):
@@ -172,6 +186,12 @@ def RaceResultsImportView(request, event_pk):
         if form.is_valid():
             csv_file = request.FILES["results_file"]
             decoded_file = csv_file.read().decode("utf-8").splitlines()
+            raceseries = form.cleaned_data["raceseries"]
+            form.cleaned_data["category_validation"]
+            form.cleaned_data["category_raceseries"]
+            form.cleaned_data["license_validation"]
+            form.cleaned_data["club_validation"]
+
             ir = ImportResults(decoded_file)
             ir.read_csv()
             ir.pii_check()
@@ -181,15 +201,16 @@ def RaceResultsImportView(request, event_pk):
                 return HttpResponse(f"Please correct there errors: {ir.errors}")
             else:
                 # TODO: Save results to database
-                del form.cleaned_data["results_file"]
-                Race.objects.create(**form.cleaned_data)
+                # del form.cleaned_data["results_file"]
+                # Race.objects.create(**form.cleaned_data)
                 # TODO, save file data to RaceResults
                 return HttpResponse("Results imported successfully")
         else:
             return HttpResponse(f"Form is not valid: {form.errors}")
     elif request.method == "GET":
         get_object_or_404(Event, id=event_pk)  # GET method - render upload form
-        form = RaceResultsImport(initial={"event": event_pk})
+        raceseries = RaceSeries.objects.filter(events__id=event_pk)
+        form = RaceResultsImport(initial={"event": event_pk, "raceseries": raceseries})
         return render(request, "results/import_race_results.html", {"form": form})
 
 
