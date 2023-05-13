@@ -186,6 +186,12 @@ def RaceResultsImportView(request, event_pk):
         if form.is_valid():
             csv_file = request.FILES["results_file"]
             decoded_file = csv_file.read().decode("utf-8").splitlines()
+            raceseries = form.cleaned_data["raceseries"]
+            form.cleaned_data["category_validation"]
+            form.cleaned_data["category_raceseries"]
+            form.cleaned_data["license_validation"]
+            form.cleaned_data["club_validation"]
+
             ir = ImportResults(decoded_file)
             ir.read_csv()
             ir.pii_check()
@@ -195,8 +201,8 @@ def RaceResultsImportView(request, event_pk):
                 return HttpResponse(f"Please correct there errors: {ir.errors}")
             else:
                 # TODO: Save results to database
-                del form.cleaned_data["results_file"]
-                Race.objects.create(**form.cleaned_data)
+                # del form.cleaned_data["results_file"]
+                # Race.objects.create(**form.cleaned_data)
                 # TODO, save file data to RaceResults
                 return HttpResponse("Results imported successfully")
         else:

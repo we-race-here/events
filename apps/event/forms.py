@@ -18,7 +18,9 @@ class RaceResultsImport(forms.Form):
     event = ModelChoiceField(queryset=Event.objects.all(), label="Choose and Event: ")
     raceseries = ModelChoiceField(queryset=RaceSeries.objects.all(), label="Select a Race Series(s)")
     category_validation = forms.ChoiceField(choices=(("same", "Same"), ("mixed", "Mixed")), label="Category validation")
-    category_raceseries = forms.BooleanField(label="Require the category(s) to match those in Race Series")
+    category_raceseries = forms.BooleanField(
+        required=False, label="Require the category(s) to match those in Race Series"
+    )
     license_validation = forms.BooleanField(label="Validate License if a number, otherwise ignore")
     club_validation = forms.BooleanField(label="Validate Club (match or blank")
     # categories = SimpleArrayField(CharField(max_length=256), )
