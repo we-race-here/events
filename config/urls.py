@@ -1,28 +1,42 @@
+from allauth.account.views import SignupView
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
+from django.core.mail import send_mail
 from django.urls import include, path
 from django.views import defaults as default_views
 from django.views.generic import TemplateView
-
+from django.views.generic import TemplateView
+from django.shortcuts import render, redirect
+from allauth.account.adapter import get_adapter
+from allauth.account.utils import complete_signup
+from allauth.exceptions import ImmediateHttpResponse
 from events.users.forms import UserSignupForm
+from django.contrib import messages
 
 
-class HomePageView(TemplateView):
-    template_name = "pages/home.html"
-    signup = UserSignupForm()
+class HomePageView(SignupView):
+    template_name = 'pages/home.html'  # your custom template
+    form_class = UserSignupForm  # your custom form
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        # context["events"] = Event.objects.all()  # Or apply any filter/query based on your requirements
-        context["form"] = UserSignupForm()
+    def form_valid(self, form):
+        # Here we can add our custom logic for login
+        parent_email = form.cleaned_data.get('parent_email')
+        parent_name = form.cleaned_data.get('parent_name')
 
-        if not self.request.user.is_authenticated:
-            pass
-        elif self.request.method == "POST":
-            pass
-        # return render(self.request, "account/short_signup_form.html", context=context)
-        return context
+        send_mail(
+            'Login Notification for Your Child',
+            f'Hello {parent_name},\n\nYour child has logged into their account in events.',
+            'from@example.com',
+            [parent_email],
+            fail_silently=False,
+        )
+        # Don't forget to call super
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        # Here you can handle the form errors
+        return render(self.request, self.template_name, {'form': form})
 
 
 urlpatterns = [
