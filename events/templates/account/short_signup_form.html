@@ -113,7 +113,7 @@
         </div>
     </div>
 
-      <div class="mt-4">
+      <div class="mt-4" id="id_opt_in" style="display: block;">
         <label for="{{ form.opt_in_email.id_for_label }}" class="flex items-center">
           {{ form.opt_in_email|add_class:"form-checkbox text-indigo-600" }}
           {% if form.opt_in_email.errors %}
@@ -184,17 +184,21 @@
         var month = document.getElementById('id_birth_month').value;
         var year = document.getElementById('id_birth_year').value;
         var parentFields = document.getElementById('parentFields');
+        var id_opt_in = document.getElementById('id_opt_in');
 
         if (day && month && year) {
           var age = calculateAge(new Date(year, month - 1, day));
           console.log(age)
           if (age >= 13 && age < 18) {
             parentFields.style.display = 'block';
+            id_opt_in.style.display = 'none'
           } else {
             parentFields.style.display = 'none';
+            id_opt_in.style.display = 'block'
           }
         } else {
           parentFields.style.display = 'none';
+          id_opt_in.style.display = 'block'
         }
 
     }
