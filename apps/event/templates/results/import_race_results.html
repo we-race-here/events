@@ -4,15 +4,49 @@
   <div class="container mx-auto px-4 py-8">
     <h1 class="text-3xl font-bold mb-4">Create or Edit a Race Series</h1>
     {% if user.is_staff %}
-      <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-          Save
-        </button>
-      </form>
+      <div>
+        <h3>Add a race result to {{ event.name }} on date {{ event.start_date }}</h3>
+        <h3>Event is included in the following Race Series</h3>
+        {% if raceseries %}
+          <ul>
+          {% for series in raceseries %}
+            <li>{{ raceseries.name }}</li>
+          {% endfor %}
+          <ul>
+            {% for series in raceseries %}
+              <li>{{ series.name }}</li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p> No Race Series</p>
+        {% endif %}
+      <h3>Current Races already defined</h3>
+      {% if races %}
+        {% for race in races %}
+        <ul>
+        <li> {{ race.name }}</li>
+        </ul>
+        {% endfor %}
+        {% else %}
+        <p> No races defined for event</p>
+      {% endif %}
+        <div>
+          <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+              Save
+            </button>
+          </form>
+        </div>
+      </div>
+      <div>
+        <h3> If there are error, they will be listed here</h3>
+      </div>
     {% else %}
       <p>You are not authorized to view this page.</p>
     {% endif %}
   </div>
+  </div>
+
 {% endblock %}

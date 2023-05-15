@@ -181,24 +181,38 @@ class RaceSeriesDetailView(DetailView):
 
 
 def RaceResultsImportView(request, event_pk):
+    context = {}
+    event = get_object_or_404(Event, id=event_pk)  # GET method - render upload form
+    raceseries = RaceSeries.objects.filter(events__id=event_pk)
+    context["races"] = event.races.all()
+    context["raceseries"] = raceseries
+    context["event"] = event
+    print(context)
     if request.method == "POST":
         form = RaceResultsImport(request.POST, request.FILES)
         if form.is_valid():
+            context = {}
             csv_file = request.FILES["results_file"]
             decoded_file = csv_file.read().decode("utf-8").splitlines()
             raceseries = form.cleaned_data["raceseries"]
-            form.cleaned_data["category_validation"]
+            category_validation = form.cleaned_data["category_validation"]
             form.cleaned_data["category_raceseries"]
-            form.cleaned_data["license_validation"]
+            license_validation = form.cleaned_data["license_validation"]
             form.cleaned_data["club_validation"]
 
-            ir = ImportResults(decoded_file)
+            ir = ImportResults(
+                decoded_file,
+                category_validation,
+                license_validation,
+            )
             ir.read_csv()
             ir.pii_check()
             ir.check_columns()
             if ir.errors:
                 # TODO: need a html page for this
-                return HttpResponse(f"Please correct there errors: {ir.errors}")
+                context.update({"errors": ir.errors})
+                return render(request, "results/import_race_results.html", context=context)
+
             else:
                 # TODO: Save results to database
                 # del form.cleaned_data["results_file"]
@@ -208,10 +222,9 @@ def RaceResultsImportView(request, event_pk):
         else:
             return HttpResponse(f"Form is not valid: {form.errors}")
     elif request.method == "GET":
-        get_object_or_404(Event, id=event_pk)  # GET method - render upload form
-        raceseries = RaceSeries.objects.filter(events__id=event_pk)
+        print(context)
         form = RaceResultsImport(initial={"event": event_pk, "raceseries": raceseries})
-        return render(request, "results/import_race_results.html", {"form": form})
+        return render(request, "results/import_race_results.html", {"context": context, "form": form})
 
 
 class RaceCreateView(LoginRequiredMixin, CreateView):

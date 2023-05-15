@@ -6,6 +6,7 @@ from django.core import serializers
 from django.core.exceptions import ObjectDoesNotExist
 
 from ..usac.models import UsacDownload
+from .models import RaceSeries
 
 User = get_user_model()
 
@@ -31,12 +32,16 @@ class ImportResults:
     def __init__(
         self,
         file: list[str, ...],
-        category_validation: Literal["same", "mixed"] = "same",
+        raceseries: RaceSeries = None,
+        category_validation: Literal["same", "mixed", "rank"] = "same",
+        category_raceseries: bool = False,
         license_validation: bool = False,
         club_validation: bool = False,
     ):
         self.file = file
+        self.raceseries = raceseries
         self.category_validation = category_validation
+        self.category_raceseries = category_raceseries
         self.license_validation = license_validation
         self.club_validation = club_validation
         self.columns = None
