@@ -1,90 +1,218 @@
 {% load i18n %}
 {% load crispy_forms_tags %}
+{% load widget_tweaks %}
+
 <div class="flex items-center justify-center  py-3 px-4 sm:px-6 lg:px-8">
-        <div class="max-w-md w-full space-y-8">
-            <div>
-                <h2 class="text-center text-3xl font-extrabold text-orange-500">
-                    {% translate "Join Now" %}
-                </h2>
-            </div>
+  <div class="max-w-md w-full space-y-8">
+    <div>
+      <h2 class="text-center text-3xl font-extrabold text-orange-500">
+        {% translate "Join Now" %}
+      </h2>
+    </div>
+    <form method="post">
+      {% csrf_token %}
+      <div class="mt-4">
+        <label for="{{ form.first_name.id_for_label }}" class="block text-sm font-medium text-gray-700">First
+          Name</label>
+        {{ form.first_name|add_class:"block w-full mt-1 border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" }}
+        {% if form.first_name.errors %}
+            <div class="text-red-500 text-xs mt-1">{{ form.first_name.errors }}</div>
+        {% endif %}
+      </div>
 
-            <form class="mt-8 space-y-6" action="#" method="POST">
-                {% csrf_token %}
-                {% for error in form.non_field_errors %}
-                <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
-                  <strong class="font-bold">Error!</strong>
-                  <span class="block sm:inline">{{ error }}</span>
-                  <button class="absolute top-0 bottom-0 right-0 px-4 py-3" onclick="this.parentElement.style.display='none'">
-                    <svg class="fill-current h-6 w-6 text-red-500" role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                      <title>Close</title>
-                      <path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z"/>
-                    </svg>
-                  </button>
-                </div>
-                  {% endfor %}
+      <div class="mt-4">
+        <label for="{{ form.last_name.id_for_label }}" class="block text-sm font-medium text-gray-700">Last Name</label>
+        {{ form.last_name|add_class:"block w-full mt-1 border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" }}
+        {% if form.last_name.errors %}
+            <div class="text-red-500 text-xs mt-1">{{ form.last_name.errors }}</div>
+        {% endif %}
+      </div>
 
+      <div class="mt-4">
+        <label for="{{ form.email.id_for_label }}" class="block text-sm font-medium text-gray-700">Email</label>
+        {{ form.email|add_class:"block w-full mt-1 border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" }}
+        {% if form.email.errors %}
+            <div class="text-red-500 text-xs mt-1">{{ form.email.errors }}</div>
+        {% endif %}
+      </div>
 
-                <input type="hidden" name="remember" value="true">
-                <div class=" shadow-sm -space-y-px">
-                  {% for field in form %}
-                    {% if field.field.widget.input_type in "email,password,text" %}
-                         <div class="" style="margin-top:5px">
-                            <input id="{{ field.auto_id }}"
-                                   type="{{ field.field.widget.input_type }}"
-                                  name="{{ field.html_name }}"
-                                  value="{{ field.value|default:'' }}"
-                                   autocomplete="email" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md  rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                                   placeholder="{{ field.label }}">
-                           {% for error in field.errors %}
-                            <p class="text-red-500 text-xs italic mt-1">{{ error }}</p>
-                          {% endfor %}
-                        </div>
-                    {% elif field.field.widget.input_type == 'date' %}
-                        <input id="{{ field.auto_id }}" type="{{ field.field.widget.input_type }}" name="{{ field.html_name }}" value="{{ field.value|default:'' }}" class="mt2 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                    {% elif field.field.widget.input_type == 'select' %}
-                      <select id="{{ field.auto_id }}"  name="{{ field.html_name }}" class="shadow appearance-none border rounded w-full py-2 px-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                        {% for choice in field.field.choices %}
-                          <option value="{{ choice.0 }}" {% if field.value == choice.0 %}selected{% endif %}>{{ choice.1 }}</option>
-                        {% endfor %}
-                      </select>
-                    {% endif %}
-                {% endfor %}
+      <div class="mt-4">
+        <label for="{{ form.password.id_for_label }}" class="block text-sm font-medium text-gray-700">Password</label>
+        {{ form.password1|add_class:"block w-full mt-1 border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" }}
+        {% if form.password1.errors %}
+            <div class="text-red-500 text-xs mt-1">{{ form.password1.errors }}</div>
+        {% endif %}
+      </div>
+      <div class="mt-4">
+        <label for="{{ form.password.id_for_label }}" class="block text-sm font-medium text-gray-700">Confirm
+          Password</label>
+        {{ form.password2|add_class:"block w-full mt-1 border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" }}
+        {% if form.password2.errors %}
+            <div class="text-red-500 text-xs mt-1">{{ form.password2.errors }}</div>
+        {% endif %}
+      </div>
+      <div class="flex space-x-4">
 
-                  {% for field in form %}
-                    {% if field.field.widget.input_type == 'checkbox' %}
-                      <div class="mb-4">
-                        <label class="inline-flex items-center">
-                          {{ field }}
-                          <span class="ml-2 text-gray-700 text-sm font-bold">{{ field.label }}</span>
-                        </label>
-                        {% for error in field.errors %}
-                          <p class="text-red-500 text-xs italic mt-1">{{ error }}</p>
-                        {% endfor %}
-                      </div>
-                    {% endif %}
-                  {% endfor %}
+        <div class="w-1/3">
+          <label for="{{ form.birth_day.id_for_label }}" class="block text-sm font-medium text-gray-700">Day</label>
+          {{ form.birth_day|add_class:"block w-full mt-1 border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" }}
+          {% if form.birth_day.errors %}
+            <div class="text-red-500 text-xs mt-1">{{ form.birth_day.errors }}</div>
+        {% endif %}
+        </div>
+        <div class="w-1/3">
+          <label for="{{ form.birth_month.id_for_label }}" class="block text-sm font-medium text-gray-700">Month</label>
+          {{ form.birth_month|add_class:"block w-full mt-1 border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" }}
+          {% if form.birth_month.errors %}
+            <div class="text-red-500 text-xs mt-1">{{ form.birth_month.errors }}</div>
+        {% endif %}
+        </div>
+        <div class="w-1/3">
+          <label for="{{ form.birth_year.id_for_label }}" class="block text-sm font-medium text-gray-700">Year</label>
+          {{ form.birth_year|add_class:"block w-full mt-1 border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" }}
+          {% if form.birth_year.errors %}
+            <div class="text-red-500 text-xs mt-1">{{ form.birth_year.errors }}</div>
+        {% endif %}
+        </div>
+      </div>
 
+      <div class="mt-4">
+        <label for="{{ form.gender.id_for_label }}" class="block text-sm font-medium text-gray-700">Gender</label>
+        {{ form.gender|add_class:"block w-full mt-1 border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" }}
+        {% if form.gender.errors %}
+            <div class="text-red-500 text-xs mt-1">{{ form.gender.errors }}</div>
+        {% endif %}
+      </div>
 
-                </div>
-                <div class="flex justify-center">
-                  {{ form.turnstile }}
-                </div>
+      <div class="mt-4">
+        <label for="{{ form.usac_number.id_for_label }}" class="block text-sm font-medium text-gray-700">USAC
+          Number</label>
+        {{ form.usac_number|add_class:"block w-full mt-1 border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" }}
+        {% if form.usac_number.errors %}
+            <div class="text-red-500 text-xs mt-1">{{ form.usac_number.errors }}</div>
+        {% endif %}
+      </div>
 
-                <div>
-                    <button type="submit" class="group relative w-full  flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-orange-600	 hover:bg-slate-950		 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                        Sign In
-                    </button>
-                </div>
-                <!-- Add Register and Forgot Password links -->
-                <div class="mt-6">
-                    <div class="text-center">
-                      {% if ACCOUNT_ALLOW_REGISTRATION %}
-                           <a href="{{ login_url }}" class="font-medium text-orange-600 hover:text-slate-950">
-                              {% translate "Have an account? Login" %}
-                            </a>
-                    {% endif %}
-                    </div>
-                </div>
-            </form>
+      <div id="parentFields" style="display: none;">
+        <!-- Parent's name field -->
+        <div class="mt-4">
+            <label for="{{ form.parent_name.id_for_label }}" class="block text-sm font-medium text-gray-700">Parent's Name</label>
+            {{ form.parent_name|add_class:"block w-full mt-1 border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" }}
+            {% if form.parent_name.errors %}
+                <div class="text-red-500 text-xs mt-1">{{ form.parent_name.errors }}</div>
+            {% endif %}
+        </div>
+
+        <!-- Parent's email field -->
+        <div class="mt-4">
+            <label for="{{ form.parent_email.id_for_label }}" class="block text-sm font-medium text-gray-700">Parent's Email</label>
+            {{ form.parent_email|add_class:"block w-full mt-1 border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" }}
+            {% if form.parent_email.errors %}
+                <div class="text-red-500 text-xs mt-1">{{ form.parent_email.errors }}</div>
+            {% endif %}
         </div>
     </div>
+
+      <div class="mt-4" id="id_opt_in" style="display: block;">
+        <label for="{{ form.opt_in_email.id_for_label }}" class="flex items-center">
+          {{ form.opt_in_email|add_class:"form-checkbox text-indigo-600" }}
+          {% if form.opt_in_email.errors %}
+            <div class="text-red-500 text-xs mt-1">{{ form.opt_in_email.errors }}</div>
+        {% endif %}
+          <span class="ml-2 text-sm text-gray-600">Opt out of promotional emails</span>
+        </label>
+      </div>
+
+      <div class="mt-4">
+        <label for="{{ form.terms_of_service.id_for_label }}" class="flex items-center">
+          {{ form.terms_of_service|add_class:"form-checkbox text-indigo-600" }}
+          {% if form.terms_of_service.errors %}
+            <div class="text-red-500 text-xs mt-1">{{ form.terms_of_service.errors }}</div>
+        {% endif %}
+          <span class="ml-2 text-sm text-gray-600">I agree to Terms and Service</span>
+        </label>
+      </div>
+
+      <div class="mt-4">
+        <label for="{{ form.user_agreement_waiver.id_for_label }}" class="flex items-center">
+          {{ form.user_agreement_waiver|add_class:"form-checkbox text-indigo-600" }}
+          {% if form.user_agreement_waiver.errors %}
+            <div class="text-red-500 text-xs mt-1">{{ form.user_agreement_waiver.errors }}</div>
+        {% endif %}
+          <span class="ml-2 text-sm text-gray-600">I accept the waiver</span>
+        </label>
+      </div>
+
+      <div class="mt-4 flex flex-col items-center">
+        {{ form.turnstile|add_class:"block w-full mt-1 border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" }}
+        {% if form.turnstile.errors %}
+            <div class="text-red-500 text-xs mt-1">{{ form.turnstile.errors }}</div>
+        {% endif %}
+      </div>
+      <br>
+
+      <div>
+        <button type="submit"
+                class="group relative w-full  flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-orange-600	 hover:bg-slate-950		 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+          Sign In
+        </button>
+      </div>
+      <!-- Add Register and Forgot Password links -->
+      <div class="mt-6">
+        <div class="text-center">
+          {% if ACCOUNT_ALLOW_REGISTRATION %}
+          <a href="{{ login_url }}" class="font-medium text-orange-600 hover:text-slate-950">
+            {% translate "Have an account? Login" %}
+          </a>
+          {% endif %}
+        </div>
+      </div>
+    </form>
+
+  </div>
+</div>
+
+<script>
+    function calculateAge(birthday) {
+        console.log(birthday)
+        var ageDifMs = Date.now() - birthday.getTime();
+        var ageDate = new Date(ageDifMs);
+        return Math.abs(new Date().getFullYear() - birthday.getFullYear());
+    }
+    function cal_age(){
+        var day = document.getElementById('id_birth_day').value;
+        var month = document.getElementById('id_birth_month').value;
+        var year = document.getElementById('id_birth_year').value;
+        var parentFields = document.getElementById('parentFields');
+        var id_opt_in = document.getElementById('id_opt_in');
+
+        if (day && month && year) {
+          var age = calculateAge(new Date(year, month - 1, day));
+          console.log(age)
+          if (age >= 13 && age < 18) {
+            parentFields.style.display = 'block';
+            id_opt_in.style.display = 'none'
+          } else {
+            parentFields.style.display = 'none';
+            id_opt_in.style.display = 'block'
+          }
+        } else {
+          parentFields.style.display = 'none';
+          id_opt_in.style.display = 'block'
+        }
+
+    }
+    document.getElementById('id_birth_day').addEventListener('change', function () {
+        cal_age()
+    });
+
+    document.getElementById('id_birth_month').addEventListener('change', function () {
+        cal_age()
+    });
+
+    document.getElementById('id_birth_year').addEventListener('change', function () {
+        cal_age()
+    });
+</script>
+
+

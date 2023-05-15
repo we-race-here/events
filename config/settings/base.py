@@ -76,6 +76,8 @@ THIRD_PARTY_APPS = [
     "simple_history",
     "turnstile",
     "ckeditor",
+    "widget_tweaks",
+
 ]
 
 LOCAL_APPS = [
@@ -302,7 +304,7 @@ ACCOUNT_FORMS = {"signup": "events.users.forms.UserSignupForm", "login": "events
 SOCIALACCOUNT_ADAPTER = "events.users.adapters.SocialAccountAdapter"
 # https://django-allauth.readthedocs.io/en/latest/forms.html
 SOCIALACCOUNT_FORMS = {"signup": "events.users.forms.UserSocialSignupForm"}
-
+LOGIN_REDIRECT_URLNAME = '/test'
 # Custom stuff...
 # ------------------------------------------------------------------------------
 
