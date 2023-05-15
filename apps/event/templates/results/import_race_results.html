@@ -5,7 +5,8 @@
     <h1 class="text-3xl font-bold mb-4">Create or Edit a Race Series</h1>
     {% if user.is_staff %}
       <div>
-        <h3>Add a race result to {{ event.name }} on date {{ event.start_date }}</h3>
+        <h3>Add a race result to:</h3>
+          <h4>{{ event.name }} on date {{ event.start_date }}</h4>
         <h3>Event is included in the following Race Series</h3>
         {% if raceseries %}
           <ul>
@@ -27,9 +28,10 @@
         <li> {{ race.name }}</li>
         </ul>
         {% endfor %}
-        {% else %}
-        <p> No races defined for event</p>
+      {% else %}
+        <h4> No races defined for event</h4>
       {% endif %}
+      <hr class="my-3">
         <div>
           <form method="post" enctype="multipart/form-data">
             {% csrf_token %}

@@ -187,7 +187,6 @@ def RaceResultsImportView(request, event_pk):
     context["races"] = event.races.all()
     context["raceseries"] = raceseries
     context["event"] = event
-    print(context)
     if request.method == "POST":
         form = RaceResultsImport(request.POST, request.FILES)
         if form.is_valid():
@@ -224,7 +223,8 @@ def RaceResultsImportView(request, event_pk):
     elif request.method == "GET":
         print(context)
         form = RaceResultsImport(initial={"event": event_pk, "raceseries": raceseries})
-        return render(request, "results/import_race_results.html", {"context": context, "form": form})
+        context.update({"form": form})
+        return render(request, "results/import_race_results.html", context)
 
 
 class RaceCreateView(LoginRequiredMixin, CreateView):
