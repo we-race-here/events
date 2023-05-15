@@ -22,6 +22,7 @@ django-turnstile==0.1.0  # https://gist.github.com/mikeckennedy/66d6298106671a3c
 django-phonenumber-field==7.1.0  # https://github.com/stefanfoulis/django-phonenumber-field
 django-storages[boto3]==1.13.2  # https://github.com/jschneier/django-storages
 django-ckeditor==6.5.1 # https://github.com/django-ckeditor/django-ckeditor
+django-widget-tweaks==1.4.12
 
 # Database
 # This is the new for 4.2 you need both the binary and package.
