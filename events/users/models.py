@@ -46,7 +46,6 @@ class User(AbstractUser):
     )
 
     # First and last name do not cover name patterns around the globe
-    # TODO: We need to use first and last name to match with USAC data.
     name = None
     # first_name = None  # type: ignore
     # last_name = None  # type: ignore
