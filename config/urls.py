@@ -27,7 +27,7 @@ class HomePageView(SignupView):
         send_mail(
             'Login Notification for Your Child',
             f'Hello {parent_name},\n\nYour child has logged into their account in events.',
-            'from@example.com',
+            'info@weracehere.org',
             [parent_email],
             fail_silently=False,
         )
