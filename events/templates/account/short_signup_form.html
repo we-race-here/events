@@ -191,10 +191,10 @@
           console.log(age)
           if (age >= 13 && age < 18) {
             parentFields.style.display = 'block';
-            id_opt_in.style.display = 'none'
-          } else {
-            parentFields.style.display = 'none';
             id_opt_in.style.display = 'block'
+          } else if (age < 13){
+            parentFields.style.display = 'block';
+            id_opt_in.style.display = 'none'
           }
         } else {
           parentFields.style.display = 'none';
@@ -214,5 +214,3 @@
         cal_age()
     });
 </script>
-
-
