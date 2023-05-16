@@ -264,7 +264,7 @@ class RaceResult(models.Model):
         return super().save(*args, **kwargs)
 
     @property
-    def _place(self):
+    def place_disp(self):
         if self.place:
             return self.place
         else:
