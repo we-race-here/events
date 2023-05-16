@@ -7,6 +7,7 @@ from django.db import models
 from simple_history.models import HistoricalRecords
 
 from apps.membership.models import Organization
+from apps.usac.models import UsacDownload
 
 User = get_user_model()
 
@@ -228,11 +229,71 @@ class RaceResult(models.Model):
     class Meta:
         unique_together = (("rider", "race"),)
 
+    @classmethod
+    def match_user(cls, usac_license=None, email=None, first_name=None, last_name=None, date_of_birth=None):
+        if usac_license:
+            try:
+                f = {"usac_license": usac_license, "usac_license_verified": True}
+                return User.objects.get(**f)
+            except User.DoesNotExist:
+                pass
+        if email:
+            try:
+                return User.objects.get(email=email)
+            except User.DoesNotExist:
+                pass
+        if first_name and last_name and date_of_birth:
+            try:
+                return User.objects.get(first_name=first_name, last_name=last_name, date_of_birth=date_of_birth)
+            except User.DoesNotExist:
+                pass
+        return None
+
     def save(self, *args, **kwargs):
         if not isinstance(self.place, int):
             self.place = None
             self.finish_status = self.place
+        if not self.rider:
+            self.rider = self.match_user(
+                usac_license=self.usac_license,
+                email=self.more_data.get("email", None),
+                first_name=self.more_data.get("first_name", None),
+                last_name=self.more_data.get("last_name", None),
+                date_of_birth=self.date_of_birth,
+            )
         return super().save(*args, **kwargs)
+
+    @property
+    def _place(self):
+        if self.place:
+            return self.place
+        else:
+            return self.finish_status
+
+    @property
+    def relative_place(self):
+        """(Q(race=self.race) & Q(category=self.category) & Q(place__gte=self.place)"""
+        if self.place:
+            filter_dict = {"race": self.race, "category": self.category, "place__gte": self.place}
+            return self.objects.filter(**filter_dict).count()
+        else:
+            return None
+
+    @property
+    def usac_club(self):
+        try:
+            UsacDownload.objects.get(data__club__iexact=self.club)
+            return True
+        except UsacDownload.DoesNotExist:
+            return False
+
+    @property
+    def bc_club(self):
+        try:
+            club = Organization.objects.get(name__iexact=self.club)
+            return club
+        except Organization.DoesNotExist:
+            return None
 
     def __str__(self):
         return f"{self.race}-{self.category}-{self.place}-{self.rider}"
