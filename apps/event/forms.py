@@ -17,17 +17,10 @@ class RaceResultsImport(forms.Form):
     name = CharField(max_length=100, label="Race Name")
     # event = ModelChoiceField(queryset=Event.objects.all(), label="Choose and Event")
     raceseries = ModelChoiceField(queryset=RaceSeries.objects.all(), label="Select a Race Series(s)")
-    # category_validation = forms.ChoiceField(
-    #     required=False, choices=(("same", "Same"), ("mixed", "Mixed")), label="Category validation"
-    # )
-    # category_raceseries = forms.BooleanField(
-    #     required=False, label="Require the category(s) to match those in Race Series"
-    # )
-    # license_validation = forms.BooleanField(required=False, label="Validate License if a number, otherwise ignore")
+    category_validation = forms.ChoiceField(
+        required=False, choices=(("same", "Same"), ("mixed", "Mixed")), label="Category validation"
+    )
     is_usac = forms.BooleanField(required=False, label="Is a USAC race")
-
-    # club_validation = forms.BooleanField(required=False, label="Validate Club (match or blank")
-    # categories = SimpleArrayField(CharField(max_length=256), )
     start_date = DateField(
         required=True,
         label="Start Date",

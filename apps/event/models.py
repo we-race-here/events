@@ -273,10 +273,11 @@ class RaceResult(models.Model):
     @property
     def relative_place(self):
         """(Q(race=self.race) & Q(category=self.category) & Q(place__gte=self.place)"""
-        if self.place:
-            filter_dict = {"race": self.race, "category": self.category, "place__gte": self.place}
-            return self.objects.filter(**filter_dict).count()
-        else:
+        try:
+            if self.place:
+                filter_dict = {"race": self.race, "category": self.category, "place__gte": self.place}
+                return RaceResult.objects.filter(**filter_dict).count()
+        except:
             return None
 
     @property

@@ -4,7 +4,6 @@ from typing import Literal
 from django.contrib.auth import get_user_model
 
 # from ..usac.models import UsacDownload
-from .models import RaceSeries
 
 # from django.core import serializers
 # from django.core.exceptions import ObjectDoesNotExist
@@ -34,14 +33,12 @@ class ImportResults:
     def __init__(
         self,
         file: list[str, ...],
-        raceseries: RaceSeries = None,
         category_validation: Literal["same", "mixed", "rank"] = "mixed",
         is_usac: bool = True,
         license_validation: bool = False,
         club_validation: bool = False,
     ):
         self.file = file
-        self.raceseries = raceseries
         self.category_validation = category_validation
         self.is_usac = is_usac
         self.columns = None
@@ -56,6 +53,8 @@ class ImportResults:
             "club",
             "date_of_birth",
         ]
+        self.reader = csv.DictReader(self.file, delimiter=",", quotechar='"')
+        self.columns = self.normalize_fieldnames(self.reader.fieldnames)
         self.data = []
         self.data_categories = set()
         self.errors = []
@@ -76,11 +75,19 @@ class ImportResults:
             self.errors.append('Column name "Club" is required USAC results. It may be blank')
         if self.is_usac and ("first_name" not in self.columns) and ("last_name" not in self.columns):
             self.errors.append('Column name "First Name" and "Last Name" is required for USAC results')
+        if not all(self.columns):
+            self.errors.append("A column is blank in the header row")
         if self.errors:
             print(self.columns)
 
+    def check_categories(self, req):
+        if req == "same":
+            if len(self.data_categories) > 1:
+                self.errors.append("Multiple categories found")
+
     def normalize_fieldnames(self, fieldnames):
         """Normalize column names"""
+        print(fieldnames)
         temp = [col.strip().lower().replace(" ", "_") for col in fieldnames]
         temp = [col.replace("dob", "date_of_birth") for col in temp]
         temp = [col.replace("bib", "bib_number") for col in temp]
@@ -88,15 +95,17 @@ class ImportResults:
             temp = [col.replace("license_number", "usac_license") for col in temp]
         if "usac_license" not in temp:
             temp = [col.replace("license", "usac_license") for col in temp]
-        self.columns = temp
+        temp = [col.replace("team", "club") for col in temp]
+        temp = [col.replace("club_name", "club") for col in temp]
         return temp
 
     def read_csv(self):
         """Read CSV file and return list of dictionaries"""
-        reader = csv.DictReader(self.file, delimiter=",", quotechar='"')
-        reader.fieldnames = self.normalize_fieldnames(reader.fieldnames)
-        for i, row in enumerate(reader):
-            row = {k: v.strip().lower() for k, v in row.items()}
+        # reader = csv.DictReader(self.file, delimiter=",", quotechar='"')
+        self.reader.fieldnames = self.columns
+        print(self.reader.fieldnames)
+        for i, row in enumerate(self.reader):
+            self.data_categories.add(row["category"])
             if any(row.values()):
                 if row["place"] == "":
                     self.errors.append(f"Place is blank for# {i}")
@@ -106,7 +115,6 @@ class ImportResults:
                     self.errors.append(f"Name is blank for# {i}")
                 if self.is_usac and row.get("usac_license") == "":
                     self.errors.append(f"License is blank for# {i}")
-                self.data_categories.add(row["category"])
                 try:
                     row["place"] = int(row["place"])
                     row["finish_status"] = "OK"
@@ -116,7 +124,8 @@ class ImportResults:
                 self.data_categories.add(row["category"])
                 if "name" not in self.columns:
                     row["name"] = f"{row['first_name']} {row['last_name']}"
-                row["more_data"] = {k: v for k, v in row.items() if k not in self.columns}
+                row["more_data"] = {k: v for k, v in row.items() if k not in self.accepted_columns}
+                row = {k: v for k, v in row.items() if k in self.accepted_columns or k == "more_data"}
+                self.data.append(row)
             else:
                 self.errors.append(f"Error: Row {i} is blank")
-            self.data.append(row)

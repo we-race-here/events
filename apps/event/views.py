@@ -192,16 +192,14 @@ def RaceResultsImportView(request, event_pk):
             csv_file = request.FILES["results_file"]
             decoded_file = csv_file.read().decode("utf-8").splitlines()
             raceseries = form.cleaned_data["raceseries"]
-            # category_validation = form.cleaned_data["category_validation"]
-            # form.cleaned_data["category_raceseries"]
-            # license_validation = form.cleaned_data["license_validation"]
+            category_validation = form.cleaned_data["category_validation"]
             is_usac = form.cleaned_data["is_usac"]
             # form.cleaned_data["club_validation"]
 
             ir = ImportResults(file=decoded_file, is_usac=is_usac)
-            ir.read_csv()
-            # ir.pii_check()
             ir.check_columns()
+            ir.read_csv()
+            ir.check_categories(category_validation)
             if ir.errors:
                 # TODO: need a html page for this
                 context.update({"errors": ir.errors})
@@ -212,14 +210,20 @@ def RaceResultsImportView(request, event_pk):
             else:
                 # TODO: Save results to database
                 del form.cleaned_data["results_file"]
-                fields_excluded = ["is_usac", "event", "raceseries"]
-                print(form.cleaned_data)
+                fields_excluded = ["is_usac", "event", "raceseries", "category_validation"]
+                # print(form.cleaned_data)
                 update_form = {
                     field: value for field, value in form.cleaned_data.items() if field not in fields_excluded
                 }
                 update_form["event"] = event
-                Race.objects.create(**update_form)
-                # TODO, save file data to RaceResults
+                update_form["categories"] = list(ir.data_categories)
+                r, c = Race.objects.update_or_create(
+                    event=update_form["event"], name=update_form["name"], defaults=update_form
+                )
+                raceseries.races.add(r)
+                [row.update(race=r) for row in ir.data]
+
+                RaceResult.objects.bulk_create([RaceResult(**row) for row in ir.data])
                 context.update({"warnings": ir.warnings})
                 return render(request, "results/import_race_results.html", context=context)
         else:
