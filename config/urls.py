@@ -1,33 +1,28 @@
-from allauth.account.views import SignupView
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.core.mail import send_mail
+from django.shortcuts import render
 from django.urls import include, path
 from django.views import defaults as default_views
 from django.views.generic import TemplateView
-from django.views.generic import TemplateView
-from django.shortcuts import render, redirect
-from allauth.account.adapter import get_adapter
-from allauth.account.utils import complete_signup
-from allauth.exceptions import ImmediateHttpResponse
+
 from events.users.forms import UserSignupForm
-from django.contrib import messages
 
 
-class HomePageView(SignupView):
-    template_name = 'pages/home.html'  # your custom template
+class HomePageView(TemplateView):
+    template_name = "pages/home.html"  # your custom template
     form_class = UserSignupForm  # your custom form
 
     def form_valid(self, form):
         # Here we can add our custom logic for login
-        parent_email = form.cleaned_data.get('parent_email')
-        parent_name = form.cleaned_data.get('parent_name')
+        parent_email = form.cleaned_data.get("parent_email")
+        parent_name = form.cleaned_data.get("parent_name")
 
         send_mail(
-            'Login Notification for Your Child',
-            f'Hello {parent_name},\n\nYour child has logged into their account in events.',
-            'info@bicyclecolorado.org',
+            "Login Notification for Your Child",
+            f"Hello {parent_name},\n\nYour child has logged into their account in events.",
+            "info@bicyclecolorado.org",
             [parent_email],
             fail_silently=False,
         )
@@ -36,7 +31,7 @@ class HomePageView(SignupView):
 
     def form_invalid(self, form):
         # Here you can handle the form errors
-        return render(self.request, self.template_name, {'form': form})
+        return render(self.request, self.template_name, {"form": form})
 
 
 urlpatterns = [
