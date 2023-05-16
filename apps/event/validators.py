@@ -33,8 +33,9 @@ class ImportResults:
         self,
         file: list[str, ...],
         raceseries: RaceSeries = None,
-        category_validation: Literal["same", "mixed", "rank"] = "same",
+        category_validation: Literal["same", "mixed", "rank"] = "mixed",
         category_raceseries: bool = False,
+        is_usac: bool = True,
         license_validation: bool = False,
         club_validation: bool = False,
     ):
@@ -42,9 +43,21 @@ class ImportResults:
         self.raceseries = raceseries
         self.category_validation = category_validation
         self.category_raceseries = category_raceseries
+        self.is_usac = is_usac
         self.license_validation = license_validation
         self.club_validation = club_validation
         self.columns = None
+        self.accepted_columns = [
+            "name",
+            "place",
+            "category",
+            "time",
+            "gap",
+            "bib_number",
+            "usac_license",
+            "club",
+            "date_of_birth",
+        ]
         self.pii_fields = {"email", "phone", "address", "birth", "dob"}
         self.pii_columns = []
         self.data = []
@@ -65,22 +78,20 @@ class ImportResults:
 
     def check_columns(self):
         """Check if column names are valid"""
-        errors = []
-        if "Place" not in self.columns:
-            errors.append('Column name "Place" is required')
-        if "Category" not in self.columns:
-            errors.append('Column name "Category" is required')
-        if ("Name" not in self.columns) and (("First Name" not in self.columns) and ("Last Name" not in self.columns)):
-            errors.append('Column name "Name" or "First Name" and "Last Name" is required')
-        if self.license_validation and ("License" not in self.columns):
-            errors.append('Column name "License" is required')
-        if self.license_validation and ("Club" not in self.columns):
-            errors.append('Column name "Club" is required USAC results. It may be blank')
-        if self.license_validation and ("First Name" not in self.columns) and ("Last Name" not in self.columns):
-            errors.append('Column name "First Name" and "Last Name" is required for USAC results')
-
-        self.errors += errors
-        return errors
+        if "place" not in self.columns:
+            self.errors.append('Column name "Place" is required')
+        if "category" not in self.columns:
+            self.errors.append('Column name "Category" is required')
+        if ("name" not in self.columns) and (("first_name" not in self.columns) and ("last_name" not in self.columns)):
+            self.errors.append('Column name "Name" or "First Name" and "Last Name" is required')
+        if self.is_usac and ("usac_license" not in self.columns):
+            self.errors.append('Column name "License" is required')
+        if self.is_usac and ("club" not in self.columns):
+            self.errors.append('Column name "Club" is required USAC results. It may be blank')
+        if self.is_usac and ("first_name" not in self.columns) and ("last_name" not in self.columns):
+            self.errors.append('Column name "First Name" and "Last Name" is required for USAC results')
+        if self.errors:
+            print(self.columns)
 
     def usac_lookup(self, row):
         """Match user to results"""
@@ -111,29 +122,53 @@ class ImportResults:
         else:
             return None
 
+    def normalize_fieldnames(self, fieldnames):
+        """Normalize column names"""
+        temp = [col.strip().lower().replace(" ", "_") for col in fieldnames]
+        temp = [col.replace("dob", "date_of_birth") for col in temp]
+        temp = [col.replace("bib", "bib_number") for col in temp]
+        if "usac_license" not in temp:
+            temp = [col.replace("license_number", "usac_license") for col in temp]
+        if "usac_license" not in temp:
+            temp = [col.replace("license", "usac_license") for col in temp]
+        self.columns = temp
+        return temp
+
     def read_csv(self):
         """Read CSV file and return list of dictionaries"""
         reader = csv.DictReader(self.file, delimiter=",", quotechar='"')
-        self.columns = reader.fieldnames
-        reader.fieldnames = [col.strip().lower().replace(" ", "_") for col in reader.fieldnames]
-        for row in reader:
+        reader.fieldnames = self.normalize_fieldnames(reader.fieldnames)
+        for i, row in enumerate(reader):
             row = {k: v.strip().lower() for k, v in row.items()}
-            self.data_categories.add(row["category"])
-            try:
-                row["place"] = int(row["place"])
-                row["finish_status"] = "OK"
-            except ValueError:
-                row["finish_status"] = row["place"]
-                row["palce"] = None
-            if isinstance(row["license_number"], int):
-                row["license_validation"] = self.usac_lookup(row)
+            if any(row.values()):
+                if row["place"] == "":
+                    self.errors.append(f"Place is blank for# {i}")
+                if row["category"] == "":
+                    self.errors.append(f"Category is blank for# {i}")
+                if row.get("name") == "" or (row.get("first_name") == "" and row.get("last_name") == ""):
+                    self.errors.append(f"Name is blank for# {i}")
+                if self.is_usac and row.get("usac_license") == "":
+                    self.errors.append(f"License is blank for# {i}")
+                self.data_categories.add(row["category"])
+                try:
+                    row["place"] = int(row["place"])
+                    row["finish_status"] = "OK"
+                except ValueError:
+                    row["finish_status"] = row["place"]
+                    row["palce"] = None
+                # if isinstance(row["license_number"], int):
+                #     row["license_validation"] = self.usac_lookup(row)
+                # else:
+                #     row["license_validation"] = row["license_number"]
+                # if self.club_validation:
+                #     row["club_validation"] = self.usac_club_lookup(row)
+                self.data_categories.add(row["category"])
+                if "name" not in self.columns:
+                    row["name"] = f"{row['first_name']} {row['last_name']}"
+                row["more_data"] = {k: v for k, v in row.items() if k not in self.columns}
             else:
-                row["license_validation"] = row["license_number"]
-            if self.club_validation:
-                row["club_validation"] = self.usac_club_lookup(row)
-            self.data_categories.add(row["category"])
-        print(self.data_categories)
-        # return self.data_categories
+                self.errors.append(f"Error: Row {i} is blank")
+            self.data.append(row)
 
 
 # def usac_license_on_record(license_number: str) -> str:

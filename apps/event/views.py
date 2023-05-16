@@ -4,7 +4,6 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Exists, OuterRef, Q
-from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, DetailView, ListView, TemplateView, UpdateView
@@ -190,38 +189,44 @@ def RaceResultsImportView(request, event_pk):
     if request.method == "POST":
         form = RaceResultsImport(request.POST, request.FILES)
         if form.is_valid():
-            context = {}
             csv_file = request.FILES["results_file"]
             decoded_file = csv_file.read().decode("utf-8").splitlines()
             raceseries = form.cleaned_data["raceseries"]
-            category_validation = form.cleaned_data["category_validation"]
-            form.cleaned_data["category_raceseries"]
-            license_validation = form.cleaned_data["license_validation"]
-            form.cleaned_data["club_validation"]
+            # category_validation = form.cleaned_data["category_validation"]
+            # form.cleaned_data["category_raceseries"]
+            # license_validation = form.cleaned_data["license_validation"]
+            is_usac = form.cleaned_data["is_usac"]
+            # form.cleaned_data["club_validation"]
 
-            ir = ImportResults(
-                decoded_file,
-                category_validation,
-                license_validation,
-            )
+            ir = ImportResults(file=decoded_file, is_usac=is_usac)
             ir.read_csv()
-            ir.pii_check()
+            # ir.pii_check()
             ir.check_columns()
             if ir.errors:
                 # TODO: need a html page for this
                 context.update({"errors": ir.errors})
+                context.update({"warnings": ir.warnings})
+                context.update({"form": form})
+                print(context.keys())
                 return render(request, "results/import_race_results.html", context=context)
-
             else:
                 # TODO: Save results to database
-                # del form.cleaned_data["results_file"]
-                # Race.objects.create(**form.cleaned_data)
+                del form.cleaned_data["results_file"]
+                fields_excluded = ["is_usac", "event", "raceseries"]
+                print(form.cleaned_data)
+                update_form = {
+                    field: value for field, value in form.cleaned_data.items() if field not in fields_excluded
+                }
+                update_form["event"] = event
+                Race.objects.create(**update_form)
                 # TODO, save file data to RaceResults
-                return HttpResponse("Results imported successfully")
+                context.update({"warnings": ir.warnings})
+                return render(request, "results/import_race_results.html", context=context)
         else:
-            return HttpResponse(f"Form is not valid: {form.errors}")
+            context.update({"errors": form.errors})
+            context.update({"form": form})
+            return render(request, "results/import_race_results.html", context=context)
     elif request.method == "GET":
-        print(context)
         form = RaceResultsImport(initial={"event": event_pk, "raceseries": raceseries})
         context.update({"form": form})
         return render(request, "results/import_race_results.html", context)

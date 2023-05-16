@@ -4,10 +4,34 @@
   <div class="container mx-auto px-4 py-8">
     <h1 class="text-3xl font-bold mb-4">Create or Edit a Race Series</h1>
     {% if user.is_staff %}
+      <p><strong>Instructions:<br/></strong></p>
+      <p>When you submit the form basic checks are performed, if there are error, the data will not be saved and you
+        will see a list of errors. Correct the erros and if the file name has not changed, just resubmit the form.</p>
+      <p>The file to be uploaded must be a csv file. This first row should be the header row followed by results. The
+        columns can be in any oder and be capitilized or not.<strong><br/></strong><strong></strong><strong></strong>
+      </p>
+      <br>
+      <p><strong>Columns:</strong><br/><strong></strong></p>
+      <ul class="mb-4">
+        <li class="list-disc">Place: <em>Required</em>, should be a integer or or finish status (DNS, DNF, ...)</li>
+        <li class="list-disc">Name:<em> Required If a USAC event</em>, First Name and Last Name.</li>
+        <li class="list-disc">Category: <em>Required</em>, Category of the race or if mixed the category of the ride
+        </li>
+        <li class="list-disc">Club: <em>Required if a USAC event. </em>can be blank</li>
+        <li class="list-disc">License: Required if a usac event, should be an integery or some status like One Day</li>
+        <li class="list-disc">Bid: <em>Optional</em></li>
+        <li class="list-disc">Time: <em>Optional</em></li>
+        <li class="list-disc">DOB: <em>Optional</em>, can be helpful to match result with user. Will not be public</li>
+        <li class="list-disc">email: <em>Optional</em>, can be helpful to match result with user. Will not be public
+        </li>
+        <li class="list-disc">Any other columns can be included and will be stored but will not be made public</li>
+      </ul>
+
+      <hr class="my-3 border-5, border-gray-500">
       <div>
-        <h3>Add a race result to:</h3>
-          <h4>{{ event.name }} on date {{ event.start_date }}</h4>
-        <h3>Event is included in the following Race Series</h3>
+        <h4>Adding a race result to:</h4>
+        <h5>{{ event.name }}, {{ event.start_date }}</h5>
+        <h4 class="mt-5">The Event is included in the following Race Series</h4>
         {% if raceseries %}
           <ul>
           {% for series in raceseries %}
@@ -21,17 +45,17 @@
         {% else %}
           <p> No Race Series</p>
         {% endif %}
-      <h3>Current Races already defined</h3>
-      {% if races %}
-        {% for race in races %}
-        <ul>
-        <li> {{ race.name }}</li>
-        </ul>
-        {% endfor %}
-      {% else %}
-        <h4> No races defined for event</h4>
-      {% endif %}
-      <hr class="my-3">
+        <h4 class="mt-5">Race already included:</h4>
+        {% if races %}
+          {% for race in races %}
+            <ul>
+              <li> {{ race.name }}</li>
+            </ul>
+          {% endfor %}
+        {% else %}
+          No races defined for event
+        {% endif %}
+        <hr class="my-3 border-5, border-gray-500">
         <div>
           <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
@@ -42,8 +66,24 @@
           </form>
         </div>
       </div>
-      <div>
-        <h3> If there are error, they will be listed here</h3>
+      <div class="mt-10">
+        <h4> If there are errors or warnings, they will be listed here</h4>
+        {% if not errors and not warnings %}
+          <p>No errors or warnings</p>
+        {% endif %}
+
+        <ul>
+          {% for w in warnings %}
+            <li>{{ w }}</li>
+          {% endfor %}
+        </ul>
+        </ul>
+        <ul>
+          {% for e in errors %}
+            <li>{{ e }}</li>
+          {% endfor %}
+        </ul>
+
       </div>
     {% else %}
       <p>You are not authorized to view this page.</p>
