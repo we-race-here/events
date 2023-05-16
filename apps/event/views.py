@@ -178,6 +178,12 @@ class RaceSeriesDetailView(DetailView):
     template_name = "results/raceseries_detail.html"
     ordering = ["start_date"]
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["Races"] = context["raceseries"].races.all()
+        context["RaceResults"] = RaceResult.objects.filter(race__in=context["Races"])
+        return context
+
 
 def RaceResultsImportView(request, event_pk):
     context = {}

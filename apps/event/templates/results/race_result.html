@@ -1,17 +1,42 @@
 <!-- results.html -->
 
 {% if Races %}
-    <h4>List of Races</h4>
-    {% for race in Races %}
-        <h5>Race Name: {{ race.name }}</h5>
-        <ul>
-            {% for result in RaceResults %}
-                {% if result.race == race %}
-                <li>{{ result.place }}: {{ result.rider }}</li>
-                {% endif %}
-            {% endfor %}
-        </ul>
-        <br>
-    {% endfor %}
-    <br>
+  <h4>List of Races</h4>
+  {% for race in Races %}
+    <h5 class="my-5">Race Name: {{ race.name }}</h5>
+    <div class="flex flex-col">
+      <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
+        <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
+          <div class="overflow-hidden">
+            <table class="min-w-full text-left text-sm font-light">
+              <thead class="border-b font-medium dark:border-neutral-500">
+              <tr>
+                <th scope="col" class="px-6 py-4">Place</th>
+                <th scope="col" class="px-6 py-4">Category Place</th>
+                <th scope="col" class="px-6 py-4">Category</th>
+                <th scope="col" class="px-6 py-4">Name</th>
+                <th scope="col" class="px-6 py-4">Time</th>
+                <th scope="col" class="px-6 py-4">Club</th>
+              </tr>
+              </thead>
+              <tbody>
+              {% for result in RaceResults %}
+                <tr class="border-b dark:border-neutral-500">
+                  {% if result.race == race %}
+                    <td class="whitespace-nowrap px-6 py-4 font-medium">{{ result.place_disp }}</td>
+                    <td class="whitespace-nowrap px-6 py-4">{{ result.relative_place }}</td>
+                    <td class="whitespace-nowrap px-6 py-4">{{ result.category }}</td>
+                    <td class="whitespace-nowrap px-6 py-4">{{ result.name }}</td>
+                    <td class="whitespace-nowrap px-6 py-4">{{ result.time }}</td>
+                    <td class="whitespace-nowrap px-6 py-4">{{ result.club }}</td>
+                  {% endif %}
+                </tr>
+              {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  {% endfor %}
 {% endif %}

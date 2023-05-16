@@ -14,8 +14,9 @@ class RaceAdmin(admin.ModelAdmin):
     search_fields = (
         "name",
         "event__name",
+        "categories",
     )
-    list_filter = ("event",)
+    list_filter = ("start_date",)
 
 
 class RaceResultAdmin(admin.ModelAdmin):
@@ -25,7 +26,7 @@ class RaceResultAdmin(admin.ModelAdmin):
         "rider",
         "name",
         "place",
-        "_place",
+        "place_disp",
         "relative_place",
         "category",
         "usac_license",
@@ -36,15 +37,21 @@ class RaceResultAdmin(admin.ModelAdmin):
 
 
 class RaceSeriesAdmin(admin.ModelAdmin):
-    list_display = ("id", "name", "organization")
+    list_display = (
+        "id",
+        "name",
+        "organization",
+        "point_system",
+        "categories",
+    )
     search_fields = ("name",)
     list_filter = ("organization",)
 
 
 class EventAdmin(admin.ModelAdmin):
-    list_display = ("id", "name", "start_date", "is_usac_permitted", "city", "organization")
+    list_display = ("id", "name", "start_date", "is_usac_permitted", "featured_event", "city", "organization")
     search_fields = ("name",)
-    list_filter = ("is_usac_permitted",)
+    list_filter = ("is_usac_permitted", "featured_event", "organization")
 
 
 admin.site.register(models.Race, RaceAdmin)
