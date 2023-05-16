@@ -14,16 +14,13 @@ class UploadValidateFile(forms.Form):
 
 
 class RaceResultsImport(forms.Form):
-    name = CharField(max_length=100, label="Name: ")
-    event = ModelChoiceField(queryset=Event.objects.all(), label="Choose and Event: ")
+    name = CharField(max_length=100, label="Race Name")
+    # event = ModelChoiceField(queryset=Event.objects.all(), label="Choose and Event")
     raceseries = ModelChoiceField(queryset=RaceSeries.objects.all(), label="Select a Race Series(s)")
-    category_validation = forms.ChoiceField(choices=(("same", "Same"), ("mixed", "Mixed")), label="Category validation")
-    category_raceseries = forms.BooleanField(
-        required=False, label="Require the category(s) to match those in Race Series"
+    category_validation = forms.ChoiceField(
+        required=False, choices=(("same", "Same"), ("mixed", "Mixed")), label="Category validation"
     )
-    license_validation = forms.BooleanField(label="Validate License if a number, otherwise ignore")
-    club_validation = forms.BooleanField(label="Validate Club (match or blank")
-    # categories = SimpleArrayField(CharField(max_length=256), )
+    is_usac = forms.BooleanField(required=False, label="Is a USAC race")
     start_date = DateField(
         required=True,
         label="Start Date",

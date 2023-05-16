@@ -247,6 +247,9 @@ EMAIL_BACKEND = env(
 # https://docs.djangoproject.com/en/dev/ref/settings/#email-timeout
 EMAIL_TIMEOUT = 5
 
+EMAIL_DEFAULT_FROM = env("DJANGO_EMAIL_DEFAULT_FROM", default="info@bicyclecolorado.org")
+
+
 # ADMIN
 # ------------------------------------------------------------------------------
 # Django Admin URL.
