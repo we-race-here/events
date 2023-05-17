@@ -82,11 +82,9 @@ class UserSignupForm(SignupForm):
         age = today.year - dob.year - ((today.month, today.day) < (dob.month, dob.day))
 
         # Check the age and the presence of parent's details
-        if age >= 13 and age < 18:
+        if age < 18:
             if not parent_name or not parent_email:
                 raise forms.ValidationError("Parent's name and email are required for users under 18.")
-        # elif age < 13:
-        #     raise forms.ValidationError("Users must be at least 13 years old.")
 
         return cleaned_data
 
