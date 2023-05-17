@@ -43,9 +43,9 @@ class UserSignupForm(SignupForm):
     Check UserSocialSignupForm for accounts created from social.
     """
 
-    DAY_CHOICES = [(0, "Select Day")]+[(day, day) for day in range(1, 32)]
-    MONTH_CHOICES = [(0, "Select Month")]+[(month, month) for month in range(1, 13)]
-    YEAR_CHOICES = [(0, "Select Year")]+[(year, year) for year in range(2023, 1899, -1)]  # Adjust the range accordingly
+    DAY_CHOICES = [(None, "Select Day")]+[(day, day) for day in range(1, 32)]
+    MONTH_CHOICES = [(None, "Select Month")]+[(month, month) for month in range(1, 13)]
+    YEAR_CHOICES = [(None, "Select Year")]+[(year, year) for year in range(2023, 1899, -1)]  # Adjust the range accordingly
     first_name = forms.CharField(max_length=30, label='First Name')
     last_name = forms.CharField(max_length=30, label='Last Name')
     password1 = forms.PasswordInput()
@@ -60,6 +60,7 @@ class UserSignupForm(SignupForm):
     usac_number = CharField(required=False, label="USAC Number", empty_value=None)
     opt_in_email = BooleanField(widget=CheckboxInput(), label="Opt out of promotional emails", required=False)
     terms_of_service = BooleanField(required=True, widget=CheckboxInput(), label="I agree to Terms and Service")
+    privacy_policy = BooleanField(required=True, widget=CheckboxInput(), label="I agree to Privacy Policy")
     user_agreement_waiver = BooleanField(required=True, widget=CheckboxInput(), label="I accept the waiver")
     turnstile = TurnstileField(label="")
 
