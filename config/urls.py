@@ -1,3 +1,4 @@
+from allauth.account.views import SignupView
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
