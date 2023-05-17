@@ -43,9 +43,9 @@ class UserSignupForm(SignupForm):
     Check UserSocialSignupForm for accounts created from social.
     """
 
-    DAY_CHOICES = [(day, day) for day in range(1, 32)]
-    MONTH_CHOICES = [(month, month) for month in range(1, 13)]
-    YEAR_CHOICES = [(year, year) for year in range(2023, 1899, -1)]  # Adjust the range accordingly
+    DAY_CHOICES = [(None, "Select Day")]+[(day, day) for day in range(1, 32)]
+    MONTH_CHOICES = [(None, "Select Month")]+[(month, month) for month in range(1, 13)]
+    YEAR_CHOICES = [(None, "Select Year")]+[(year, year) for year in range(2023, 1899, -1)]  # Adjust the range accordingly
     first_name = forms.CharField(max_length=30, label='First Name')
     last_name = forms.CharField(max_length=30, label='Last Name')
     password1 = forms.PasswordInput()
@@ -60,6 +60,7 @@ class UserSignupForm(SignupForm):
     usac_number = CharField(required=False, label="USAC Number", empty_value=None)
     opt_in_email = BooleanField(widget=CheckboxInput(), label="Opt out of promotional emails", required=False)
     terms_of_service = BooleanField(required=True, widget=CheckboxInput(), label="I agree to Terms and Service")
+    privacy_policy = BooleanField(required=True, widget=CheckboxInput(), label="I agree to Privacy Policy")
     user_agreement_waiver = BooleanField(required=True, widget=CheckboxInput(), label="I accept the waiver")
     turnstile = TurnstileField(label="")
 
@@ -82,11 +83,9 @@ class UserSignupForm(SignupForm):
         age = today.year - dob.year - ((today.month, today.day) < (dob.month, dob.day))
 
         # Check the age and the presence of parent's details
-        if age >= 13 and age < 18:
+        if age < 18:
             if not parent_name or not parent_email:
                 raise forms.ValidationError("Parent's name and email are required for users under 18.")
-        elif age < 13:
-            raise forms.ValidationError("Users must be at least 13 years old.")
 
         return cleaned_data
 

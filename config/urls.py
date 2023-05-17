@@ -1,17 +1,25 @@
+from allauth.account.views import SignupView
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.core.mail import send_mail
 from django.shortcuts import render
 from django.urls import include, path
-from django.views import defaults as default_views
+from django.views import defaults as default_views, View
 from django.views.generic import TemplateView
+from django.views.generic import TemplateView
+from django.shortcuts import render, redirect
 
 from events.users.forms import UserSignupForm
 
-
 class HomePageView(TemplateView):
-    template_name = "pages/home.html"  # your custom template
+    """ This view loads if the user is logged in """
+    template_name = "pages/home.html"
+
+
+class HomePageSignUpView(SignupView):
+    """ This view loads if you are not logged in """
+    template_name = 'pages/home.html'  # your custom template
     form_class = UserSignupForm  # your custom form
 
     def form_valid(self, form):
@@ -34,8 +42,10 @@ class HomePageView(TemplateView):
         return render(self.request, self.template_name, {"form": form})
 
 
+
 urlpatterns = [
-    path("", HomePageView.as_view(), name="home"),
+    path("", HomePageSignUpView.as_view(), name="home"),
+    path("home", HomePageView.as_view(), name="homepage"),
     path("about/", TemplateView.as_view(template_name="pages/about.html"), name="about"),
     # Django Admin, use {% url 'admin:index' %}
     path(settings.ADMIN_URL, admin.site.urls),

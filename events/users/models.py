@@ -84,6 +84,7 @@ class User(AbstractUser):
     opt_in_email = models.BooleanField(default=False, null=True, blank=True)
     terms_of_service = models.BooleanField(default=False, null=True, blank=True)
     user_agreement_waiver = models.BooleanField(default=False, null=True, blank=True)
+    privacy_policy = models.BooleanField(default=False, null=True, blank=True)
     # TODO: When user agrees to this, save HttpRequest.META to this field
     user_agreement_waiver_record = models.JSONField(null=True, blank=True)
     history = HistoricalRecords()
