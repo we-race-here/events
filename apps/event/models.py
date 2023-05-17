@@ -264,6 +264,19 @@ class RaceResult(models.Model):
         return super().save(*args, **kwargs)
 
     @property
+    def points(self):
+        if self.point_system == "Absolute":
+            try:
+                return self.place * self.points_map[self.place - 1]
+            except IndexError:
+                return None
+        elif self.point_system == "Relative":
+            try:
+                return self.relative_place * self.points_map[self.relative_place - 1]
+            except IndexError:
+                return None
+
+    @property
     def place_disp(self):
         if self.place:
             return self.place
@@ -297,7 +310,7 @@ class RaceResult(models.Model):
             return None
 
     def __str__(self):
-        return f"{self.race}-{self.category}-{self.place}-{self.rider}"
+        return f"{self.place}--{self.name}--{self.rider}--{self.category}--Race: {self.race}"
 
 
 class RaceSeries(models.Model):
@@ -327,7 +340,7 @@ class RaceSeries(models.Model):
     races = models.ManyToManyField(Race, related_name="race_series")
     description = models.TextField(null=True, blank=True, default="")
     categories = ArrayField(models.CharField(max_length=100, blank=False), size=50, null=True, blank=False)
-    points_map = models.JSONField(null=True, blank=True)
+    points_map = models.JSONField(null=True, blank=True)  # this is a list, index position value = points
     point_system = models.CharField(choices=POINTSYSTEM, max_length=16, null=True, blank=False)
     organization = models.ForeignKey(
         Organization, on_delete=models.CASCADE, related_name="race_series", null=True, blank=True
@@ -337,6 +350,18 @@ class RaceSeries(models.Model):
 
     class Meta:
         unique_together = (("name", "organization"),)
+
+    @property
+    def all_results(self):
+        results = []
+        for race in self.races.all():
+            for result in race.raceresult_set.all():
+                print(self.point_system)
+                result.point_system = self.point_system
+                print(result.point_system)
+                result.points_map = self.points_map or list(range(1, 100))
+                results.append(result)
+        return sorted(results, key=lambda x: x.name)
 
     def __str__(self):
         return self.name

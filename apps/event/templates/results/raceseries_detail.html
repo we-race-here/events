@@ -4,18 +4,21 @@
 {% block title %}User: {{ object.name }}{% endblock %}
 
 {% block content %}
-  <div class="mt-7 overflow-x-auto">
-  <div class="flex flex-col border-2 justify-center my-5 items-center">
-    <div><h2 class="text-2xl font-bold leading-none text-orange-600">{{ raceseries.name }}</h2></div>
-    <div><a class="text_sm text-orange-600 hover:text-orange-800 hover:underline"
-            href="{% url 'event:raceseries_update' object.pk %}"> Edit Race Series </a></div>
-  </div>
-  <div class="flex items-center justify-center my-5">
-    <p class="text-base font-medium leading-none text-gray-500  mr-2"> {{ raceseries.description }}</p>
-  </div>
-
-  <div class="flex justify-center">
-    <button type="button" onclick="location.href='{% url 'membership:join_organization' %}'"
+  <section class="text-gray-600 body-font">
+    <div class="container mx-auto flex px-5 py-10 md:flex-row flex-col items-center">
+      <div class="lg:max-w-md lg:w-full md:h-md md:w-1/2 w-5/6 mb-10 md:mb-0 ">
+        <img class="object-cover object-center rounded" alt="hero" src="{% static 'images/team_photo.png' %}">
+      </div>
+      <div
+          class="lg:flex-grow md:w-1/2 lg:pl-24 md:pl-16 flex flex-col md:items-start md:text-left items-center text-center">
+        <h1 class="title-font sm:text-4xl text-3xl mb-4 font-medium text-gray-900">{{ raceseries.name }}
+          <br class="hidden lg:inline-block">
+        </h1>
+        <p class="mb-8 leading-relaxed">
+          {{ raceseries.description }}
+        </p>
+        <div class="flex justify-end">
+<button type="button" onclick="location.href='{% url 'membership:join_organization' %}'"
             class="inline-flex text-white bg-orange-600 border-0 py-2 px-6 mx-3 focus:outline-none hover:bg-orange-800 rounded text-lg">
       Join a Club
     </button>
@@ -28,23 +31,35 @@
             class="inline-flex text-white bg-orange-600 border-0 py-2 px-6 mx-3 focus:outline-none hover:bg-orange-800 rounded text-lg">
       JOIN Bicycle Colorado
     </button>
-  </div>
-  <div class="flex flex-row justify-start bg-white m-4">
-    {% for e in  object.events.all %}
-      <div class="p-2 m-3 rounded border border-gray-100">
-        <a href="{% url 'event:event_detail' e.pk %}">{{ e.name }}<br>{{ e.start_date }}</a>
+        </div>
       </div>
+    </div>
+  </section>
+
+
+
+  <section>
+  <div class="mt-7 overflow-x-auto">
+
+
+  <div class="flex flex-row justify-center items-center bg-white mt-4 text-center text-orange-600 font-bold pt-3">Event
+    list
+  </div>
+  <div class="flex flex-row justify-start bg-white">
+    {% for e in  object.events.all %}
+      <button class="p-2 m-3 rounded border-2 border-gray-100 hover:bg-gray-200 justify-center"
+              href="{% url 'event:event_detail' e.pk %}">
+        <div class="org_name font-semibold text-sm text-center">{{ e.name }}</div>
+        <div class="text-sm text-gray-700 text-center">{{ e.start_date }}</div>
+      </button>
     {% endfor %}
   </div>
-  <div class="flex items-center justify-center my-5">
-    <p class="text-base font-medium leading-none text-gray-500  mr-2"> Cup individual and team standings: </p>
+  <div class="flex flex-row items-center justify-center bg-white mt-4 text-center text-orange-600 font-bold pt-3">USING
+    RESULTS AS PLACEHOLDER: Cup individual and team standings
   </div>
-  <div class="bg-white shadow-lg rounded p-4 mt-4">
-    {% if Races %}
-      {% include 'results/race_result.html' %}
-    {% else %}
-      <h3> No race results for this event </h3>
-    {% endif %}
+    {% include 'results/race_series_results.html' %}
   </div>
+  </div>
+  </section>
 
 {% endblock content %}
