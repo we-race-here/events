@@ -13,10 +13,12 @@ from django.shortcuts import render, redirect
 from events.users.forms import UserSignupForm
 
 class HomePageView(TemplateView):
+    """ This view loads if the user is logged in """
     template_name = "pages/home.html"
 
 
 class HomePageSignUpView(SignupView):
+    """ This view loads if you are not logged in """
     template_name = 'pages/home.html'  # your custom template
     form_class = UserSignupForm  # your custom form
 
