@@ -4,18 +4,18 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.core.mail import send_mail
 from django.urls import include, path
-from django.views import defaults as default_views
+from django.views import defaults as default_views, View
 from django.views.generic import TemplateView
 from django.views.generic import TemplateView
 from django.shortcuts import render, redirect
-from allauth.account.adapter import get_adapter
-from allauth.account.utils import complete_signup
-from allauth.exceptions import ImmediateHttpResponse
+
 from events.users.forms import UserSignupForm
-from django.contrib import messages
+
+class HomePageView(TemplateView):
+    template_name = "pages/home.html"
 
 
-class HomePageView(SignupView):
+class HomePageSignUpView(SignupView):
     template_name = 'pages/home.html'  # your custom template
     form_class = UserSignupForm  # your custom form
 
@@ -39,8 +39,10 @@ class HomePageView(SignupView):
         return render(self.request, self.template_name, {'form': form})
 
 
+
 urlpatterns = [
-    path("", HomePageView.as_view(), name="home"),
+    path("", HomePageSignUpView.as_view(), name="home"),
+    path("home", HomePageView.as_view(), name="homepage"),
     path("about/", TemplateView.as_view(template_name="pages/about.html"), name="about"),
     # Django Admin, use {% url 'admin:index' %}
     path(settings.ADMIN_URL, admin.site.urls),
