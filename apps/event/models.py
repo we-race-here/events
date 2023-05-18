@@ -176,6 +176,12 @@ class Race(models.Model):
     class Meta:
         unique_together = (("name", "event"),)
 
+    @property
+    def race_results(self):
+        categories = set(self.raceresult_set.all().values_list("category", flat=True))
+        for category in categories:
+            yield category, self.raceresult_set.filter(category=category).order_by("place")
+
     def __str__(self):
         return f"{self.name}: {self.start_date}"
 

@@ -65,7 +65,7 @@
                 <i class="fa-solid fa-user"></i>{{ request.user.full_name }}
               </a>
               {% endif %}
-              <div class="group-hover:block dropdown-menu absolute hidden h-auto">
+              <div class="group-hover:block dropdown-menu absolute left-0 hidden h-auto">
                 <ul class="top-0 w-52 bg-white shadow px-6 py-8">
                     <li class="py-1"><a class="block text-green-800 font-semibold text-base uppercase hover:text-green-900 hover:underline cursor-pointer"
                     href="{% url 'users:detail' request.user.pk %}"><i class="fa-solid fa-user px-2"></i>Profile</a></li>
