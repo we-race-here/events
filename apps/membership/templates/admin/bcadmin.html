@@ -18,7 +18,13 @@
           Save
         </button>
       </form>
-      <p>{{ total }}, {{ success }}, {{ attempted }}, {{ errors }}, {{ rows_created }}</p>
+      <div> attempted records:  {{ attempted }}</div>
+      <div>Duplicate records not imported: {{ duplicates }}</div>
+      <div>Rows created:  {{ rows_created }}</div>
+      <div>Records with bad or missing data. Probably still imported.</div>
+      {% for e in errors %}
+      <div>{{ e }}</div>
+      {% endfor %}
     {% else %}
       <p>You are not authorized to view this page.</p>
     {% endif %}

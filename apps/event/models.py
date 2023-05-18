@@ -275,7 +275,9 @@ class RaceResult(models.Model):
         try:
             return self.points_map[self.place - 1]
         except IndexError:
-            return None
+            pass
+        except TypeError:
+            pass
 
     @property
     def place_disp(self):
@@ -301,6 +303,14 @@ class RaceResult(models.Model):
             return True
         except UsacDownload.DoesNotExist:
             return False
+
+    def usac_license_club(self):
+        if self.usac_license:
+            try:
+                club = UsacDownload.objects.filter(license_number=self.usac_license)[0].data["club"]
+                return club
+            except:
+                return None
 
     @property
     def bc_club(self):
@@ -367,6 +377,17 @@ class RaceSeries(models.Model):
         all = self.all_results
         by_category = defaultdict(list)
         for result in all:
+            # TODO: This is a bit of a hack until users are sign up
+            if not result.club and result.usac_license:
+                try:
+                    result.club = (
+                        UsacDownload.objects.order_by("create_datetime")
+                        .filter(license_number=result.usac_license)[0]
+                        .data["club"]
+                    )
+                except:
+                    pass
+
             by_category[result.category].append(result)
         return by_category
 
@@ -394,10 +415,11 @@ class RaceSeries(models.Model):
         for cat, results in self.all_results_by_category.items():
             for result in results:
                 if result.name in cat_results[cat].keys():
-                    cat_results[cat][result.name] += result.points
+                    if result.points:
+                        cat_results[cat][result.name] += result.points
                 else:
-                    cat_results[cat][result.name] = result.points
-        print(cat_results)
+                    if result.points:
+                        cat_results[cat][result.name] = result.points
         return cat_results
 
     def __str__(self):

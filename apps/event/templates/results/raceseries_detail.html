@@ -45,11 +45,11 @@
     </div>
     <div class="flex flex-row justify-start bg-white">
       {% for e in  object.events.all %}
-        <button class="p-2 m-3 rounded border-2 border-gray-100 hover:bg-gray-200 justify-center"
-                href="{% url 'event:event_detail' e.pk %}">
+        <a class="p-2 m-3 rounded border-2 border-gray-100 hover:bg-gray-200 justify-center"
+           href="{% url 'event:event_detail' e.pk %}">
           <div class="org_name font-semibold text-sm text-center">{{ e.name }}</div>
           <div class="text-sm text-gray-700 text-center">{{ e.start_date }}</div>
-        </button>
+        </a>
       {% endfor %}
     </div>
     <details

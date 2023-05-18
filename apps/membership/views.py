@@ -11,7 +11,7 @@ from django.views.generic import ListView, TemplateView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, DeleteView, FormView, UpdateView
 
-from ..usac.admin import new_usac_import
+from ..usac.admin import usac_license_from_csv
 from ..usac.forms import CsvImportForm
 from .forms import OrganizationForm, OrganizationMemberJoinForm
 from .models import Organization, OrganizationMember
@@ -199,7 +199,7 @@ class BCAdminView(LoginRequiredMixin, TemplateView):
             if form.is_valid():
                 csv_file = self.request.FILES["csv_file"]
                 decoded_file = csv_file.read().decode("utf-8").splitlines()
-                context.update(new_usac_import(decoded_file))
+                context.update(usac_license_from_csv(decoded_file))
                 return self.render_to_response(context)
         form = CsvImportForm()
         return self.render_to_response({"context": context, "form": form})

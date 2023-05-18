@@ -37,7 +37,7 @@
                           {% endif %}
                           </td>
                           <td class="whitespace-nowrap px-6 py-4">{{ result.time }}</td>
-                          <td class="whitespace-nowrap px-6 py-4">{{ result.club }}</td>
+                          <td class="whitespace-nowrap px-6 py-4">{% firstof result.club result.usac_license_club %}</td>
                       </tr>
                     {% endfor %}
                   </tbody>
