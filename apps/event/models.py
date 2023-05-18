@@ -357,16 +357,23 @@ class RaceSeries(models.Model):
         results = []
         for race in self.races.all():
             for result in race.raceresult_set.all():
-                print(self.point_system)
                 result.point_system = self.point_system
                 result.points_map = self.points_map or list(reversed(range(1, 100)))
                 results.append(result)
         return sorted(results, key=lambda x: x.name)
 
     @property
+    def all_results_by_category(self) -> dict[str, list[RaceResult]]:
+        all = self.all_results
+        by_category = defaultdict(list)
+        for result in all:
+            by_category[result.category].append(result)
+        return by_category
+
+    @property
     def by_rider_points(self) -> dict:
         points = defaultdict(int)
-        for result in self.all_results:
+        for cat, result in self.all_results_by_category:
             points[result.rider] += result.points
         return points
 
@@ -380,11 +387,18 @@ class RaceSeries(models.Model):
                 pass
         return points
 
+    @property
     def by_name_points(self) -> dict:
-        points = defaultdict(int)
-        for result in self.all_results:
-            points[result.name] += result.points
-        return points
+        all = self.all_results_by_category
+        cat_results = {cat: {} for cat in all.keys()}
+        for cat, results in self.all_results_by_category.items():
+            for result in results:
+                if result.name in cat_results[cat].keys():
+                    cat_results[cat][result.name] += result.points
+                else:
+                    cat_results[cat][result.name] = result.points
+        print(cat_results)
+        return cat_results
 
     def __str__(self):
         return self.name
