@@ -176,6 +176,12 @@ class Race(models.Model):
     class Meta:
         unique_together = (("name", "event"),)
 
+    @property
+    def race_results(self):
+        categories = set(self.raceresult_set.all().values_list("category", flat=True))
+        for category in categories:
+            yield category, self.raceresult_set.filter(category=category).order_by("place")
+
     def __str__(self):
         return f"{self.name}: {self.start_date}"
 
@@ -265,16 +271,10 @@ class RaceResult(models.Model):
 
     @property
     def points(self):
-        if self.point_system == "Absolute":
-            try:
-                return self.place * self.points_map[self.place - 1]
-            except IndexError:
-                return None
-        elif self.point_system == "Relative":
-            try:
-                return self.relative_place * self.points_map[self.relative_place - 1]
-            except IndexError:
-                return None
+        try:
+            return self.points_map[self.place - 1]
+        except IndexError:
+            return None
 
     @property
     def place_disp(self):
@@ -283,15 +283,15 @@ class RaceResult(models.Model):
         else:
             return self.finish_status
 
-    @property
-    def relative_place(self):
-        """(Q(race=self.race) & Q(category=self.category) & Q(place__gte=self.place)"""
-        try:
-            if self.place:
-                filter_dict = {"race": self.race, "category": self.category, "place__gte": self.place}
-                return RaceResult.objects.filter(**filter_dict).count()
-        except:
-            return None
+    # @property
+    # def relative_place(self):
+    #     """(Q(race=self.race) & Q(category=self.category) & Q(place__gte=self.place)"""
+    #     try:
+    #         if self.place:
+    #             filter_dict = {"race": self.race, "category": self.category, "place__gte": self.place}
+    #             return RaceResult.objects.filter(**filter_dict).count()
+    #     except:
+    #         return None
 
     @property
     def usac_club(self):
@@ -358,8 +358,7 @@ class RaceSeries(models.Model):
             for result in race.raceresult_set.all():
                 print(self.point_system)
                 result.point_system = self.point_system
-                print(result.point_system)
-                result.points_map = self.points_map or list(range(1, 100))
+                result.points_map = self.points_map or list(reversed(range(1, 100)))
                 results.append(result)
         return sorted(results, key=lambda x: x.name)
 

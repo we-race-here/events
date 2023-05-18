@@ -62,10 +62,10 @@
               <div class="mb-4">
                 {% if event.is_usac_permitted %}
                   <img style="max-width:30px" title="USAC Event"
-                       src="{% static 'images/USACycling_Logo.svg' %}" alt="usac/>
+                       src="{% static 'images/USACycling_Logo.svg' %}" alt="usac">
                 {% endif %}
                 {% if event.featured_event %}
-                  <img width="30" height="30" title="Featured Event"
+                  <img style="max-width:30px" title="Featured Event"
                        src="{% static 'images/bc-icon.png' %}" alt="My image"/>
                 {% endif %}
               </div>
@@ -74,7 +74,7 @@
                             {% if object.city %} {{ object.city }}, {% endif %}
                 {% if object.state %} {{ object.state }}{% endif %}
                         </span></h5>
-              <h5 class="py-1 text-cyan-600"><span>{% for t in object.tags %}{{ t }}{% endfor %}</span></h5>
+              <h5 class="py-1 text-cyan-600"><span>{% for t in object.tags %}{{ t }}, {% endfor %}</span></h5>
             </div>
             <div class="bg-white shadow-lg rounded p-4 mt-4">
               {% if object.website %}
@@ -129,4 +129,5 @@
       </div>
     </div>
   </section>
+
 {% endblock %}

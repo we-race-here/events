@@ -27,7 +27,6 @@ class RaceResultAdmin(admin.ModelAdmin):
         "name",
         "place",
         "place_disp",
-        "relative_place",
         "category",
         "usac_license",
         "club",
