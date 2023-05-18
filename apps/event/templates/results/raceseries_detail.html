@@ -54,9 +54,14 @@
       </button>
     {% endfor %}
   </div>
+   <div class="flex flex-row items-center justify-center bg-white mt-4 text-center text-orange-600 font-bold pt-3">Individual and Team standings
+  </div>
+    {% include 'results/race_series_rider_totals.html' %}
+  </div>
+  </div>
   <div class="flex flex-row items-center justify-center bg-white mt-4 text-center text-orange-600 font-bold pt-3">Individual and Team standings
   </div>
-    {% include 'results/race_series_results.html' %}
+    {% include 'results/race_series_result_points.html' %}
   </div>
   </div>
   </section>
