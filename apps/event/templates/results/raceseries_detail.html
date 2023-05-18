@@ -18,19 +18,19 @@
           {{ raceseries.description }}
         </p>
         <div class="flex justify-end">
-<button type="button" onclick="location.href='{% url 'membership:join_organization' %}'"
-            class="inline-flex text-white bg-orange-600 border-0 py-2 px-6 mx-3 focus:outline-none hover:bg-orange-800 rounded text-lg">
-      Join a Club
-    </button>
-    <button href="{% url 'membership:create_organization' %}"
-            class="inline-flex text-white bg-cyan-500 border-0 py-2 px-6 mx-3 focus:outline-none hover:bg-cyan-700 rounded text-lg"
-    ">
-    Register a Club
-    </button>
-    <button type="button" onclick="location.href='{% url 'account_signup' %}'"
-            class="inline-flex text-white bg-orange-600 border-0 py-2 px-6 mx-3 focus:outline-none hover:bg-orange-800 rounded text-lg">
-      JOIN Bicycle Colorado
-    </button>
+          <button type="button" onclick="location.href='{% url 'membership:join_organization' %}'"
+                  class="inline-flex text-white bg-orange-600 border-0 py-2 px-6 mx-3 focus:outline-none hover:bg-orange-800 rounded text-lg">
+            Join a Club
+          </button>
+          <button href="{% url 'membership:create_organization' %}"
+                  class="inline-flex text-white bg-cyan-500 border-0 py-2 px-6 mx-3 focus:outline-none hover:bg-cyan-700 rounded text-lg"
+          ">
+          Register a Club
+          </button>
+          <button type="button" onclick="location.href='{% url 'account_signup' %}'"
+                  class="inline-flex text-white bg-orange-600 border-0 py-2 px-6 mx-3 focus:outline-none hover:bg-orange-800 rounded text-lg">
+            JOIN Bicycle Colorado
+          </button>
         </div>
       </div>
     </div>
@@ -39,31 +39,28 @@
 
 
   <section>
-  <div class="mt-7 overflow-x-auto">
-
-
-  <div class="flex flex-row justify-center items-center bg-white mt-4 text-center text-orange-600 font-bold pt-3">Event
-    list
-  </div>
-  <div class="flex flex-row justify-start bg-white">
-    {% for e in  object.events.all %}
-      <button class="p-2 m-3 rounded border-2 border-gray-100 hover:bg-gray-200 justify-center"
-              href="{% url 'event:event_detail' e.pk %}">
-        <div class="org_name font-semibold text-sm text-center">{{ e.name }}</div>
-        <div class="text-sm text-gray-700 text-center">{{ e.start_date }}</div>
-      </button>
-    {% endfor %}
-  </div>
-   <div class="flex flex-row items-center justify-center bg-white mt-4 text-center text-orange-600 font-bold pt-3">Individual and Team standings
-  </div>
-    {% include 'results/race_series_rider_totals.html' %}
-  </div>
-  </div>
-  <div class="flex flex-row items-center justify-center bg-white mt-4 text-center text-orange-600 font-bold pt-3">Individual and Team standings
-  </div>
+    <div class="flex flex-row justify-center items-center bg-white mt-4 text-center text-orange-600 font-bold pt-3">
+      Event
+      list
+    </div>
+    <div class="flex flex-row justify-start bg-white">
+      {% for e in  object.events.all %}
+        <button class="p-2 m-3 rounded border-2 border-gray-100 hover:bg-gray-200 justify-center"
+                href="{% url 'event:event_detail' e.pk %}">
+          <div class="org_name font-semibold text-sm text-center">{{ e.name }}</div>
+          <div class="text-sm text-gray-700 text-center">{{ e.start_date }}</div>
+        </button>
+      {% endfor %}
+    </div>
+    <details
+        class="open:bg-white dark:open:bg-slate-900 open:ring-1 open:ring-black/5 dark:open:ring-white/10 open:shadow-lg p-6 rounded-lg"
+        close>
+      <summary class="text-md leading-6 text-orange-600 dark:text-white font-semibold select-none">
+        Individual standings by category
+      </summary>
+      {% include 'results/race_series_rider_totals.html' %}
+    </details>
     {% include 'results/race_series_result_points.html' %}
-  </div>
-  </div>
   </section>
 
 {% endblock content %}
