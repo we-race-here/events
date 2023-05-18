@@ -1,3 +1,4 @@
+from collections import defaultdict
 from pathlib import Path
 
 from django.contrib.auth import get_user_model
@@ -352,7 +353,7 @@ class RaceSeries(models.Model):
         unique_together = (("name", "organization"),)
 
     @property
-    def all_results(self):
+    def all_results(self) -> list[RaceResult]:
         results = []
         for race in self.races.all():
             for result in race.raceresult_set.all():
@@ -361,6 +362,29 @@ class RaceSeries(models.Model):
                 result.points_map = self.points_map or list(reversed(range(1, 100)))
                 results.append(result)
         return sorted(results, key=lambda x: x.name)
+
+    @property
+    def by_rider_points(self) -> dict:
+        points = defaultdict(int)
+        for result in self.all_results:
+            points[result.rider] += result.points
+        return points
+
+    def by_license_points(self) -> dict:
+        points = defaultdict(int)
+        for result in self.all_results:
+            try:
+                int(result.license)
+                points[result.license] += result.points
+            except ValueError:
+                pass
+        return points
+
+    def by_name_points(self) -> dict:
+        points = defaultdict(int)
+        for result in self.all_results:
+            points[result.name] += result.points
+        return points
 
     def __str__(self):
         return self.name
