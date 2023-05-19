@@ -1,3 +1,5 @@
+import json
+
 from allauth.account.forms import LoginForm, SignupForm
 from allauth.socialaccount.forms import SignupForm as SocialSignupForm
 from django.contrib.auth import forms as admin_forms
@@ -7,10 +9,7 @@ from django.forms import BooleanField, CharField, CheckboxInput, ChoiceField, Da
 from django.utils.translation import gettext_lazy as _
 from turnstile.fields import TurnstileField
 from django import forms
-from django.core.exceptions import ValidationError
-from django.contrib.auth.models import User
-from django.utils import timezone
-from datetime import date
+from datetime import date, datetime
 
 User = get_user_model()
 
@@ -62,6 +61,9 @@ class UserSignupForm(SignupForm):
     terms_of_service = BooleanField(required=True, widget=CheckboxInput(), label="I agree to Terms and Service")
     privacy_policy = BooleanField(required=True, widget=CheckboxInput(), label="I agree to Privacy Policy")
     user_agreement_waiver = BooleanField(required=True, widget=CheckboxInput(), label="I accept the waiver")
+    parent_user_agreement_waiver = BooleanField(required=True, widget=CheckboxInput(), label="I accept the waiver")
+    parent_terms_of_service = BooleanField(required=True, widget=CheckboxInput(), label="I agree to Terms and Service")
+
     turnstile = TurnstileField(label="")
 
     parent_name = forms.CharField(required=True)
@@ -91,6 +93,31 @@ class UserSignupForm(SignupForm):
 
     def save(self, request):
         user = super().save(request)
+
+        try:
+            # Create a dictionary from form data excluding password
+            form_data = {key: value for key, value in self.cleaned_data.items() if key != 'password'}
+
+            # Adding request metadata to the dictionary
+            def is_jsonable(x):
+                try:
+                    json.dumps(x)
+                    return True
+                except (TypeError, OverflowError):
+                    return False
+
+            request_meta_data = {k: v for k, v in request.META.items() if is_jsonable(v)}
+
+            form_data.update({
+                'META': request_meta_data,
+            })
+            form_data["timestamp"] = datetime.now().isoformat()  # Current date & time
+
+            # Save the dictionary in the user_agreement_waiver_record field
+            user.user_agreement_waiver_record = json.dumps(form_data)
+            user.save()
+        except Exception as e:
+            print("Exception", str(e))
 
         # User is a minor, send email to the parent
         # if 13 <= user.age < 18:
