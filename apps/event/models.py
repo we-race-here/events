@@ -1,3 +1,4 @@
+import logging
 from collections import defaultdict
 from pathlib import Path
 
@@ -10,8 +11,9 @@ from simple_history.models import HistoricalRecords
 from apps.membership.models import Organization
 from apps.usac.models import UsacDownload
 
-User = get_user_model()
+logger = logging.getLogger(__name__)
 
+User = get_user_model()
 
 event_types = tuple(
     (t, t)
@@ -69,8 +71,8 @@ def event_attachment_file_path_func(instance, filename):
 class Event(models.Model):
     """
     Name: This is the event name.
-    blurb: This is a short unformated text about the event
-    Description: This is long formated
+    blurb: This is a short un-formatted text about the event
+    Description: This is long formatted
     Start_date: date and time.
     End_date: date and time.
     email: TODO: renamed to email
@@ -78,7 +80,7 @@ class Event(models.Model):
     city: city, nearest of the event.
     state: state of the event.
     Website: Event website url.
-    registration_website: URL rhere a user would register for the event.
+    registration_website: URL where a user would register for the event.
     logo: Small image, logo for the event.
     # TODO: Move banner image out of json field to the hero field.
     hero: Large image, hero image for the event.
@@ -296,6 +298,7 @@ class RaceResult(models.Model):
     #     except:
     #         return None
 
+    # TODO: need to consolidate these club methods
     @property
     def usac_club(self):
         try:
@@ -309,7 +312,8 @@ class RaceResult(models.Model):
             try:
                 club = UsacDownload.objects.filter(license_number=self.usac_license)[0].data["club"]
                 return club
-            except:
+            except Exception:
+                logger.debug(f"Error getting club for {self.usac_license}")
                 return None
 
     @property
@@ -322,6 +326,14 @@ class RaceResult(models.Model):
 
     def __str__(self):
         return f"{self.place}--{self.name}--{self.rider}--{self.category}--Race: {self.race}"
+
+
+def raceseries_logo_file_path_func(instance, filename):
+    # Extract the file extension
+    ext = filename.split(".")[-1]
+    # Format the filename
+    filename = f"{instance.id}_{filename}"
+    return str(Path("uploads", "events", "event", "raceseries", "logo", f"{filename}.{ext}"))
 
 
 class RaceSeries(models.Model):
@@ -346,10 +358,11 @@ class RaceSeries(models.Model):
         ("Absolute", "Absolute"),
         ("Relative", "Relative"),
     ]
-    name = models.CharField(max_length=256)
+    name = models.CharField(unique=True, max_length=256)
     events = models.ManyToManyField(Event, related_name="race_series")
     races = models.ManyToManyField(Race, related_name="race_series")
     description = models.TextField(null=True, blank=True, default="")
+    logo = models.ImageField(null=True, blank=True, upload_to=raceseries_logo_file_path_func)
     categories = ArrayField(models.CharField(max_length=100, blank=False), size=50, null=True, blank=False)
     points_map = models.JSONField(null=True, blank=True)  # this is a list, index position value = points
     point_system = models.CharField(choices=POINTSYSTEM, max_length=16, null=True, blank=False)
@@ -358,9 +371,6 @@ class RaceSeries(models.Model):
     )
     create_datetime = models.DateTimeField(auto_now_add=True)
     history = HistoricalRecords()
-
-    class Meta:
-        unique_together = (("name", "organization"),)
 
     @property
     def all_results(self) -> list[RaceResult]:
@@ -380,12 +390,14 @@ class RaceSeries(models.Model):
             # TODO: This is a bit of a hack until users are sign up
             if not result.club and result.usac_license:
                 try:
+                    # TODO: use the property for the result model.
                     result.club = (
                         UsacDownload.objects.order_by("create_datetime")
                         .filter(license_number=result.usac_license)[0]
                         .data["club"]
                     )
-                except:
+                except Exception as e:
+                    logger.debug(f"Error getting club from UsacDownload {result.usac_license}: {e}")
                     pass
 
             by_category[result.category].append(result)

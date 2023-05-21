@@ -135,8 +135,8 @@ def usac_license_from_csv(csv_object):
             if not row["license_number"]:
                 errors.append(f"Invalid license_number: {row['last_name']}, {row['first_name']}")
                 continue
-            reqs = {k: (v or None) for k, v in row.items() if k in required_fields}
-            extra = {k: (v or None) for k, v in row.items() if k not in required_fields}
+            reqs = {k.strip(): (v or None) for k, v in row.items() if k in required_fields}
+            extra = {k.strip(): (v or None) for k, v in row.items() if k not in required_fields}
             data_hash = {}
             data_hash.update(reqs)
             data_hash.update(extra)

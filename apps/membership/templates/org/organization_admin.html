@@ -1,22 +1,47 @@
 {% extends "base.html" %}
 {% load static %}
+<head>
+      <script src="https://js.stripe.com/v3/"></script>
+</head>
 
 {% block title %}Club: {{ object.name }}{% endblock %}
 
 {% block content %}
-<h1> {{ org.name }} Admin page</h1>
-<div class="flex flex-row">
-  <a href="{% url 'membership:update_organization' org.id %}"
-  class="bg-cyan-600 hover:bg-cyan-600 text-white font-bold py-2 px-4 rounded">
-  <i class="far fa-edit mr-2"></i> Edit Club
-  </a>
-</div>
-<div class="flex flex-row">
-  <h2>Member - Email - USAC Status</h2>
-  {% for m in org.membership_set.all %}
+  <section>
+    <h1> {{ org.name }} Admin page</h1>
     <div class="flex flex-row">
-      {{ m.user.full_name }} - <a href="mailto{{ m.user.email }}">{{ m.user.email }}</a> - {{ m.user.usac_status }}
+      <a href="{% url 'membership:update_organization' org.id %}"
+         class="bg-cyan-600 hover:bg-cyan-600 text-white font-bold py-2 px-4 rounded">
+        <i class="far fa-edit mr-2"></i> Edit Club
+      </a>
     </div>
-  {% endfor %}
-</div>
+    <div class="flex flex-row">
+      <h2>Member - Email - USAC Status</h2>
+      {% for m in org.membership_set.all %}
+        <div class="flex flex-row">
+          {{ m.user.full_name }} - <a href="mailto{{ m.user.email }}">{{ m.user.email }}</a> - {{ m.user.usac_status }}
+        </div>
+      {% endfor %}
+    </div>
+  </section>
+  <hr class="my-8 border-3 border-black">
+<section>
+    <b>Club BC membership, renew and status</b>
+    <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+      magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+      consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+      Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+    </div>
+    <div>
+        <div>
+          <h3>Yearly Club membership for Bicycle Colorado</h3>
+          <h5>$150.00</h5>
+        </div>
+    </div>
+      <form action="{% url 'membership:organization_admin' org.pk  %}" method="POST">
+         {% csrf_token %}
+        <button class="rounded-md bg-orange-600" id="join_bc" name="join_bc" value="True" type="submit" id="checkout-button">Checkout</button>
+      </form>
+  </section>
+
 {% endblock %}

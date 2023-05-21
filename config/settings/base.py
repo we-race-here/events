@@ -322,3 +322,7 @@ TURNSTILE_TIMEOUT = 5
 
 # Google Map Api key
 GOOGLE_MAP_API_TOKEN = env("GOOGLE_MAP_API_TOKEN", default="")
+
+# STRIPE
+STRIPE_PUBLIC_KEY = env("STRIPE_PUBLIC_KEY", default="")
+STRIPE_SECRET_KEY = env("STRIPE_SECRET_KEY", default="")

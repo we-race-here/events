@@ -1,4 +1,6 @@
 # views.py
+import stripe
+from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.core.mail import send_mail
@@ -14,9 +16,11 @@ from django.views.generic.edit import CreateView, DeleteView, FormView, UpdateVi
 from ..usac.admin import usac_license_from_csv
 from ..usac.forms import CsvImportForm
 from .forms import OrganizationForm, OrganizationMemberJoinForm
+from .member_utils import club_report
 from .models import Organization, OrganizationMember
 
 User = get_user_model()
+stripe.api_key = settings.STRIPE_SECRET_KEY
 
 
 class IsStaffMixin(UserPassesTestMixin):
@@ -171,18 +175,62 @@ class JoinOrganizationView(FormView):
         return super().form_valid(form)
 
 
-class StaffAdminView(LoginRequiredMixin, IsStaffMixin, TemplateView):
-    pass
-
-
 class OrganizationAdmin(LoginRequiredMixin, DetailView):
+    """https://github.com/we-race-here/wrh-organization/blob/70623139387a97e83a96571dc2ab83db800ceac7/wrh_organization/apps/cycling_org/rest_api/views.py#L501"""
+
     template_name = "org/organization_admin.html"
     model = Organization
     context_object_name = "org"
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        return context
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #     return context
+
+    def post(self, *args, **kwargs):
+        print(self.request.POST)
+        if self.request.POST.get("join_bc", None):
+            # price = Price.objects.get(id=self.kwargs["pk"])
+            # price_1N9pqlL1pkhMLFYAUvM0NqDS
+            try:
+                checkout_session = stripe.checkout.Session.create(
+                    payment_method_types=["card"],
+                    customer_email="v@vdavis.net",
+                    invoice_creation={"enabled": True},
+                    payment_intent_data={
+                        "metadata": {"club_dues": "2023_test"},
+                    },
+                    # metadata={
+                    #     "club_dues": "2023",
+                    # },
+                    line_items=[
+                        {
+                            "price_data": {
+                                "currency": "usd",
+                                "unit_amount": 123,
+                                "product_data": {
+                                    "name": "2023 Club Dues",
+                                    "description": "You club dues for 2023",
+                                    # "images": ["https://example.com/t-shirt.png"],
+                                },
+                            },
+                            "quantity": 1,
+                        }
+                    ],
+                    # line_items=[
+                    #     {
+                    #         "price": "price_1N9pqlL1pkhMLFYAUvM0NqDS",
+                    #         "quantity": 1,
+                    #     },
+                    # ],
+                    mode="payment",
+                    success_url="http://localhost:8000/org/10/",
+                    cancel_url="http://localhost:8000/org/10/",
+                )
+            except Exception as e:
+                return str(e)
+            return redirect(checkout_session.url)
+
+        # return self.render_to_response(context)
 
 
 class BCAdminView(LoginRequiredMixin, TemplateView):
@@ -202,9 +250,39 @@ class BCAdminView(LoginRequiredMixin, TemplateView):
                 context.update(usac_license_from_csv(decoded_file))
                 return self.render_to_response(context)
         form = CsvImportForm()
-        return self.render_to_response({"context": context, "form": form})
+        context.update({"form": form})
+        return self.render_to_response(context)
 
     def get(self, *args, **kwargs):
         context = super().get_context_data(**kwargs)
+        context["clubs"] = club_report()
         form = CsvImportForm()
-        return self.render_to_response({"context": context, "form": form})
+        context.update({"form": form})
+        return self.render_to_response(context)
+
+
+"""
+Alternative checkout setup
+stripe.checkout.Session.create(
+  success_url=success_url,
+  cancel_url=cancel_url,
+  payment_method_types=["card"],
+  mode="payment",
+  metadata={
+    "foo": "FOO",
+  },
+  payment_intent_data={
+    "metadata": {
+      "bar": "BAR",
+    }
+  },
+  line_items=[
+    {
+      "name": product_name,
+      "quantity": quantity,
+      "currency": currency,
+      "amount": unit_price,
+    },
+  ]
+)
+"""
