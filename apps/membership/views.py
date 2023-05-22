@@ -235,6 +235,7 @@ class OrganizationAdmin(LoginRequiredMixin, DetailView):
 
 class BCAdminView(LoginRequiredMixin, TemplateView):
     template_name = "admin/bcadmin.html"
+    product_fields = ["name", ""]
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -256,6 +257,7 @@ class BCAdminView(LoginRequiredMixin, TemplateView):
     def get(self, *args, **kwargs):
         context = super().get_context_data(**kwargs)
         context["clubs"] = club_report()
+        context["products"] = stripe.Product.list(limit=10)
         form = CsvImportForm()
         context.update({"form": form})
         return self.render_to_response(context)
