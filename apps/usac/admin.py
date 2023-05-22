@@ -73,84 +73,12 @@ class UsacDownloadAdmin(admin.ModelAdmin):
         return render(request, "admin/csv_form.html", context)
 
 
-def usac_license_from_csv(csv_file, date_format="%m/%d/%Y"):
-    "This is the import logic"
-    reader = csv.DictReader(csv_file)
-    field_names = reader.fieldnames
-    for i in range(len(field_names)):
-        f = field_names[i].lower().replace("-", " ")
-        field_names[i] = "_".join(f.split())
-        if field_names[i] == "license_#":
-            field_names[i] = "license_number"
-        if field_names[i] == "birthdate":
-            field_names[i] = "birth_date"
-
-    required_fields = {
-        "license_number",
-        "first_name",
-        "last_name",
-        "birth_date",
-        "race_age",
-        "race_gender",
-        "sex",
-        "license_expiration",
-        "license_type",
-        "license_status",
-        "local_association",
-    }
-    missed_fields = required_fields - set(field_names)
-    if missed_fields:
-        raise Exception(f"Invalid csv file. missed this fields: {missed_fields}")
-    for row in reader:
-        # print(f'Importing row #{reader.line_num} ... ', end='')
-        try:
-            import_usac_license_row(row, required_fields, date_format=date_format)
-            # print('[OK]' if obj else '[SKIP]')
-        except Exception:
-            # print('[FAIL]')
-            traceback.print_exc()
+def hashify_row(row: dict) -> str:
+    row = json.dumps(row, sort_keys=True, default=str)
+    return hashlib.sha1(row.encode()).hexdigest()
 
 
-def import_usac_license_row(row, required_fields, date_format="%m/%d/%Y"):
-    """This is the import logic per row"""
-    row = {k: (v or None) for k, v in row.items()}
-    if not row.get("license_number"):
-        return
-    data_hash = UsacDownload.hashify(row)
-    try:
-        if UsacDownload.objects.filter(data_hash=data_hash).exists():
-            return
-    except:
-        return
-    db_cols = {c: row.get(c) for c in required_fields}
-    if db_cols["birth_date"]:
-        try:
-            db_cols["birth_date"] = datetime.strptime(db_cols["birth_date"], date_format)
-        except ValueError:
-            # print(f"Invalid birth date: {db_cols['birth_date']}")
-            db_cols["birth_date"] = None
-    if db_cols["license_expiration"]:
-        try:
-            db_cols["license_expiration"] = datetime.strptime(db_cols["license_expiration"], date_format)
-        except ValueError:
-            # print(f"license_expiration: {db_cols['license_expiration']}")
-            db_cols["birth_date"] = None
-    if db_cols["race_age"]:
-        db_cols["race_age"] = int(db_cols["race_age"])
-    db_cols["data_hash"] = data_hash
-    db_cols["data"] = row
-    return UsacDownload.objects.create(**db_cols)
-
-
-admin.site.register(models.UsacDownload, UsacDownloadAdmin)
-
-
-def hashify_extra(extra: dict) -> str:
-    extra = json.dumps(extra, sort_keys=True)
-    return hashlib.sha1(extra.encode()).hexdigest()
-
-
-def new_usac_import(csv_object):
+def usac_license_from_csv(csv_object):
     """This is for importing usac records from racerdownload a csv"""
     date_format = "%m/%d/%Y"
     errors = []
@@ -158,6 +86,7 @@ def new_usac_import(csv_object):
     def field_map(f: str) -> str:
         return f.lower().strip().replace(" ", "_").replace("#", "number").replace("birthdate", "birth_date")
 
+    # These are the model fields, except for the json extra fields
     required_fields = {
         "license_number",
         "first_name",
@@ -185,9 +114,11 @@ def new_usac_import(csv_object):
     except:
         # print("license_number not in fieldnames: [f for f in _fieldnames if 'license' in f.lower)]")
         raise Exception("license_number not in fieldnames")
+    hash_set = set(UsacDownload.objects.values_list("data_hash", flat=True))
     bulk_list = []
-    success = 0
     attempted = 0
+    duplicates = 0
+    rows_created = 0
     for row in reader:
         attempted += 1
         try:
@@ -202,25 +133,34 @@ def new_usac_import(csv_object):
                 errors.append(f"Invalid license_expiration: {row['license_number']}: {row['license_expiration']}")
                 row["license_expiration"] = None
             if not row["license_number"]:
-                errors.append(f"Invalid license_number: {row['license_number']}")
+                errors.append(f"Invalid license_number: {row['last_name']}, {row['first_name']}")
                 continue
-            reqs = {k: (v or None) for k, v in row.items() if k in required_fields}
-            extra = json.dumps({k: (v or None) for k, v in row.items() if k not in required_fields}, sort_keys=True)
-            reqs["data_hash"] = hashlib.sha1(extra.encode()).hexdigest()
+            reqs = {k.strip(): (v or None) for k, v in row.items() if k in required_fields}
+            extra = {k.strip(): (v or None) for k, v in row.items() if k not in required_fields}
+            data_hash = {}
+            data_hash.update(reqs)
+            data_hash.update(extra)
+            reqs["data_hash"] = hashify_row(data_hash)
+            if reqs["data_hash"] in hash_set:
+                duplicates += 1
+                continue
             reqs.update({"data": extra})
             bulk_list.append(UsacDownload(**reqs))
-            success += 1
-        except:
+        except Exception as e:
             errors.append(f"Unknown Error: {row['license_number']}")
+            raise e
     try:
-        rows_created = UsacDownload.objects.bulk_create(bulk_list, batch_size=1000, ignore_conflicts=True)
+        # return UsacDownload.objects.create(**row)
+        created = UsacDownload.objects.bulk_create(bulk_list, batch_size=1000, ignore_conflicts=True)
+        rows_created += len(created)
     except Exception as e:
         raise Exception(f"Error: {e}")
-    total = success + attempted
     return {
-        "total": total,
-        "success": success,
         "attempted": attempted,
+        "duplicates": duplicates,
         "errors": errors,
-        "rows_created": len(rows_created),
+        "rows_created": rows_created,
     }
+
+
+admin.site.register(models.UsacDownload, UsacDownloadAdmin)

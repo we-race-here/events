@@ -1,0 +1,48 @@
+<!-- results.html -->
+<div class="flex flex-col">
+  <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
+    <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
+      <div class="overflow-hidden">
+        <details
+            class="open:bg-white dark:open:bg-slate-900 open:ring-1 open:ring-black/5 dark:open:ring-white/10 open:shadow-lg p-6 rounded-lg"
+            close>
+          <summary class="text-md leading-6 text-orange-600 dark:text-white font-semibold select-none">
+            Detailed per person-result points
+          </summary>
+          <div class="mt-3 text-sm leading-6 text-slate-600 dark:text-slate-400">
+            <table class="min-w-full text-left text-sm font-light">
+              <thead class="border-b font-medium dark:border-neutral-500">
+              <tr>
+                <th scope="col" class="px-6 py-4">Name</th>
+                <th scope="col" class="px-6 py-4">Points</th>
+                <th scope="col" class="px-6 py-4">Place</th>
+                <th scope="col" class="px-6 py-4">Category</th>
+                <th scope="col" class="px-6 py-4">Club</th>
+                <th scope="col" class="px-6 py-4">Event</th>
+              </tr>
+              </thead>
+              <tbody>
+              {% for result in raceseries.all_results %}
+                <tr class="odd:bg-white even:bg-slate-50 border-b dark:border-neutral-500">
+                  <td class="whitespace-nowrap px-6 py-4">{{ result.name }}
+                    {% if result.rider %}
+                      <div class="rounded bg-green-500 text-white text-xs px-1 py-1 inline-block">Member</div>
+                    {% else %}
+                      <div class="rounded bg-orange-600 text-white text-xs px-1 py-1 inline-block">non-member</div>
+                    {% endif %}
+                  </td>
+                  <td class="whitespace-nowrap px-6 py-4 font-medium">{{ result.points }}</td>
+                  <td class="whitespace-nowrap px-6 py-4 font-medium">{{ result.place_disp }}</td>
+                  <td class="whitespace-nowrap px-6 py-4">{{ result.category }}</td>
+                  <td class="whitespace-nowrap px-6 py-4">{{ result.club }}</td>
+                  <td class="whitespace-nowrap px-6 py-4">{{ result.race.event }}</td>
+                </tr>
+              {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </details>
+      </div>
+    </div>
+  </div>
+</div>

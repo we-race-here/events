@@ -24,6 +24,9 @@ django-storages[boto3]==1.13.2  # https://github.com/jschneier/django-storages
 django-ckeditor==6.5.1 # https://github.com/django-ckeditor/django-ckeditor
 django-widget-tweaks==1.4.12
 
+# Other
+stripe==5.4.0
+
 # Database
 # This is the new for 4.2 you need both the binary and package.
 psycopg-binary==3.1.9

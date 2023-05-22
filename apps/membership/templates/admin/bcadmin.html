@@ -8,6 +8,8 @@
   <div class="container mx-auto px-4 py-8">
     <h1 class="text-3xl font-bold mb-4">BC staff admin tools</h1>
   </div>
+  <div>
+  <b>Upload Race promoter download records</b>
   {{ upload_done }}
     {% if user.is_staff %}
       <form method="post" enctype="multipart/form-data">
@@ -15,11 +17,54 @@
         {{ form.as_p }}
         <input type="hidden" name="usacdownload" value="usacdownload">
         <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-          Save
+          Upload
         </button>
       </form>
-      <p>{{ total }}, {{ success }}, {{ attempted }}, {{ errors }}, {{ rows_created }}</p>
+      <div> attempted records:  {{ attempted }}</div>
+      <div>Duplicate records not imported: {{ duplicates }}</div>
+      <div>Rows created:  {{ rows_created }}</div>
+      <div>Records with bad or missing data. Probably still imported.</div>
+      {% for e in errors %}
+      <div>{{ e }}</div>
+      {% endfor %}
     {% else %}
       <p>You are not authorized to view this page.</p>
     {% endif %}
+  </div>
+
+  <hr class="my-3">
+
+  <b>Club Data</b>
+
+  <details>
+    <summary>USAC and BC</summary>
+      <ul>
+        {% for c in clubs.both %}
+          <li>{{ c }}</li>
+        {% endfor %}
+      </ul>
+  </details>
+
+<details>
+  <summary>
+    BC and not USAC
+  </summary>
+    <ul>
+        {% for c in clubs.org_only %}
+          <li>{{ c }}</li>
+        {% endfor %}
+      </ul>
+</details>
+
+<details>
+  <summary>
+  USAC and not BC
+  </summary>
+    <ul>
+      {% for c in clubs.usac_only %}
+        <li>{{ c }}</li>
+      {% endfor %}
+    </ul>
+</details>
+
 {% endblock %}

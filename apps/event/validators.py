@@ -120,7 +120,7 @@ class ImportResults:
                     row["finish_status"] = "OK"
                 except ValueError:
                     row["finish_status"] = row["place"]
-                    row["palce"] = None
+                    row["place"] = None
                 self.data_categories.add(row["category"])
                 if "name" not in self.columns:
                     row["name"] = f"{row['first_name']} {row['last_name']}"

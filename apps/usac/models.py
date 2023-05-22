@@ -1,6 +1,3 @@
-import hashlib
-import json
-
 from django.db import models
 
 # Will remove the following from WRH
@@ -29,12 +26,6 @@ class UsacDownload(models.Model):
     data = models.JSONField(null=True, blank=True)
     data_hash = models.CharField(max_length=64, unique=True, editable=False)
     create_datetime = models.DateTimeField(auto_now_add=True)
-
-    @classmethod
-    def hashify(cls, data):
-        if not isinstance(data, str):
-            data = json.dumps(data, sort_keys=True)
-        return hashlib.sha1(data.encode()).hexdigest()
 
     @property
     def full_name(self):
