@@ -85,8 +85,8 @@
 
     <!-- Features events next 4 -->
     {% if featured.exists %}
-      <a class="org_name"> Upcoming Featured Events</a>
-      <div class="flex flex-wrap -m-4 border-b-2 border-gray-400">
+      <div class="org_name my-3"> Upcoming Featured Events</div>
+      <div class="flex flex-wrap border-2 border-gray-400 mt-3 bg-white dark:bg-gray-900  py-4 md:py-7 px-4 md:px-3 xl:px-5">
         {% for event in featured %}
           <div class="lg:w-1/4 md:w-1/2 p-4 w-full">
             <a class="block relative h-48 rounded overflow-hidden" href="{% url 'event:event_detail' event.pk %}">
@@ -137,14 +137,16 @@
     {% endif %}
 
     <!-- All events -->
-    <div class="flex flex-wrap -m-4">
+  <div class="org_name my-3"> Full Event Calendar </div>
+    <div class="flex flex-wrap m-4 bg-white">
       {% for event in events %}
         <div class="lg:w-1/4 md:w-1/2 p-4 w-full">
-          <a class="block relative h-48 rounded overflow-hidden" href="{% url 'event:event_detail' event.pk %}">
+          <a class="block relative h-50 rounded overflow-hidden" href="{% url 'event:event_detail' event.pk %}">
             {% if event.logo and event.featured_event %}
-              <img class="object-scale-down max-h-[250px] mx-auto" src="{{ event.logo.url }}" alt="">
+              <img class="object-scale-down max-h-[50px] mx-auto" src="{{ event.logo.url }}" alt="">
             {% else %}
-              <img alt="Logo" class="object-contain object-center w-full h-full block"
+{#              class="object-contain object-center w-full h-full block"#}
+              <img alt="Logo" class="object-scale-down max-h-[50px] mx-auto"
                    src="{% static "images/clear_250x250.png" %}">
             {% endif %}
           </a>
