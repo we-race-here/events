@@ -84,6 +84,7 @@ LOCAL_APPS = [
     "apps.event",
     "apps.membership",
     "apps.usac",
+    "apps.store",
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -326,3 +327,4 @@ GOOGLE_MAP_API_TOKEN = env("GOOGLE_MAP_API_TOKEN", default="")
 # STRIPE
 STRIPE_PUBLIC_KEY = env("STRIPE_PUBLIC_KEY", default="")
 STRIPE_SECRET_KEY = env("STRIPE_SECRET_KEY", default="")
+STRIPE_WEBHOOK_SECRET = env("STRIPE_WEBHOOK_SECRET", default="")
