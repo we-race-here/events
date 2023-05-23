@@ -191,12 +191,10 @@ class OrganizationAdmin(LoginRequiredMixin, DetailView):
 
     def post(self, *args, **kwargs):
         context = self.get_context_data(**kwargs)
-        if self.request.POST.get("join_bc", None):
+        if self.request.POST.get("club_dues", None):
             # price = Price.objects.get(id=self.kwargs["pk"])
             # price_1N9pqlL1pkhMLFYAUvM0NqDS
-            metadata = {"single_product": "club_dues", 
-                        "organization": context["org"].id,
-                        "user": self.request.user.id,}
+            metadata = {"single_product": "club_dues", "organization": context["org"].id, "user": self.request.user.id}
             try:
                 checkout_session = stripe.checkout.Session.create(
                     payment_method_types=["card"],

@@ -39,7 +39,7 @@
     </div>
       <form action="{% url 'membership:organization_admin' org.pk  %}" method="POST">
          {% csrf_token %}
-        <button class="rounded-md bg-orange-600 p-2" id="join_bc" name="join_bc" value="True" type="submit" id="checkout-button">Pay 2023 $100 club dues</button>
+        <button class="rounded-md bg-orange-600 p-2" id="join_bc" name="club_dues" value="True" type="submit" id="checkout-button">Pay 2023 $100 club dues</button>
       </form>
   </section>
 
