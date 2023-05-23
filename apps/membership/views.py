@@ -18,7 +18,7 @@ from django.views.generic.edit import CreateView, DeleteView, FormView, UpdateVi
 from ..usac.admin import usac_license_from_csv
 from ..usac.forms import CsvImportForm
 from .forms import OrganizationForm, OrganizationMemberJoinForm
-from .member_utils import club_report
+from .member_utils import club_report, get_club_payments
 from .models import Organization, OrganizationMember
 from ..store.stripe_utils import products
 
@@ -185,6 +185,7 @@ class OrganizationAdmin(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context["club_payments"] = get_club_payments(self.object)
         return context
 
     def post(self, *args, **kwargs):

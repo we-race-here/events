@@ -6,6 +6,7 @@ from django.contrib.auth import get_user_model
 from django.db.models import Q
 
 from apps.membership.models import Organization, OrganizationMember
+from apps.store.models import Payment
 from apps.usac.models import UsacDownload
 
 logger = logging.getLogger(__name__)
@@ -118,6 +119,13 @@ def club_report():
     clubs["usac_only"] = clubs["usac_clubs"].difference(clubs["org_clubs"])
     clubs["org_only"] = clubs["org_clubs"].difference(clubs["usac_clubs"])
     return clubs
+
+
+def get_club_payments(organization: Organization) -> dict:
+    """return a dict of payment sand current club status, i.e. they paid dues for the current year"""
+    records = Payment.objects.filter(organization=organization.id)
+    status = "Current" if records.filter(create_datetime__year=date.today().year).exists() else "Expired"
+    return {"status": status, "payments": records}
 
 
 # org_clubs

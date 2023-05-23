@@ -33,3 +33,5 @@ class Payment(models.Model):
     @property
     def stripe_link(self):
         return f"https://dashboard.stripe.com/payments/{self.stripe_payment_id}"
+
+    
