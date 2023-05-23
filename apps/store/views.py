@@ -19,10 +19,9 @@ def index(request):
 def payment_webhook(request):
     """stripe trigger checkout.session.completed --add checkout_session:metadata.organization=orgapple"""
 
-    print("received webhook")
+    # print("received webhook")
     payload = request.body
     sig_header = request.META["HTTP_STRIPE_SIGNATURE"]
-    print("received webhook")
     event = None
 
     try:

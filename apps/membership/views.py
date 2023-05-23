@@ -179,8 +179,6 @@ class JoinOrganizationView(FormView):
 
 
 class OrganizationAdmin(LoginRequiredMixin, DetailView):
-    """https://github.com/we-race-here/wrh-organization/blob/70623139387a97e83a96571dc2ab83db800ceac7/wrh_organization/apps/cycling_org/rest_api/views.py#L501"""
-
     template_name = "org/organization_admin.html"
     model = Organization
     context_object_name = "org"
@@ -191,12 +189,8 @@ class OrganizationAdmin(LoginRequiredMixin, DetailView):
 
     def post(self, *args, **kwargs):
         context = self.get_context_data(**kwargs)
-        if self.request.POST.get("join_bc", None):
-            # price = Price.objects.get(id=self.kwargs["pk"])
-            # price_1N9pqlL1pkhMLFYAUvM0NqDS
-            metadata = {"single_product": "club_dues", 
-                        "organization": context["org"].id,
-                        "user": self.request.user.id,}
+        if self.request.POST.get("club_dues", None):
+            metadata = {"single_product": "club_dues", "organization": context["org"].id, "user": self.request.user.id}
             try:
                 checkout_session = stripe.checkout.Session.create(
                     payment_method_types=["card"],
