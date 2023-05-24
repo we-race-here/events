@@ -48,12 +48,13 @@ class HomePageSignUpView(SignupView):
 urlpatterns = [
     path("", HomePageSignUpView.as_view(), name="home"),
     path("home", HomePageView.as_view(), name="homepage"),
-    path("about/", TemplateView.as_view(template_name="pages/about.html"), name="about"),
     # Django Admin, use {% url 'admin:index' %}
     path(settings.ADMIN_URL, admin.site.urls),
     # User management
     path("users/", include("events.users.urls", namespace="users")),
+    # Accounts
     path("accounts/", include("allauth.urls")),
+    # Apps
     path("", include("apps.event.urls")),
     path("", include("apps.membership.urls")),
     path("", include("apps.usac.urls")),
