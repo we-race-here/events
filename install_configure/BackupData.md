@@ -18,3 +18,12 @@
       - Use Column inserts
       - Use Insert commands
 
+pg_dump -d postgresql://doadmin:AVNS_g0V42nOXjFxia8usSiB@ebc-prod-readonly-do-user-12895959-0.b.db.ondigitalocean.com:25060/wrh_organization?sslmode=require > wrh_april_28_2023_1.pgssql
+
+Use this one, it has the -Fc option.
+pg_dump -d postgresql://doadmin:AVNS_g0V42nOXjFxia8usSiB@ebc-prod-readonly-do-user-12895959-0.b.db.ondigitalocean.com:25060/wrh_organization?sslmode=require -Fc > wrh_april_28_2023_1.pgssql
+
+
+
+
+
