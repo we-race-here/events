@@ -34,4 +34,6 @@ class Payment(models.Model):
     def stripe_link(self):
         return f"https://dashboard.stripe.com/payments/{self.stripe_payment_id}"
 
-    
+    @property
+    def amount_decimal(self):
+        return self.amount / 100

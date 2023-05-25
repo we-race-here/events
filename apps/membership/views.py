@@ -20,7 +20,7 @@ from ..usac.forms import CsvImportForm
 from .forms import OrganizationForm, OrganizationMemberJoinForm
 from .member_utils import club_report, get_club_payments
 from .models import Organization, OrganizationMember
-from ..store.stripe_utils import products
+from ..store.stripe_utils import products, single_item_checkout
 
 User = get_user_model()
 stripe.api_key = settings.STRIPE_SECRET_KEY
@@ -185,35 +185,16 @@ class OrganizationAdmin(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context["product"] = stripe.Product.retrieve("prod_NvhFVL6FC3AdKr")
+        context["price"] = context["product"]["default_price"]
         context["club_payments"] = get_club_payments(self.object)
         return context
 
     def post(self, *args, **kwargs):
-        context = self.get_context_data(**kwargs)
-        if self.request.POST.get("club_dues", None):
-            metadata = {"single_product": "club_dues", "organization": context["org"].id, "user": self.request.user.id}
-            try:
-                checkout_session = stripe.checkout.Session.create(
-                    payment_method_types=["card"],
-                    customer_email="v@vdavis.net",
-                    invoice_creation={"enabled": True},
-                    metadata=metadata,
-                    payment_intent_data={"metadata": metadata},
-                    line_items=[
-                        {
-                            "price": "price_1N9pqlL1pkhMLFYAUvM0NqDS",
-                            "quantity": 1,
-                        },
-                    ],
-                    mode="payment",
-                    success_url=reverse_lazy("membership:organization_admin", kwargs={"pk": context["org"].id}),
-                    cancel_url=reverse_lazy("membership:organization_admin", kwargs={"pk": context["org"].id}),
-                )
-            except Exception as e:
-                return str(e)
+        {"org": self.get_object()}
+        if self.request.POST.get("single_product", None):
+            checkout_session = single_item_checkout(self.request, self.get_object())
             return redirect(checkout_session.url)
-
-        # return self.render_to_response(context)
 
 
 class BCAdminView(LoginRequiredMixin, TemplateView):

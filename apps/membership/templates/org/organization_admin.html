@@ -8,21 +8,19 @@
 
 {% block content %}
   <section>
-    <h1> {{ org.name }} Admin page</h1>
-    <b>Club status: {{ club_payments.status }}</b>
-
+    <b> {{ org.name }} Admin page</b>
+    <a href="{% url 'membership:update_organization' org.id %}"
+         class="bg-cyan-600 hover:bg-cyan-600 text-xs text-white font-bold p-1 rounded">
+        <i class="far fa-edit mr-2"></i> Edit Club
+      </a>
     <div class="flex flex-col bg-yellow-100 border-2 border-gray-800 my-3 p-2">
       <b>Action Items:</b>
       <ul>
-        <li> - do something, renew membership</li>
+        {% if club_payments.status == "Expired" %}
+        <li> - join or renew Club membership</li>
+        {% endif %}
         <li> - do more, invite members</li>
       </ul>
-    </div>
-    <div class="flex flex-row my-3">
-      <a href="{% url 'membership:update_organization' org.id %}"
-         class="bg-cyan-600 hover:bg-cyan-600 text-white font-bold py-2 px-4 rounded">
-        <i class="far fa-edit mr-2"></i> Edit Club
-      </a>
     </div>
     <div class="flex flex-col">
       <details>
@@ -49,23 +47,44 @@
   </section>
   <hr class="my-8 border-3 border-black">
   <section>
-    <b>Club BC membership, renew and status</b>
+    <b>Club BC membership status: {{ club_payments.status }}</b>
     <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
       magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
       consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
       Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
     </div>
-    <div>
-      <div>
-        <h3 class="text-md">Yearly Club membership for Bicycle Colorado</h3>
-      </div>
+    {% if club_payments.status == "Expired" %}
+      <form action="{% url 'membership:organization_admin' org.pk %}" method="POST">
+        {% csrf_token %}
+        <button class="rounded-md bg-orange-600 p-2" name="single_product" value="club_dues" type="submit"
+                id="checkout-button">{{ product.name }} {% now "Y" %}: $100.00</button>
+        </button>
+      </form>
+    {% endif %}
+  <div class="flex flex-col">
+      <details>
+        <summary class="font-bold">Payment Records</summary>
+        <table class="table-auto">
+          <tbody>
+          <tr class="border-1 border-gray-400">
+            <th>Admin Name</th>
+            <th>Product</th>
+            <th>Amount</th>
+            <th>Date</th>
+          </tr>
+          {% for p in club_payments.payments %}
+          <tr>
+            <td>{{ p.user.full_name }}</td>
+            <td>{{ p.single_product }}</td>
+            <td>{{ p.amount_decimal }}</td>
+            <td>{{ p.create_datetime }}</td>
+          </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+
+      </details>
     </div>
-    <form action="{% url 'membership:organization_admin' org.pk %}" method="POST">
-      {% csrf_token %}
-      <button class="rounded-md bg-orange-600 p-2" id="join_bc" name="club_dues" value="True" type="submit"
-              id="checkout-button">Pay 2023 $100 club dues
-      </button>
-    </form>
   </section>
 
 {% endblock %}
