@@ -9,8 +9,8 @@
     <h1 class="text-3xl font-bold mb-4">BC staff admin tools</h1>
   </div>
   <div>
-  <b>Upload Race promoter download records</b>
-  {{ upload_done }}
+    <b>Upload Race promoter download records</b>
+    {{ upload_done }}
     {% if user.is_staff %}
       <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
@@ -20,13 +20,15 @@
           Upload
         </button>
       </form>
-      <div> attempted records:  {{ attempted }}</div>
-      <div>Duplicate records not imported: {{ duplicates }}</div>
-      <div>Rows created:  {{ rows_created }}</div>
-      <div>Records with bad or missing data. Probably still imported.</div>
-      {% for e in errors %}
-      <div>{{ e }}</div>
-      {% endfor %}
+      {% if attempted %}
+        <div>Attempted records: {{ attempted }}</div>
+        <div>Duplicate records not imported: {{ duplicates }}</div>
+        <div>Rows created: {{ rows_created }}</div>
+        <div>Records with bad or missing data. Probably still imported.</div>
+        {% for e in errors %}
+          <div>{{ e }}</div>
+        {% endfor %}
+      {% endif %}
     {% else %}
       <p>You are not authorized to view this page.</p>
     {% endif %}
@@ -37,34 +39,47 @@
   <b>Club Data</b>
 
   <details>
-    <summary>USAC and BC</summary>
-      <ul>
-        {% for c in clubs.both %}
-          <li>{{ c }}</li>
-        {% endfor %}
-      </ul>
+    <summary>USAC and BC: {{ clubs.both|length }}</summary>
+    <ul>
+      {% for c in clubs.both %}
+        <li>{{ c }}</li>
+      {% endfor %}
+    </ul>
   </details>
 
-<details>
-  <summary>
-    BC and not USAC
-  </summary>
+  <details>
+    <summary>
+      BC and not USAC: {{ clubs.org_only|length }}
+    </summary>
     <ul>
-        {% for c in clubs.org_only %}
-          <li>{{ c }}</li>
-        {% endfor %}
-      </ul>
-</details>
+      {% for c in clubs.org_only %}
+        <li>{{ c }}</li>
+      {% endfor %}
+    </ul>
+  </details>
 
-<details>
-  <summary>
-  USAC and not BC
-  </summary>
+  <details>
+    <summary>
+      USAC and not BC: {{ clubs.usac_only|length }}
+    </summary>
     <ul>
       {% for c in clubs.usac_only %}
         <li>{{ c }}</li>
       {% endfor %}
     </ul>
-</details>
+  </details>
+
+  <hr class="my-3">
+
+  <b>Stripe, prices, invoices and payments</b>
+  <details>
+    <summary>Products defined at Stripe</summary>
+    <ul>
+      {% for p in products %}
+        {#        {% for k, v in p.items %}{{ k }}: {{ v }}{% endfor %}#}
+        <li>Product: {{ p.name }}, Default Price: ${{ p.unit_amount_decimal|floatformat:2 }} </li>
+      {% endfor %}
+    </ul>
+  </details>
 
 {% endblock %}

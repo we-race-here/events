@@ -1,5 +1,7 @@
 # views.py
+
 import stripe
+
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
@@ -16,8 +18,9 @@ from django.views.generic.edit import CreateView, DeleteView, FormView, UpdateVi
 from ..usac.admin import usac_license_from_csv
 from ..usac.forms import CsvImportForm
 from .forms import OrganizationForm, OrganizationMemberJoinForm
-from .member_utils import club_report
+from .member_utils import club_report, get_club_payments
 from .models import Organization, OrganizationMember
+from ..store.stripe_utils import products, single_item_checkout
 
 User = get_user_model()
 stripe.api_key = settings.STRIPE_SECRET_KEY
@@ -176,72 +179,36 @@ class JoinOrganizationView(FormView):
 
 
 class OrganizationAdmin(LoginRequiredMixin, DetailView):
-    """https://github.com/we-race-here/wrh-organization/blob/70623139387a97e83a96571dc2ab83db800ceac7/wrh_organization/apps/cycling_org/rest_api/views.py#L501"""
-
     template_name = "org/organization_admin.html"
     model = Organization
     context_object_name = "org"
 
-    # def get_context_data(self, **kwargs):
-    #     context = super().get_context_data(**kwargs)
-    #     return context
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["product"] = stripe.Product.retrieve("prod_NvhFVL6FC3AdKr")
+        context["price"] = context["product"]["default_price"]
+        context["club_payments"] = get_club_payments(self.object)
+        return context
 
     def post(self, *args, **kwargs):
-        print(self.request.POST)
-        if self.request.POST.get("join_bc", None):
-            # price = Price.objects.get(id=self.kwargs["pk"])
-            # price_1N9pqlL1pkhMLFYAUvM0NqDS
-            try:
-                checkout_session = stripe.checkout.Session.create(
-                    payment_method_types=["card"],
-                    customer_email="v@vdavis.net",
-                    invoice_creation={"enabled": True},
-                    payment_intent_data={
-                        "metadata": {"club_dues": "2023_test"},
-                    },
-                    # metadata={
-                    #     "club_dues": "2023",
-                    # },
-                    line_items=[
-                        {
-                            "price_data": {
-                                "currency": "usd",
-                                "unit_amount": 123,
-                                "product_data": {
-                                    "name": "2023 Club Dues",
-                                    "description": "You club dues for 2023",
-                                    # "images": ["https://example.com/t-shirt.png"],
-                                },
-                            },
-                            "quantity": 1,
-                        }
-                    ],
-                    # line_items=[
-                    #     {
-                    #         "price": "price_1N9pqlL1pkhMLFYAUvM0NqDS",
-                    #         "quantity": 1,
-                    #     },
-                    # ],
-                    mode="payment",
-                    success_url="http://localhost:8000/org/10/",
-                    cancel_url="http://localhost:8000/org/10/",
-                )
-            except Exception as e:
-                return str(e)
+        {"org": self.get_object()}
+        if self.request.POST.get("single_product", None):
+            checkout_session = single_item_checkout(self.request, self.get_object())
             return redirect(checkout_session.url)
-
-        # return self.render_to_response(context)
 
 
 class BCAdminView(LoginRequiredMixin, TemplateView):
     template_name = "admin/bcadmin.html"
+    product_fields = ["name", ""]
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context["clubs"] = club_report()
+        context["products"] = products()
         return context
 
     def post(self, *args, **kwargs):
-        context = super().get_context_data(**kwargs)
+        context = self.get_context_data(**kwargs)
         if self.request.POST.get("usacdownload", None):
             form = CsvImportForm(self.request.POST, self.request.FILES)
             if form.is_valid():
@@ -254,8 +221,7 @@ class BCAdminView(LoginRequiredMixin, TemplateView):
         return self.render_to_response(context)
 
     def get(self, *args, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["clubs"] = club_report()
+        context = self.get_context_data(**kwargs)
         form = CsvImportForm()
         context.update({"form": form})
         return self.render_to_response(context)

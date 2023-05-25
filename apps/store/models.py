@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.db import models
+from django.db.models import UniqueConstraint
 
 from apps.event.models import Event
 from apps.membership.models import Organization
@@ -20,9 +21,19 @@ class Payment(models.Model):
     create_datetime = models.DateTimeField(auto_now_add=True)
     update_datetime = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        ordering = ["-create_datetime"]
+        constraints = [
+            UniqueConstraint(fields=["stripe_payment_id", "payment_status"], name="unique payment"),
+        ]
+
     def __str__(self):
         return self.stripe_payment_id
 
     @property
     def stripe_link(self):
         return f"https://dashboard.stripe.com/payments/{self.stripe_payment_id}"
+
+    @property
+    def amount_decimal(self):
+        return self.amount / 100
