@@ -1,0 +1,11 @@
+# Version string
+version = "2023-05-27.2.alpha"
+
+# tag count for the day, starts at 1
+count = 1
+
+# Tag date, denver time
+date = 2023-05-27
+
+# alpha, beta or prod
+type = "alpha"
