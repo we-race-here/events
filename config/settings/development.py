@@ -2,7 +2,6 @@ from .base import *  # noqa
 from .production import *  # noqa
 from .production import MIDDLEWARE, env, INSTALLED_APPS
 
-
 # django-debug-toolbar
 # ------------------------------------------------------------------------------
 # https://django-debug-toolbar.readthedocs.io/en/latest/installation.html#prerequisites
@@ -17,9 +16,9 @@ DEBUG_TOOLBAR_CONFIG = {
 # https://django-debug-toolbar.readthedocs.io/en/latest/installation.html#internal-ips
 INTERNAL_IPS = ["127.0.0.1", "10.0.2.2"]
 # for adding remote ip address
-MY_IP = env("MY_IP", default=False)
+MY_IP = env.list("MY_IP")
 if MY_IP:
-    INTERNAL_IPS += [MY_IP]
+    INTERNAL_IPS += MY_IP
 if env("USE_DOCKER", default=False) == "yes":
     import socket
 
