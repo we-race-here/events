@@ -38,4 +38,4 @@ pytest-django==4.5.2  # https://github.com/pytest-dev/pytest-django
 # ------------------------------------------------------------------------------
 GitPython==3.1.31
 tomlkit==0.11.8
-rich==13.3.5
+rich==13.4.1
