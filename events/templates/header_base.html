@@ -1,0 +1,114 @@
+{% load static i18n %}
+<header class="bg-white relative">
+  <!-- First level navigation -->
+  <nav class="container mx-auto py-4 bord">
+    <div class="flex justify-end items-center">
+      {#      <div class="mr-4">#}
+      <a href="https://www.bicyclecolorado.org/" target="_blank"
+         class="top_menu_txt">BICYCLE
+        COLORADO</a>
+      {#      </div>#}
+      <div class="flex justify-end">
+        <!-- Check login status -->
+        {% if request.user.is_authenticated %}
+          <!-- User Menu -->
+          <ul>
+            <li class="group relative dropdown px-4 text-green-800 hover:text-green-900 cursor-pointer font-bold
+            uppercase tracking-wide">
+              {% if request.user.avatar %}
+                <a class="flex" href="{% url 'users:detail' request.user.pk %}">
+                  <img class="small_avatar"
+                       src="{{ request.user.avatar.url }}"
+                       alt="Avatar"/> {{ request.user.full_name }}</a>
+              {% else %}
+                <a class="small_avatar" href="{% url 'users:detail' request.user.pk %}">
+                  <i class="fa-solid fa-user"></i>{{ request.user.full_name }}
+                </a>
+              {% endif %}
+              <div class="group-hover:block dropdown-menu absolute left-0 hidden h-auto">
+                <ul class="top-0 w-52 bg-white shadow px-6 py-8">
+                  <li class="py-1"><a
+                      class="user_menu_txt"
+                      href="{% url 'users:detail' request.user.pk %}"><i class="fa-solid fa-user px-2"></i>Profile</a>
+                  </li>
+                  <li class="py-1"><a
+                      class="user_menu_txt"
+                      href="{% url 'users:update' %}"><i class="fa-solid fa-user-pen px-2"></i>Edit Profile</a></li>
+                  <li class="py-1"><a
+                      class="user_menu_txt"
+                      href="{% url 'account_logout' %}"><i class="fas fa-sign-out-alt px-2"></i>Sign Out </a></li>
+                </ul>
+              </div>
+            </li>
+          </ul>
+          <!-- If not logged in -->
+        {% else %}
+          {% if ACCOUNT_ALLOW_REGISTRATION %}
+            {# URL provided by django-allauth/account/urls.py #}
+            {#            <button type="button" onclick="location.href='{% url 'account_signup' %}'"#}
+            {#                    class="px-4 py-2 text-xs font-medium text-center text-white bg-orange-600 rounded-lg hover:bg-orange-700 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-orange-600 dark:hover:bg-orange-700 dark:focus:ring-orange-800">#}
+            {#              {% translate "JOIN" %}#}
+            {#            </button>#}
+            <button type="button" onclick="location.href='{% url 'home' %}#join'"
+                    class="join_button">
+              {% translate "JOIN" %}
+            </button>`
+
+          {% endif %}
+          {# URL provided by django-allauth/account/urls.py #}
+          <button style="margin-left:4px" type="button" onclick="location.href='{% url 'account_login' %}'"
+                  class="signin_button">
+            {% translate "Sign In" %}
+          </button>
+        {% endif %}
+      </div>
+    </div>
+  </nav>
+  <hr class="h-px bg-gray-200 border-0 dark:bg-gray-700">
+  <!-- Second level navigation -->
+  <hr class="h-px bg-gray-200 border-0 dark:bg-gray-700">
+  <!-- Second level navigation -->
+  <nav class="bg-white-600 py-5 ">
+    <div class="container mx-auto">
+      <ul class="flex justify-between items-center text-black">
+        <!-- Add the logo inside a new 'logo-container' div -->
+        <div class="logo-container mt-2">
+          <a href="{% url 'home' %}">
+            <img class="object-scale-down h-auto w-40 rounded-full"
+                 src="{% static 'images/BC_EventSupport_site_logo.png' %}"
+                 alt="Logo"></a>
+        </div>
+        <li>
+        </li>
+        <div>
+          <ul class="flex justify-between pl-2">
+            <li>
+              <a href="{% url  'event:event_list' %}">
+                <span
+                    class="menu_txt">Events</span>
+              </a>
+            </li>
+            <li>
+              <a href="{% url "event:events_results_list" %}">
+                <span
+                    class="menu_txt">Results</span>
+              </a>
+            </li>
+            <li>
+              <a href="{% url 'membership:organizations' %}">
+                <span
+                    class="menu_txt">Clubs</span>
+              </a>
+            </li>
+            <li>
+              <a href="https://www.bicyclecolorado.org/events-2/event-support/" target="_blank">
+                <span
+                    class="menu_txt">EVENT SUPPORT PROGRAM</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </ul>
+    </div>
+  </nav>
+</header>

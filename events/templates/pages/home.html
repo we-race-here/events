@@ -1,6 +1,11 @@
 {% extends "account/base.html" %}
 {% load static i18n %}
 
+{% block head_title %}E.B.C.{% endblock %}
+
+{% block content_title %}{{ block.super }}{% endblock %}
+
+
 {% block inner %}
 
   <section class="text-gray-600 body-font">
@@ -43,8 +48,8 @@
     </div>
   </section>
   <section id="join">
-  {% if not request.user.is_authenticated %}
+    {% if not request.user.is_authenticated %}
       {% include "account/short_signup_form.html" %}
-  {% endif %}
+    {% endif %}
   </section>
 {% endblock %}
