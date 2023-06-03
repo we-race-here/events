@@ -1,3 +1,4 @@
+import logging
 from collections import defaultdict
 from pathlib import Path
 
@@ -9,6 +10,8 @@ from simple_history.models import HistoricalRecords
 
 from apps.membership.models import Organization
 from apps.usac.models import UsacDownload
+
+logger = logging.getLogger(__name__)
 
 User = get_user_model()
 

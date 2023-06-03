@@ -3,30 +3,28 @@
 
 {% block inner %}
   <!--- into section -->
-  <section class="text-gray-600 body-font">
-    <div class="container mx-auto flex px-5 py-10 md:flex-row flex-col items-center">
-      <div class="lg:max-w-md lg:w-full md:h-md md:w-1/2 w-5/6 mb-10 md:mb-0 ">
-        <img class="object-cover object-center rounded" alt="hero" src="{% static 'images/events_hero.jpg' %}">
-      </div>
-      <div
-          class="lg:flex-grow md:w-1/2 lg:pl-24 md:pl-16 flex flex-col md:items-start md:text-left items-center text-center">
-        <h1 class="title-font sm:text-4xl text-3xl mb-4 font-medium text-gray-900">Event Calendar.
-          <br class="hidden lg:inline-block">
-        </h1>
-        <p class="mb-8 leading-relaxed">
-          BC is proud to host a comprehensive bicycle event calendar that is full of road, mountain, gravel, cross and
-          non-competitive events across the state, including fundraisers, clinics and scenic non-sanctioned rides. There
-          are so many ways to have fun on your bike(s)—this is the time to try something new! </p>
-        <p class="mb-8 leading-relaxed text-red-500">
-          DRAFT: CTA To become a member (What is the generic CTA for membership drive?) CTA for Submit Event (What is
-          the generic CTA for Submit Event?) CTA for logged in user
-        </p>
-        <div class="flex justify-end">
-          <a href="{% url 'event:event_create' %}"
-             class="bg-orange-600 text-white hover:bg-orange-800 py-1 px-1 rounded ">SUBMIT AN EVENT</a>
-        </div>
+  <section id='event_list' class="section_intro_content">
+    {#    <div class="container mx-auto flex px-5 py-10 md:flex-row flex-col items-center">#}
+    <div class="hero_intro_image">
+      <img class="object-cover object-center rounded" alt="hero" src="{% static 'images/events_hero.jpg' %}">
+    </div>
+    <div
+        class="body_intro">
+      <h1>Event Calendar</h1>
+      <p class="mb-4 leading-relaxed">
+        BC is proud to host a comprehensive bicycle event calendar that is full of road, mountain, gravel, cross and
+        non-competitive events across the state, including fundraisers, clinics and scenic non-sanctioned rides. There
+        are so many ways to have fun on your bike(s)—this is the time to try something new! </p>
+      <p class="mb-4 leading-relaxed text-red-500">
+        DRAFT: CTA To become a member (What is the generic CTA for membership drive?) CTA for Submit Event (What is
+        the generic CTA for Submit Event?) CTA for logged in user
+      </p>
+      <div class="flex justify-end">
+        <a href="{% url 'event:event_create' %}"
+           class="button_body_orange">SUBMIT AN EVENT</a>
       </div>
     </div>
+    {#    </div>#}
   </section>
   <!--- Search -->
   <div class="bg-white dark:bg-gray-900  py-4 md:py-7 px-4 md:px-3 xl:px-5">
@@ -35,7 +33,7 @@
         <form method="GET" class="flex">
           <input type="search" name="search" placeholder="Search" value="{{ request.GET.search }}"
                  class="border border-gray-300 py-2 px-4 rounded-l">
-          <button type="submit" class="bg-cyan-600 hover:bg-cyan-800 text-white font-bold py-2 px-4 rounded-r">
+          <button type="submit" class="submit_search">
             Search
           </button>
         </form>
@@ -85,8 +83,9 @@
 
     <!-- Features events next 4 -->
     {% if featured.exists %}
-      <div class="org_name my-3"> Upcoming Featured Events</div>
-      <div class="flex flex-wrap border-2 border-gray-400 mt-3 bg-white dark:bg-gray-900  py-4 md:py-7 px-4 md:px-3 xl:px-5">
+      <div class="w-full org_name mt-3 py-3 bg-white text-center"> Upcoming Featured Events</div>
+      <div
+          class="flex flex-wrap border-2 border-gray-400 bg-white dark:bg-gray-900  py-4 md:py-7 px-4 md:px-3 xl:px-5">
         {% for event in featured %}
           <div class="lg:w-1/4 md:w-1/2 p-4 w-full">
             <a class="block relative h-48 rounded overflow-hidden" href="{% url 'event:event_detail' event.pk %}">
@@ -137,15 +136,15 @@
     {% endif %}
 
     <!-- All events -->
-  <div class="org_name my-3"> Full Event Calendar </div>
-    <div class="flex flex-wrap m-4 bg-white">
+    <div class="w-full org_name mt-3 py-3 bg-white text-center"> Full Event Calendar</div>
+    <div class="flex flex-wrap bg-white  py-4 md:py-7 px-4 md:px-3 xl:px-5">
       {% for event in events %}
         <div class="lg:w-1/4 md:w-1/2 p-4 w-full">
           <a class="block relative h-50 rounded overflow-hidden" href="{% url 'event:event_detail' event.pk %}">
             {% if event.logo and event.featured_event %}
               <img class="object-scale-down max-h-[50px] mx-auto" src="{{ event.logo.url }}" alt="">
             {% else %}
-{#              class="object-contain object-center w-full h-full block"#}
+              {#              class="object-contain object-center w-full h-full block"#}
               <img alt="Logo" class="object-scale-down max-h-[50px] mx-auto"
                    src="{% static "images/clear_250x250.png" %}">
             {% endif %}
