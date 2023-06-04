@@ -27,7 +27,7 @@
     {#    </div>#}
   </section>
 
-  <section id="club_list">
+  <section id="club_list" class="bg-white">
     <div class="sm:px-6 w-full">
       <div class="bg-white dark:bg-gray-900  py-4 md:py-7 px-4 md:px-8 xl:px-10">
         <div class="sm:flex items-center justify-between">
@@ -66,7 +66,7 @@
                         <img class="org_logo_sm" src="{{ organization.logo.url }}" alt="Your Image Description">
                       {% else %}
                         <img alt="ecommerce" class="org_logo_sm"
-                             src="https://dummyimage.com/75x75">
+                             src="{% static 'images/clear_250X250.png' %}">
                       {% endif %}
                       <div class="flex flex-col ml-2">
                         <a class="org_name"
