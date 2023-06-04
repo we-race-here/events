@@ -27,7 +27,7 @@
     {#    </div>#}
   </section>
 
-  <section id="club_list" class="bg-white">
+  <section id="club_list" class="bg-white mb-8">
     <div class="sm:px-6 w-full">
       <div class="bg-white dark:bg-gray-900  py-4 md:py-7 px-4 md:px-8 xl:px-10">
         <div class="sm:flex items-center justify-between">
@@ -111,9 +111,9 @@
           {% endfor %}
         </div>
       </div>
-      <div class="mt-8">
+      <div class="bg-white">
         <nav class="flex justify-center">
-          <ul class="inline-flex list-none">
+          <ul class="inline-flex list-none mt-4 mb-4 bg-white">
             {% if page_obj.has_previous %}
               <li>
                 <a href="?page=1" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-l">
@@ -131,7 +131,7 @@
             {% for i in paginator.page_range %}
               {% if page_obj.number == i %}
                 <li>
-                  <a href="?page={{ i }}" class="bg-blue-500 text-white font-bold py-2 px-4">
+                  <a href="?page={{ i }}" class="bg-cyan-600 text-white font-bold py-2 px-4">
                     {{ i }}
                   </a>
                 </li>

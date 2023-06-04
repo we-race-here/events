@@ -1,8 +1,8 @@
 # Version string
-version = "2023-06-04.5.alpha"
+version = "2023-06-04.6.alpha"
 
 # tag count for the day, starts at 1
-count = 5
+count = 6
 
 # Tag date, denver time
 date = 2023-06-04
