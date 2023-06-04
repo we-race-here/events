@@ -13,7 +13,7 @@ console = Console()
 # Pass in release type ["alpha", "beta", "release"]
 parser = optparse.OptionParser()
 parser.add_option("-t", "--type", help="alpha, beta or release")
-parser.add_option("-f", action="store_true", dest="force", help="Force tag even if checks for tag fails")
+parser.add_option("-f", action="store_true", dest="force", help="Force tag even if checks for tag and branch fails")
 parser.add_option("-p", action="store_true", dest="push", help="Push or not")
 (opts, args) = parser.parse_args()
 if not opts.type:
@@ -50,7 +50,11 @@ try:
     assert repo.active_branch.name == "main"
 except AssertionError as e:
     pprint(e)
-    raise
+    if not opts.force:
+        console.print_exception()
+        sys.exit()
+    else:
+        console.print("FORCE: Branch not MAIN", style="bold red")
 last_tag = repo.tags[-1]
 try:
     console.print(f"Most recent it tag: {last_tag.name}")
