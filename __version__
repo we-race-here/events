@@ -1,11 +1,11 @@
 # Version string
-version = "2023-05-28.2.alpha"
+version = "2023-06-04.4.alpha"
 
 # tag count for the day, starts at 1
-count = 2
+count = 4
 
 # Tag date, denver time
-date = 2023-05-28
+date = 2023-06-04
 
 # alpha, beta or prod
 type = "alpha"
