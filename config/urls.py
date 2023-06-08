@@ -7,8 +7,6 @@ from django.shortcuts import render
 from django.urls import include, path
 from django.views import defaults as default_views
 from django.views.generic import TemplateView
-from django.views.generic import TemplateView
-from django.shortcuts import render
 
 from events.users.forms import UserSignupForm
 
@@ -60,8 +58,8 @@ urlpatterns = [
     path("", include("apps.usac.urls")),
     path("", include("apps.store.urls")),
     # Your stuff: custom urls includes go here
+    path("robots.txt", TemplateView.as_view(template_name="robots.txt", content_type="text/plain"), name="robots"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
 
 if settings.DEBUG:
     # This allows the error pages to be debugged during development, just visit
