@@ -3,9 +3,18 @@
 @tailwind utilities;
 
 @layer base {
-    h3 {
-        @apply text-xl font-bold text-orange-600 mb-2;
+    h1 {
+        @apply sm:text-2xl md:text-3xl lg:md:text-4xl mb-3 font-medium text-gray-900
     }
+
+    h2 {
+        @apply capitalize font-bold sm:text-2xl text-xl mb-3 font-medium text-gray-900;
+    }
+
+    h3 {
+        @apply text-xl font-bold text-orange-600 m-2;
+    }
+
     h4 {
         @apply text-xl font-bold leading-tight text-gray-900;
     }
@@ -13,32 +22,127 @@
 
 
 @layer components {
+
     .backtxt {
         @apply text-orange-600 hover:underline;
     }
-    .menu_txt {
-            @apply inline-block text-xl mx-2 px-2 py-2 leading-none  rounded font-semibold uppercase text-green-800  hover:border-transparent hover:text-white hover:bg-black mt-4 lg:mt-0;
-        }
+
+
+    .small_avatar {
+        @apply w-7 rounded-full mx-3;
+    }
+
+    .message_box {
+        @apply flex items-center text-gray-800 border-2 border-orange-600 bg-yellow-100 justify-center my-5;
+    }
+
+    .message_list {
+        @apply font-bold list-disc list-inside;
+    }
+
+    /*Action Buttons*/
+    .join_button {
+        @apply px-3 py-1 text-xs font-medium text-center text-white bg-orange-600 rounded-lg hover:bg-orange-700
+        focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-orange-600 dark:hover:bg-orange-700 dark:focus:ring-orange-800;
+    }
+
     .joinbutton {
-            @apply inline-flex text-white bg-orange-600  py-2 px-6 m-3 hover:bg-orange-800 rounded;
-        }
+        @apply inline-flex text-white bg-orange-600  py-2 px-6 m-3 hover:bg-orange-800 rounded;
+    }
+
+    .signin_button {
+        @apply px-3 py-1 text-xs font-medium text-center text-white bg-cyan-600 rounded-lg hover:bg-cyan-800
+        focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-cyan-600 dark:hover:bg-cyan-300 dark:focus:ring-cyan-400;
+    }
+
+    .button_body_orange {
+        @apply px-3 py-1 mx-3 text-xs font-medium text-center text-white bg-orange-600 rounded-lg hover:bg-orange-700
+        focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-orange-600 dark:hover:bg-orange-700 dark:focus:ring-orange-800;
+    }
+
+    .button_body_cyan {
+        @apply px-3 py-1 mx-3 text-xs font-medium text-center text-white bg-cyan-600 rounded-lg hover:bg-cyan-800
+        focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-cyan-600 dark:hover:bg-cyan-800 dark:focus:ring-cyan-800;
+    }
+
+    /*Header Menu*/
+    .user_menu_txt {
+        @apply block text-green-800 font-semibold text-base uppercase hover:text-green-900 hover:underline
+        cursor-pointer;
+    }
+
+    .top_menu_txt {
+        @apply inline-block text-base px-2 py-2 leading-none border rounded font-semibold uppercase text-green-800
+        border-white hover:border-transparent hover:text-white hover:bg-black mt-4 lg:mt-0;
+    }
+
+
+    .menu_txt {
+        @apply inline-block text-xl mx-2 px-2 py-2 leading-none  rounded font-semibold uppercase text-green-800
+        hover:border-transparent hover:text-white hover:bg-black mt-4 lg:mt-0;
+    }
+
     .org_name {
-            @apply text-base text-xl font-bold leading-none text-orange-600 hover:text-orange-800 mr-2;
-        }
+        @apply text-base text-xl font-bold leading-none text-orange-600 hover:text-orange-800 mr-2;
+    }
+
     .org_logo {
-            @apply w-[150px] h-[150px] object-cover object-center;
-        }
+        @apply w-[150px] h-[150px] object-cover object-center;
+    }
+
     .org_logo_sm {
-            @apply w-[75px] h-[75px] object-cover object-center;
-        }
+        @apply w-[75px] h-[75px] object-cover object-center;
+    }
+
     .ptitle {
-            @apply sm:text-4xl text-3xl mb-4 font-medium text-gray-900;
-        }
+        @apply sm:text-2xl md:text-3xl lg:md:text-4xl mb-3 font-medium text-gray-900;
+    }
+
     .msgbox {
-            @apply flex-col items-center justify-center my-5;
-        }
+        @apply flex-col items-center justify-center my-5;
+    }
+
     .detailrow {
-            @apply flex items-center justify-center my-5;
-        }
+        @apply flex items-center justify-center my-5;
+    }
+
+    /*Search and filters*/
+    .submit_search {
+        @apply bg-cyan-600 hover:bg-cyan-800 text-white font-bold py-2 px-4 rounded-r;
+    }
+
+
+    /*Page Sections*/
+    /*INRO SECTION*/
+    /*Css for top layout like on event list, home page, club list*/
+    .section_intro_content {
+        @apply text-gray-600 font-normal container mx-auto flex px-5 py-10 md:flex-row flex-col items-center;
+    }
+
+    .hero_intro_image {
+        @apply lg:max-w-md lg:w-full md:w-1/2 w-5/6 mb-10 md:mb-0 sm:w-1/4 sm:w-3/6 sm:mb-0;
+    }
+
+    .body_intro {
+        @apply lg:flex-grow md:w-1/2 lg:pl-24 md:pl-16 flex flex-col md:items-start md:text-left items-center text-center;
+    }
+
+    /*RACE RESULTS LIST*/
+    .section_race_series_list {
+        @apply w-full my-5 px-4 py-4 dark:bg-gray-900 sm:px-6 bg-white md:py-3  md:px-3 xl:px-6 mt-7 overflow-x-auto;
+    }
+
+    .section_race_results_list {
+        @apply w-full my-5 px-4 py-4 dark:bg-gray-900 sm:px-6 bg-white md:py-3  md:px-3 xl:px-6 mt-7 overflow-x-auto;
+    }
+
+    .detail_open {
+        @apply open:bg-white dark:open:bg-slate-900 open:ring-1 open:ring-black/5 dark:open:ring-white/10 open:shadow-lg p-6 rounded-lg;
+    }
+
+    .summary {
+        @apply font-normal text-orange-600 dark:text-white font-semibold select-none;
+    }
+
 
 }

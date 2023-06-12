@@ -1,0 +1,31 @@
+<section id="profile_results" , class="mb-4">
+  <div class="flex flex-col items-center justify-center bg-white">
+    <div class="flex items-center justify-center my-5">
+      <p class="text-base font-semibold leading-none text-gray-800  mr-2"> Race Results: </p>
+    </div>
+    <table class="w-3/4 whitespace-nowrap pb-4 mb-4">
+      <tbody>
+      <tr class="text-left">
+        <th>Date</th>
+        <th>Event</th>
+        <th>Place</th>
+      </tr>
+      {% if not results %}
+        <tr>
+          <td>1/1/2023</td>
+          <td>Get out and Ride</td>
+          <td>1st</td>
+        </tr>
+      {% else %}
+        {% for result in results %}
+          <tr>
+            <td>{{ result.date }}</td>
+            <td>{{ result.event }}</td>
+            <td>{{ result.place }}</td>
+          </tr>
+        {% endfor %}
+      {% endif %}
+      </tbody>
+    </table>
+  </div>
+</section>
