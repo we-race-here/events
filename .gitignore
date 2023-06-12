@@ -282,3 +282,4 @@ events/media/
 
 /package-lock.json
 /package.json
+config/settings/maintenance_mode_state.txt
