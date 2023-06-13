@@ -330,6 +330,8 @@ STRIPE_WEBHOOK_SECRET = env("STRIPE_WEBHOOK_SECRET", default="")
 # ------------------------------------------------------------------------------
 # if True the maintenance-mode will be activated
 # MAINTENANCE_MODE = None
+MAINTENANCE_MODE = env.bool("MAINTENANCE_MODE", False)
+# print(MAINTENANCE_MODE)
 # if True admin site will not be affected by the maintenance-mode page
 MAINTENANCE_MODE_IGNORE_ADMIN_SITE = True
 # if True the staff will not see the maintenance-mode page

@@ -27,7 +27,9 @@ class RaceResultsImport(forms.Form):
         widget=DateInput(
             attrs={
                 "type": "Date",
-                "class": "appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md  rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm",
+                "class": "appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 "
+                "placeholder-gray-500 text-gray-900 rounded-t-md  rounded-b-md focus:outline-none "
+                "focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm",
             }
         ),
     )
@@ -37,7 +39,9 @@ class RaceResultsImport(forms.Form):
         widget=TimeInput(
             attrs={
                 "type": "time",
-                "class": "appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md  rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm",
+                "class": "appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 "
+                "placeholder-gray-500 text-gray-900 rounded-t-md  rounded-b-md focus:outline-none "
+                "focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm",
             }
         ),
     )
@@ -56,7 +60,9 @@ class EventForm(forms.ModelForm):
         widget=DateInput(
             attrs={
                 "type": "date",
-                "class": "appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md  rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm",
+                "class": "appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 "
+                "placeholder-gray-500 text-gray-900 rounded-t-md  rounded-b-md focus:outline-none "
+                "focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm",
             }
         ),
     )
@@ -66,7 +72,9 @@ class EventForm(forms.ModelForm):
         widget=DateInput(
             attrs={
                 "type": "date",
-                "class": "appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md  rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm",
+                "class": "appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 "
+                "placeholder-gray-500 text-gray-900 rounded-t-md  rounded-b-md focus:outline-none "
+                "focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm",
             }
         ),
     )
@@ -74,7 +82,11 @@ class EventForm(forms.ModelForm):
 
     class Meta:
         model = Event
-        css = "block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+        css = (
+            "block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 "
+            "appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none "
+            "focus:ring-0 focus:border-blue-600 peer"
+        )
         fields = [
             "name",
             "blurb",
@@ -120,7 +132,7 @@ class RaceSeriesForm(forms.ModelForm):
         model = RaceSeries
         ordering = ["name"]
         fields = "__all__"
-        widgets = {"events": forms.CheckboxSelectMultiple(choices=Event.objects.all().order_by("name"))}
+        # widgets = {"events": forms.CheckboxSelectMultiple(choices=Event.objects.all().order_by("name"))}
 
 
 class AddEventToRaceSeriesForm(forms.ModelForm):
