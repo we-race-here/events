@@ -77,6 +77,7 @@ THIRD_PARTY_APPS = [
     "turnstile",
     "ckeditor",
     "widget_tweaks",
+    "maintenance_mode",
 ]
 
 LOCAL_APPS = [
@@ -84,6 +85,7 @@ LOCAL_APPS = [
     "apps.event",
     "apps.membership",
     "apps.usac",
+    "apps.store",
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -140,6 +142,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "simple_history.middleware.HistoryRequestMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "maintenance_mode.middleware.MaintenanceModeMiddleware",
 ]
 
 # STATIC
@@ -249,7 +252,6 @@ EMAIL_TIMEOUT = 5
 
 EMAIL_DEFAULT_FROM = env("DJANGO_EMAIL_DEFAULT_FROM", default="info@bicyclecolorado.org")
 
-
 # ADMIN
 # ------------------------------------------------------------------------------
 # Django Admin URL.
@@ -267,12 +269,7 @@ MANAGERS = ADMINS
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
-    "formatters": {
-        "verbose": {
-            "format": "%(levelname)s %(asctime)s %(module)s "
-            "%(process)d %(thread)d %(message)s"
-        }
-    },
+    "formatters": {"verbose": {"format": "%(levelname)s %(asctime)s %(module)s " "%(process)d %(thread)d %(message)s"}},
     "handlers": {
         "console": {
             "level": "DEBUG",
@@ -323,3 +320,21 @@ TURNSTILE_TIMEOUT = 5
 
 # Google Map Api key
 GOOGLE_MAP_API_TOKEN = env("GOOGLE_MAP_API_TOKEN", default="")
+
+# STRIPE
+STRIPE_PUBLIC_KEY = env("STRIPE_PUBLIC_KEY", default="")
+STRIPE_SECRET_KEY = env("STRIPE_SECRET_KEY", default="")
+STRIPE_WEBHOOK_SECRET = env("STRIPE_WEBHOOK_SECRET", default="")
+
+# django-maintenance-mode
+# ------------------------------------------------------------------------------
+# if True the maintenance-mode will be activated
+# MAINTENANCE_MODE = None
+MAINTENANCE_MODE = env.bool("MAINTENANCE_MODE", False)
+# print(MAINTENANCE_MODE)
+# if True admin site will not be affected by the maintenance-mode page
+MAINTENANCE_MODE_IGNORE_ADMIN_SITE = True
+# if True the staff will not see the maintenance-mode page
+MAINTENANCE_MODE_IGNORE_STAFF = True
+# if True the superuser will not see the maintenance-mode page
+MAINTENANCE_MODE_IGNORE_SUPERUSER = True

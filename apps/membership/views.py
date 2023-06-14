@@ -1,4 +1,8 @@
 # views.py
+
+import stripe
+
+from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.core.mail import send_mail
@@ -11,12 +15,15 @@ from django.views.generic import ListView, TemplateView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, DeleteView, FormView, UpdateView
 
-from ..usac.admin import new_usac_import
+from ..usac.admin import usac_license_from_csv
 from ..usac.forms import CsvImportForm
 from .forms import OrganizationForm, OrganizationMemberJoinForm
+from .member_utils import club_report, get_club_payments
 from .models import Organization, OrganizationMember
+from ..store.stripe_utils import products, single_item_checkout
 
 User = get_user_model()
+stripe.api_key = settings.STRIPE_SECRET_KEY
 
 
 class IsStaffMixin(UserPassesTestMixin):
@@ -171,10 +178,6 @@ class JoinOrganizationView(FormView):
         return super().form_valid(form)
 
 
-class StaffAdminView(LoginRequiredMixin, IsStaffMixin, TemplateView):
-    pass
-
-
 class OrganizationAdmin(LoginRequiredMixin, DetailView):
     template_name = "org/organization_admin.html"
     model = Organization
@@ -182,29 +185,70 @@ class OrganizationAdmin(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context["product"] = stripe.Product.retrieve("prod_NvhFVL6FC3AdKr")
+        context["price"] = context["product"]["default_price"]
+        context["club_payments"] = get_club_payments(self.object)
         return context
+
+    def post(self, *args, **kwargs):
+        {"org": self.get_object()}
+        if self.request.POST.get("single_product", None):
+            checkout_session = single_item_checkout(self.request, self.get_object())
+            return redirect(checkout_session.url)
 
 
 class BCAdminView(LoginRequiredMixin, TemplateView):
     template_name = "admin/bcadmin.html"
+    product_fields = ["name", ""]
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context["clubs"] = club_report()
+        context["products"] = products()
         return context
 
     def post(self, *args, **kwargs):
-        context = super().get_context_data(**kwargs)
+        context = self.get_context_data(**kwargs)
         if self.request.POST.get("usacdownload", None):
             form = CsvImportForm(self.request.POST, self.request.FILES)
             if form.is_valid():
                 csv_file = self.request.FILES["csv_file"]
                 decoded_file = csv_file.read().decode("utf-8").splitlines()
-                context.update(new_usac_import(decoded_file))
+                context.update(usac_license_from_csv(decoded_file))
                 return self.render_to_response(context)
         form = CsvImportForm()
-        return self.render_to_response({"context": context, "form": form})
+        context.update({"form": form})
+        return self.render_to_response(context)
 
     def get(self, *args, **kwargs):
-        context = super().get_context_data(**kwargs)
+        context = self.get_context_data(**kwargs)
         form = CsvImportForm()
-        return self.render_to_response({"context": context, "form": form})
+        context.update({"form": form})
+        return self.render_to_response(context)
+
+
+"""
+Alternative checkout setup
+stripe.checkout.Session.create(
+  success_url=success_url,
+  cancel_url=cancel_url,
+  payment_method_types=["card"],
+  mode="payment",
+  metadata={
+    "foo": "FOO",
+  },
+  payment_intent_data={
+    "metadata": {
+      "bar": "BAR",
+    }
+  },
+  line_items=[
+    {
+      "name": product_name,
+      "quantity": quantity,
+      "currency": currency,
+      "amount": unit_price,
+    },
+  ]
+)
+"""

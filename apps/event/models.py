@@ -1,3 +1,5 @@
+import logging
+from collections import defaultdict
 from pathlib import Path
 
 from django.contrib.auth import get_user_model
@@ -9,8 +11,9 @@ from simple_history.models import HistoricalRecords
 from apps.membership.models import Organization
 from apps.usac.models import UsacDownload
 
-User = get_user_model()
+logger = logging.getLogger(__name__)
 
+User = get_user_model()
 
 event_types = tuple(
     (t, t)
@@ -68,8 +71,8 @@ def event_attachment_file_path_func(instance, filename):
 class Event(models.Model):
     """
     Name: This is the event name.
-    blurb: This is a short unformated text about the event
-    Description: This is long formated
+    blurb: This is a short un-formatted text about the event
+    Description: This is long formatted
     Start_date: date and time.
     End_date: date and time.
     email: TODO: renamed to email
@@ -77,7 +80,7 @@ class Event(models.Model):
     city: city, nearest of the event.
     state: state of the event.
     Website: Event website url.
-    registration_website: URL rhere a user would register for the event.
+    registration_website: URL where a user would register for the event.
     logo: Small image, logo for the event.
     # TODO: Move banner image out of json field to the hero field.
     hero: Large image, hero image for the event.
@@ -176,6 +179,12 @@ class Race(models.Model):
     class Meta:
         unique_together = (("name", "event"),)
 
+    @property
+    def race_results(self):
+        categories = set(self.raceresult_set.all().values_list("category", flat=True))
+        for category in categories:
+            yield category, self.raceresult_set.filter(category=category).order_by("place")
+
     def __str__(self):
         return f"{self.name}: {self.start_date}"
 
@@ -264,22 +273,32 @@ class RaceResult(models.Model):
         return super().save(*args, **kwargs)
 
     @property
+    def points(self):
+        try:
+            return self.points_map[self.place - 1]
+        except IndexError:
+            pass
+        except TypeError:
+            pass
+
+    @property
     def place_disp(self):
         if self.place:
             return self.place
         else:
             return self.finish_status
 
-    @property
-    def relative_place(self):
-        """(Q(race=self.race) & Q(category=self.category) & Q(place__gte=self.place)"""
-        try:
-            if self.place:
-                filter_dict = {"race": self.race, "category": self.category, "place__gte": self.place}
-                return RaceResult.objects.filter(**filter_dict).count()
-        except:
-            return None
+    # @property
+    # def relative_place(self):
+    #     """(Q(race=self.race) & Q(category=self.category) & Q(place__gte=self.place)"""
+    #     try:
+    #         if self.place:
+    #             filter_dict = {"race": self.race, "category": self.category, "place__gte": self.place}
+    #             return RaceResult.objects.filter(**filter_dict).count()
+    #     except:
+    #         return None
 
+    # TODO: need to consolidate these club methods
     @property
     def usac_club(self):
         try:
@@ -287,6 +306,15 @@ class RaceResult(models.Model):
             return True
         except UsacDownload.DoesNotExist:
             return False
+
+    def usac_license_club(self):
+        if self.usac_license:
+            try:
+                club = UsacDownload.objects.filter(license_number=self.usac_license)[0].data["club"]
+                return club
+            except Exception:
+                logger.debug(f"Error getting club for {self.usac_license}")
+                return None
 
     @property
     def bc_club(self):
@@ -297,7 +325,15 @@ class RaceResult(models.Model):
             return None
 
     def __str__(self):
-        return f"{self.race}-{self.category}-{self.place}-{self.rider}"
+        return f"{self.place}--{self.name}--{self.rider}--{self.category}--Race: {self.race}"
+
+
+def raceseries_logo_file_path_func(instance, filename):
+    # Extract the file extension
+    ext = filename.split(".")[-1]
+    # Format the filename
+    filename = f"{instance.id}_{filename}"
+    return str(Path("uploads", "events", "event", "raceseries", "logo", f"{filename}.{ext}"))
 
 
 class RaceSeries(models.Model):
@@ -322,12 +358,13 @@ class RaceSeries(models.Model):
         ("Absolute", "Absolute"),
         ("Relative", "Relative"),
     ]
-    name = models.CharField(max_length=256)
+    name = models.CharField(unique=True, max_length=256)
     events = models.ManyToManyField(Event, related_name="race_series")
     races = models.ManyToManyField(Race, related_name="race_series")
     description = models.TextField(null=True, blank=True, default="")
+    logo = models.ImageField(null=True, blank=True, upload_to=raceseries_logo_file_path_func)
     categories = ArrayField(models.CharField(max_length=100, blank=False), size=50, null=True, blank=False)
-    points_map = models.JSONField(null=True, blank=True)
+    points_map = models.JSONField(null=True, blank=True)  # this is a list, index position value = points
     point_system = models.CharField(choices=POINTSYSTEM, max_length=16, null=True, blank=False)
     organization = models.ForeignKey(
         Organization, on_delete=models.CASCADE, related_name="race_series", null=True, blank=True
@@ -335,8 +372,67 @@ class RaceSeries(models.Model):
     create_datetime = models.DateTimeField(auto_now_add=True)
     history = HistoricalRecords()
 
-    class Meta:
-        unique_together = (("name", "organization"),)
+    @property
+    def all_results(self) -> list[RaceResult]:
+        results = []
+        for race in self.races.all():
+            for result in race.raceresult_set.all():
+                result.point_system = self.point_system
+                result.points_map = self.points_map or list(reversed(range(1, 100)))
+                results.append(result)
+        return sorted(results, key=lambda x: x.name)
+
+    @property
+    def all_results_by_category(self) -> dict[str, list[RaceResult]]:
+        all = self.all_results
+        by_category = defaultdict(list)
+        for result in all:
+            # TODO: This is a bit of a hack until users are sign up
+            if not result.club and result.usac_license:
+                try:
+                    # TODO: use the property for the result model.
+                    result.club = (
+                        UsacDownload.objects.order_by("create_datetime")
+                        .filter(license_number=result.usac_license)[0]
+                        .data["club"]
+                    )
+                except Exception as e:
+                    logger.debug(f"Error getting club from UsacDownload {result.usac_license}: {e}")
+                    pass
+
+            by_category[result.category].append(result)
+        return by_category
+
+    @property
+    def by_rider_points(self) -> dict:
+        points = defaultdict(int)
+        for cat, result in self.all_results_by_category:
+            points[result.rider] += result.points
+        return points
+
+    def by_license_points(self) -> dict:
+        points = defaultdict(int)
+        for result in self.all_results:
+            try:
+                int(result.license)
+                points[result.license] += result.points
+            except ValueError:
+                pass
+        return points
+
+    @property
+    def by_name_points(self) -> dict:
+        all = self.all_results_by_category
+        cat_results = {cat: {} for cat in all.keys()}
+        for cat, results in self.all_results_by_category.items():
+            for result in results:
+                if result.name in cat_results[cat].keys():
+                    if result.points:
+                        cat_results[cat][result.name] += result.points
+                else:
+                    if result.points:
+                        cat_results[cat][result.name] = result.points
+        return cat_results
 
     def __str__(self):
         return self.name

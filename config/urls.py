@@ -5,21 +5,22 @@ from django.contrib import admin
 from django.core.mail import send_mail
 from django.shortcuts import render
 from django.urls import include, path
-from django.views import defaults as default_views, View
+from django.views import defaults as default_views
 from django.views.generic import TemplateView
-from django.views.generic import TemplateView
-from django.shortcuts import render, redirect
 
 from events.users.forms import UserSignupForm
 
+
 class HomePageView(TemplateView):
-    """ This view loads if the user is logged in """
+    """This view loads if the user is logged in"""
+
     template_name = "pages/home.html"
 
 
 class HomePageSignUpView(SignupView):
-    """ This view loads if you are not logged in """
-    template_name = 'pages/home.html'  # your custom template
+    """This view loads if you are not logged in"""
+
+    template_name = "pages/home.html"  # your custom template
     form_class = UserSignupForm  # your custom form
 
     def form_valid(self, form):
@@ -42,7 +43,6 @@ class HomePageSignUpView(SignupView):
         return render(self.request, self.template_name, {"form": form})
 
 
-
 urlpatterns = [
     path("", HomePageSignUpView.as_view(), name="home"),
     path("home", HomePageView.as_view(), name="homepage"),
@@ -56,9 +56,10 @@ urlpatterns = [
     path("", include("apps.event.urls")),
     path("", include("apps.membership.urls")),
     path("", include("apps.usac.urls")),
+    path("", include("apps.store.urls")),
     # Your stuff: custom urls includes go here
+    path("robots.txt", TemplateView.as_view(template_name="robots.txt", content_type="text/plain"), name="robots"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
 
 if settings.DEBUG:
     # This allows the error pages to be debugged during development, just visit

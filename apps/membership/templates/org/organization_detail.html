@@ -12,7 +12,7 @@
             <a href="{% url 'membership:organizations' %}" class="backtxt">Back to Club List</a>
             {% if org.hero %}
               <img
-                  src="{{ org.hero }}"
+                  src="{{ org.hero.url }}"
                   alt="Club Banner" title="" class="object-contain h-500 w-500 justify-center">
             {% endif %}
             {% if org.logo %}

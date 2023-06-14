@@ -1,5 +1,5 @@
 from .base import *  # noqa
-from .base import MIDDLEWARE, env
+from .base import MIDDLEWARE, env, INSTALLED_APPS
 
 # add to middleware
 MIDDLEWARE += ["rollbar.contrib.django.middleware.RollbarNotifierMiddleware"]
@@ -103,13 +103,10 @@ LOGGING = {
     "version": 1,
     "disable_existing_loggers": True,
     "formatters": {
-        "verbose": {
-            "format": "%(levelname)s %(asctime)s %(module)s "
-            "%(process)d %(thread)d %(message)s"
-        },
-        'standard': {
-            'format' : "[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s",
-            'datefmt' : "%d/%b/%Y %H:%M:%S"
+        "verbose": {"format": "%(levelname)s %(asctime)s %(module)s " "%(process)d %(thread)d %(message)s"},
+        "standard": {
+            "format": "[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s",
+            "datefmt": "%d/%b/%Y %H:%M:%S",
         },
     },
     "handlers": {
@@ -118,20 +115,19 @@ LOGGING = {
             "class": "logging.StreamHandler",
             "formatter": "standard",
         },
-        'file': {
-            'level': 'INFO',
-            'class': 'logging.FileHandler',
-            'filename': 'events.log',
+        "file": {
+            "level": "INFO",
+            "class": "logging.FileHandler",
+            "filename": "events.log",
             "formatter": "standard",
-
-        }
+        },
     },
     "root": {"level": "INFO", "handlers": ["console"]},
     "loggers": {
         "django": {
             "handlers": ["console", "file"],
             "level": "INFO",
-            'propagate': True,
+            "propagate": True,
         }
     },
 }
@@ -140,10 +136,6 @@ LOGGING = {
 # Your stuff...
 # ------------------------------------------------------------------------------
 # Add rollbar configuration to .production/.django or .development/.django add the following lines
-# ROLLBAR_ACCESS_TOKEN=XXXXXX
-# ENVIROMENT=production or ENVIROMENT=development
-# BRANCH=dev-server or BRANCH=main
-
 ROLLBAR = {
     "access_token": env("ROLLBAR_ACCESS_TOKEN"),
     "environment": env("ENVIROMENT"),

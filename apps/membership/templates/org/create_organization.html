@@ -1,17 +1,20 @@
 {% extends "account/base.html" %} {% load static %} {% block inner %}
   <div class="container mx-auto px-4 py-8">
-    <h1 class="text-3xl font-bold mb-4">Create Clubs</h1>
+    <h1 class="text-3xl font-bold mb-4">Create a Club, Advocacy or Volunteer organization</h1>
     {% if user.is_authenticated %}
-      <p>
-        New organizations will be approved by an admin at <b>Bicycle Colorado</b>,
-        typically in 1 business day.
+      <p class="mb-8">
+        Bicycle Colorado Club Memberships support our efforts to make riding safer and more accessible across the state.
+        In addition, Club Members have access to our new Club Toolkit, which allows club administrators to build
+        club calendars, manage their roster, see the club’s results, communicate with club members via email and text,
+        and be involved with season-long Cup points competitions. Annual Club Membership is $100.
       </p>
       <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
 
         {% for field in form %}
           <div class="mb-4">
-            <label for="{{ field.auto_id }}" class="block text-gray-700 text-sm font-semibold mb-2">{{ field.label }}</label>
+            <label for="{{ field.auto_id }}"
+                   class="block text-gray-700 text-sm font-semibold mb-2">{{ field.label }}</label>
             {{ field }}
             {% if field.errors %}
               <p class="text-red-500 text-xs mt-1">{{ field.errors.0 }}</p>

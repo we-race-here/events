@@ -4,47 +4,49 @@
 {% block title %}User: {{ object.name }}{% endblock %}
 
 {% block content %}
-  <div class="mt-7 overflow-x-auto">
-  <div class="flex flex-col border-2 justify-center my-5 items-center">
-    <div><h2 class="text-2xl font-bold leading-none text-orange-600">{{ raceseries.name }}</h2></div>
-    <div><a class="text_sm text-orange-600 hover:text-orange-800 hover:underline"
-            href="{% url 'event:raceseries_update' object.pk %}"> Edit Race Series </a></div>
-  </div>
-  <div class="flex items-center justify-center my-5">
-    <p class="text-base font-medium leading-none text-gray-500  mr-2"> {{ raceseries.description }}</p>
-  </div>
-
-  <div class="flex justify-center">
-    <button type="button" onclick="location.href='{% url 'membership:join_organization' %}'"
-            class="inline-flex text-white bg-orange-600 border-0 py-2 px-6 mx-3 focus:outline-none hover:bg-orange-800 rounded text-lg">
-      Join a Club
-    </button>
-    <button href="{% url 'membership:create_organization' %}"
-            class="inline-flex text-white bg-cyan-500 border-0 py-2 px-6 mx-3 focus:outline-none hover:bg-cyan-700 rounded text-lg"
-    ">
-    Register a Club
-    </button>
-    <button type="button" onclick="location.href='{% url 'account_signup' %}'"
-            class="inline-flex text-white bg-orange-600 border-0 py-2 px-6 mx-3 focus:outline-none hover:bg-orange-800 rounded text-lg">
-      JOIN Bicycle Colorado
-    </button>
-  </div>
-  <div class="flex flex-row justify-start bg-white m-4">
-    {% for e in  object.events.all %}
-      <div class="p-2 m-3 rounded border border-gray-100">
-        <a href="{% url 'event:event_detail' e.pk %}">{{ e.name }}<br>{{ e.start_date }}</a>
+  <section id='racer_series_into_content' class="section_intro_content">
+    {#    <div class="container mx-auto flex px-5 py-10 md:flex-row flex-col items-center">#}
+    <div class="hero_intro_image">
+      {#        <img class="object-cover object-center rounded" alt="hero" src="{% static 'images/team_photo.png' %}">#}
+      <img class="object-cover object-center rounded" alt="hero" src="{{ raceseries.logo.url }}">
+    </div>
+    <div
+        class="body_intro">
+      <h1>{{ raceseries.name }}</h1>
+      <p class="mb-4 leading-relaxed">
+        {{ raceseries.description }}
+      </p>
+      <div class="flex justify-end">
+        <button type="button" onclick="location.href='{% url 'membership:join_organization' %}'"
+                class="button_body_orange">
+          Join a Club
+        </button>
+        <button href="{% url 'membership:create_organization' %}"
+                class="button_body_cyan">
+          Register a Club
+        </button>
+        <button type="button" onclick="location.href='{% url 'account_signup' %}'"
+                class="button_body_orange">
+          JOIN Bicycle Colorado
+        </button>
       </div>
-    {% endfor %}
-  </div>
-  <div class="flex items-center justify-center my-5">
-    <p class="text-base font-medium leading-none text-gray-500  mr-2"> Cup individual and team standings: </p>
-  </div>
-  <div class="bg-white shadow-lg rounded p-4 mt-4">
-    {% if Races %}
-      {% include 'results/race_result.html' %}
-    {% else %}
-      <h3> No race results for this event </h3>
-    {% endif %}
-  </div>
+    </div>
+    {#    </div>#}
+  </section>
 
+  <section id="race_series_event_list">
+    <div class="flex flex-row flex-wrap justify-center bg-white col-span-1">
+      {% for e in  object.events.all %}
+        <a class="lg:w-1/4 md:w-1/2 w-full p-2 rounded border-2 border-gray-100 hover:bg-gray-200 justify-center"
+           href="{% url 'event:event_detail' e.pk %}">
+          <div
+              class="text-gray-500 text-sm tracking-widest title-font mb-1 text-center bg-[#e9f1c3]">{{ e.start_date }}</div>
+          <div class="org_name font-semibold text-sm text-center">{{ e.name }}</div>
+          <div class="text-gray-800 text-sm text-center">{{ e.city }} {{ e.state }}</div>
+        </a>
+      {% endfor %}
+    </div>
+    {% include 'components/individual_points.html' %}
+    {% include 'components/race_series_result_points.html' %}
+  </section>
 {% endblock content %}

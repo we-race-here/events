@@ -1,6 +1,6 @@
 
 # define an alias for the specfic python version used in this file.
-FROM python:3.11.3-slim-bullseye as python
+FROM python:3.11.4-slim-bullseye as python
 
 # Python build stage
 FROM python as python-build-stage
@@ -13,6 +13,8 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
   build-essential \
   # psycopg2 dependencies
   libpq-dev
+  # git is required for pip install from git
+#  git
 
 # Requirements are installed here to ensure they will be cached.
 COPY ./requirements .
