@@ -1,0 +1,83 @@
+# Production
+
+# General
+# ------------------------------------------------------------------------------
+DJANGO_DEBUG=False
+MAINTENANCE_MODE=False
+# DJANGO_READ_DOT_ENV_FILE=True
+DJANGO_SETTINGS_MODULE=config.settings.production
+DJANGO_SECRET_KEY=XXXXXXXXXXXXX
+DJANGO_ADMIN_URL=XXXXXXXXXXXXX
+DJANGO_ALLOWED_HOSTS=events.XXXXXXXXXXXXX.org
+# Used for permissions
+MY_IP=10.0.10.0
+
+# Security
+# ------------------------------------------------------------------------------
+# TIP: better off using DNS, however, redirect is OK too
+DJANGO_SECURE_SSL_REDIRECT=False
+
+# Email
+# ------------------------------------------------------------------------------
+DJANGO_SERVER_EMAIL=XXXXXXXXXXXXX
+
+SENDGRID_API_KEY=XXXXXXXXXXXXX
+SENDGRID_GENERATE_MESSAGE_ID=True
+SENDGRID_MERGE_FIELD_FORMAT=None
+DJANGO_DEFAULT_FROM_EMAIL="info@XXXXXXXXXXXXX"
+
+# django-allauth
+# ------------------------------------------------------------------------------
+DJANGO_ACCOUNT_ALLOW_REGISTRATION=True
+
+# Gunicorn
+# ------------------------------------------------------------------------------
+WEB_CONCURRENCY=4
+
+# Redis
+# ------------------------------------------------------------------------------
+REDIS_URL=redis://redis:6379/0
+
+# Primary events app database LOCAL only
+# ------------------------------------------------------------------------------
+# DATABASE_URL=postgres://vincentdavis@localhost:5433/events
+
+# WRH_database for migration of data
+# ------------------------------------------------------------------------------
+WRH_URL=postgresql://XXXXXXXXXXXXX:XXXXXXXXXXXXX@XXXXXXXXXXXXX:25060/XXXXXXXXXXXXX?sslmode=require
+
+# Rollbar. Not used on local
+# ------------------------------------------------------------------------------
+ROLLBAR_ACCESS_TOKEN=XXXXXXXXXXXXX
+ENVIROMENT=production
+BRANCH=main
+
+# AWS
+# ------------------------------------------------------------------------------
+DJANGO_AWS_ACCESS_KEY_ID=XXXXXXXXXXXXX
+DJANGO_AWS_SECRET_ACCESS_KEY=XXXXXXXXXXXXX
+DJANGO_AWS_STORAGE_BUCKET_NAME=prod-ebc
+DJANGO_AWS_S3_REGION_NAME=nyc3
+
+#Turnstile Cloudflare
+# ------------------------------------------------------------------------------
+TURNSTILE_SITEKEY=XXXXXXXXXXXXX
+TURNSTILE_SECRET=XXXXXXXXXXXXX
+
+# Google Map Api key
+GOOGLE_MAP_API_TOKEN=XXXXXXXXXXXXX
+
+# STRIPE DEV
+# ------------------------------------------------------------------------------
+STRIPE_PUBLIC_KEY=XXXXXXXXXXXXX
+STRIPE_SECRET_KEY=XXXXXXXXXXXXX
+STRIPE_WEBHOOK_SECRET=XXXXXXXXXXXXX
+
+# Cycling
+# ------------------------------------------------------------------------------
+LOGIN = {'user_id': 'XXXXXXXXXXXXX', 'user_password': 'XXXXXXXXXXXXX'}
+USAC_API_KEY=XXXXXXXXXXXXX
+#USAC_API_URL=https://legacy-api.XXXXXXXXXXXXX.org/api/v2
+USAC_API_URL=https://laravel-api.XXXXXXXXXXXXX.org/api/v1/
+USAC_USER_ID=XXXXXXXXXXXXX
+USAC_PASSWORD=XXXXXXXXXXXXX

@@ -1,0 +1,7 @@
+# PostgreSQL
+# ------------------------------------------------------------------------------
+POSTGRES_HOST=xxxxx.com
+POSTGRES_PORT=xxxxx
+POSTGRES_DB=xxxxx
+POSTGRES_USER=xxxxx
+POSTGRES_PASSWORD=xxxxx
