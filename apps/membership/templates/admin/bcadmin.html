@@ -8,8 +8,11 @@
   <div class="container mx-auto px-4 py-8">
     <h1 class="text-3xl font-bold mb-4">BC staff admin tools</h1>
   </div>
+  <div class="m-5">
+    <a class="button_body_orange" href="{% url 'event:raceseries_create' %}">Create a race series</a>
+  </div>
   <div>
-    <b>Upload Race promoter download records</b>
+    <b>Upload/import "Race promoter download" records from USAC</b>
     {{ upload_done }}
     {% if user.is_staff %}
       <form method="post" enctype="multipart/form-data">
