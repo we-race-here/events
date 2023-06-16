@@ -24,7 +24,7 @@ ruff==0.0.272
 coverage==7.2.7  # https://github.com/nedbat/coveragepy
 black==23.3.0  # https://github.com/psf/black
 pylint-django==2.5.3  # https://github.com/PyCQA/pylint-django
-pre-commit==3.3.2  # https://github.com/pre-commit/pre-commit
+pre-commit==3.3.3  # https://github.com/pre-commit/pre-commit
 
 # Django
 # ------------------------------------------------------------------------------
@@ -38,4 +38,4 @@ pytest-django==4.5.2  # https://github.com/pytest-dev/pytest-django
 # ------------------------------------------------------------------------------
 GitPython==3.1.31
 tomlkit==0.11.8
-rich==13.4.1
+rich==13.4.2

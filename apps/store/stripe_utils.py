@@ -1,6 +1,7 @@
 import stripe
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
+
 from config.helpers.Exception import exception
 
 
@@ -12,6 +13,11 @@ def products() -> dict:
             unit_amount_decimal = float(unit_amount_decimal) / 100
         except ValueError:
             unit_amount_decimal = None
+        except stripe.error.InvalidRequestError:
+            unit_amount_decimal = None
+        except stripe.error.APIConnectionError:
+            unit_amount_decimal = None
+
         product["unit_amount_decimal"] = unit_amount_decimal
     return products_list
 
