@@ -29,7 +29,7 @@ class EventListView(ListView):
     model = Event
     template_name = "event/event_list.html"
     context_object_name = "events"
-    paginate_by = 10
+    paginate_by = 25
     ordering = ["end_date"]
 
     def get_context_data(self, **kwargs):
@@ -111,7 +111,6 @@ class EventResultListView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["RaceSeries"] = RaceSeries.objects.all()
-
         return context
 
     def get_queryset(self):
