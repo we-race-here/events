@@ -9,10 +9,8 @@ from .models import Event
 class PastFilter(Filter):
     def filter(self, qs, value):
         if value is not None:
-            print(value)
             if value:
-                print(qs.filter(end_date__lte=date.today()))
-                return qs.filter(end_date__lte=date.today())
+                return qs.filter(end_date__lte=date.today()).order_by("-start_date")
             else:
                 return qs.filter(end_date__gte=date.today())
         return qs
