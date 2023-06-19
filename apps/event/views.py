@@ -7,7 +7,7 @@ from django.db.models import Exists, OuterRef, Q
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, DetailView, ListView, TemplateView, UpdateView
-
+from .filters import EventFilter
 from ..membership.models import OrganizationMember
 from .forms import EventForm, RaceForm, RaceResultForm, RaceResultsImport, RaceSeriesForm
 from .models import Event, Race, RaceResult, RaceSeries
@@ -23,41 +23,77 @@ event_edit_fields = {
     "StaffFields": ["organization", "approved"],
 }
 
-
-class EventListView(TemplateView):
+class EventListView(ListView):
+    model = Event
     template_name = "event/event_list.html"
+    context_object_name = "events"
+    paginate_by = 10
+    ordering = ["name"]
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["events"] = Event.objects.all().order_by("start_date").filter(end_date__gte=date.today())
-        context["featured"] = context["events"].filter(featured_event=True)[:4]
+        #  Feature event
+        context["featured"] = Event.objects.filter(featured_event=True)[:4]
+
+        # Get page_obj from context
+        page_obj = context.get('page_obj', None)
+        if page_obj is not None:
+            # We will show page numbers for 3 pages on each side of the current page
+            start_page = max(page_obj.number - 3, 1)
+            end_page = min(page_obj.number + 3, page_obj.paginator.num_pages)
+
+            # Create list of page numbers
+            page_range = list(range(start_page, end_page + 1))
+            context['custom_page_range'] = page_range
+
+        context['total_count'] = self.get_queryset().count()
+
         return context
 
-    def get(self, *args, **kwargs):
-        context = self.get_context_data(**kwargs)
-        queryset = Event.objects.all().order_by("start_date").filter(end_date__gte=date.today())
-        search_query = self.request.GET.get("search", "")
-        filter_usac = self.request.GET.get("filter_usac", "")
-        filter_featured = self.request.GET.get("filter_featured", "")
-        if any([search_query, filter_usac, filter_featured]):
-            if search_query:
-                queryset = queryset.filter(
-                    Q(name__icontains=search_query)
-                    | Q(website__icontains=search_query)
-                    | Q(city__icontains=search_query)
-                    | Q(state__icontains=search_query)
-                )
-            if filter_usac:
-                queryset = queryset.filter(is_usac_permitted=True)
-            if filter_featured:
-                queryset = queryset.filter(featured_event=True)
-            context["featured"] = None
-            context["events"] = queryset
-            return self.render_to_response(context)
-        else:
-            context["featured"] = queryset.filter(featured_event=True)[:4]
-            context["events"] = queryset
-            return self.render_to_response(context)
+    def get_queryset(self):
+        queryset = super().get_queryset()
+
+        if 'past_events' not in self.request.GET:
+            queryset = queryset.filter(end_date__gte=date.today())
+
+        self.filter = EventFilter(self.request.GET, queryset=queryset)
+        return self.filter.qs
+
+# class EventListView(ListView):
+#     model = Event
+#     template_name = "event/event_list.html"
+#
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         context["events"] = Event.objects.all().order_by("start_date").filter(end_date__gte=date.today())
+#         context["featured"] = context["events"].filter(featured_event=True)[:4]
+#         return context
+#
+#     def get(self, *args, **kwargs):
+#         context = self.get_context_data(**kwargs)
+#         queryset = Event.objects.all().order_by("start_date").filter(end_date__gte=date.today())
+#         search_query = self.request.GET.get("search", "")
+#         filter_usac = self.request.GET.get("filter_usac", "")
+#         filter_featured = self.request.GET.get("filter_featured", "")
+#         if any([search_query, filter_usac, filter_featured]):
+#             if search_query:
+#                 queryset = queryset.filter(
+#                     Q(name__icontains=search_query)
+#                     | Q(website__icontains=search_query)
+#                     | Q(city__icontains=search_query)
+#                     | Q(state__icontains=search_query)
+#                 )
+#             if filter_usac:
+#                 queryset = queryset.filter(is_usac_permitted=True)
+#             if filter_featured:
+#                 queryset = queryset.filter(featured_event=True)
+#             context["featured"] = None
+#             context["events"] = queryset
+#             return self.render_to_response(context)
+#         else:
+#             context["featured"] = queryset.filter(featured_event=True)[:4]
+#             context["events"] = queryset
+#             return self.render_to_response(context)
 
 
 class EventResultListView(ListView):
