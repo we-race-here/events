@@ -43,6 +43,11 @@ class HomePageSignUpView(SignupView):
         return render(self.request, self.template_name, {"form": form})
 
 
+if "events.bicycecolorado.org" in settings.ALLOWED_HOSTS:
+    robots = "prod_robots.txt"
+else:
+    robots = "dev_robots.txt"
+
 urlpatterns = [
     path("", HomePageSignUpView.as_view(), name="home"),
     path("home", HomePageView.as_view(), name="homepage"),
@@ -58,7 +63,11 @@ urlpatterns = [
     path("", include("apps.usac.urls")),
     path("", include("apps.store.urls")),
     # Your stuff: custom urls includes go here
-    path("robots.txt", TemplateView.as_view(template_name="robots.txt", content_type="text/plain"), name="robots"),
+    path(
+        "robots.txt",
+        TemplateView.as_view(template_name=robots, content_type="text/plain"),
+        name="robots",
+    ),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:
