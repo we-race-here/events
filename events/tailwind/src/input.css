@@ -91,7 +91,7 @@
     }
 
     .org_logo_sm {
-        @apply w-[75px] h-[75px] object-cover object-center;
+        @apply w-[75px] h-[75px] object-contain object-center;
     }
 
     .ptitle {
