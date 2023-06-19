@@ -26,6 +26,8 @@ django-phonenumber-field==7.1.0  # https://github.com/stefanfoulis/django-phonen
 django-storages[boto3]==1.13.2  # https://github.com/jschneier/django-storages
 django-ckeditor==6.5.1 # https://github.com/django-ckeditor/django-ckeditor
 django-widget-tweaks==1.4.12
+django-filter==23.2
+fontawesomefree==6.4.0
 django-maintenance-mode@ https://github.com/fabiocaccamo/django-maintenance-mode/archive/refs/heads/main.zip
 # git+https://github.com/fabiocaccamo/django-maintenance-mode.git@main
 

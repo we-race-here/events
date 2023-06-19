@@ -80,6 +80,7 @@ THIRD_PARTY_APPS = [
     "ckeditor",
     "widget_tweaks",
     "maintenance_mode",
+    "fontawesomefree",
 ]
 
 LOCAL_APPS = [
