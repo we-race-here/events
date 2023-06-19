@@ -1,0 +1,112 @@
+{% load static i18n %}
+{% load extra_tags %}
+
+<section id="event_list" class="text-gray-600 body-font">
+  <!-- All events -->
+  <h3 class="text-center">
+    {% if past_events %}{{ total_count }} Past Events{% else %}All {{ total_count }} Upcoming Events{% endif %}</h3>
+  {% include "components/event_list_search.html" %}
+  <div class="flex flex-wrap bg-white  py-4 md:py-7 px-4 md:px-3 xl:px-5">
+    {% for event in events %}
+      <div class="lg:w-1/4 md:w-1/2 p-4 w-full">
+        <a class="block relative h-50 rounded overflow-hidden" href="{% url 'event:event_detail' event.pk %}">
+          {% if event.logo and event.featured_event %}
+            <img class="object-scale-down max-h-[50px] mx-auto" src="{{ event.logo.url }}" alt="">
+          {% else %}
+            {#              class="object-contain object-center w-full h-full block"#}
+            <img alt="Logo" class="object-scale-down max-h-[50px] mx-auto"
+                 src="{% static 'images/clear_250X250.png' %}">
+          {% endif %}
+        </a>
+        <div class="mt-4">
+          <h3 class="text-gray-500 text-sm tracking-widest title-font mb-1 text-center bg-[#e9f1c3]">
+            {{ event.start_date }}
+            {% if event.end_date %}
+              -{{ event.end_date }}
+            {% endif %}
+          </h3>
+          <h2 class="text-orange-600 hover:text-orange-800 title-font text-lg font-medium text-center">
+            <a href="{% url 'event:event_detail' event.pk %}">{{ event.name }}</a>
+          </h2>
+          <div class="text-center" style="display: flex;justify-content: space-evenly;">
+            {% if event.is_usac_permitted %}
+              <img alt="USAC Event" style="max-width:17px" width="25" height="25"
+                   src="{% static 'images/USACycling_Logo.svg' %}">
+            {% endif %}
+            {% if event.featured_event %}
+              <img alt="Featured" style="max-width:17px" width="17" height="25"
+                   src="{% static 'images/bc-icon.png' %}">
+            {% endif %}
+          </div>
+          <h3 class="text-gray-500 text-sm tracking-widest title-font mb-1 text-center font-semibold">
+            {% if event.city %}
+              {{ event.city }}
+            {% endif %}
+            {% if event.state %}
+              {{ event.state }}
+            {% endif %}
+          </h3>
+          {% if event.blurb %}
+            <p class="mt-1 text-justify">
+              {{ event.blurb|truncatewords:20 }}
+            </p>
+          {% endif %}
+        </div>
+      </div>
+    {% endfor %}
+
+
+  </div>
+  <div class="bg-white">
+    <nav class="flex justify-center">
+      <ul class="inline-flex list-none mt-4 mb-4 bg-white">
+        {% if page_obj.has_previous %}
+          <li>
+            <a href="?{% param_replace page=1 %}"
+               class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-l">
+              First
+            </a>
+          </li>
+          <li>
+            <a href="?{% param_replace page=page_obj.previous_page_number %}"
+               class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4">
+              Prev
+            </a>
+          </li>
+        {% endif %}
+
+        {% for i in custom_page_range %}
+          {% if page_obj.number == i %}
+            <li>
+              <a href="?{% param_replace page=i %}" class="bg-cyan-600 text-white font-bold py-2 px-4">
+                {{ i }}
+              </a>
+            </li>
+          {% else %}
+            <li>
+              <a href="?{% param_replace page=i %}"
+                 class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4">
+                {{ i }}
+              </a>
+            </li>
+          {% endif %}
+        {% endfor %}
+
+        {% if page_obj.has_next %}
+          <li>
+            <a href="?{% param_replace page=page_obj.next_page_number %}"
+               class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4">
+              Next
+            </a>
+          </li>
+          <li>
+            <a href="?{% param_replace page=page_obj.paginator.num_pages %}"
+               class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-r">
+              Last
+            </a>
+          </li>
+        {% endif %}
+      </ul>
+    </nav>
+  </div>
+</section>

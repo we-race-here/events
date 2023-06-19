@@ -45,6 +45,9 @@ LOCALE_PATHS = [str(BASE_DIR / "locale")]
 # WRH was used to migrate from the old/initial version of wrh to the new version
 # DATABASES = {"default": env.db("DATABASE_URL"), "wrh": env.db("WRH_URL")}
 DATABASES = {"default": env.db("DATABASE_URL")}
+if "ARCHIVE_URL" in env:  # TODO: Remove after migration - Add "ARCHIVE_URL" to env
+    DATABASES.update({"archive": env.db("ARCHIVE_URL")})
+
 DATABASES["default"]["ATOMIC_REQUESTS"] = True
 # https://docs.djangoproject.com/en/stable/ref/settings/#std:setting-DEFAULT_AUTO_FIELD
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
@@ -81,6 +84,7 @@ THIRD_PARTY_APPS = [
     "widget_tweaks",
     "maintenance_mode",
     "fontawesomefree",
+    "django_filters",
 ]
 
 LOCAL_APPS = [

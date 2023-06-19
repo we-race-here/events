@@ -1,0 +1,57 @@
+{% load static i18n %}
+{% load extra_tags %}
+<section id="featured_list" class="text-gray-600 body-font">
+  <!-- Features events next 8 -->
+  {% if featured.exists %}
+    <h3 class="text-center">{% if past_events %}Past Featured Events{% else %}Upcoming Featured Events{% endif %}</h3>
+    <div
+        class="flex flex-wrap border-2 border-gray-400 bg-white dark:bg-gray-900  py-4 md:py-7 px-4 md:px-3 xl:px-5">
+      {% for event in featured %}
+        <div class="lg:w-1/4 md:w-1/2 p-4 w-full">
+          <a class="block relative h-48 rounded overflow-hidden" href="{% url 'event:event_detail' event.pk %}">
+            {% if event.logo %}
+              <img class="object-scale-down max-h-[250px] mx-auto" src="{{ event.logo.url }}" alt="">
+            {% else %}
+              <img alt="Logo" class="object-contain object-center w-full h-full block"
+                   src="{% static "images/clear_250x250.png" %}">
+            {% endif %}
+          </a>
+          <div class="mt-4">
+            <h3 class="text-gray-500 text-sm tracking-widest title-font mb-1 text-center bg-[#e9f1c3]">
+              {{ event.start_date }}
+              {% if event.end_date %}
+                -{{ event.end_date }}
+              {% endif %}
+            </h3>
+            <h2 class="text-orange-600 hover:text-orange-800 title-font text-lg font-medium text-center">
+              <a href="{% url 'event:event_detail' event.pk %}">{{ event.name }}</a>
+            </h2>
+            <div class="text-center" style="display: flex;justify-content: space-evenly;">
+              {% if event.is_usac_permitted %}
+                <img alt="USAC Event" style="max-width:17px" width="25" height="25"
+                     src="{% static 'images/USACycling_Logo.svg' %}">
+              {% endif %}
+              {% if event.featured_event %}
+                <img alt="Featured" style="max-width:17px" width="17" height="25"
+                     src="{% static 'images/bc-icon.png' %}">
+              {% endif %}
+            </div>
+            <h3 class="text-gray-500 text-sm tracking-widest title-font mb-1 text-center font-semibold">
+              {% if event.city %}
+                {{ event.city }}
+              {% endif %}
+              {% if event.state %}
+                {{ event.state }}
+              {% endif %}
+            </h3>
+            {% if event.blurb %}
+              <p class="mt-1 text-justify">
+                {{ event.blurb|truncatewords:20 }}
+              </p>
+            {% endif %}
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+</section>

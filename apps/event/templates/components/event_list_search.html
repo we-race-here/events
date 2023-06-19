@@ -1,0 +1,60 @@
+{% load static i18n %}
+{% load extra_tags %}
+<!--- Search -->
+<div class="bg-white dark:bg-gray-900  py-2 md:py-4 px-4 md:px-3 xl:px-5 flex justify-between">
+  <div class="flex items-center">
+    <form method="GET" class="flex">
+      <input type="search" name="search" placeholder="Search" value="{{ request.GET.search }}"
+             class="border border-gray-300 py-2 px-4 rounded-l">
+      <button type="submit" class="submit_search">
+        Search
+      </button>
+    </form>
+  </div>
+  <!-- filter form -->
+  <div
+      class="py-3 px-4 text-sm font-medium text-gray-600 dark:text-gray-200 rounded items-center">
+    <form class="flex justify-end items-center" method="GET">
+      {#          <p>Filter by type:</p>#}
+      {#          <select name="type" id="type" class="focus:text-indigo-600 focus:outline-none bg-transparent ml-1"#}
+      {#                  onchange="this.form.submit()">#}
+      {#            <option value="">All</option>#}
+      {#            {% for type_choice in type_choices %}#}
+      {#              <option value="{{ type_choice.0 }}"#}
+      {#                      {% if request.GET.type == type_choice.0 %}selected{% endif %}>{{ type_choice.1 }}</option>#}
+      {#            {% endfor %}#}
+      {#          </select>#}
+      {#        <div>#}
+      <input name="past_events" type="radio" value="true" id="past_event"
+             {% if past_events %}checked{% endif %}>
+      <label class="flex px-2" for="past_events.">
+        Past Events
+      </label>
+      <input class="ml-3" filter_usac" type="radio" value="usac_event" id="choice_1"
+      {% if is_usac_permitted %}checked{% endif %}>
+      <label class="flex px-2" for="choice_1">
+        <img class="object-contain h-5 w-5" src="{% static 'images/USACycling_Logo.svg' %}" alt="USAC"/>USAC Events
+      </label>
+      <input class="ml-3" name="filter_featured" type="radio" value="featured" id="choice_2"
+             {% if is_usac_permitted %}featured_event{% endif %}>
+      <label class="flex px-2" for="choice_2">
+        <img class="object-contain h-5 w-5" src="{% static 'images/bc-icon.png' %}" alt="My image"/>
+        Featured.
+      </label>
+      {#        </div>#}
+
+      {#          <select name="event-type" id="filter-events-full-cal">#}
+      {#            <option value="all">All Events</option>#}
+      {#            {% for i in EventTypes %}#}
+      {#              <option value="{{ i }}">{{ i }}</option>#}
+      {#            {% endfor %}#}
+      {#          </select>#}
+      <input type="filter" name="filter" placeholder="Filter" hidden="">
+      <button type="submit" class="submit_search rounded-r">
+        Filter
+      </button>
+    </form>
+  </div>
+  <!-- end filter form -->
+  {#    </div>#}
+</div>
