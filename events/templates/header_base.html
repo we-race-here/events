@@ -25,6 +25,7 @@
                   <i class="fa-solid fa-user"></i>{{ request.user.full_name }}
                 </a>
               {% endif %}
+              <!-- User dropdown menu -->
               <div class="group-hover:block dropdown-menu absolute left-0 hidden h-auto">
                 <ul class="top-0 w-52 bg-white shadow px-6 py-8">
                   <li class="py-1"><a
@@ -41,6 +42,23 @@
                   <li class="py-1"><a
                       class="user_menu_txt"
                       href="{% url 'account_logout' %}"><i class="fas fa-sign-out-alt px-2"></i>Sign Out </a></li>
+                  {% if user.is_staff %}
+                    <li class="py-1"><p class="user_menu_txt">
+                      <hr>
+                      BC STAFF</p></li>
+
+                    <li class="py-1"><a
+                        class="user_menu_txt"
+                        href="{% url 'event:raceseries_create' %}"><i class="fas fa-circle-plus px-2"></i>Race
+                      Series</a>
+                    </li>
+                    <li class="py-1"><a
+                        class="user_menu_txt"
+                        href="{% url 'membership:bcadmin' %}"><i class="fas fa-screwdriver-wrench px-2"></i>Admin
+                      page</a>
+                    </li>
+                  {% endif %}
+
                 </ul>
               </div>
             </li>
