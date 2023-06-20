@@ -212,6 +212,13 @@ class RaceSeriesCreateView(LoginRequiredMixin, CreateView):
     template_name = "results/raceseries_form.html"
     success_url = reverse_lazy("event:events_results_list")
 
+    def get_initial(self):
+        return {
+            "points_map": [20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1],
+            "point_system": "Relative",
+            "organization": "Bicycle Colorado",
+        }
+
 
 class RaceSeriesDetailView(DetailView):
     model = RaceSeries
