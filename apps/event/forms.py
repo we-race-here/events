@@ -131,8 +131,17 @@ class RaceSeriesForm(forms.ModelForm):
     class Meta:
         model = RaceSeries
         ordering = ["name"]
-        fields = "__all__"
-        widgets = {"events": forms.CheckboxSelectMultiple(choices=Event.objects.all().order_by("name"))}
+        fields = [
+            "organization",
+            "name",
+            "description",
+            "logo",
+            "categories",
+            "points_map",
+            "point_system",
+            "events",
+        ]
+        # widgets = {"events": forms.CheckboxSelectMultiple(choices=Event.objects.all().order_by("name"))}
 
 
 class AddEventToRaceSeriesForm(forms.ModelForm):

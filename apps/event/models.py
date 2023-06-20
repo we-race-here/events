@@ -127,6 +127,7 @@ class Event(models.Model):
     permit_no = models.CharField(max_length=25, blank=True, null=True)
     is_usac_permitted = models.BooleanField(default=False)
     featured_event = models.BooleanField(default=False)
+    champion_event = models.BooleanField(default=False)
     approved = models.BooleanField(default=False, null=True)
     publish_type = models.CharField(max_length=32, choices=PUBLISH_TYPE_CHOICES, null=True)
     create_datetime = models.DateTimeField(auto_now_add=True)
@@ -360,7 +361,7 @@ class RaceSeries(models.Model):
     ]
     name = models.CharField(unique=True, max_length=256)
     events = models.ManyToManyField(Event, related_name="race_series")
-    races = models.ManyToManyField(Race, related_name="race_series")
+    races = models.ManyToManyField(Race, related_name="race_series", blank=True)
     description = models.TextField(null=True, blank=True, default="")
     logo = models.ImageField(null=True, blank=True, upload_to=raceseries_logo_file_path_func)
     categories = ArrayField(models.CharField(max_length=100, blank=False), size=50, null=True, blank=False)
