@@ -111,6 +111,10 @@
         @apply bg-cyan-600 hover:bg-cyan-800 text-white font-bold py-2 px-4 rounded-r;
     }
 
+    /*carrousel*/
+    .carrousel_main {
+        @apply flex flex-no-wrap overflow-x-scroll scrolling-touch items-start mb-8
+    }
 
     /*Page Sections*/
     /*INRO SECTION*/
