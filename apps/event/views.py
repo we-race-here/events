@@ -6,9 +6,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Exists, OuterRef, Q
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, DeleteView, DetailView, ListView, TemplateView, UpdateView
-from .filters import EventFilter
+from django.views.generic import CreateView, DeleteView, DetailView, ListView, UpdateView
+
 from ..membership.models import OrganizationMember
+from .filters import EventFilter
 from .forms import EventForm, RaceForm, RaceResultForm, RaceResultsImport, RaceSeriesForm
 from .models import Event, Race, RaceResult, RaceSeries
 from .validators import ImportResults
@@ -23,20 +24,24 @@ event_edit_fields = {
     "StaffFields": ["organization", "approved"],
 }
 
+
 class EventListView(ListView):
     model = Event
     template_name = "event/event_list.html"
     context_object_name = "events"
-    paginate_by = 10
-    ordering = ["name"]
+    paginate_by = 25
+    ordering = ["end_date"]
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        print(context)
         #  Feature event
-        context["featured"] = Event.objects.filter(featured_event=True)[:4]
-
+        context["featured"] = self.filter.qs.filter(featured_event=True)[:8]
         # Get page_obj from context
-        page_obj = context.get('page_obj', None)
+        context.update(
+            {k: self.request.GET.get(k, None) for k in ["is_usac_permitted", "featured_event", "past_events"]}
+        )
+        page_obj = context.get("page_obj", None)
         if page_obj is not None:
             # We will show page numbers for 3 pages on each side of the current page
             start_page = max(page_obj.number - 3, 1)
@@ -44,20 +49,21 @@ class EventListView(ListView):
 
             # Create list of page numbers
             page_range = list(range(start_page, end_page + 1))
-            context['custom_page_range'] = page_range
+            context["custom_page_range"] = page_range
 
-        context['total_count'] = self.get_queryset().count()
+        context["total_count"] = self.get_queryset().count()
 
         return context
 
     def get_queryset(self):
         queryset = super().get_queryset()
 
-        if 'past_events' not in self.request.GET:
+        if "past_events" not in self.request.GET:
             queryset = queryset.filter(end_date__gte=date.today())
 
         self.filter = EventFilter(self.request.GET, queryset=queryset)
         return self.filter.qs
+
 
 # class EventListView(ListView):
 #     model = Event
@@ -105,7 +111,6 @@ class EventResultListView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["RaceSeries"] = RaceSeries.objects.all()
-
         return context
 
     def get_queryset(self):

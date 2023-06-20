@@ -5,7 +5,7 @@ pytz==2023.3  # https://github.com/stub42/pytz
 python-slugify==8.0.1  # https://github.com/un33k/python-slugify
 Pillow==9.5.0  # https://github.com/python-pillow/Pillow
 argon2-cffi==21.3.0  # https://github.com/hynek/argon2_cffi
-whitenoise==6.4.0  # https://github.com/evansd/whitenoise
+whitenoise==6.5.0  # https://github.com/evansd/whitenoise
 redis==4.5.5  # https://github.com/redis/redis-py
 hiredis==2.2.3  # https://github.com/redis/hiredis-py
 pyotp==2.8.0  # https://github.com/pyauth/pyotp
@@ -19,7 +19,7 @@ django-model-utils==4.3.1  # https://github.com/jazzband/django-model-utils
 django-allauth==0.54.0  # https://github.com/pennersr/django-allauth
 django-crispy-forms==2.0  # https://github.com/django-crispy-forms/django-crispy-forms
 crispy-bootstrap5==0.7  # https://github.com/django-crispy-forms/crispy-bootstrap5
-django-redis==5.2.0  # https://github.com/jazzband/django-redis
+django-redis==5.3.0  # https://github.com/jazzband/django-redis
 django-simple-history==3.3.0 # https://github.com/jazzband/django-simple-history
 django-turnstile==0.1.0  # https://gist.github.com/mikeckennedy/66d6298106671a3c6215c9262c102d74
 django-phonenumber-field==7.1.0  # https://github.com/stefanfoulis/django-phonenumber-field
@@ -27,6 +27,7 @@ django-storages[boto3]==1.13.2  # https://github.com/jschneier/django-storages
 django-ckeditor==6.5.1 # https://github.com/django-ckeditor/django-ckeditor
 django-widget-tweaks==1.4.12
 django-filter==23.2
+fontawesomefree==6.4.0
 django-maintenance-mode@ https://github.com/fabiocaccamo/django-maintenance-mode/archive/refs/heads/main.zip
 # git+https://github.com/fabiocaccamo/django-maintenance-mode.git@main
 

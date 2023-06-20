@@ -16,19 +16,21 @@
   <link rel="icon" href="{% static 'images/favicons/favicon.png' %}">
 
   {% block css %}
-    <!-- Your stuff: Third-party CSS libraries go here -->
-    <script rel="stylesheet" src="{% static 'css/project.css' %}"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-          integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
-          crossorigin="anonymous" referrerpolicy="no-referrer"/>    <!-- This file stores project-specific CSS -->
+    <!-- FontAwesome -->
+    <!-- https://fontawesome.com/docs/web/use-with/python-django -->
+    <!-- One file includes all the Font Awesome Free icons and utilities -->
+    <link href="{% static 'fontawesomefree/css/all.min.css' %}" rel="stylesheet" type="text/css">
+
+    <!-- Tailwind -->
     <link href="{% static 'css/project.css' %}" rel="stylesheet">
+    {#    <script rel="stylesheet" src="{% static 'css/project.css' %}"></script>#}
     <!-- Temparary hack to define custom tailwind css-->
     <!--    <script src="https://cdn.tailwindcss.com"></script>-->
     {#        <link href="{% static 'css/tailwind.css' %}" rel="stylesheet">#}
   {% endblock %}
-  <!-- ================================================== -->
-  {# Placed at the top of the document so pages load faster with defer #}
+
   {% block javascript %}
+    {# Placed at the top of the document so pages load faster with defer #}
     <!-- Load ckeditor -->
     <script src="{% static 'ckeditor/ckeditor.js' %}"></script>
     <!-- usefathon analytics -->

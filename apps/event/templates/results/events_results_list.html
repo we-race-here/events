@@ -88,58 +88,59 @@
     </div>
     <!-- Start Event list -->
     <div class="mt-7 overflow-x-auto">
-      <table class="w-full whitespace-nowrap">
-        <tbody>
-        {% for event in events %}
-          <tr tabindex="0" class="focus:outline-none h-16 border border-gray-100 dark:border-gray-600  rounded">
-            <td>
-              {% if event.logo %}
-                <img alt="Event Logo" class="org_logo_sm"
-                     src="{{ event.logo.url }}">
-              {% else %}
-                <img alt="Event " class="org_logo_sm"
-                     src="{% static 'images/clear_250X250.png' %}">
-              {% endif %}
-            </td>
-            <td class="pl-3">
-              <div>
-                <a class="text-base font-medium leading-none text-orange-600 hover:text-orange-800 dark:text-white  mr-2"
-                   href="{% url 'event:event_detail' event.pk %}">{{ event.name }}</a>
-              </div>
-              <div class="flex items-center pl-5">
-                <p class="font-medium text-xs leading-none text-gray-400 dark:text-white  mr-2">
-                  {{ event.blurb|truncatewords:50 }} </p>
-              </div>
-            </td>
-            <td class="pl-5">
-              <div class="flex items-center">
-                {% if event.is_usac_permitted %}
-                  <img src="{% static "images/USACycling_Logo.svg" %}" style="max-width:17px" alt="usac">
-                {% else %}
-                  <i class="fa-solid fa-person-biking fa-sm" style="color: #5ec5c5;"></i>
-                {% endif %}
-              </div>
-            </td>
-            <td>
-              <div>
-                {% if event.city %}
-                  {{ event.city }}
-                {% endif %}
-                {% if event.state %}
-                  , {{ event.state }}
-                {% endif %}
-              </div>
-            </td>
-            <td>
-              <div class="flex justify-end">
-                {{ event.start_date }} - {{ event.end_date|default:"" }}
-              </div>
-            </td>
-          </tr>
-          <tr class="h-3"></tr>
-        {% endfor %}
-        </tbody>
-      </table>
+      {% include "components/event_list_rows.html" %}
+      {#      <table class="w-full whitespace-nowrap">#}
+      {#        <tbody>#}
+      {#        {% for event in events %}#}
+      {#          <tr tabindex="0" class="focus:outline-none h-16 border border-gray-100 dark:border-gray-600  rounded">#}
+      {#            <td>#}
+      {#              {% if event.logo %}#}
+      {#                <img alt="Event Logo" class="org_logo_sm"#}
+      {#                     src="{{ event.logo.url }}">#}
+      {#              {% else %}#}
+      {#                <img alt="Event " class="org_logo_sm"#}
+      {#                     src="{% static 'images/clear_250X250.png' %}">#}
+      {#              {% endif %}#}
+      {#            </td>#}
+      {#            <td class="pl-3">#}
+      {#              <div>#}
+      {#                <a class="text-base font-medium leading-none text-orange-600 hover:text-orange-800 dark:text-white  mr-2"#}
+      {#                   href="{% url 'event:event_detail' event.pk %}">{{ event.name }}</a>#}
+      {#              </div>#}
+      {#              <div class="flex items-center pl-5">#}
+      {#                <p class="font-medium text-xs leading-none text-gray-400 dark:text-white  mr-2">#}
+      {#                  {{ event.blurb|truncatewords:50 }} </p>#}
+      {#              </div>#}
+      {#            </td>#}
+      {#            <td class="pl-5">#}
+      {#              <div class="flex items-center">#}
+      {#                {% if event.is_usac_permitted %}#}
+      {#                  <img src="{% static "images/USACycling_Logo.svg" %}" style="max-width:17px" alt="usac">#}
+      {#                {% else %}#}
+      {#                  <i class="fa-solid fa-person-biking fa-sm" style="color: #5ec5c5;"></i>#}
+      {#                {% endif %}#}
+      {#              </div>#}
+      {#            </td>#}
+      {#            <td>#}
+      {#              <div>#}
+      {#                {% if event.city %}#}
+      {#                  {{ event.city }}#}
+      {#                {% endif %}#}
+      {#                {% if event.state %}#}
+      {#                  , {{ event.state }}#}
+      {#                {% endif %}#}
+      {#              </div>#}
+      {#            </td>#}
+      {#            <td>#}
+      {#              <div class="flex justify-end">#}
+      {#                {{ event.start_date }} - {{ event.end_date|default:"" }}#}
+      {#              </div>#}
+      {#            </td>#}
+      {#          </tr>#}
+      {#          <tr class="h-3"></tr>#}
+      {#        {% endfor %}#}
+      {#        </tbody>#}
+      {#      </table>#}
     </div>
     <div class="mt-8">
       <nav class="flex justify-center">
@@ -190,8 +191,6 @@
         </ul>
       </nav>
     </div>
-    {#      </div>#}
-    {#    </div>#}
   </section>
   <style>
       .checkbox:checked + .check-icon {
