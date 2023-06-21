@@ -2,9 +2,9 @@ from django import forms
 from django.contrib.auth import get_user_model
 from django.forms import CharField, DateField, DateInput, ModelChoiceField, ModelForm, TimeField, TimeInput
 
-from apps.event.models import Event, Race, RaceResult, RaceSeries
+from apps.membership.models import Organization
 
-from .models import event_types
+from .models import Event, Race, RaceResult, RaceSeries, event_types
 
 User = get_user_model()
 
@@ -127,6 +127,7 @@ class RaceSeriesForm(forms.ModelForm):
     events = forms.ModelMultipleChoiceField(
         widget=forms.CheckboxSelectMultiple, queryset=Event.objects.all().order_by("name")
     )
+    organization = forms.ModelChoiceField(Organization.objects.all().order_by("name"))
 
     class Meta:
         model = RaceSeries
@@ -141,6 +142,8 @@ class RaceSeriesForm(forms.ModelForm):
             "point_system",
             "events",
         ]
+        labels = {"organization": "Hosting Organization", "name": "Race Series Name, include year in the name."}
+
         # widgets = {"events": forms.CheckboxSelectMultiple(choices=Event.objects.all().order_by("name"))}
 
 

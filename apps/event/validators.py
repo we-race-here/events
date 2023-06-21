@@ -97,6 +97,7 @@ class ImportResults:
             temp = [col.replace("license", "usac_license") for col in temp]
         temp = [col.replace("team", "club") for col in temp]
         temp = [col.replace("club_name", "club") for col in temp]
+        temp = [col.replace("Category", "category") for col in temp]
         return temp
 
     def read_csv(self):
