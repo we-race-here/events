@@ -214,8 +214,40 @@ class RaceSeriesCreateView(LoginRequiredMixin, CreateView):
     success_url = reverse_lazy("event:events_results_list")
 
     def get_initial(self):
+        women = [
+            "Women 9-10",
+            "Women 11-12",
+            "Women 13-14",
+            "Women 15-16",
+            "Women 17-18",
+            "Women 1-2",
+            "Women 3",
+            "Women 4",
+            "Women 40+",
+            "Women 50+",
+            "Women 60+",
+        ]
+        men = [
+            "Men 9-10",
+            "Men 11-12",
+            "Men 13-14",
+            "Men 15-16",
+            "Men 17-18",
+            "Men 1-2",
+            "Men 3",
+            "Men 4",
+            "Men 40+ 1-2-3",
+            "Men 40+ 3",
+            "Men 40+ 4",
+            "Men 50+ 1-2-3",
+            "Men 50+ 4",
+            "Men 60+",
+            "Men 70+",
+        ]
+        categories = women + men
         return {
-            "points_map": [20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1],
+            "categories": categories,
+            "points_map": [35, 30, 27, 24, 22, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1],
             "point_system": "Relative",
             "organization": "Bicycle Colorado",
         }
