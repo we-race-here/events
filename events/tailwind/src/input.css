@@ -113,7 +113,11 @@
 
     /*carrousel*/
     .carrousel_main {
-        @apply flex flex-no-wrap overflow-x-scroll scrolling-touch items-start mb-8
+        @apply flex flex-nowrap overflow-x-auto overflow-x-scroll touch-pan-x mb-8;
+    }
+
+    .carrousel_card {
+        @apply flex-none w-1/2 md:w-1/3 mr-8 md:pb-4 border rounded-lg;
     }
 
     /*Page Sections*/

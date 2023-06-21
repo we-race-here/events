@@ -1225,6 +1225,31 @@ h4 {
 
 /*carrousel*/
 
+.carrousel_main {
+  margin-bottom: 2rem;
+  display: flex;
+  --tw-pan-x: pan-x;
+  touch-action: var(--tw-pan-x) var(--tw-pan-y) var(--tw-pinch-zoom);
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  overflow-x: scroll;
+}
+
+.carrousel_card {
+  margin-right: 2rem;
+  width: 50%;
+  flex: none;
+  border-radius: 0.5rem;
+  border-width: 1px;
+}
+
+@media (min-width: 768px) {
+  .carrousel_card {
+    width: 33.333333%;
+    padding-bottom: 1rem;
+  }
+}
+
 /*Page Sections*/
 
 /*INRO SECTION*/
@@ -1502,10 +1527,6 @@ h4 {
 
 .col-span-8 {
   grid-column: span 8 / span 8;
-}
-
-.m-5 {
-  margin: 1.25rem;
 }
 
 .mx-8 {

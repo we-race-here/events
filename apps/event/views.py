@@ -35,7 +35,7 @@ class EventListView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         # Champion Events
-        context["champions"] = self.filter(Q(champion_event=True) & Q(end_date__gte=date.today()))
+        context["champions"] = Event.objects.all().filter(Q(champion_event=True) & Q(end_date__gte=date.today()))
         #  Feature event
         context["featured"] = self.filter.qs.filter(featured_event=True)[:8]
         # Get page_obj from context
