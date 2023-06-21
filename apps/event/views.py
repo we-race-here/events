@@ -285,8 +285,6 @@ def RaceResultsImportView(request, event_pk):
 
             ir = ImportResults(file=decoded_file, is_usac=is_usac)
             ir.check_columns()
-            ir.read_csv()
-            ir.check_categories(category_validation)
             if ir.errors:
                 # TODO: need a html page for this
                 context.update({"errors": ir.errors})
@@ -295,6 +293,14 @@ def RaceResultsImportView(request, event_pk):
                 print(context.keys())
                 return render(request, "results/import_race_results.html", context=context)
             else:
+                ir.read_csv()
+                if not ir.check_categories(category_validation):
+                    # TODO: need a html page for this
+                    context.update({"errors": ir.errors})
+                    context.update({"warnings": ir.warnings})
+                    context.update({"form": form})
+                    print(context.keys())
+                    return render(request, "results/import_race_results.html", context=context)
                 # TODO: Save results to database
                 del form.cleaned_data["results_file"]
                 fields_excluded = ["is_usac", "event", "raceseries", "category_validation"]

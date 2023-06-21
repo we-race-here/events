@@ -78,12 +78,14 @@ class ImportResults:
         if not all(self.columns):
             self.errors.append("A column is blank in the header row")
         if self.errors:
-            print(self.columns)
+            print(f"Errors: {self.columns}")
 
     def check_categories(self, req):
         if req == "same":
             if len(self.data_categories) > 1:
                 self.errors.append("Multiple categories found")
+                return False
+        return True
 
     def normalize_fieldnames(self, fieldnames):
         """Normalize column names"""
