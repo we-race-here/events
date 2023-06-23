@@ -3,7 +3,7 @@
 <section id="featured_list" class="text-gray-600 body-font">
   <!-- Features events next 8 -->
   {% if featured.exists %}
-    <h3 class="text-center">{% if past_events %}Past Featured Events{% else %}Upcoming Featured Events{% endif %}</h3>
+    <h3 class="text-center">{% if past_events %}Past Featured Events{% else %}Featured Events{% endif %}</h3>
     <div
         class="flex flex-wrap border-2 border-gray-400 bg-white dark:bg-gray-900  py-4 md:py-7 px-4 md:px-3 xl:px-5">
       {% for event in featured %}

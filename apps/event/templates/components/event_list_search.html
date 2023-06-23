@@ -25,18 +25,21 @@
       {#            {% endfor %}#}
       {#          </select>#}
       {#        <div>#}
-      <input name="past_events" type="radio" value="true" id="past_event"
-             {% if past_events %}checked{% endif %}>
+      <input name="past_events" type="checkbox" value="true" id="past_event"
+             {% if request.GET.past_events %}checked{% endif %}>
       <label class="flex px-2" for="past_events.">
         Past Events
       </label>
-      <input class="ml-3" filter_usac" type="radio" value="usac_event" id="choice_1"
-      {% if is_usac_permitted %}checked{% endif %}>
+
+      <input class="ml-3" name="filter_usac" type="checkbox" value="is_usac_permitted" id="usac"
+             {% if request.GET.filter_usac %}checked{% endif %}>
+      {#    {% if request.GET.is_usac_permitted %}checked{% endif %}#}
       <label class="flex px-2" for="choice_1">
         <img class="object-contain h-5 w-5" src="{% static 'images/USACycling_Logo.svg' %}" alt="USAC"/>USAC Events
       </label>
-      <input class="ml-3" name="filter_featured" type="radio" value="featured" id="choice_2"
-             {% if is_usac_permitted %}featured_event{% endif %}>
+
+      <input class="ml-3" name="filter_featured" type="checkbox" value="featured" id="featured"
+             {% if request.GET.filter_featured %}checked{% endif %}>
       <label class="flex px-2" for="choice_2">
         <img class="object-contain h-5 w-5" src="{% static 'images/bc-icon.png' %}" alt="My image"/>
         Featured.
@@ -49,7 +52,6 @@
       {#              <option value="{{ i }}">{{ i }}</option>#}
       {#            {% endfor %}#}
       {#          </select>#}
-      <input type="filter" name="filter" placeholder="Filter" hidden="">
       <button type="submit" class="submit_search rounded-r">
         Filter
       </button>

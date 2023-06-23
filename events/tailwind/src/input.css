@@ -18,6 +18,10 @@
     h4 {
         @apply text-xl font-bold leading-tight text-gray-900;
     }
+
+    p {
+        @apply text-base text-gray-700 text-justify leading-relaxed;
+    }
 }
 
 

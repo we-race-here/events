@@ -9,7 +9,6 @@ from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, DetailView, ListView, UpdateView
 
 from ..membership.models import OrganizationMember
-from .filters import EventFilter
 from .forms import EventForm, RaceForm, RaceResultForm, RaceResultsImport, RaceSeriesForm
 from .models import Event, Race, RaceResult, RaceSeries
 from .validators import ImportResults
@@ -35,13 +34,15 @@ class EventListView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         # Champion Events
-        context["champions"] = Event.objects.all().filter(Q(champion_event=True) & Q(end_date__gte=date.today()))
-        #  Feature event
-        context["featured"] = self.filter.qs.filter(featured_event=True)[:8]
-        # Get page_obj from context
-        context.update(
-            {k: self.request.GET.get(k, None) for k in ["is_usac_permitted", "featured_event", "past_events"]}
+        context["champions"] = (
+            Event.objects.all().filter(Q(champion_event=True) & Q(end_date__gte=date.today())).order_by("?")[0]
         )
+        #  Feature event
+        context["featured"] = Event.objects.all().filter(featured_event=True)[:8]
+        context["filtered"] = bool(self.request.GET)
+        print(f"pages: {context.get('page_obj', None)}")
+
+        # Get page_obj from context
         page_obj = context.get("page_obj", None)
         if page_obj is not None:
             # We will show page numbers for 3 pages on each side of the current page
@@ -53,17 +54,43 @@ class EventListView(ListView):
             context["custom_page_range"] = page_range
 
         context["total_count"] = self.get_queryset().count()
-
+        withpage = self.request.GET.copy()
+        withpage.pop("page", None)
+        context["withpage"] = "&" + withpage.urlencode() if withpage else ""
         return context
 
-    def get_queryset(self):
-        queryset = super().get_queryset()
-
+    def get_queryset(self, **kwargs):
+        queryset = super().get_queryset(**kwargs)
         if "past_events" not in self.request.GET:
             queryset = queryset.filter(end_date__gte=date.today())
+        else:
+            queryset = queryset.filter(start_date__lte=date.today())
+        search_query = self.request.GET.get("search", "")
+        filter_usac = self.request.GET.get("filter_usac", "")
+        filter_featured = self.request.GET.get("filter_featured", "")
+        if any([search_query, filter_usac, filter_featured]):
+            if search_query:
+                queryset = queryset & queryset.filter(
+                    Q(name__icontains=search_query)
+                    | Q(website__icontains=search_query)
+                    | Q(city__icontains=search_query)
+                    | Q(state__icontains=search_query)
+                )
+            if filter_usac:
+                queryset = queryset & queryset.filter(is_usac_permitted=True)
+            if filter_featured:
+                queryset = queryset & queryset.filter(featured_event=True)
+        return queryset
 
-        self.filter = EventFilter(self.request.GET, queryset=queryset)
-        return self.filter.qs
+    # def get_queryset(self, **kwargs):
+    #     queryset = super().get_queryset(**kwargs)
+    #
+    #     if "past_events" not in self.request.GET:
+    #         queryset = queryset.filter(end_date__gte=date.today())
+    #
+    #     self.filter = EventFilter(self.request.GET, queryset=queryset)
+    #     print(self.filter)
+    #     return self.filter.qs
 
 
 # class EventListView(ListView):
