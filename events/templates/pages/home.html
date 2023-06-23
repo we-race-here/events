@@ -20,32 +20,32 @@
         <br>
         Event Support Program
       </h1>
-      <p class="mb-4 leading-relaxed">
-        Bicycle Colorado (BC) is a Denver-based nonprofit organization that has been advocating for safer and more
-        equitable bicycling in Colorado for more than 30 years. On January 1, 2023, BC acquired the nonprofit
-        organization Colorado Cycling, formerly known as the Bicycle Racing Association of Colorado (BRAC). BRAC was
-        established in 1975, played a critical role in supporting amateur road, cyclocross and track racing and since
-        2013 had served as the Local Association in Colorado for USA Cycling (USAC). In 2023, Bicycle Colorado serves
-        as the Local Association for USAC in Colorado, and a Racing Membership with BC is included with the purchase of
-        Race Membership in USAC.
+      <p class="mb-4">
+        Create a member account to view your race results, join a club or team, participate in season-long Cup points
+        competitions, receive discount offers from our partners and opt-in to updates. Clubs and organizations can
+        create accounts to manage their members, events and race results.
+        <b>Join now to join the organization that is working to support bike riders, clubs, organizations and events
+          across Colorado!</b>
+        {% if not request.user.is_authenticated %}
+          <button href="{% url 'home' %}#join" class="button_body_orange">JOIN Bicycle Colorado</button>
+        {% endif %}
 
       </p>
-      <p class="mb-4 leading-relaxed">
-        Bicycle Colorado has expanded our Event Support Program to assume the role played by BRAC. This program
-        supports the key stakeholders in both competitive and non-competitive cycling events, including participants,
-        event directors/promoters, clubs, teams, officials, event registrars, partners and volunteers. This support
-        includes managing a comprehensive events calendar, event promotion, serving as the Local Association for USAC,
-        providing advocacy support to make the sport safer, and helping events manage relationships with
-        municipalities and permitting agencies. With this expanded Event Support Program, BC grows its reach and
-        connections within the Colorado bicycling community to grow the movement of people who want to improve the
-        safety, convenience and fun of bicycling in Colorado for everyone.
+      <p class="mb-4">
+        Bicycle Colorado (BC) is a Denver-based nonprofit organization that has been advocating for safer and more
+        equitable bicycling in Colorado for over 30 years. On January 1, 2023, BC acquired the nonprofit organization
+        Colorado Cycling, formerly known as the Bicycle Racing Association of Colorado (BRAC). BRAC played a critical
+        role in supporting amateur bicycle racing and served as the Local Association (LA) in Colorado for USA Cycling
+        (USAC). In 2023, Bicycle Colorado serves as the LA for USAC in Colorado, and a Racing Membership with BC is
+        included at no additional charge with the purchase of Race Membership in USAC.
       </p>
-      <p class="mb-4 leading-relaxed">
-        We are currently constructing this new digital platform to replace the old BRAC website and provide new
-        management tools for clubs and event directors. Please create a user member account to view your race results,
-        join a club or team, participate in season-long Cup points competitions, receive discount offers from our
-        partners and opt-in to communications. Clubs and organizations can also create accounts to manage their
-        members, events and race results.
+      <p class="mb-4"> Our Event Support Program assumes the role played by BRAC and
+        supports the key
+        stakeholders in both
+        competitive
+        and non-competitive cycling events. We manage a comprehensive events calendar, help events with marketing and
+        promotion, provide advocacy support to make the sport safer, and help events manage relationships with
+        municipalities, permitting agencies and insurance providers.
       </p>
     </div>
     {#    </div>#}

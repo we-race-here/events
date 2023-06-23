@@ -653,6 +653,15 @@ h4 {
   color: rgb(17 24 39 / var(--tw-text-opacity));
 }
 
+p {
+  text-align: justify;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  line-height: 1.625;
+  --tw-text-opacity: 1;
+  color: rgb(55 65 81 / var(--tw-text-opacity));
+}
+
 *, ::before, ::after {
   --tw-border-spacing-x: 0;
   --tw-border-spacing-y: 0;
@@ -1235,21 +1244,6 @@ h4 {
   overflow-x: scroll;
 }
 
-.carrousel_card {
-  margin-right: 2rem;
-  width: 50%;
-  flex: none;
-  border-radius: 0.5rem;
-  border-width: 1px;
-}
-
-@media (min-width: 768px) {
-  .carrousel_card {
-    width: 33.333333%;
-    padding-bottom: 1rem;
-  }
-}
-
 /*Page Sections*/
 
 /*INRO SECTION*/
@@ -1781,10 +1775,6 @@ h4 {
 
 .max-w-md {
   max-width: 28rem;
-}
-
-.grow {
-  flex-grow: 1;
 }
 
 .table-auto {
