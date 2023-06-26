@@ -1,34 +1,66 @@
 {% extends "base.html" %}
 {% load static %}
 
-{#{% block title %}User: {{ object.name }}{% endblock %}#}
-
 {% block content %}
-  <section id="profile">
-    <div class="mt-7 overflow-x-auto">
-      <div
-          class="message_box">
-        <ul class="message_list">Complete your profile
-          {% for a, m in object.alerts.items %}
-            <li class="font-medium">{{ a }}: {{ m }}</li>
-          {% endfor %}
-        </ul>
+  <section id="profile" class="py-10 px-4">
+    <div class="max-w-3xl mx-auto">
+      <div class="flex items-center space-x-6 mb-10">
+        <div class="w-24 h-24 rounded-full overflow-hidden">
+          {% if object.avatar %}
+            <img class="w-full h-full object-cover object-center" src="{{ object.avatar.url }}" alt="Avatar">
+          {% else %}
+            <img class="w-full h-full object-cover object-center" src="https://dummyimage.com/150x150" alt="Avatar">
+          {% endif %}
+        </div>
+        <div class="ml-5">
+          <h1 class="text-3xl font-bold text-gray-800">{{ object.full_name }}</h1>
+          <p class="text-lg text-gray-600">{{ object.email }}</p>
+        </div>
       </div>
-      <div class="flex items-center justify-center my-5">
-        {% if object.avatar %}
-          <img class="w-[75px] h-[75px] object-cover object-center w-7 rounded-full" src="{{ object.avatar.url }}"
-               alt="avatar">
-        {% else %}
-          <img alt="ecommerce" class="object-cover object-center w-full h-full block"
-               src="https://dummyimage.com/75x75">
-        {% endif %}
-        <div class="flex items-center pl-5">
-          <p class="text-base font-medium leading-none text-orange-600 hover:text-orange-800 dark:text-white  mr-2">
-            {{ object.full_name }}</p>
+       {% if object.alerts %}
+        <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 mb-6">
+          <h2 class="text-lg font-semibold">Alerts:</h2>
+          <ul class="list-disc pl-6">
+            {% for a, m in object.alerts.items %}
+              <li>{{ a }}: {{ m }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      {% endif %}
+      <div class="bg-white rounded shadow-md p-6 mt-2 mb-6">
+        <h2 class="text-xl font-bold text-gray-800 mb-4">Profile Information</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <h3 class="text-lg font-semibold text-gray-700">Phone:</h3>
+            <p class="text-gray-600">{{ object.phone }}</p>
+          </div>
+          <div>
+            <h3 class="text-lg font-semibold text-gray-700">Address:</h3>
+            <p class="text-gray-600">{{ object.address1 }}</p>
+            <p class="text-gray-600">{{ object.address2 }}</p>
+            <p class="text-gray-600">{{ object.city }}, {{ object.state }} {{ object.zipcode }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="bg-white rounded shadow-md p-6">
+        <h2 class="text-xl font-bold text-gray-800 mb-4">Additional Information</h2>
+        <div>
+          <h3 class="text-lg font-semibold text-gray-700">Gender:</h3>
+          <p class="text-gray-600">{{ object.get_gender_display }}</p>
+        </div>
+        <div>
+          <h3 class="text-lg font-semibold text-gray-700">Birth Date:</h3>
+          <p class="text-gray-600">{{ object.birth_date }}</p>
+        </div>
+        <div>
+          <h3 class="text-lg font-semibold text-gray-700">Weight:</h3>
+          <p class="text-gray-600">{{ object.weight }} kg</p>
+        </div>
+        <div>
+          <h3 class="text-lg font-semibold text-gray-700">Height:</h3>
+          <p class="text-gray-600">{{ object.height }} m</p>
         </div>
       </div>
     </div>
   </section>
-  {% include "components/profile_results.html" %}
-
 {% endblock content %}
