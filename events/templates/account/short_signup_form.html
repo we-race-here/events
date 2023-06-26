@@ -247,7 +247,6 @@
 
 <script>
     function calculateAge(birthday) {
-        console.log(birthday)
         var ageDifMs = Date.now() - birthday.getTime();
         var ageDate = new Date(ageDifMs);
         return Math.abs(new Date().getFullYear() - birthday.getFullYear());
@@ -286,4 +285,5 @@
     document.getElementById('id_birth_year').addEventListener('change', function () {
         cal_age()
     });
+    cal_age()
 </script>

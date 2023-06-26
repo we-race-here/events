@@ -61,13 +61,13 @@ class UserSignupForm(SignupForm):
     terms_of_service = BooleanField(required=True, widget=CheckboxInput(), label="I agree to Terms and Service")
     privacy_policy = BooleanField(required=True, widget=CheckboxInput(), label="I agree to Privacy Policy")
     user_agreement_waiver = BooleanField(required=True, widget=CheckboxInput(), label="I accept the waiver")
-    parent_user_agreement_waiver = BooleanField(required=True, widget=CheckboxInput(), label="I accept the waiver")
-    parent_terms_of_service = BooleanField(required=True, widget=CheckboxInput(), label="I agree to Terms and Service")
+    parent_user_agreement_waiver = BooleanField(required=False, widget=CheckboxInput(), label="I accept the waiver")
+    parent_terms_of_service = BooleanField(required=False, widget=CheckboxInput(), label="I agree to Terms and Service")
 
     turnstile = TurnstileField(label="")
 
-    parent_name = forms.CharField(required=True)
-    parent_email = forms.EmailField(required=True)
+    parent_name = forms.CharField(required=False)
+    parent_email = forms.EmailField(required=False)
 
     def clean(self):
         cleaned_data = super().clean()
