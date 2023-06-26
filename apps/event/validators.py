@@ -78,12 +78,14 @@ class ImportResults:
         if not all(self.columns):
             self.errors.append("A column is blank in the header row")
         if self.errors:
-            print(self.columns)
+            print(f"Errors: {self.columns}")
 
     def check_categories(self, req):
         if req == "same":
             if len(self.data_categories) > 1:
                 self.errors.append("Multiple categories found")
+                return False
+        return True
 
     def normalize_fieldnames(self, fieldnames):
         """Normalize column names"""
@@ -97,6 +99,7 @@ class ImportResults:
             temp = [col.replace("license", "usac_license") for col in temp]
         temp = [col.replace("team", "club") for col in temp]
         temp = [col.replace("club_name", "club") for col in temp]
+        temp = [col.replace("Category", "category") for col in temp]
         return temp
 
     def read_csv(self):

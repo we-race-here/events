@@ -9,7 +9,6 @@ from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, DetailView, ListView, UpdateView
 
 from ..membership.models import OrganizationMember
-from .filters import EventFilter
 from .forms import EventForm, RaceForm, RaceResultForm, RaceResultsImport, RaceSeriesForm
 from .models import Event, Race, RaceResult, RaceSeries
 from .validators import ImportResults
@@ -34,13 +33,18 @@ class EventListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        print(context)
+        # Champion Events
+        champions = Event.objects.all().filter(Q(champion_event=True) & Q(end_date__gte=date.today())).order_by("?")
+        try:
+            context["champions"] = champions[0]
+        except IndexError:
+            context["champions"] = None
         #  Feature event
-        context["featured"] = self.filter.qs.filter(featured_event=True)[:8]
+        context["featured"] = Event.objects.all().filter(featured_event=True)[:8]
+        context["filtered"] = bool(self.request.GET)
+        print(f"pages: {context.get('page_obj', None)}")
+
         # Get page_obj from context
-        context.update(
-            {k: self.request.GET.get(k, None) for k in ["is_usac_permitted", "featured_event", "past_events"]}
-        )
         page_obj = context.get("page_obj", None)
         if page_obj is not None:
             # We will show page numbers for 3 pages on each side of the current page
@@ -52,17 +56,43 @@ class EventListView(ListView):
             context["custom_page_range"] = page_range
 
         context["total_count"] = self.get_queryset().count()
-
+        withpage = self.request.GET.copy()
+        withpage.pop("page", None)
+        context["withpage"] = "&" + withpage.urlencode() if withpage else ""
         return context
 
-    def get_queryset(self):
-        queryset = super().get_queryset()
-
+    def get_queryset(self, **kwargs):
+        queryset = super().get_queryset(**kwargs)
         if "past_events" not in self.request.GET:
             queryset = queryset.filter(end_date__gte=date.today())
+        else:
+            queryset = queryset.filter(start_date__lte=date.today())
+        search_query = self.request.GET.get("search", "")
+        filter_usac = self.request.GET.get("filter_usac", "")
+        filter_featured = self.request.GET.get("filter_featured", "")
+        if any([search_query, filter_usac, filter_featured]):
+            if search_query:
+                queryset = queryset & queryset.filter(
+                    Q(name__icontains=search_query)
+                    | Q(website__icontains=search_query)
+                    | Q(city__icontains=search_query)
+                    | Q(state__icontains=search_query)
+                )
+            if filter_usac:
+                queryset = queryset & queryset.filter(is_usac_permitted=True)
+            if filter_featured:
+                queryset = queryset & queryset.filter(featured_event=True)
+        return queryset
 
-        self.filter = EventFilter(self.request.GET, queryset=queryset)
-        return self.filter.qs
+    # def get_queryset(self, **kwargs):
+    #     queryset = super().get_queryset(**kwargs)
+    #
+    #     if "past_events" not in self.request.GET:
+    #         queryset = queryset.filter(end_date__gte=date.today())
+    #
+    #     self.filter = EventFilter(self.request.GET, queryset=queryset)
+    #     print(self.filter)
+    #     return self.filter.qs
 
 
 # class EventListView(ListView):
@@ -212,6 +242,45 @@ class RaceSeriesCreateView(LoginRequiredMixin, CreateView):
     template_name = "results/raceseries_form.html"
     success_url = reverse_lazy("event:events_results_list")
 
+    def get_initial(self):
+        women = [
+            "Women 9-10",
+            "Women 11-12",
+            "Women 13-14",
+            "Women 15-16",
+            "Women 17-18",
+            "Women 1-2",
+            "Women 3",
+            "Women 4",
+            "Women 40+",
+            "Women 50+",
+            "Women 60+",
+        ]
+        men = [
+            "Men 9-10",
+            "Men 11-12",
+            "Men 13-14",
+            "Men 15-16",
+            "Men 17-18",
+            "Men 1-2",
+            "Men 3",
+            "Men 4",
+            "Men 40+ 1-2-3",
+            "Men 40+ 3",
+            "Men 40+ 4",
+            "Men 50+ 1-2-3",
+            "Men 50+ 4",
+            "Men 60+",
+            "Men 70+",
+        ]
+        categories = women + men
+        return {
+            "categories": categories,
+            "points_map": [35, 30, 27, 24, 22, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1],
+            "point_system": "Relative",
+            "organization": "Bicycle Colorado",
+        }
+
 
 class RaceSeriesDetailView(DetailView):
     model = RaceSeries
@@ -245,8 +314,6 @@ def RaceResultsImportView(request, event_pk):
 
             ir = ImportResults(file=decoded_file, is_usac=is_usac)
             ir.check_columns()
-            ir.read_csv()
-            ir.check_categories(category_validation)
             if ir.errors:
                 # TODO: need a html page for this
                 context.update({"errors": ir.errors})
@@ -255,6 +322,14 @@ def RaceResultsImportView(request, event_pk):
                 print(context.keys())
                 return render(request, "results/import_race_results.html", context=context)
             else:
+                ir.read_csv()
+                if not ir.check_categories(category_validation):
+                    # TODO: need a html page for this
+                    context.update({"errors": ir.errors})
+                    context.update({"warnings": ir.warnings})
+                    context.update({"form": form})
+                    print(context.keys())
+                    return render(request, "results/import_race_results.html", context=context)
                 # TODO: Save results to database
                 del form.cleaned_data["results_file"]
                 fields_excluded = ["is_usac", "event", "raceseries", "category_validation"]

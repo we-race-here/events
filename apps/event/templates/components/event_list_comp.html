@@ -4,7 +4,8 @@
 <section id="event_list" class="section_race_results_list">
   <!-- All events -->
   <h3 class="text-center">
-    {% if past_events %}{{ total_count }} Past Events{% else %}All {{ total_count }} Upcoming Events{% endif %}</h3>
+    {% if request.GET.past_events %}{{ total_count }} Past Events{% else %}{{ total_count }} Upcoming
+      Events{% endif %}</h3>
   {% include "components/event_list_search.html" %}
   <div class="mt-7 overflow-x-auto">
     {% include "components/event_list_rows.html" %}
@@ -18,7 +19,7 @@
   {#          {% else %}#}
   {#              class="object-contain object-center w-full h-full block"#}
   {#            <img alt="Logo" class="object-scale-down max-h-[50px] mx-auto"#}
-  {#                 src="{% static 'images/clear_250X250.png' %}">#}
+  {#                 src="{% static 'images/clear_250x250.png' %}">#}
   {#          {% endif %}#}
   {#        </a>#}
   {#        <div class="mt-4">#}

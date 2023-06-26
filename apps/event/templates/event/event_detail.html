@@ -46,13 +46,13 @@
               {% endif %}
             </div>
             <a href="{% url 'event:event_list' %}" class="text-orange-600 mt-4">Back To Events</a>
-          <div class="bg-white shadow-lg rounded p-4 mt-4">
-            {% if Races %}
-              {% include 'results/race_result.html' %}
-            {% else %}
-              <h3> No race results for this event </h3>
-            {% endif %}
-          </div>
+            <div class="bg-white shadow-lg rounded p-4 mt-4">
+              {% if Races %}
+                {% include 'results/race_result.html' %}
+              {% else %}
+                <h3> No race results for this event </h3>
+              {% endif %}
+            </div>
           </div>
 
           <!-- Right Side Content -->
@@ -66,7 +66,7 @@
                 {% endif %}
                 {% if event.featured_event %}
                   <img style="max-width:30px" title="Featured Event"
-                       src="{% static 'images/bc-icon.png' %}" alt="My image"/>
+                       src="{% static 'images/bc-icon.png' %}" alt="Featured Event"/>
                 {% endif %}
               </div>
               <h5 class="py-1">{{ object.start_date }} - {{ object.end_date }}</h5>
@@ -78,7 +78,8 @@
             </div>
             <div class="bg-white shadow-lg rounded p-4 mt-4">
               {% if object.website %}
-                <a href="{{ object.website }}" class="mx-8 bg-cyan-600 hover:bg-cyan-800 text-white py-2 px-4 rounded block mt-4 text-center"
+                <a href="{{ object.website }}"
+                   class="mx-8 bg-cyan-600 hover:bg-cyan-800 text-white py-2 px-4 rounded block mt-4 text-center"
                    target="_blank"
                 >Event Website</a>
               {% endif %}
