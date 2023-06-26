@@ -18,19 +18,9 @@
       </p>
       <div class="flex">
         <button href="{% url 'membership:create_organization' %}"
-                class="button_body_orange">
-          <p class="text-sm font-medium leading-none text-white ">
-            <a href="{% url 'membership:create_organization' %}">
-              Register a Club
-            </a></p>
+                class="button_body_orange">Register a Club
         </button>
-        <button href=""
-                class="button_body_orange">
-          <p class="text-sm font-medium leading-none text-white">
-            <a href="{% url 'home' %}#join">
-              JOIN Bicycle Colorado
-            </a></p>
-        </button>
+        <button href="{% url 'home' %}#join" class="button_body_orange">JOIN Bicycle Colorado</button>
       </div>
     </div>
     {#    </div>#}
@@ -99,7 +89,7 @@
       {#                     src="{{ event.logo.url }}">#}
       {#              {% else %}#}
       {#                <img alt="Event " class="org_logo_sm"#}
-      {#                     src="{% static 'images/clear_250X250.png' %}">#}
+      {#                     src="{% static 'images/clear_250x250.png' %}">#}
       {#              {% endif %}#}
       {#            </td>#}
       {#            <td class="pl-3">#}

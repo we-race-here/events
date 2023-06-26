@@ -21,8 +21,9 @@
       </div>
     </div>
   </section>
-  {% include "components/event_list_search.html" %}
-  {% include "components/featured_list.html" %}
+  {% if not filtered %}
+    {% include "components/featured_list.html" %}
+  {% endif %}
   {% include "components/event_list_comp.html" %}
 
 {% endblock %}

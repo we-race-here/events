@@ -653,6 +653,15 @@ h4 {
   color: rgb(17 24 39 / var(--tw-text-opacity));
 }
 
+p {
+  text-align: justify;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  line-height: 1.625;
+  --tw-text-opacity: 1;
+  color: rgb(55 65 81 / var(--tw-text-opacity));
+}
+
 *, ::before, ::after {
   --tw-border-spacing-x: 0;
   --tw-border-spacing-y: 0;
@@ -1223,6 +1232,18 @@ h4 {
   background-color: rgb(21 94 117 / var(--tw-bg-opacity));
 }
 
+/*carrousel*/
+
+.carrousel_main {
+  margin-bottom: 2rem;
+  display: flex;
+  --tw-pan-x: pan-x;
+  touch-action: var(--tw-pan-x) var(--tw-pan-y) var(--tw-pinch-zoom);
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  overflow-x: scroll;
+}
+
 /*Page Sections*/
 
 /*INRO SECTION*/
@@ -1502,10 +1523,6 @@ h4 {
   grid-column: span 8 / span 8;
 }
 
-.m-5 {
-  margin: 1.25rem;
-}
-
 .mx-8 {
   margin-left: 2rem;
   margin-right: 2rem;
@@ -1758,10 +1775,6 @@ h4 {
 
 .max-w-md {
   max-width: 28rem;
-}
-
-.grow {
-  flex-grow: 1;
 }
 
 .table-auto {
