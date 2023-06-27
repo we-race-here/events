@@ -622,7 +622,7 @@ h2 {
   margin-bottom: 0.75rem;
   font-size: 1.25rem;
   line-height: 1.75rem;
-  font-weight: 500;
+  font-weight: 700;
   text-transform: capitalize;
   --tw-text-opacity: 1;
   color: rgb(17 24 39 / var(--tw-text-opacity));
@@ -1178,11 +1178,47 @@ label {
 .carrousel_main {
   margin-bottom: 2rem;
   display: flex;
+  width: 83.333333%;
   --tw-pan-x: pan-x;
   touch-action: var(--tw-pan-x) var(--tw-pan-y) var(--tw-pinch-zoom);
-  flex-wrap: nowrap;
-  overflow-x: auto;
+  flex-direction: row;
+  overflow: hidden;
   overflow-x: scroll;
+}
+
+@media (min-width: 640px) {
+  .carrousel_main {
+    margin-bottom: 0px;
+    width: 25%;
+  }
+}
+
+@media (min-width: 768px) {
+  .carrousel_main {
+    margin-bottom: 0px;
+    width: 50%;
+  }
+}
+
+.carrousel_image {
+  margin-left: auto;
+  margin-right: auto;
+  max-height: 150px;
+  -o-object-fit: scale-down;
+     object-fit: scale-down;
+}
+
+.carrousel_card {
+  margin-right: 2rem;
+  width: 75%;
+  flex: none;
+  overflow: hidden;
+}
+
+@media (min-width: 768px) {
+  .carrousel_card {
+    padding-bottom: 1rem;
+  }
 }
 
 /*Page Sections*/
@@ -1230,11 +1266,12 @@ label {
   margin-right: auto;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
+  justify-content: space-between;
   padding-left: 1.25rem;
   padding-right: 1.25rem;
-  padding-top: 2.5rem;
-  padding-bottom: 2.5rem;
+  padding-top: 1.25rem;
+  padding-bottom: 1.25rem;
   font-weight: 400;
   --tw-text-opacity: 1;
   color: rgb(75 85 99 / var(--tw-text-opacity));
@@ -1290,10 +1327,15 @@ label {
 
 @media (min-width: 1024px) {
   .body_intro {
-    flex-grow: 1;
     padding-left: 6rem;
   }
 }
+
+/*.body_intro {*/
+
+/*    @apply md:w-1/2 lg:pl-24 md:pl-16 flex flex-col md:items-start md:text-left items-center text-center;*/
+
+/*}*/
 
 /*RACE RESULTS LIST*/
 
@@ -1462,6 +1504,8 @@ label {
     line-height: 1.25rem;
   }
 }
+
+/*Champion slideshow*/
 
 .static {
   position: static;
@@ -1693,6 +1737,18 @@ label {
   height: 1px;
 }
 
+.h-\[10px\] {
+  height: 10px;
+}
+
+.h-\[15px\] {
+  height: 15px;
+}
+
+.h-\[17px\] {
+  height: 17px;
+}
+
 .max-h-\[250px\] {
   max-height: 250px;
 }
@@ -1747,6 +1803,26 @@ label {
 
 .w-full {
   width: 100%;
+}
+
+.w-10 {
+  width: 2.5rem;
+}
+
+.w-1\/2 {
+  width: 50%;
+}
+
+.w-\[10px\] {
+  width: 10px;
+}
+
+.w-\[15px\] {
+  width: 15px;
+}
+
+.w-\[17px\] {
+  width: 17px;
 }
 
 .min-w-full {
@@ -2194,12 +2270,16 @@ label {
   padding-left: 1.25rem;
 }
 
+.pr-4 {
+  padding-right: 1rem;
+}
+
 .pt-6 {
   padding-top: 1.5rem;
 }
 
-.pr-4 {
-  padding-right: 1rem;
+.pl-1 {
+  padding-left: 0.25rem;
 }
 
 .text-left {
