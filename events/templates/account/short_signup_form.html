@@ -21,7 +21,7 @@
         </div>
       {% endfor %}
       <div class="mt-4">
-        <label for="{{ form.first_name.id_for_label }}" class="block text-sm font-medium text-gray-700">First
+        <label for="{{ form.first_name.id_for_label }}">First
           Name</label>
         {{ form.first_name|add_class:"block w-full mt-1 border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" }}
         {% if form.first_name.errors %}
@@ -30,7 +30,7 @@
       </div>
 
       <div class="mt-4">
-        <label for="{{ form.last_name.id_for_label }}" class="block text-sm font-medium text-gray-700">Last Name</label>
+        <label for="{{ form.last_name.id_for_label }}">Last Name</label>
         {{ form.last_name|add_class:"block w-full mt-1 border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" }}
         {% if form.last_name.errors %}
           <div class="text-red-500 text-xs mt-1">{{ form.last_name.errors }}</div>
@@ -38,7 +38,7 @@
       </div>
 
       <div class="mt-4">
-        <label for="{{ form.email.id_for_label }}" class="block text-sm font-medium text-gray-700">Email</label>
+        <label for="{{ form.email.id_for_label }}">Email</label>
         {{ form.email|add_class:"block w-full mt-1 border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" }}
         {% if form.email.errors %}
           <div class="text-red-500 text-xs mt-1">{{ form.email.errors }}</div>
@@ -46,14 +46,14 @@
       </div>
 
       <div class="mt-4">
-        <label for="{{ form.password.id_for_label }}" class="block text-sm font-medium text-gray-700">Password</label>
+        <label for="{{ form.password.id_for_label }}">Password</label>
         {{ form.password1|add_class:"block w-full mt-1 border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" }}
         {% if form.password1.errors %}
           <div class="text-red-500 text-xs mt-1">{{ form.password1.errors }}</div>
         {% endif %}
       </div>
       <div class="mt-4">
-        <label for="{{ form.password.id_for_label }}" class="block text-sm font-medium text-gray-700">Confirm
+        <label for="{{ form.password.id_for_label }}">Confirm
           Password</label>
         {{ form.password2|add_class:"block w-full mt-1 border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" }}
         {% if form.password2.errors %}
@@ -63,21 +63,21 @@
       <div class="flex space-x-4">
 
         <div class="w-1/3">
-          <label for="{{ form.birth_day.id_for_label }}" class="block text-sm font-medium text-gray-700">Day</label>
+          <label for="{{ form.birth_day.id_for_label }}">Day</label>
           {{ form.birth_day|add_class:"block w-full mt-1 border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" }}
           {% if form.birth_day.errors %}
             <div class="text-red-500 text-xs mt-1">{{ form.birth_day.errors }}</div>
           {% endif %}
         </div>
         <div class="w-1/3">
-          <label for="{{ form.birth_month.id_for_label }}" class="block text-sm font-medium text-gray-700">Month</label>
+          <label for="{{ form.birth_month.id_for_label }}">Month</label>
           {{ form.birth_month|add_class:"block w-full mt-1 border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" }}
           {% if form.birth_month.errors %}
             <div class="text-red-500 text-xs mt-1">{{ form.birth_month.errors }}</div>
           {% endif %}
         </div>
         <div class="w-1/3">
-          <label for="{{ form.birth_year.id_for_label }}" class="block text-sm font-medium text-gray-700">Year</label>
+          <label for="{{ form.birth_year.id_for_label }}">Year</label>
           {{ form.birth_year|add_class:"block w-full mt-1 border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" }}
           {% if form.birth_year.errors %}
             <div class="text-red-500 text-xs mt-1">{{ form.birth_year.errors }}</div>
@@ -86,8 +86,8 @@
       </div>
 
       <div class="mt-4">
-        <label for="{{ form.gender.id_for_label }}" class="block text-sm font-medium text-gray-700">Gender</label>
-        {{ form.gender|add_class:"block w-full mt-1 border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" }}
+        <label for="{{ form.gender.id_for_label }}">Gender</label>
+        {{ form.gender|add_class:"form_input" }}
         {% if form.gender.errors %}
           <div class="text-red-500 text-xs mt-1">{{ form.gender.errors }}</div>
         {% endif %}
@@ -96,9 +96,9 @@
       <div id="parentFields" style="display: none;">
         <!-- Parent's name field -->
         <div class="mt-4">
-          <label for="{{ form.parent_name.id_for_label }}" class="block text-sm font-medium text-gray-700">Parent's
+          <label for="{{ form.parent_name.id_for_label }}">Parent's
             Name</label>
-          {{ form.parent_name|add_class:"block w-full mt-1 border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" }}
+          {{ form.parent_name|add_class:"form_input" }}
           {% if form.parent_name.errors %}
             <div class="text-red-500 text-xs mt-1">{{ form.parent_name.errors }}</div>
           {% endif %}
@@ -106,22 +106,22 @@
 
         <!-- Parent's email field -->
         <div class="mt-4">
-          <label for="{{ form.parent_email.id_for_label }}" class="block text-sm font-medium text-gray-700">Parent's
+          <label for="{{ form.parent_email.id_for_label }}">Parent's
             Email</label>
-          {{ form.parent_email|add_class:"block w-full mt-1 border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" }}
+          {{ form.parent_email|add_class:"form_input" }}
           {% if form.parent_email.errors %}
             <div class="text-red-500 text-xs mt-1">{{ form.parent_email.errors }}</div>
           {% endif %}
         </div>
 
-        <div class="mt-4">
-          <details class="open:ring-1 open:ring-black/5 dark:open:ring-white/10 open:shadow-lg p-6 rounded-lg">
-            <summary class="text-sm leading-6 text-slate-900  font-semibold select-none">
+        <div>
+          <details class="form_details">
+            <summary class="form_summary">
               {{ form.parent_terms_of_service|add_class:"form-checkbox text-indigo-600" }} I agree to Terms and Service
               (Parent)
             </summary>
-            <div class="mt-3 text-sm leading-6 text-slate-600 dark:text-slate-400">
-              <p>{% include "account/TermsOfService.html" %}</p>
+            <div class="form_details_text">
+              {% include "TOS/TermsOfService.html" %}
             </div>
           </details>
           {% if form.parent_terms_of_service.errors %}
@@ -129,87 +129,78 @@
           {% endif %}
 
         </div>
-
-        <div class="mt-4">
-
-          <details class="open:ring-1 open:ring-black/5 dark:open:ring-white/10 open:shadow-lg p-6 rounded-lg">
-            <summary class="text-sm leading-6 text-slate-900  font-semibold select-none">
+        <div>
+          <details class="form_details">
+            <summary class="form_summary">
               {{ form.parent_user_agreement_waiver|add_class:"form-checkbox text-indigo-600" }} I accept the waiver
               (Parent)
             </summary>
-            <div class="mt-3 text-sm leading-6 text-slate-600 dark:text-slate-400">
-              <p>{% include "account/WaiverReleaseAgreement.html" %}</p>
+            <div class="form_details_text">
+              {% include "TOS/WaiverReleaseAgreement.html" %}
             </div>
           </details>
           {% if form.parent_user_agreement_waiver.errors %}
             <div class="text-red-500 text-xs mt-1">{{ form.parent_user_agreement_waiver.errors }}</div>
           {% endif %}
-
         </div>
       </div>
 
-      <div class="mt-4">
-        <label for="{{ form.usac_number.id_for_label }}" class="block text-sm font-medium text-gray-700">USAC
+      <div class="mt-2">
+        <label for="{{ form.usac_number.id_for_label }}">USAC
           Number</label>
-        {{ form.usac_number|add_class:"block w-full mt-1 border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" }}
+        {{ form.usac_number|add_class:"form_input" }}
         {% if form.usac_number.errors %}
           <div class="text-red-500 text-xs mt-1">{{ form.usac_number.errors }}</div>
         {% endif %}
       </div>
-      <div class="mt-4" id="id_opt_in" style="display: block;">
-        <details class="open:ring-1 open:ring-black/5 dark:open:ring-white/10 open:shadow-lg p-6 rounded-lg">
-          <summary class="text-sm leading-6 text-slate-900  font-semibold select-none">
+      <div id="id_opt_in">
+        <details class="form_details">
+          <summary class="form_summary">
             {{ form.opt_in_email|add_class:"form-checkbox text-indigo-600" }} Opt out of promotional emails
           </summary>
-          <div class="mt-3 text-sm leading-6 text-slate-600 dark:text-slate-400">
-            <p></p>
+          <div class="form_details_text">
+            {% include "TOS/PromotionalEmails.html" %}
           </div>
         </details>
         {% if form.opt_in_email.errors %}
           <div class="text-red-500 text-xs mt-1">{{ form.opt_in_email.errors }}</div>
         {% endif %}
       </div>
-
-
-      <div class="mt-4">
-        <details class="open:ring-1 open:ring-black/5 dark:open:ring-white/10 open:shadow-lg p-6 rounded-lg">
-          <summary class="text-sm leading-6 text-slate-900  font-semibold select-none">
+      <div>
+        <details class="form_details">
+          <summary class="form_summary">
             {{ form.terms_of_service|add_class:"form-checkbox text-indigo-600" }} I agree to Terms and Service
           </summary>
-          <div class="mt-3 text-sm leading-6 text-slate-600 dark:text-slate-400">
-            <p>{% include "account/TermsOfService.html" %}</p>
+          <div class="form_details_text">
+            {% include "TOS/TermsOfService.html" %}
           </div>
         </details>
         {% if form.terms_of_service.errors %}
           <div class="text-red-500 text-xs mt-1">{{ form.terms_of_service.errors }}</div>
         {% endif %}
-
       </div>
 
-      <div class="mt-4">
-
-        <details class="open:ring-1 open:ring-black/5 dark:open:ring-white/10 open:shadow-lg p-6 rounded-lg">
-          <summary class="text-sm leading-6 text-slate-900  font-semibold select-none">
+      <div>
+        <details class="form_details">
+          <summary class="form_summary">
             {{ form.user_agreement_waiver|add_class:"form-checkbox text-indigo-600" }} I accept the waiver
           </summary>
-          <div class="mt-3 text-sm leading-6 text-slate-600 dark:text-slate-400">
-            <p>{% include "account/WaiverReleaseAgreement.html" %}</p>
+          <div class="form_details_text">
+            {% include "TOS/WaiverReleaseAgreement.html" %}
           </div>
         </details>
         {% if form.user_agreement_waiver.errors %}
           <div class="text-red-500 text-xs mt-1">{{ form.user_agreement_waiver.errors }}</div>
         {% endif %}
-
       </div>
 
-      <div class="mt-4">
-
-        <details class="open:ring-1 open:ring-black/5 dark:open:ring-white/10 open:shadow-lg p-6 rounded-lg">
-          <summary class="text-sm leading-6 text-slate-900  font-semibold select-none">
+      <div>
+        <details class="form_details">
+          <summary class="form_summary">
             {{ form.privacy_policy|add_class:"form-checkbox text-indigo-600" }} I accept to Privacy Policy
           </summary>
-          <div class="mt-3 text-sm leading-6 text-slate-600 dark:text-slate-400">
-            <p>{% include "account/PrivacyPolicy.html" %}</p>
+          <div class="form_details_text">
+            {% include "TOS/PrivacyPolicy.html" %}
           </div>
         </details>
         {% if form.user_agreement_waiver.errors %}
@@ -218,17 +209,15 @@
 
       </div>
 
-      <div class="mt-4 flex flex-col items-center">
-        {{ form.turnstile|add_class:"block w-full mt-1 border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" }}
+      <div class="my-2 flex flex-col items-center">
+        {{ form.turnstile|add_class:"" }}
         {% if form.turnstile.errors %}
           <div class="text-red-500 text-xs mt-1">{{ form.turnstile.errors }}</div>
         {% endif %}
       </div>
-      <br>
-
       <div>
         <button type="submit"
-                class="group relative w-full  flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-orange-600	 hover:bg-slate-950		 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                class="group relative py-2 w-full flex justify-center button_body_orange">
           Sign In
         </button>
       </div>
@@ -290,4 +279,5 @@
     document.getElementById('id_birth_year').addEventListener('change', function () {
         cal_age()
     });
+    cal_age()
 </script>

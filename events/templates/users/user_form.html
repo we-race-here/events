@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load crispy_forms_tags %}
 
-{% block title %}{{ user.name }}{% endblock %}
+{% block title %}{{ user.full_name }}{% endblock %}
 
 {% block content %}
   <h1>{{ user.name }}</h1>
@@ -10,7 +10,7 @@
     {{ form|crispy }}
     <div class="control-group">
       <div class="controls">
-        <button type="submit" class="btn btn-primary">Update</button>
+        <button type="submit" class="button_body_orange">Update</button>
       </div>
     </div>
   </form>
