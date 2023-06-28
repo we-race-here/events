@@ -34,11 +34,7 @@ class EventListView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         # Champion Events
-        champions = Event.objects.all().filter(Q(champion_event=True) & Q(end_date__gte=date.today())).order_by("?")
-        try:
-            context["champions"] = champions[0]
-        except IndexError:
-            context["champions"] = None
+        context["champions"] = Event.objects.all().filter(Q(champion_event=True) & Q(end_date__gte=date.today()))
         #  Feature event
         context["featured"] = Event.objects.all().filter(featured_event=True)[:8]
         context["filtered"] = bool(self.request.GET)
