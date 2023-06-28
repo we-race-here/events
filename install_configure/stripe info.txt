@@ -1,0 +1,25 @@
+"""
+Alternative checkout setup
+stripe.checkout.Session.create(
+  success_url=success_url,
+  cancel_url=cancel_url,
+  payment_method_types=["card"],
+  mode="payment",
+  metadata={
+    "foo": "FOO",
+  },
+  payment_intent_data={
+    "metadata": {
+      "bar": "BAR",
+    }
+  },
+  line_items=[
+    {
+      "name": product_name,
+      "quantity": quantity,
+      "currency": currency,
+      "amount": unit_price,
+    },
+  ]
+)
+"""
