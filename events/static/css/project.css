@@ -1275,13 +1275,6 @@ label {
 
 /* The dots/bullets/indicators */
 
-.dot {
-  height: 15px;
-  width: 15px;
-  --tw-bg-opacity: 1;
-  background-color: rgb(0 0 0 / var(--tw-bg-opacity));
-}
-
 .active, .dot:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(255 251 235 / var(--tw-bg-opacity));
@@ -1572,14 +1565,6 @@ label {
 }
 
 /*Champion slideshow*/
-
-.visible {
-  visibility: visible;
-}
-
-.invisible {
-  visibility: hidden;
-}
 
 .static {
   position: static;
