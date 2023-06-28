@@ -47,7 +47,7 @@ DEBUG_TOOLBAR_CONFIG = {
 }
 # https://django-debug-toolbar.readthedocs.io/en/latest/installation.html#internal-ips
 INTERNAL_IPS = ["127.0.0.1", "10.0.2.2"]
-MY_IP = env.list("MY_IP")
+MY_IP = env.list("MY_IP", default=INTERNAL_IPS)
 if MY_IP:
     INTERNAL_IPS += MY_IP
 if env("USE_DOCKER", default=False) == "yes":
