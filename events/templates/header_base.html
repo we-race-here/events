@@ -1,14 +1,14 @@
 {% load static i18n %}
-<header class="bg-white relative">
+<header class="bg-white relative w-full">
   <!-- First level navigation -->
-  <nav class="container mx-auto py-4 bord">
+  <nav class="border-b-2 border-gray-200 pr-4">
     <div class="flex justify-end items-center">
       {#      <div class="mr-4">#}
       <a href="https://www.bicyclecolorado.org/" target="_blank"
          class="top_menu_txt">BICYCLE
         COLORADO</a>
       {#      </div>#}
-      <div class="flex justify-end">
+      <div class="flex flex-row">
         <!-- Check login status -->
         {% if request.user.is_authenticated %}
           <!-- User Menu -->
@@ -43,9 +43,10 @@
                       class="user_menu_txt"
                       href="{% url 'account_logout' %}"><i class="fas fa-sign-out-alt px-2"></i>Sign Out </a></li>
                   {% if user.is_staff %}
-                    <li class="py-1"><p class="user_menu_txt">
+                    <li class="py-1">
                       <hr>
-                      BC STAFF</p></li>
+                      <p class="user_menu_txt">BC STAFF</p>
+                    </li>
 
                     <li class="py-1"><a
                         class="user_menu_txt"
@@ -78,42 +79,42 @@
 
           {% endif %}
           {# URL provided by django-allauth/account/urls.py #}
-          <button style="margin-left:4px" type="button" onclick="location.href='{% url 'account_login' %}'"
-                  class="signin_button">
+          <button type="button" onclick="location.href='{% url 'account_login' %}'"
+                  class="ml-1 signin_button">
             {% translate "Sign In" %}
           </button>
         {% endif %}
       </div>
     </div>
   </nav>
-  <hr class="h-px bg-gray-200 border-0 dark:bg-gray-700">
+  {#  <hr class="h-px bg-gray-200 border-0 dark:bg-gray-700">#}
+  {#  <!-- Second level navigation -->#}
+  {#  <hr class="h-px bg-gray-200 border-0 dark:bg-gray-700">#}
   <!-- Second level navigation -->
-  <hr class="h-px bg-gray-200 border-0 dark:bg-gray-700">
-  <!-- Second level navigation -->
-  <nav class="bg-white-600 py-5 ">
+  <nav class="bg-white-600 py-5">
     <div class="container mx-auto">
-      <ul class="flex justify-between items-center text-black">
+      <ul class="flex justify-end items-center text-black">
         <!-- Add the logo inside a new 'logo-container' div -->
         <div class="logo-container mt-2">
           <a href="{% url 'home' %}">
-            <img class="object-scale-down h-auto w-40 rounded-full"
+            <img class="object-scale-down h-auto w-20 lg:w-40 md:w-30 rounded-full"
                  src="{% static 'images/BC_EventSupport_site_logo.png' %}"
                  alt="Logo"></a>
         </div>
         <li>
         </li>
         <div>
-          <ul class="flex justify-between pl-2">
-            <li>
-              <a href="{% url  'event:event_list' %}">
-                <span
-                    class="menu_txt">Events</span>
+          <ul class="flex justify-between">
+            <li class="menu_txt">
+              <a href="{% url  'event:event_list' %}">Events
+                {#                <span#}
+                {#                    class="menu_txt">Events</span>#}
               </a>
             </li>
-            <li>
-              <a href="{% url "event:events_results_list" %}">
-                <span
-                    class="menu_txt">Results</span>
+            <li class="menu_txt">
+              <a href="{% url "event:events_results_list" %}">Results
+                {#                <span#}
+                {#                    >Results</span>#}
               </a>
             </li>
             <li>

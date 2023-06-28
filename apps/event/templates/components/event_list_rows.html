@@ -25,17 +25,16 @@
           {% endif %}
         </div>
       </td>
-      <td class="pl-5">
-        <div class="flex items-center">
+      <td class="pl-1">
+        <div class="flex justify-end items-center">
           {% if event.is_usac_permitted %}
-            <img src="{% static "images/USACycling_Logo.svg" %}" style="max-width:17px" alt="usac">
+            <img class="w-[17px] h-[17px] object-fit object-center" src="{% static "images/USACycling_Logo.svg" %}"
+                 alt="usac">
           {% endif %}
           {% if event.featured_event %}
-            <img style="max-width:30px" title="Featured Event"
+            <img class="w-[17px] h-[17px] object-fit object-center" title="Featured Event"
                  src="{% static 'images/bc-icon.png' %}" alt="Featured Event"/>
           {% endif %}
-        </div>
-
         </div>
       </td>
       <td>

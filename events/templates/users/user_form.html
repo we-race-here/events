@@ -1,17 +1,17 @@
 {% extends "base.html" %}
 {% load crispy_forms_tags %}
 
-{% block title %}Edit User: {{ user.username }}{% endblock %}
+
+{% block title %}{{ user.full_name }}{% endblock %}
 
 {% block content %}
-  <div class="container mx-auto">
-    <h1 class="text-3xl font-bold mb-4">Edit User: {{ user.full_name }}</h1>
-    <form class="max-w-lg mx-auto" method="post" action="{% url 'users:update' %}">
-      {% csrf_token %}
-      {{ form|crispy }}
-
-      <div class="flex justify-center mt-6">
-        <button type="submit" class="px-4 py-2 bg-blue-500 text-white font-medium rounded hover:bg-blue-600">Update</button>
+  <h1>{{ user.name }}</h1>
+  <form class="form-horizontal" method="post" action="{% url 'users:update' %}">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <div class="control-group">
+      <div class="controls">
+        <button type="submit" class="button_body_orange">Update</button>
       </div>
     </form>
   </div>
