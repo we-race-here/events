@@ -132,40 +132,7 @@
     }
 
     .carrousel_card {
-        @apply cursor-pointer border-2 select-none hover:border-cyan-600 bg-white mr-3 md:p-4 w-11/12;
-    }
-
-    /*.carrousel_card {*/
-    /*    @apply flex-none cursor-pointer snap-center border-2 select-none hover:border-cyan-600 bg-white mr-3 md:p-4 w-11/12;*/
-    /*}*/
-    .prev, .next {
-        @apply cursor-pointer top-1/2 transform -translate-y-1/2 flex text-left font-bold
-        text-cyan-600 rounded-full hover:bg-gray-700;
-    }
-
-    /* Position the "next button" to the right */
-    .next {
-        @apply right-0;
-    }
-
-    /* On hover, add a black background color with a little bit see-through */
-    .prev:hover, .next:hover {
-        @apply bg-gray-200;
-    }
-
-    /* Number text (1/3 etc) */
-    .numbertext {
-        @apply align-text-bottom text-black;
-    }
-
-    /* The dots/bullets/indicators */
-    .dot {
-        @apply bg-black h-[15px] w-[15px];
-
-    }
-
-    .active, .dot:hover {
-        @apply bg-amber-50;
+        @apply cursor-pointer border-2 select-none hover:border-cyan-600 bg-white md:p-4 w-11/12;
     }
 
 
