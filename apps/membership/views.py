@@ -14,10 +14,11 @@ from django.views.generic import ListView, TemplateView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, DeleteView, FormView, UpdateView
 
-from ..store.stripe_utils import products, single_item_checkout
+from events.users.permission_utils import StaffRequiredMixin
 from .forms import OrganizationForm, OrganizationMemberJoinForm
 from .member_utils import club_report, get_club_payments
 from .models import Organization, OrganizationMember
+from ..store.stripe_utils import single_item_checkout
 
 User = get_user_model()
 stripe.api_key = settings.STRIPE_SECRET_KEY
@@ -194,14 +195,13 @@ class OrganizationAdmin(LoginRequiredMixin, DetailView):
             return redirect(checkout_session.url)
 
 
-class BCAdminView(LoginRequiredMixin, TemplateView):
-    template_name = "admin/bcadmin.html"
-    product_fields = ["name", ""]
+class ClubAdmin(LoginRequiredMixin, StaffRequiredMixin, TemplateView):
+    template_name = "admin/club_admin.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["clubs"] = club_report()
-        context["products"] = products()
+
         return context
 
     def get(self, *args, **kwargs):

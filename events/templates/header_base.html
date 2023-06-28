@@ -55,15 +55,17 @@
                     </li>
                     <li class="py-1"><a
                         class="user_menu_txt"
-                        href="{% url 'membership:bcadmin' %}"><i class="fas fa-screwdriver-wrench px-2"></i>Admin
-                      page</a>
+                        href="{% url 'membership:clubs_admin' %}"><i class="fas fa-solid fa-people-group px-2"></i>Clubs</a>
                     </li>
                     <li class="py-1"><a
                         class="user_menu_txt"
-                        href="{% url 'usac:importcsv' %}"><i class="fas fa-screwdriver-wrench px-2"></i>Import USAC</a>
+                        href="{% url 'store:stripe_accounting' %}"><i class="fas fa-brands fa-cc-stripe px-2"></i>Stripe</a>
+                    </li>
+                    <li class="py-1"><a
+                        class="user_menu_txt"
+                        href="{% url 'usac:importcsv' %}"><i class="fas fa-solid fa-file-csv px-2"></i>Import USAC</a>
                     </li>
                   {% endif %}
-
                 </ul>
               </div>
             </li>

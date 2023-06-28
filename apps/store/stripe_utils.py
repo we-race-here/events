@@ -1,25 +1,29 @@
 import stripe
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
+from stripe import ListObject
 
 from config.helpers.Exception import exception
 
 
-def products() -> dict:
+def products() -> tuple[ListObject, list[str]]:
     products_list = stripe.Product.list(limit=100)
+    errors = []
     for product in products_list:
         try:
             unit_amount_decimal = stripe.Price.retrieve(id=product["default_price"])["unit_amount_decimal"]
             unit_amount_decimal = float(unit_amount_decimal) / 100
         except ValueError:
             unit_amount_decimal = None
+            # errors.append(f"ValueError: {product}")
         except stripe.error.InvalidRequestError:
             unit_amount_decimal = None
+            # errors.append(f"stripe.error.InvalidRequestError: {product}")
         except stripe.error.APIConnectionError:
             unit_amount_decimal = None
-
-        product["unit_amount_decimal"] = unit_amount_decimal
-    return products_list
+            errors.append(f"stripe.error.APIConnectionError: {product}")
+        # product["unit_amount_decimal"] = unit_amount_decimal
+    return products_list, errors
 
 
 def single_item_checkout(request, object) -> redirect:

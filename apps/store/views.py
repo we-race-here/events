@@ -3,10 +3,14 @@ import logging
 
 import stripe
 from django.conf import settings
-from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.views.generic import TemplateView
 
 from apps.store.models import Payment
+from apps.store.stripe_utils import products
+from events.users.permission_utils import StaffRequiredMixin
 
 logger = logging.getLogger(__name__)
 
@@ -55,3 +59,12 @@ def payment_webhook(request):
             logger.error(e)
             return HttpResponse(status=400)
     return HttpResponse(status=200)
+
+
+class StripeAccounting(LoginRequiredMixin, StaffRequiredMixin, TemplateView):
+    template_name = "admin/stripe_accounting.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["products"], context["errors"] = products()
+        return context
