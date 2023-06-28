@@ -8,33 +8,6 @@
   <div class="container mx-auto px-4 py-8">
     <h1 class="text-3xl font-bold mb-4">BC staff admin tools</h1>
   </div>
-  <div>
-    <b>Upload/import "Race promoter download" records from USAC</b>
-    {{ upload_done }}
-    {% if user.is_staff %}
-      <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <input type="hidden" name="usacdownload" value="usacdownload">
-        <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-          Upload
-        </button>
-      </form>
-      {% if attempted %}
-        <div>Attempted records: {{ attempted }}</div>
-        <div>Duplicate records not imported: {{ duplicates }}</div>
-        <div>Rows created: {{ rows_created }}</div>
-        <div>Records with bad or missing data. Probably still imported.</div>
-        {% for e in errors %}
-          <div>{{ e }}</div>
-        {% endfor %}
-      {% endif %}
-    {% else %}
-      <p>You are not authorized to view this page.</p>
-    {% endif %}
-  </div>
-
-  <hr class="my-3">
 
   <b>Club Data</b>
 

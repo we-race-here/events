@@ -1,7 +1,6 @@
 # views.py
 
 import stripe
-
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
@@ -15,12 +14,10 @@ from django.views.generic import ListView, TemplateView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, DeleteView, FormView, UpdateView
 
-from ..usac.admin import usac_license_from_csv
-from ..usac.forms import CsvImportForm
+from ..store.stripe_utils import products, single_item_checkout
 from .forms import OrganizationForm, OrganizationMemberJoinForm
 from .member_utils import club_report, get_club_payments
 from .models import Organization, OrganizationMember
-from ..store.stripe_utils import products, single_item_checkout
 
 User = get_user_model()
 stripe.api_key = settings.STRIPE_SECRET_KEY
@@ -207,48 +204,6 @@ class BCAdminView(LoginRequiredMixin, TemplateView):
         context["products"] = products()
         return context
 
-    def post(self, *args, **kwargs):
-        context = self.get_context_data(**kwargs)
-        if self.request.POST.get("usacdownload", None):
-            form = CsvImportForm(self.request.POST, self.request.FILES)
-            if form.is_valid():
-                csv_file = self.request.FILES["csv_file"]
-                decoded_file = csv_file.read().decode("utf-8").splitlines()
-                context.update(usac_license_from_csv(decoded_file))
-                return self.render_to_response(context)
-        form = CsvImportForm()
-        context.update({"form": form})
-        return self.render_to_response(context)
-
     def get(self, *args, **kwargs):
         context = self.get_context_data(**kwargs)
-        form = CsvImportForm()
-        context.update({"form": form})
         return self.render_to_response(context)
-
-
-"""
-Alternative checkout setup
-stripe.checkout.Session.create(
-  success_url=success_url,
-  cancel_url=cancel_url,
-  payment_method_types=["card"],
-  mode="payment",
-  metadata={
-    "foo": "FOO",
-  },
-  payment_intent_data={
-    "metadata": {
-      "bar": "BAR",
-    }
-  },
-  line_items=[
-    {
-      "name": product_name,
-      "quantity": quantity,
-      "currency": currency,
-      "amount": unit_price,
-    },
-  ]
-)
-"""
