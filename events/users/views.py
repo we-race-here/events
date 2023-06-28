@@ -24,7 +24,6 @@ user_detail_view = UserDetailView.as_view()
 
 class UserUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     model = User
-
     fields = [
         "first_name",
         "last_name",
