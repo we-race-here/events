@@ -7,7 +7,6 @@
 
 
 {% block inner %}
-
   <section id='home_content' class="section_intro_content">
     {#    <div class="container mx-auto flex px-5 py-10 md:flex-row flex-col items-center">#}
     <div class="hero_intro_image">
@@ -24,10 +23,11 @@
         Create a member account to view your race results, join a club or team, participate in season-long Cup points
         competitions, receive discount offers from our partners and opt-in to updates. Clubs and organizations can
         create accounts to manage their members, events and race results.
-        <b>Join now to join the organization that is working to support bike riders, clubs, organizations and events
+        <b>Join the organization that is working to support bike riders, clubs, organizations and events
           across Colorado!</b>
         {% if not request.user.is_authenticated %}
-          <button href="{% url 'home' %}#join" class="button_body_orange">JOIN Bicycle Colorado</button>
+          <button onclick="location.href='{% url "home" %}#join'" class="button_body_orange">JOIN Bicycle Colorado
+          </button>
         {% endif %}
 
       </p>
@@ -50,7 +50,7 @@
     </div>
     {#    </div>#}
   </section>
-  <section id="join">
+  <section id="join" name="join">
     {% if not request.user.is_authenticated %}
       {% include "account/short_signup_form.html" %}
     {% endif %}

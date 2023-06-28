@@ -1,35 +1,80 @@
 {% load static i18n %}
 <div class="carrousel_main">
   {% for event in champions %}
-    <div class="carrousel_card" onclick="location.href='{% url "event:event_detail" event.pk %}'">
-    <div class="block relative h-150 rounded overflow-hidden">
-      {% if event.logo and event.champion_event %}
-        <img alt="logo" class="carrousel_image" src="{{ event.logo.url }}">
-      {% else %}
-        <img alt="Logo" class="carrousel_image" src="{% static 'images/clear_250x250.png' %}">
+    <div name="card" class="carrousel_card hover:border-cyan-600 visd"
+         onclick="location.href='{% url "event:event_detail" event.pk %}'">
+      <div class="block relative h-150 rounded overflow-hidden">
+        {% if event.logo and event.champion_event %}
+          <img alt="logo" class="carrousel_image" src="{{ event.logo.url }}">
+        {% else %}
+          <img alt="Logo" class="carrousel_image" src="{% static 'images/clear_250x250.png' %}">
+        {% endif %}
+      </div>
+      <h3 class="text-gray-500 text-sm tracking-widest title-font mb-1 text-center bg-[#e9f1c3]">
+        {{ event.start_date }}
+        {% if event.end_date %}
+          -{{ event.end_date }}
+        {% endif %}
+      </h3>
+      <h3 class="text-center">{{ event.name }}</h3>
+      <h3 class="text-gray-500 text-sm tracking-widest title-font mb-1 text-center font-semibold">
+        {% if event.city %}
+          {{ event.city }}
+        {% endif %}
+        {% if event.state %}
+          {{ event.state }}
+        {% endif %}
+      </h3>
+      {% if event.blurb %}
+        <p class="mt-1 text-justify">{{ event.blurb|truncatewords:50 }}</p>
       {% endif %}
     </div>
-    <h3 class="text-gray-500 text-sm tracking-widest title-font mb-1 text-center bg-[#e9f1c3]">
-      {{ event.start_date }}
-      {% if event.end_date %}
-        -{{ event.end_date }}
-      {% endif %}
-    </h3>
-    <h3 class="text-center">{{ event.name }}</h3>
-    <h3 class="text-gray-500 text-sm tracking-widest title-font mb-1 text-center font-semibold">
-      {% if event.city %}
-        {{ event.city }}
-      {% endif %}
-      {% if event.state %}
-        {{ event.state }}
-      {% endif %}
-    </h3>
-    {% if event.blurb %}
-      <p class="mt-1 text-justify">
-        {{ event.blurb|truncatewords:50 }}
-      </p>
-    {% endif %}
+
   {% endfor %}
+  <a class="prev" onclick="plusSlides(-1)">prev</a>
+  <a class="next" onclick="plusSlides(1)">next</a>
+  <div style="text-align:center">
+    <span class="dot" onclick="currentSlide(1)">DOT</span>
+    <span class="dot" onclick="currentSlide(2)">DOT</span>
   </div>
 </div>
-</div>
+<style>
+    .visd {
+        display: none;
+    }
+</style>
+<script>
+    let slideIndex = 1;
+    showSlides(slideIndex);
+
+    // Next/previous controls
+    function plusSlides(n) {
+        showSlides(slideIndex += n);
+    }
+
+    // Thumbnail image controls
+    function currentSlide(n) {
+        showSlides(slideIndex = n);
+    }
+
+    function showSlides(n) {
+        let i;
+        let slides = document.getElementsByName("card");
+        let dots = document.getElementsByClassName("dot");
+        if (n > slides.length) {
+            slideIndex = 1
+        }
+        if (n < 1) {
+            slideIndex = slides.length
+        }
+        for (i = 0; i < slides.length; i++) {
+            slides[i].style.display = "none";
+            {#slides[i].className = slides[i].className.replace(" invisible", " visible");#}
+        }
+        for (i = 0; i < dots.length; i++) {
+            dots[i].className = dots[i].className.replace(" active", "");
+        }
+        slides[slideIndex - 1].style.display = "block";
+        dots[slideIndex - 1].className += " active";
+    }
+</script>
