@@ -153,6 +153,7 @@
           <div class="text-red-500 text-xs mt-1">{{ form.usac_number.errors }}</div>
         {% endif %}
       </div>
+
       <div id="id_opt_in">
         <details class="form_details">
           <summary class="form_summary">
@@ -166,6 +167,7 @@
           <div class="text-red-500 text-xs mt-1">{{ form.opt_in_email.errors }}</div>
         {% endif %}
       </div>
+
       <div>
         <details class="form_details">
           <summary class="form_summary">
@@ -181,6 +183,7 @@
       </div>
 
       <div>
+
         <details class="form_details">
           <summary class="form_summary">
             {{ form.user_agreement_waiver|add_class:"form-checkbox text-indigo-600" }} I accept the waiver
@@ -195,6 +198,7 @@
       </div>
 
       <div>
+
         <details class="form_details">
           <summary class="form_summary">
             {{ form.privacy_policy|add_class:"form-checkbox text-indigo-600" }} I accept to Privacy Policy
@@ -238,7 +242,6 @@
 
 <script>
     function calculateAge(birthday) {
-        console.log(birthday)
         var ageDifMs = Date.now() - birthday.getTime();
         var ageDate = new Date(ageDifMs);
         return Math.abs(new Date().getFullYear() - birthday.getFullYear());
