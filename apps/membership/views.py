@@ -195,9 +195,8 @@ class OrganizationAdmin(LoginRequiredMixin, DetailView):
             return redirect(checkout_session.url)
 
 
-class BCAdminView(LoginRequiredMixin, StaffRequiredMixin, TemplateView):
-    template_name = "admin/bcadmin.html"
-    product_fields = ["name", ""]
+class ClubAdmin(LoginRequiredMixin, StaffRequiredMixin, TemplateView):
+    template_name = "admin/club_admin.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

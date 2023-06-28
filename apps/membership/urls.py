@@ -2,7 +2,7 @@
 from django.urls import path
 
 from .views import (
-    BCAdminView,
+    ClubAdmin,
     CreateOrganizationView,
     DeleteOrganizationView,
     JoinOrganizationView,
@@ -23,5 +23,5 @@ urlpatterns = [
     path("org/<int:pk>/delete/", DeleteOrganizationView.as_view(), name="delete_organization"),
     path("org/join", JoinOrganizationView.as_view(), name="join_organization"),
     path("org/join/<int:organization_id>/", JoinOrganizationView.as_view(), name="join_organization_from_details"),
-    path("bcadmin/", BCAdminView.as_view(), name="bcadmin"),
+    path("org/clubs_admin/", ClubAdmin.as_view(), name="clubs_admin"),
 ]
