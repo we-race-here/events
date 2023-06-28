@@ -20,9 +20,10 @@
     <!-- https://fontawesome.com/docs/web/use-with/python-django -->
     <!-- One file includes all the Font Awesome Free icons and utilities -->
     <link href="{% static 'fontawesomefree/css/all.min.css' %}" rel="stylesheet" type="text/css">
-
     <!-- Tailwind -->
     <link href="{% static 'css/project.css' %}" rel="stylesheet">
+    <!-- splide-->
+    <link href="{% static 'css/splide.min.css' %}" rel="stylesheet">
     {#    <script rel="stylesheet" src="{% static 'css/project.css' %}"></script>#}
     <!-- Temparary hack to define custom tailwind css-->
     <!--  <script src="https://cdn.tailwindcss.com"></script>-->
@@ -33,6 +34,8 @@
     {# Placed at the top of the document so pages load faster with defer #}
     <!-- Load ckeditor -->
     <script src="{% static 'ckeditor/ckeditor.js' %}"></script>
+    <!-- splide-->
+    <script src="{% static 'js/splide.min.js' %}"></script>
     <!-- usefathon analytics -->
     {% if 'events.bicyclecolorado.org' in request.get_host %}
       <script src="https://cdn.usefathom.com/script.js" data-site="ARATEZFL" defer></script>

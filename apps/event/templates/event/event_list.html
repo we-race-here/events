@@ -3,11 +3,11 @@
 {% load extra_tags %}
 {% block inner %}
   <!--- into section -->
-  <section id='event_list_intro'
-           class="section_intro_content container mx-auto flex px-5 py-10 md:flex-row flex-col items-center">
-    <div class="hero_intro_image">
-      <img class="object-cover object-center rounded" alt="hero" src="{% static 'images/events_hero.jpg' %}">
-    </div>
+  <section id='event_list_intro' class="section_intro_content">
+    {#    <div class="hero_intro_image">#}
+    {#      <img class="object-cover object-center rounded" alt="hero" src="{% static 'images/events_hero.jpg' %}">#}
+    {#    </div>#}
+    {% include "components/champion_card.html" %}
     <div
         class="body_intro">
       <h1>Event Calendar</h1>

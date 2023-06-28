@@ -1130,8 +1130,8 @@ label {
 
 .org_name {
   margin-right: 0.5rem;
-  font-size: 1.25rem;
-  line-height: 1.75rem;
+  font-size: 1rem;
+  line-height: 1.5rem;
   font-weight: 700;
   line-height: 1;
   --tw-text-opacity: 1;
@@ -1175,15 +1175,18 @@ label {
 
 /*carrousel*/
 
+/*.carrousel_main {*/
+
+/*    @apply flex overflow-x-auto snap-mandatory snap-x hover:scroll-auto items-start mb-8 md:mb-0 sm:mb-0*/
+
+/*    w-5/6 md:w-1/2 sm:w-1/4;*/
+
+/*}*/
+
 .carrousel_main {
   margin-bottom: 2rem;
   display: flex;
   width: 83.333333%;
-  --tw-pan-x: pan-x;
-  touch-action: var(--tw-pan-x) var(--tw-pan-y) var(--tw-pinch-zoom);
-  flex-direction: row;
-  overflow: hidden;
-  overflow-x: scroll;
 }
 
 @media (min-width: 640px) {
@@ -1209,16 +1212,72 @@ label {
 }
 
 .carrousel_card {
-  margin-right: 2rem;
-  width: 75%;
-  flex: none;
-  overflow: hidden;
+  margin-right: 0.75rem;
+  width: 91.666667%;
+  cursor: pointer;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+  border-width: 2px;
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity));
+}
+
+.carrousel_card:hover {
+  --tw-border-opacity: 1;
+  border-color: rgb(8 145 178 / var(--tw-border-opacity));
 }
 
 @media (min-width: 768px) {
   .carrousel_card {
-    padding-bottom: 1rem;
+    padding: 1rem;
   }
+}
+
+/*.carrousel_card {*/
+
+/*    @apply flex-none cursor-pointer snap-center border-2 select-none hover:border-cyan-600 bg-white mr-3 md:p-4 w-11/12;*/
+
+/*}*/
+
+.prev, .next {
+  top: 50%;
+  display: flex;
+  --tw-translate-y: -50%;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+  cursor: pointer;
+  border-radius: 9999px;
+  text-align: left;
+  font-weight: 700;
+  --tw-text-opacity: 1;
+  color: rgb(8 145 178 / var(--tw-text-opacity));
+}
+
+.prev:hover, .next:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(55 65 81 / var(--tw-bg-opacity));
+}
+
+/* Position the "next button" to the right */
+
+.next {
+  right: 0px;
+}
+
+/* On hover, add a black background color with a little bit see-through */
+
+.prev:hover, .next:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(229 231 235 / var(--tw-bg-opacity));
+}
+
+/* Number text (1/3 etc) */
+
+/* The dots/bullets/indicators */
+
+.active, .dot:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 251 235 / var(--tw-bg-opacity));
 }
 
 /*Page Sections*/
@@ -1432,7 +1491,7 @@ label {
   -webkit-user-select: none;
      -moz-user-select: none;
           user-select: none;
-  font-weight: 600;
+  font-weight: 400;
   --tw-text-opacity: 1;
   color: rgb(234 88 12 / var(--tw-text-opacity));
 }
@@ -1506,14 +1565,6 @@ label {
 }
 
 /*Champion slideshow*/
-
-.visible {
-  visibility: visible;
-}
-
-.invisible {
-  visibility: hidden;
-}
 
 .static {
   position: static;
