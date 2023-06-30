@@ -6,15 +6,17 @@
 {% include 'head_base.html' %}
 
 <body class="bg-gray-100 min-h-screen">
+<a href="{% url 'home' %}">
+  <img class="logo-container"
+       src="{% static 'images/BC_EventSupport_site_logo.png' %}"
+       alt="Logo"></a>
 {% include 'header_base.html' with title="Events" %}
 
 <!-- Content -->
 <main class="container mx-auto mt-7">
-  <section>
-    <!--   Content Goes here     -->
-    {% block content %}
-    {% endblock %}
-  </section>
+  <!--   Content Goes here     -->
+  {% block content %}
+  {% endblock %}
 </main>
 
 {% include 'footer_base.html' %}
@@ -41,12 +43,4 @@
 {#    document.querySelector('.loader').classList.remove('hidden');#}
 {#</script>#}
 </body>
-<style>
-    .logo-container {
-        position: absolute;
-        left: 1rem;
-        top: -20px; /* Adjust this value to control the vertical position of the logo */
-        left: 0px; /* Adjust this value to control the vertical position of the logo */
-    }
-</style>
 </html>

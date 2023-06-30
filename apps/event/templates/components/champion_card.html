@@ -1,10 +1,12 @@
 {% load static i18n %}
-<div class="splide" id="carousel">
+<div class="splide mb-8 md:mb-0 sm:mb-0
+        w-5/6 md:w-1/2 sm:w-1/4" id="carousel">
   <div class="splide__track">
     <ul class="splide__list">
       {% for event in champions %}
-        <li class="splide__slide">
-          <div name="card" class="carrousel_card hover:border-cyan-600 visd" onclick="location.href='{% url 'event:event_detail' event.pk %}'">
+        <li class="splide__slide carrousel_card">
+          <div name="card" class="p-4"
+               onclick="location.href='{% url 'event:event_detail' event.pk %}'">
             <div class="block relative h-100 rounded overflow-hidden">
               {% if event.logo and event.champion_event %}
                 <img alt="logo" class="carrousel_image" src="{{ event.logo.url }}">
@@ -38,40 +40,40 @@
 </div>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-  new Splide('#carousel', {
-    type: 'loop',
-    perPage: 1,
-    autoplay: true,
-    interval: 3000, 
-    breakpoints: {
-      640: {
-        perPage: 1,
-      },
-      768: {
-        perPage: 2,
-      },
-      1024: {
-        perPage: 3,
-      },
-    },
-  }).mount();
-});
+    document.addEventListener('DOMContentLoaded', function () {
+        new Splide('#carousel', {
+            type: 'loop',
+            perPage: 1,
+            autoplay: true,
+            interval: 5000,
+            breakpoints: {
+                640: {
+                    perPage: 1,
+                },
+                768: {
+                    perPage: 1,
+                },
+                1024: {
+                    perPage: 1,
+                },
+            },
+        }).mount();
+    });
 
 </script>
 
 <style>
-  .splide {
-    max-width: 60%; /* Adjust the width as needed */
-    margin: 0 auto;
-  }
-  
-  .splide__slide {
-    width: 40%;
-  }
+    .splide {
+        max-width: 60%; /* Adjust the width as needed */
+        margin: 0 auto;
+    }
 
-.splide__slide img {
-  width: 100%;
-  height: auto;
-}
+    .splide__slide {
+        width: 40%;
+    }
+
+    .splide__slide img {
+        width: 100%;
+        height: auto;
+    }
 </style>

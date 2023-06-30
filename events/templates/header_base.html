@@ -1,137 +1,159 @@
 {% load static i18n %}
 <header class="bg-white relative w-full">
+
   <!-- First level navigation -->
-  <nav class="border-b-2 border-gray-200 pr-4">
-    <div class="flex justify-end items-center">
-      {#      <div class="mr-4">#}
-      <a href="https://www.bicyclecolorado.org/" target="_blank"
-         class="top_menu_txt">BICYCLE
-        COLORADO</a>
-      {#      </div>#}
-      <div class="flex flex-row">
-        <!-- Check login status -->
-        {% if request.user.is_authenticated %}
-          <!-- User Menu -->
-          <ul>
-            <li class="group relative dropdown px-4 text-green-800 hover:text-green-900 cursor-pointer font-bold
-            uppercase tracking-wide">
-              {% if request.user.avatar %}
-                <a class="flex" href="{% url 'users:detail' request.user.pk %}">
-                  <img class="small_avatar"
-                       src="{{ request.user.avatar.url }}"
-                       alt="Avatar"/> {{ request.user.full_name }}</a>
-              {% else %}
-                <a class="small_avatar" href="{% url 'users:detail' request.user.pk %}">
-                  <i class="fa-solid fa-user"></i>{{ request.user.full_name }}
-                </a>
-              {% endif %}
-              <!-- User dropdown menu -->
-              <div class="group-hover:block dropdown-menu absolute left-0 hidden h-auto">
-                <ul class="top-0 w-52 bg-white shadow px-6 py-8">
-                  <li class="py-1"><a
-                      class="user_menu_txt"
-                      href="{% url 'users:detail' request.user.pk %}"><i class="fa-solid fa-user px-2"></i>Profile</a>
-                  </li>
-                  <li class="py-1"><a
-                      class="user_menu_txt"
-                      href="{% url 'users:update' %}"><i class="fa-solid fa-user-pen px-2"></i>Edit Profile</a></li>
-                  <li class="py-1"><a
-                      class="user_menu_txt"
-                      href="{% url 'account_email' %}"><i class="fa-solid fa-envelope-circle-check px-2"></i>Edit Email</a>
-                  </li>
-                  <li class="py-1"><a
-                      class="user_menu_txt"
-                      href="{% url 'account_logout' %}"><i class="fas fa-sign-out-alt px-2"></i>Sign Out </a></li>
-                  {% if user.is_staff %}
-                    <li class="py-1">
-                      <hr>
-                      <p class="user_menu_txt">BC STAFF</p>
-                    </li>
-
-                    <li class="py-1"><a
-                        class="user_menu_txt"
-                        href="{% url 'event:raceseries_create' %}"><i class="fas fa-circle-plus px-2"></i>Race
-                      Series</a>
-                    </li>
-                    <li class="py-1"><a
-                        class="user_menu_txt"
-                        href="{% url 'membership:bcadmin' %}"><i class="fas fa-screwdriver-wrench px-2"></i>Admin
-                      page</a>
-                    </li>
-                  {% endif %}
-
-                </ul>
-              </div>
+  <nav class="border-b-2 py-2 border-gray-200 pr-4 flex justify-end items-center">
+    <ul>
+      <li class="group menu_dropdown_li">
+        <a href="https://www.bicyclecolorado.org/" target="_blank"><i class="fa-solid fa-bars pr-1"></i>BICYCLE
+          COLORADO</a>
+        <div class="group-hover:block dropdown-menu absolute left-0 hidden h-auto">
+          <ul class="top-0 flex flex-col bg-gray-50 shadow px-3 py-3">
+            <li class="py-1"><a
+                class="user_menu_txt"
+                href="https://www.bicyclecolorado.org" target="_blank">
+              <i class="fa-solid fa-book-open-reader pr-1"></i>Learn More</a>
+            </li>
+            <li class="py-1"><a
+                class="user_menu_txt"
+                href="https://www.bicyclecolorado.org/bike-news/" target="_blank"><i
+                class="fa-solid fa-newspaper pr-1"></i>Bike
+              News</a>
+            </li>
+            <li class="py-1"><a
+                class="user_menu_txt"
+                href="https://www.bicyclecolorado.org/join-us/donate/" target="_blank"><i
+                class="fa-solid fa-handshake-angle pr-1"></i>Donate</a>
+            </li>
+            <li class="py-1"><a
+                class="user_menu_txt"
+                href="https://www.bicyclecolorado.org/about-bicycle-colorado/mission-statement/" target="_blank"><i
+                class="fa-solid fa-user pr-1"></i>Mission</a>
+            </li>
+            <li class="py-1"><a
+                class="user_menu_txt"
+                href="https://www.bicyclecolorado.org/about-bicycle-colorado/our-team/" target="_blank"><i
+                class="fa-solid fa-people-group pr-1"></i>Our Team</a>
             </li>
           </ul>
-          <!-- If not logged in -->
-        {% else %}
-          {% if ACCOUNT_ALLOW_REGISTRATION %}
-            {# URL provided by django-allauth/account/urls.py #}
-            {#            <button type="button" onclick="location.href='{% url 'account_signup' %}'"#}
-            {#                    class="px-4 py-2 text-xs font-medium text-center text-white bg-orange-600 rounded-lg hover:bg-orange-700 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-orange-600 dark:hover:bg-orange-700 dark:focus:ring-orange-800">#}
-            {#              {% translate "JOIN" %}#}
-            {#            </button>#}
-            <button type="button" onclick="location.href='{% url "home" %}#join'"
-                    class="join_button">
-              {% translate "JOIN" %}
-            </button>
-
-          {% endif %}
-          {# URL provided by django-allauth/account/urls.py #}
-          <button type="button" onclick="location.href='{% url 'account_login' %}'"
-                  class="ml-1 signin_button">
-            {% translate "Sign In" %}
-          </button>
-        {% endif %}
-      </div>
-    </div>
-  </nav>
-  {#  <hr class="h-px bg-gray-200 border-0 dark:bg-gray-700">#}
-  {#  <!-- Second level navigation -->#}
-  {#  <hr class="h-px bg-gray-200 border-0 dark:bg-gray-700">#}
-  <!-- Second level navigation -->
-  <nav class="bg-white-600 py-5">
-    <div class="container mx-auto">
-      <ul class="flex justify-end items-center text-black">
-        <!-- Add the logo inside a new 'logo-container' div -->
-        <div class="logo-container mt-2">
-          <a href="{% url 'home' %}">
-            <img class="object-scale-down h-auto w-20 lg:w-40 md:w-30 rounded-full"
-                 src="{% static 'images/BC_EventSupport_site_logo.png' %}"
-                 alt="Logo"></a>
         </div>
-        <li>
+    </ul>
+    <!-- Check login status -->
+    {% if request.user.is_authenticated %}
+      <!-- Logged in User Menu -->
+      <ul>
+        <li class="group menu_dropdown_li">
+          {% if request.user.avatar %}
+            <a class="flex items-center" href="{% url 'users:detail' request.user.pk %}">
+              <img class="small_avatar"
+                   src="{{ request.user.avatar.url }}"
+                   alt="Avatar"/><i class="pr-1"></i>{{ request.user.full_name }}</a>
+          {% else %}
+            <a class="small_avatar" href="{% url 'users:detail' request.user.pk %}">
+              <i class="fa-solid fa-user"></i><i class="pr-1"></i>{{ request.user.full_name }}
+            </a>
+          {% endif %}
+          <!-- Logged in User dropdown menu -->
+          <div class="group-hover:block dropdown-menu absolute left-0 hidden h-auto">
+            <ul class="top-0 w-52 bg-gray-50 shadow px-3 py-3">
+              <li class="py-1"><a
+                  class="user_menu_txt"
+                  href="{% url 'users:detail' request.user.pk %}"><i class="fa-solid fa-user px-1"></i>Profile</a>
+              </li>
+              <li class="py-1"><a
+                  class="user_menu_txt"
+                  href="{% url 'users:update' %}"><i class="fa-solid fa-user-pen px-1"></i>Edit Profile</a></li>
+              <li class="py-1"><a
+                  class="user_menu_txt"
+                  href="{% url 'account_email' %}"><i class="fa-solid fa-envelope-circle-check px-1"></i>Edit
+                Email</a>
+              </li>
+              <li class="py-1"><a
+                  class="user_menu_txt"
+                  href="{% url 'account_logout' %}"><i class="fas fa-sign-out-alt px-1"></i>Sign Out </a></li>
+              {% if user.is_staff %}
+                <li class="py-1">
+                  <hr>
+                  <p class="user_menu_txt">BC STAFF</p>
+                </li>
+
+                <li class="py-1"><a
+                    class="user_menu_txt"
+                    href="{% url 'event:raceseries_create' %}"><i class="fas fa-circle-plus px-2"></i>Race
+                  Series</a>
+                </li>
+                <li class="py-1"><a
+                    class="user_menu_txt"
+                    href="{% url 'membership:clubs_admin' %}"><i class="fas fa-solid fa-people-group px-2"></i>Clubs
+                </a>
+                </li>
+                <li class="py-1"><a
+                    class="user_menu_txt"
+                    href="{% url 'store:stripe_accounting' %}"><i class="fas fa-brands fa-cc-stripe px-2"></i>Stripe
+                </a>
+                </li>
+                <li class="py-1"><a
+                    class="user_menu_txt"
+                    href="{% url 'usac:importcsv' %}"><i class="fas fa-solid fa-file-csv px-2"></i>Import USAC</a>
+                </li>
+                <li class="py-1"><a
+                    class="user_menu_txt"
+                    href="{% url 'users:emails' %}"><i class="fas fa-solid fa-envelopes-bulk px-2"></i>Test
+                  Emails</a>
+                </li>
+              {% endif %}
+            </ul>
+          </div>
         </li>
-        <div>
-          <ul class="flex justify-between">
-            <li class="menu_txt">
-              <a href="{% url  'event:event_list' %}">Events
-                {#                <span#}
-                {#                    class="menu_txt">Events</span>#}
-              </a>
-            </li>
-            <li class="menu_txt">
-              <a href="{% url "event:events_results_list" %}">Results
-                {#                <span#}
-                {#                    >Results</span>#}
-              </a>
-            </li>
-            <li>
-              <a href="{% url 'membership:organizations' %}">
+      </ul>
+      <!-- If not logged in -->
+    {% else %}
+      {% if ACCOUNT_ALLOW_REGISTRATION %}
+        {# URL provided by django-allauth/account/urls.py #}
+        {#            <button type="button" onclick="location.href='{% url 'account_signup' %}'"#}
+        {#              {% translate "JOIN" %}#}
+        {#            </button>#}
+        <button type="button" onclick="location.href='{% url "home" %}#join'"
+                class="join_button">
+          {% translate "JOIN" %}
+        </button>
+
+      {% endif %}
+      {# URL provided by django-allauth/account/urls.py #}
+      <button type="button" onclick="location.href='{% url 'account_login' %}'"
+              class="ml-1 signin_button">
+        {% translate "Sign In" %}
+      </button>
+    {% endif %}
+  </nav>
+
+  <!-- Second level navigation -->
+  <nav class="bg-white-600">
+    <ul class="flex justify-end">
+      <li class="menu_txt">
+        <a href="{% url  'event:event_list' %}">Events
+          {#                <span#}
+          {#                    class="menu_txt">Events</span>#}
+        </a>
+      </li>
+      <li class="menu_txt">
+        <a href="{% url "event:events_results_list" %}">Results
+          {#                <span#}
+          {#                    >Results</span>#}
+        </a>
+      </li>
+      <li>
+        <a href="{% url 'membership:organizations' %}">
                 <span
                     class="menu_txt">Clubs</span>
-              </a>
-            </li>
-            <li>
-              <a href="https://www.bicyclecolorado.org/events-2/event-support/" target="_blank">
+        </a>
+      </li>
+      <li>
+        <a href="https://www.bicyclecolorado.org/events-2/event-support/" target="_blank">
                 <span
                     class="menu_txt">EVENT SUPPORT PROGRAM</span>
-              </a>
-            </li>
-          </ul>
-        </div>
-      </ul>
-    </div>
+        </a>
+      </li>
+    </ul>
   </nav>
 </header>
