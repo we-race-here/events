@@ -47,10 +47,10 @@
             <a class="flex items-center" href="{% url 'users:detail' request.user.pk %}">
               <img class="small_avatar"
                    src="{{ request.user.avatar.url }}"
-                   alt="Avatar"/><i class="fa-solid fa-bars pr-1"></i>{{ request.user.full_name }}</a>
+                   alt="Avatar"/><i class="pr-1"></i>{{ request.user.full_name }}</a>
           {% else %}
             <a class="small_avatar" href="{% url 'users:detail' request.user.pk %}">
-              <i class="fa-solid fa-user"></i>{{ request.user.full_name }}
+              <i class="fa-solid fa-user"></i><i class="pr-1"></i>{{ request.user.full_name }}
             </a>
           {% endif %}
           <!-- Logged in User dropdown menu -->

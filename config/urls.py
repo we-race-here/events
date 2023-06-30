@@ -4,6 +4,7 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.core.mail import send_mail
 from django.shortcuts import render
+from django.template.loader import render_to_string
 from django.urls import include, path
 from django.views import defaults as default_views
 from django.views.generic import TemplateView
@@ -27,10 +28,15 @@ class HomePageSignUpView(SignupView):
         # Here we can add our custom logic for login
         parent_email = form.cleaned_data.get("parent_email")
         parent_name = form.cleaned_data.get("parent_name")
-
+        render_to_string(
+            "emails/new_account_parent_notifcation.html",
+            {
+                "parent_name": parent_name,
+            },
+        )
         send_mail(
-            "Login Notification for Your Child",
-            f"Hello {parent_name},\n\nYour child has logged into their account in events.",
+            "Your child has created an account at Bicycle Colorado"
+            f"Hello {parent_name},\n\nYour child has created an account at Bicycle Colorado\n https://events.bicyclecolorado.org",
             "info@bicyclecolorado.org",
             [parent_email],
             fail_silently=False,
