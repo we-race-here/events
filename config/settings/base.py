@@ -314,6 +314,16 @@ SOCIALACCOUNT_FORMS = {"signup": "events.users.forms.UserSocialSignupForm"}
 
 CKEDITOR_CONFIGS = {
     "default": {
+        "toolbar": "basic",
+        "height": 300,
+        "width": 800,
+    },
+    "event_basic": {
+        "toolbar": "Basic",
+        "height": 300,
+        "width": 800,
+    },
+    "event_full": {
         "toolbar": "Full",
         "height": 300,
         "width": 800,
