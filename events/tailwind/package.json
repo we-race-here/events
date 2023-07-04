@@ -24,7 +24,7 @@
     "postcss-nested": "^6.0.0",
     "postcss-simple-vars": "^7.0.1",
     "rimraf": "^4.1.2",
-    "tailwindcss": "^3.2.7"
+    "tailwindcss": "^3.3.2"
   },
   "dependencies": {
     "@tailwindcss/container-queries": "^0.1.1"
