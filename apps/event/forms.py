@@ -78,7 +78,7 @@ class EventForm(forms.ModelForm):
             }
         ),
     )
-    description = forms.CharField(widget=forms.Textarea(attrs={"class": "ckeditor"}))
+    description = forms.CharField(widget=forms.Textarea(attrs={"id": "ckeditor-basic"}))
 
     class Meta:
         model = Event

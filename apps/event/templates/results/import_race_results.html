@@ -1,5 +1,6 @@
 {% extends "account/base.html" %}
 {% load static %}
+{% load tailwind_filters %}
 {% block inner %}
   <div class="container mx-auto px-4 py-8">
     <h1 class="text-3xl font-bold mb-4">Create or Edit a Race Series</h1>
@@ -59,7 +60,7 @@
         <div>
           <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
-            {{ form.as_p }}
+            {{ form|crispy }}
             <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
               Save
             </button>
