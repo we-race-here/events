@@ -1,5 +1,6 @@
 {% extends "account/base.html" %}
 {% load static %}
+{% load tailwind_filters %}
 {% load crispy_forms_tags %}
 
 {% block title %}Import Racer Download{% endblock %}
@@ -12,7 +13,7 @@
         {% csrf_token %}
         {{ form.as_p }}
         <input type="hidden" name="usacdownload" value="usacdownload">
-        <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+        <button type="submit" class="button_body_orange">
           Upload
         </button>
       </form>
