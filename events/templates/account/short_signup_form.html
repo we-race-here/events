@@ -1,4 +1,5 @@
 {% load i18n %}
+{% load tailwind_filters %}
 {% load crispy_forms_tags %}
 {% load widget_tweaks %}
 
@@ -237,47 +238,47 @@
 </div>
 
 <script>
-    function calculateAge(birthday) {
-        console.log(birthday)
-        var ageDifMs = Date.now() - birthday.getTime();
-        var ageDate = new Date(ageDifMs);
-        return Math.abs(new Date().getFullYear() - birthday.getFullYear());
+  function calculateAge(birthday) {
+    console.log(birthday)
+    var ageDifMs = Date.now() - birthday.getTime();
+    var ageDate = new Date(ageDifMs);
+    return Math.abs(new Date().getFullYear() - birthday.getFullYear());
+  }
+
+  function cal_age() {
+    var day = document.getElementById('id_birth_day').value;
+    var month = document.getElementById('id_birth_month').value;
+    var year = document.getElementById('id_birth_year').value;
+    var parentFields = document.getElementById('parentFields');
+    var id_opt_in = document.getElementById('id_opt_in');
+
+    if (day && month && year) {
+      var age = calculateAge(new Date(year, month - 1, day));
+      console.log(age)
+      if (age >= 13 && age < 18) {
+        parentFields.style.display = 'block';
+        id_opt_in.style.display = 'block'
+      } else if (age < 13) {
+        parentFields.style.display = 'block';
+        id_opt_in.style.display = 'none'
+      }
+    } else {
+      parentFields.style.display = 'none';
+      id_opt_in.style.display = 'block'
     }
 
-    function cal_age() {
-        var day = document.getElementById('id_birth_day').value;
-        var month = document.getElementById('id_birth_month').value;
-        var year = document.getElementById('id_birth_year').value;
-        var parentFields = document.getElementById('parentFields');
-        var id_opt_in = document.getElementById('id_opt_in');
+  }
 
-        if (day && month && year) {
-            var age = calculateAge(new Date(year, month - 1, day));
-            console.log(age)
-            if (age >= 13 && age < 18) {
-                parentFields.style.display = 'block';
-                id_opt_in.style.display = 'block'
-            } else if (age < 13) {
-                parentFields.style.display = 'block';
-                id_opt_in.style.display = 'none'
-            }
-        } else {
-            parentFields.style.display = 'none';
-            id_opt_in.style.display = 'block'
-        }
-
-    }
-
-    document.getElementById('id_birth_day').addEventListener('change', function () {
-        cal_age()
-    });
-
-    document.getElementById('id_birth_month').addEventListener('change', function () {
-        cal_age()
-    });
-
-    document.getElementById('id_birth_year').addEventListener('change', function () {
-        cal_age()
-    });
+  document.getElementById('id_birth_day').addEventListener('change', function () {
     cal_age()
+  });
+
+  document.getElementById('id_birth_month').addEventListener('change', function () {
+    cal_age()
+  });
+
+  document.getElementById('id_birth_year').addEventListener('change', function () {
+    cal_age()
+  });
+  cal_age()
 </script>
