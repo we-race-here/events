@@ -80,7 +80,7 @@ THIRD_PARTY_APPS = [
     "allauth.socialaccount",
     "simple_history",
     "turnstile",
-    "ckeditor",
+    # "ckeditor",
     "widget_tweaks",
     "maintenance_mode",
     "fontawesomefree",
