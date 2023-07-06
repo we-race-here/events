@@ -1,0 +1,14 @@
+{% load static %}
+Hello {{ NAME }},
+<section>
+  {{ MESSAGE }}
+</section>
+<div class="flex flex-col mt-2">
+  <hr>
+  <b>Bicycle Colorado</b>
+  <a class="text-blue-600" href="https://www.bicyclecolorado.org">https://www.bicyclecolorado.org</a>
+  <div class="flex flex-row">
+    <img class='org_logo_sm' src="{% static 'images/BC_EventSupport_site_logo.png' %}">
+    <img class='org_logo_sm' src="{% static 'images/30th Anniversary.png' %}">
+  </div>
+</div>

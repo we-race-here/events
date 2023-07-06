@@ -1,15 +1,15 @@
 module.exports = {
     // purge: {
-        content: [
-            '../templates/**/*.html',
-            '../../templates/**/*.html',
-            '../../**/templates/**/*.html',
-            // '../../**/*.js',
-            // '../../**/*.py'
-        ],
-        // options: {
-        //     safelist: [], // Specify the classes that should not be removed by purge
-        // }
+    content: [
+        '../templates/**/*.html',
+        '../../templates/**/*.html',
+        '../../**/templates/**/*.html',
+        // '../../**/*.js',
+        // '../../**/*.py'
+    ],
+    // options: {
+    //     safelist: [], // Specify the classes that should not be removed by purge
+    // }
     // },
     theme: {
         extend: {
