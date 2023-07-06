@@ -1,5 +1,5 @@
 module.exports = {
-    purge: {
+    // purge: {
         content: [
             '../templates/**/*.html',
             '../../templates/**/*.html',
@@ -10,7 +10,7 @@ module.exports = {
         // options: {
         //     safelist: [], // Specify the classes that should not be removed by purge
         // }
-    },
+    // },
     theme: {
         extend: {
             fontFamily: {
