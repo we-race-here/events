@@ -115,9 +115,9 @@ class DeleteOrganizationView(LoginRequiredMixin, IsStaffMixin, DeleteView):
     success_url = reverse_lazy("organizations")
 
 
-class OrganizationListView(ListView):
+class ClubListView(ListView):
     model = Organization
-    template_name = "org/organization_list.html"
+    template_name = "org/club_list.html"
     context_object_name = "organizations"
     paginate_by = 10
     ordering = ["name"]
@@ -126,7 +126,10 @@ class OrganizationListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["type_choices"] = Organization.TYPE_CHOICES
+        context["type_choices"] = (
+            (Organization.TYPE_CLUB, "Club"),
+            (Organization.TYPE_ADVOCACY_VOLUNTEER, "Advocacy, Volunteer"),
+        )
         return context
 
     def get_queryset(self):
@@ -154,6 +157,40 @@ class OrganizationListView(ListView):
 
         if type_filter:
             queryset = queryset.filter(type=type_filter)
+
+        return queryset
+
+
+class PromoterListView(ListView):
+    model = Organization
+    template_name = "org/promoter_list.html"
+    context_object_name = "promoters"
+    paginate_by = 10
+    ordering = ["name"]
+
+    # Change this to the desired number of items per page
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+
+        # Filter only if OrganizationMember
+        # user = self.request.user
+        # if user.is_authenticated:
+        #     queryset = queryset.filter(organizationmember__user=user)
+
+        search_query = self.request.GET.get("search", "")
+
+        if search_query:
+            queryset = queryset.filter(
+                Q(name__icontains=search_query)
+                | Q(website__icontains=search_query)
+                | Q(city__icontains=search_query)
+                | Q(state__icontains=search_query)
+            )
 
         return queryset
 
