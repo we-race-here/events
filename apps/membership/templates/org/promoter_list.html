@@ -48,55 +48,49 @@
       </div>
       <!-- End filter and order -->
       <div class="container mx-auto px-4">
-        {% for organization in organizations %}
-          {% if organization.name != "Bicycle Colorado" and organization.type != "promoter" %}
+        {% for promoter in promoters %}
+          {% if promoter.type == "promoter" %}
             <div>
               <div
                 class=" flex justify-between grid grid-cols-3 rounded border-gray-100 border hover:border-gray-300 my-2">
                 <!-- Col 1 -->
                 <div class="justify-start ">
                   <div class="flex flex-row items-center">
-                    {% if organization.logo %}
-                      <img class="org_logo_sm" src="{{ organization.logo.url }}" alt="Your Image Description">
+                    {% if promoter.logo %}
+                      <img class="org_logo_sm" src="{{ promoter.logo.url }}" alt="Your Image Description">
                     {% else %}
                       <img alt="ecommerce" class="org_logo_sm"
                            src="{% static 'images/clear_250x250.png' %}">
                     {% endif %}
                     <div class="flex flex-col ml-2">
                       <a class="org_name"
-                         href="{% url 'membership:organization_detail' organization.pk %}">{{ organization.name }}</a>
+                         href="{% url 'membership:organization_detail' promoter.pk %}">{{ promoter.name }}</a>
                       <p class="text-base text-xs leading-none text-gray-400 dark:text-white mr-2 break-words">
-                        {{ organization.blurb|default:"" }} </p>
+                        {{ promoter.blurb|default:"" }} </p>
                     </div>
                   </div>
                 </div>
 
                 <!-- Col 2 -->
-                <div class="flex flex-col justify-center items-center">
-                  <div class="flex flex-row items-center">
-                    {% if organization.is_usac %}
-                      <img src="{% static "images/USACycling_Logo.svg" %}" style="max-width:17px" alt="usac">
-                    {% else %}
-                      <i class="fa-solid fa-person-biking fa-sm" style="color: #5ec5c5;"></i>
-                    {% endif %}
-                    <p
-                      class="text-sm leading-none text-gray-600 dark:text-gray-200  ml-2">{{ organization.get_type_display }}</p>
-                  </div>
-                  <div class=" justify-end">
-                    <p class="text-base text-sm leading-none text-gray-400 dark:text-white  mr-2">
-                      Members: {{ organization.members.count }}
-                    </p>
-                  </div>
+                <div class="flex flex-row justify-center items-center">
+                  {% if promoter.is_usac %}
+                    <img src="{% static "images/USACycling_Logo.svg" %}" style="max-width:17px" alt="usac">
+                  {% else %}
+                    <i class="fa-solid fa-person-biking fa-sm" style="color: #5ec5c5;"></i>
+                  {% endif %}
+                  <p class="ml-2">
+                    Followers: {{ promoter.members.count|default:"0" }}
+                  </p>
                 </div>
 
                 <!-- Col 3 -->
                 <div class="flex flex-col justify-center items-end">
                   <p class="text-base text-sm leading-none text-gray-400 dark:text-white  mr-2 text-end">
-                    {% if organization.city %}
-                      {{ organization.city }}
+                    {% if promoter.city %}
+                      {{ promoter.city }}
                     {% endif %}
-                    {% if organization.state %}
-                      , {{ organization.state }}
+                    {% if promoter.state %}
+                      , {{ promoter.state }}
                     {% endif %}
                   </p>
                 </div>
