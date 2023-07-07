@@ -134,21 +134,21 @@ class ClubListView(ListView):
 
     def get_queryset(self):
         queryset = super().get_queryset()
-
+        base_queryset = queryset.filter(type__in=[Organization.TYPE_CLUB, Organization.TYPE_ADVOCACY_VOLUNTEER])
         # Filter only if OrganizationMember
         # user = self.request.user
         # if user.is_authenticated:
         #     queryset = queryset.filter(organizationmember__user=user)
 
         # Sorting
-        sort_by = self.request.GET.get("sort", "")
-        if sort_by:
-            queryset = queryset.order_by(sort_by)
+        # sort_by = self.request.GET.get("sort", "")
+        # if sort_by:
+        #     queryset = queryset.order_by(sort_by)
         search_query = self.request.GET.get("search", "")
         type_filter = self.request.GET.get("type", "")
 
         if search_query:
-            queryset = queryset.filter(
+            base_queryset = base_queryset.filter(
                 Q(name__icontains=search_query)
                 | Q(website__icontains=search_query)
                 | Q(city__icontains=search_query)
@@ -156,9 +156,9 @@ class ClubListView(ListView):
             )
 
         if type_filter:
-            queryset = queryset.filter(type=type_filter)
+            base_queryset = base_queryset.filter(type=type_filter)
 
-        return queryset
+        return base_queryset
 
 
 class PromoterListView(ListView):
@@ -172,10 +172,12 @@ class PromoterListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        print(context)
         return context
 
     def get_queryset(self):
         queryset = super().get_queryset()
+        base_queryset = queryset.filter(type=Organization.TYPE_PROMOTER)
 
         # Filter only if OrganizationMember
         # user = self.request.user
@@ -185,14 +187,14 @@ class PromoterListView(ListView):
         search_query = self.request.GET.get("search", "")
 
         if search_query:
-            queryset = queryset.filter(
+            base_queryset = base_queryset.filter(
                 Q(name__icontains=search_query)
                 | Q(website__icontains=search_query)
                 | Q(city__icontains=search_query)
                 | Q(state__icontains=search_query)
             )
 
-        return queryset
+        return base_queryset
 
 
 class JoinOrganizationView(FormView):
