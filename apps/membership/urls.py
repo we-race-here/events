@@ -8,14 +8,16 @@ from .views import (
     JoinOrganizationView,
     OrganizationAdmin,
     OrganizationDetailView,
-    OrganizationListView,
+    ClubListView,
     UpdateOrganizationView,
+    PromoterListView,
 )
 
 app_name = "membership"
 
 urlpatterns = [
-    path("org", OrganizationListView.as_view(), name="organizations"),
+    path("org", ClubListView.as_view(), name="organizations"),
+    path("promoters", PromoterListView.as_view(), name="promoters"),
     path("org/create/", CreateOrganizationView.as_view(), name="create_organization"),
     path("org/admin/<int:pk>/", OrganizationAdmin.as_view(), name="organization_admin"),
     path("org/<int:pk>/", OrganizationDetailView.as_view(), name="organization_detail"),
