@@ -15,3 +15,5 @@ npx tailwindcss -i src/input.css -o ../static/css/project.css
 # from top level
 
 npx tailwindcss -i events/tailwind/src/input.css -o events/static/css/project.css
+
+npx tailwindcss -i events/tailwind/src/input.css -o events/static/css/project.css --watch

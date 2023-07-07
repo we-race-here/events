@@ -38,8 +38,8 @@
   </section>
 
   <section id="club_list" class="bg-white mb-8">
-    <div class="sm:px-6 w-full">
-      <div class="bg-white dark:bg-gray-900  py-4 md:py-7 px-4 md:px-8 xl:px-10">
+    <div class="w-full">
+      <div class="bg-white px-4 pt-3">
         <div class="sm:flex items-center justify-between">
           <form method="GET" class="flex">
             <input type="search" name="search" placeholder="Search" value="{{ request.GET.search }}"
@@ -48,8 +48,7 @@
               Search
             </button>
           </form>
-          <form method="GET" class=" ml-5 flex">
-            <p>Filter by type:</p>
+          <form method="GET" class="flex">
             <select name="type" id="type" class="focus:text-indigo-600 focus:outline-none bg-transparent ml-1"
                     onchange="this.form.submit()">
               <option value="">All</option>
@@ -58,68 +57,68 @@
                         {% if request.GET.type == type_choice.0 %}selected{% endif %}>{{ type_choice.1 }}</option>
               {% endfor %}
             </select>
+            <button class="submit_search">Filter</button>
           </form>
         </div>
       </div>
       <!-- End filter and order -->
-      <div class="py-10">
-        <div class="container mx-auto px-4">
-          {% for organization in organizations %}
-            {% if organization.name != "Bicycle Colorado" and organization.type != "promoter" %}
-              <div>
-                <div
-                    class=" flex justify-between grid grid-cols-3 rounded border-gray-100 border hover:border-gray-300 my-2">
-                  <!-- Col 1 -->
-                  <div class="justify-start ">
-                    <div class="flex flex-row items-center">
-                      {% if organization.logo %}
-                        <img class="org_logo_sm" src="{{ organization.logo.url }}" alt="Your Image Description">
-                      {% else %}
-                        <img alt="ecommerce" class="org_logo_sm"
-                             src="{% static 'images/clear_250x250.png' %}">
-                      {% endif %}
-                      <div class="flex flex-col ml-2">
-                        <a class="org_name"
-                           href="{% url 'membership:organization_detail' organization.pk %}">{{ organization.name }}</a>
-                        <p class="text-base text-xs leading-none text-gray-400 dark:text-white mr-2 break-words">
-                          {{ organization.blurb|default:"" }} </p>
-                      </div>
+      <div class="container mx-auto px-4">
+        {% for organization in organizations %}
+          {% if organization.name != "Bicycle Colorado" and organization.type != "promoter" %}
+            <div>
+              <div
+                class=" flex justify-between grid grid-cols-3 rounded border-gray-100 border hover:border-gray-300 my-2">
+                <!-- Col 1 -->
+                <div class="justify-start ">
+                  <div class="flex flex-row items-center">
+                    {% if organization.logo %}
+                      <img class="org_logo_sm" src="{{ organization.logo.url }}" alt="Your Image Description">
+                    {% else %}
+                      <img alt="ecommerce" class="org_logo_sm"
+                           src="{% static 'images/clear_250x250.png' %}">
+                    {% endif %}
+                    <div class="flex flex-col ml-2">
+                      <a class="org_name"
+                         href="{% url 'membership:organization_detail' organization.pk %}">{{ organization.name }}</a>
+                      <p class="text-base text-xs leading-none text-gray-400 dark:text-white mr-2 break-words">
+                        {{ organization.blurb|default:"" }} </p>
                     </div>
                   </div>
+                </div>
 
-                  <!-- Col 2 -->
-                  <div class="flex flex-col justify-center items-center">
-                    <div class="flex flex-row items-center">
-                      {% if organization.is_usac %}
-                        <img src="{% static "images/USACycling_Logo.svg" %}" style="max-width:17px" alt="usac">
-                      {% else %}
-                        <i class="fa-solid fa-person-biking fa-sm" style="color: #5ec5c5;"></i>
-                      {% endif %}
-                      <p class="text-sm leading-none text-gray-600 dark:text-gray-200  ml-2">{{ organization.get_type_display }}</p>
-                    </div>
-                    <div class=" justify-end">
-                      <p class="text-base text-sm leading-none text-gray-400 dark:text-white  mr-2">
-                        Members: {{ organization.members.count }}
-                      </p>
-                    </div>
+                <!-- Col 2 -->
+                <div class="flex flex-col justify-center items-center">
+                  <div class="flex flex-row items-center">
+                    {% if organization.is_usac %}
+                      <img src="{% static "images/USACycling_Logo.svg" %}" style="max-width:17px" alt="usac">
+                    {% else %}
+                      <i class="fa-solid fa-person-biking fa-sm" style="color: #5ec5c5;"></i>
+                    {% endif %}
+                    <p
+                      class="text-sm leading-none text-gray-600 dark:text-gray-200  ml-2">{{ organization.get_type_display }}</p>
                   </div>
-
-                  <!-- Col 3 -->
-                  <div class="flex flex-col justify-center items-end">
-                    <p class="text-base text-sm leading-none text-gray-400 dark:text-white  mr-2 text-end">
-                      {% if organization.city %}
-                        {{ organization.city }}
-                      {% endif %}
-                      {% if organization.state %}
-                        , {{ organization.state }}
-                      {% endif %}
+                  <div class=" justify-end">
+                    <p class="text-base text-sm leading-none text-gray-400 dark:text-white  mr-2">
+                      Members: {{ organization.members.count }}
                     </p>
                   </div>
                 </div>
+
+                <!-- Col 3 -->
+                <div class="flex flex-col justify-center items-end">
+                  <p class="text-base text-sm leading-none text-gray-400 dark:text-white  mr-2 text-end">
+                    {% if organization.city %}
+                      {{ organization.city }}
+                    {% endif %}
+                    {% if organization.state %}
+                      , {{ organization.state }}
+                    {% endif %}
+                  </p>
+                </div>
               </div>
-            {% endif %}
-          {% endfor %}
-        </div>
+            </div>
+          {% endif %}
+        {% endfor %}
       </div>
       <div class="bg-white">
         <nav class="flex justify-center">
@@ -174,22 +173,22 @@
     </div>
   </section>
   <style>
-      .checkbox:checked + .check-icon {
-          display: flex;
-      }
+    .checkbox:checked + .check-icon {
+      display: flex;
+    }
   </style>
   <script>
-      function dropdownFunction(element) {
-          var dropdowns = document.getElementsByClassName("dropdown-content");
-          var i;
-          let list = element.parentElement.parentElement.getElementsByClassName("dropdown-content")[0];
-          list.classList.add("target");
-          for (i = 0; i < dropdowns.length; i++) {
-              if (!dropdowns[i].classList.contains("target")) {
-                  dropdowns[i].classList.add("hidden");
-              }
-          }
-          list.classList.toggle("hidden");
+    function dropdownFunction(element) {
+      var dropdowns = document.getElementsByClassName("dropdown-content");
+      var i;
+      let list = element.parentElement.parentElement.getElementsByClassName("dropdown-content")[0];
+      list.classList.add("target");
+      for (i = 0; i < dropdowns.length; i++) {
+        if (!dropdowns[i].classList.contains("target")) {
+          dropdowns[i].classList.add("hidden");
+        }
       }
+      list.classList.toggle("hidden");
+    }
   </script>
 {% endblock %}

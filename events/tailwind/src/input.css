@@ -3,217 +3,222 @@
 @tailwind utilities;
 
 @layer base {
-    h1 {
-        @apply sm:text-2xl md:text-3xl lg:md:text-4xl mb-3 font-medium text-gray-900
-    }
+  h1 {
+    @apply sm:text-2xl md:text-3xl lg:md:text-4xl mb-3 font-medium text-gray-900
+  }
 
-    h2 {
-        @apply capitalize font-bold sm:text-2xl text-xl mb-3 text-gray-900;
-    }
+  h2 {
+    @apply capitalize font-bold sm:text-2xl text-xl mb-3 text-gray-900;
+  }
 
-    h3 {
-        @apply text-xl font-bold text-orange-600 m-2;
-    }
+  h3 {
+    @apply text-xl font-bold text-orange-600 m-2;
+  }
 
-    h4 {
-        @apply text-xl font-bold leading-tight text-gray-900;
-    }
+  h4 {
+    @apply text-xl font-bold leading-tight text-gray-900;
+  }
 
-    p {
-        @apply text-base text-gray-700 text-justify leading-relaxed;
-    }
+  p {
+    @apply text-base text-gray-700 text-justify leading-relaxed;
+  }
 
-    label {
-        @apply block text-sm font-medium text-gray-700;
-    }
+  label {
+    @apply block text-sm font-medium text-gray-700;
+  }
 
-    /*Colors*/
-    .bcgreen {
-        @apply green-800 dark:green-800;
-    }
+  /*Colors*/
+  .bcgreen {
+    @apply green-800 dark:green-800;
+  }
 
-    .bctextgreen {
-        @apply text-green-800 dark:text-green-800;
-    }
+  .bctextgreen {
+    @apply text-green-800 dark:text-green-800;
+  }
 }
 
 
 @layer components {
 
-    .logo-container {
-        @apply z-50 absolute left-px top-px object-scale-down h-auto w-20 lg:w-28 md:w-24 rounded-full;
-    }
+  .logo-container {
+    @apply z-30 absolute invisible sm:visible left-px top-px object-scale-down h-auto w-20 lg:w-28 md:w-24 rounded-full;
+  }
 
-    .backtxt {
-        @apply text-orange-600 hover:underline;
-    }
+  .backtxt {
+    @apply text-orange-600 hover:underline;
+  }
 
-    .small_avatar {
-        @apply w-7 rounded-full mx-3;
-    }
+  .small_avatar {
+    @apply w-7 rounded-full mx-3;
+  }
 
-    .message_box {
-        @apply flex items-center text-gray-800 border-2 border-orange-600 bg-yellow-100 justify-center my-5;
-    }
+  .message_box {
+    @apply flex items-center text-gray-800 border-2 border-orange-600 bg-yellow-100 justify-center my-5;
+  }
 
-    .message_list {
-        @apply font-bold list-disc list-inside;
-    }
+  .message_list {
+    @apply font-bold list-disc list-inside;
+  }
 
-    /*Action Buttons*/
-    .join_button {
-        @apply px-3 py-1 text-xs font-medium text-center text-white bg-orange-600 rounded-lg hover:bg-orange-700
-        focus:ring-4 focus:outline-none focus:ring-blue-300;
-    }
+  /*Action Buttons*/
+  .join_button {
+    @apply px-3 py-1 text-xs font-medium text-center text-white bg-orange-600 rounded-lg hover:bg-orange-700
+    focus:ring-4 focus:outline-none focus:ring-blue-300;
+  }
 
-    .joinbutton {
-        @apply inline-flex text-white bg-orange-600  py-2 px-6 m-3 hover:bg-orange-800 rounded;
-    }
+  .joinbutton {
+    @apply inline-flex text-white bg-orange-600  py-2 px-6 m-3 hover:bg-orange-800 rounded;
+  }
 
-    .signin_button {
-        @apply px-3 py-1 text-xs font-medium text-center text-white bg-cyan-600 rounded-lg hover:bg-cyan-800
-        focus:ring-4 focus:outline-none focus:ring-blue-300;
-    }
+  .signin_button {
+    @apply px-3 py-1 text-xs font-medium text-center text-white bg-cyan-600 rounded-lg hover:bg-cyan-800
+    focus:ring-4 focus:outline-none focus:ring-blue-300;
+  }
 
-    .button_body_orange {
-        @apply px-3 py-1 mx-3 text-xs font-medium text-center text-white bg-orange-600 rounded-lg hover:bg-orange-700
-        focus:ring-4 focus:outline-none focus:ring-blue-300;
-    }
+  .button_body_orange {
+    @apply px-3 py-1 m-2 text-xs md:text-base font-medium text-center text-white bg-orange-600 rounded-lg hover:bg-orange-700
+    focus:ring-4 focus:outline-none focus:ring-blue-300;
+  }
 
-    .button_body_cyan {
-        @apply px-3 py-1 mx-3 text-xs font-medium text-center text-white bg-cyan-600 rounded-lg hover:bg-cyan-800
-        focus:ring-4 focus:outline-none focus:ring-blue-300;
-    }
+  .button_body_cyan {
+    @apply px-3 py-1 m-2 text-xs md:text-base font-medium text-center text-white bg-cyan-600 rounded-lg hover:bg-cyan-800
+    focus:ring-4 focus:outline-none focus:ring-blue-300;
+  }
 
-    /*Header Menu*/
-    .user_menu_txt {
-        @apply block bctextgreen font-semibold text-base uppercase hover:text-green-900 hover:underline
-        cursor-pointer;
-    }
-
-
-    .top_menu_txt {
-        @apply inline-block text-xs lg:text-base md:text-sm px-2 py-2 font-semibold uppercase bctextgreen;
-    }
+  /*Header Menu*/
+  .user_menu_txt {
+    @apply block bctextgreen font-semibold text-base uppercase hover:text-green-900 hover:underline
+    cursor-pointer;
+  }
 
 
-    .menu_txt {
-        @apply inline-block text-sm lg:text-xl md:text-sm px-2 py-5 font-semibold uppercase bctextgreen
-        hover:text-white hover:bg-black ;
-    }
-
-    .menu_dropdown_li {
-        @apply relative px-4 text-green-800 hover:text-green-900 cursor-pointer font-bold uppercase tracking-wide;
-    }
-
-    /*Custom text/font*/
-    .org_name {
-        @apply text-base font-bold leading-none text-orange-600 hover:text-orange-800 mr-2;
-    }
-
-    .org_logo {
-        @apply w-[150px] h-[150px] object-cover object-center;
-    }
-
-    .org_logo_sm {
-        @apply w-[75px] h-[75px] object-contain object-center;
-    }
-
-    .ptitle {
-        @apply sm:text-2xl md:text-3xl lg:md:text-4xl mb-3 font-medium text-gray-900;
-    }
-
-    .msgbox {
-        @apply flex-col items-center justify-center my-5;
-    }
-
-    .detailrow {
-        @apply flex items-center justify-center my-5;
-    }
-
-    /*Search and filters*/
-    .submit_search {
-        @apply bg-cyan-600 hover:bg-cyan-800 text-white font-bold py-2 px-4 rounded-r;
-    }
-
-    /*carrousel*/
-    /*.carrousel_main {*/
-    /*    @apply flex overflow-x-auto snap-mandatory snap-x hover:scroll-auto items-start mb-8 md:mb-0 sm:mb-0*/
-    /*    w-5/6 md:w-1/2 sm:w-1/4;*/
-    /*}*/
-    .carrousel_main {
-        @apply flex mb-8 md:mb-0 sm:mb-0
-        w-5/6 md:w-1/2 sm:w-1/4;
-    }
-
-    .carrousel_image {
-        @apply object-scale-down max-h-[150px] mx-auto;
-    }
-
-    .carrousel_card {
-        @apply cursor-pointer border-2 select-none hover:border-cyan-600 bg-white md:p-4 w-11/12;
-    }
+  .top_menu_txt {
+    @apply inline-block text-xs lg:text-base md:text-sm px-2 py-2 font-semibold uppercase bctextgreen;
+  }
 
 
-    /*Page Sections*/
-    /*INRO SECTION*/
-    /*Css for top layout like on event list, home page, club list*/
-    .section_intro_content {
-        @apply text-gray-600 font-normal container mx-auto flex px-5 py-5 md:flex-row flex-col justify-between
-        items-start;
-    }
+  .menu_txt {
+    @apply block text-sm lg:text-xl md:text-sm px-2 py-5 font-semibold uppercase bctextgreen
+    hover:text-white hover:bg-black cursor-pointer;
+  }
 
-    .hero_intro_image {
-        @apply lg:max-w-md lg:w-full md:w-1/2 w-5/6 mb-10 md:mb-0 sm:w-3/6 sm:mb-0;
-    }
+  .sub_menu {
+    @apply group-hover:block absolute hidden -ml-2 px-2 py-2 mt-5 bg-black;
+  }
 
-    .body_intro {
-        @apply md:w-1/2 lg:pl-24 md:pl-16 flex flex-col md:items-start md:text-left items-center text-center;
-    }
+  .menu_txt_sub {
+    @apply block bg-black text-white font-semibold text-xs lg:text-base md:text-sm uppercase hover:underline cursor-pointer;
+  }
 
-    /*.body_intro {*/
-    /*    @apply md:w-1/2 lg:pl-24 md:pl-16 flex flex-col md:items-start md:text-left items-center text-center;*/
-    /*}*/
-    /*RACE RESULTS LIST*/
-    .section_race_series_list {
-        @apply w-full my-5 px-4 py-4 sm:px-6 bg-white md:py-3  md:px-3 xl:px-6 mt-7 overflow-x-auto;
-    }
+  .menu_dropdown_li {
+    @apply relative px-1 text-green-800 hover:text-green-900 cursor-pointer font-bold uppercase tracking-wide;
+  }
 
-    .section_race_results_list {
-        @apply w-full my-5 px-4 py-4 sm:px-6 bg-white md:py-3  md:px-3 xl:px-6 mt-7 overflow-x-auto;
-    }
+  /*Custom text/font*/
+  .org_name {
+    @apply text-base font-bold leading-none text-orange-600 hover:text-orange-800 mr-2;
+  }
 
-    .detail_open {
-        @apply open:bg-white open:ring-1 open:ring-black/5 open:shadow-lg p-6 rounded-lg;
-    }
+  .org_logo {
+    @apply w-[150px] h-[150px] object-cover object-center;
+  }
 
-    .summary {
-        @apply font-normal text-orange-600 select-none;
-    }
+  .org_logo_sm {
+    @apply w-[75px] h-[75px] object-contain object-center;
+  }
 
-    /*Forms*/
-    .form_name {
-        @apply block text-sm font-medium text-gray-700;
-    }
+  .ptitle {
+    @apply sm:text-2xl md:text-3xl lg:md:text-4xl mb-3 font-medium text-gray-900;
+  }
 
-    .form_summary {
-        @apply text-sm text-gray-900 font-semibold select-none;
-    }
+  .msgbox {
+    @apply flex-col items-center justify-center my-5;
+  }
 
-    .form_details {
-        @apply open:ring-1 leading-3 open:shadow-lg p-3 rounded-lg;
-    }
+  .detailrow {
+    @apply flex items-center justify-center my-5;
+  }
 
-    .form_details_text {
-        @apply mt-3 text-sm text-gray-700;
-    }
+  /*Search and filters*/
+  .submit_search {
+    @apply bg-cyan-600 hover:bg-cyan-800 text-white font-bold py-2 px-4 rounded-r;
+  }
 
-    .form_input {
-        @apply block w-full mt-1 border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500
-        focus:border-indigo-500 sm:text-sm;
-    }
+  /*carrousel*/
+  /*.carrousel_main {*/
+  /*    @apply flex overflow-x-auto snap-mandatory snap-x hover:scroll-auto items-start mb-8 md:mb-0 sm:mb-0*/
+  /*    w-5/6 md:w-1/2 sm:w-1/4;*/
+  /*}*/
+  .carrousel_main {
+    @apply flex mb-8 md:mb-0 sm:mb-0
+    w-5/6 md:w-1/2 sm:w-1/4;
+  }
 
-    /*Champion slideshow*/
+  .carrousel_image {
+    @apply object-scale-down max-h-[150px] mx-auto;
+  }
+
+  .carrousel_card {
+    @apply cursor-pointer border-2 select-none hover:border-cyan-600 bg-white md:p-4 w-11/12;
+  }
 
 
+  /*Page Sections*/
+  /*INRO SECTION*/
+  /*Css for top layout like on event list, home page, club list*/
+  .section_intro_content {
+    @apply text-gray-600 font-normal container mx-auto flex px-5 py-5 md:flex-row flex-col justify-between
+    items-start;
+  }
+
+  .hero_intro_image {
+    @apply lg:max-w-md lg:w-full md:w-1/2 w-5/6 mb-10 md:mb-0 sm:w-3/6 sm:mb-0;
+  }
+
+  .body_intro {
+    @apply md:w-1/2 lg:pl-24 md:pl-16 flex flex-col md:items-start md:text-left items-center text-center;
+  }
+
+  /*.body_intro {*/
+  /*    @apply md:w-1/2 lg:pl-24 md:pl-16 flex flex-col md:items-start md:text-left items-center text-center;*/
+  /*}*/
+  /*RACE RESULTS LIST*/
+  .section_race_series_list {
+    @apply w-full my-5 px-4 py-4 sm:px-6 bg-white md:py-3  md:px-3 xl:px-6 mt-7 overflow-x-auto;
+  }
+
+  .section_race_results_list {
+    @apply w-full my-5 px-4 py-4 sm:px-6 bg-white md:py-3  md:px-3 xl:px-6 mt-7 overflow-x-auto;
+  }
+
+  .detail_open {
+    @apply open:bg-white open:ring-1 open:ring-black/5 open:shadow-lg p-6 rounded-lg;
+  }
+
+  .summary {
+    @apply font-normal text-orange-600 select-none;
+  }
+
+  /*Forms*/
+  .form_name {
+    @apply block text-sm font-medium text-gray-700;
+  }
+
+  .form_summary {
+    @apply text-sm text-gray-900 font-semibold select-none;
+  }
+
+  .form_details {
+    @apply open:ring-1 leading-3 open:shadow-lg p-3 rounded-lg;
+  }
+
+  .form_details_text {
+    @apply mt-3 text-sm text-gray-700;
+  }
+
+  .form_input {
+    @apply block w-full mt-1 border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500
+    focus:border-indigo-500 sm:text-sm;
+  }
 }
+
