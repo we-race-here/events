@@ -10,7 +10,6 @@ from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils import timezone
-
 # from jsonschema import Validator TODO: what is this?
 from phonenumber_field.modelfields import PhoneNumberField
 from simple_history.models import HistoricalRecords

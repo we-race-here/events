@@ -8,10 +8,10 @@ from django.shortcuts import get_object_or_404, render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, DetailView, ListView, UpdateView
 
-from ..membership.models import OrganizationMember
 from .forms import EventForm, RaceForm, RaceResultForm, RaceResultsImport, RaceSeriesForm
 from .models import Event, Race, RaceResult, RaceSeries
 from .validators import ImportResults
+from ..membership.models import OrganizationMember
 
 User = get_user_model()
 

@@ -90,7 +90,6 @@ ANYMAIL = {
     "SENDGRID_API_URL": env("SENDGRID_API_URL", default="https://api.sendgrid.com/v3/"),
 }
 
-
 # LOGGING
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#logging
@@ -131,7 +130,6 @@ LOGGING = {
         }
     },
 }
-
 
 # Your stuff...
 # ------------------------------------------------------------------------------
