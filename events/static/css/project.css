@@ -890,15 +890,22 @@ label {
 }
 
 .logo-container {
+  visibility: hidden;
   position: absolute;
   left: 1px;
   top: 1px;
-  z-index: 50;
+  z-index: 30;
   height: auto;
   width: 5rem;
   border-radius: 9999px;
   -o-object-fit: scale-down;
      object-fit: scale-down;
+}
+
+@media (min-width: 640px) {
+  .logo-container {
+    visibility: visible;
+  }
 }
 
 @media (min-width: 768px) {
@@ -1134,7 +1141,8 @@ label {
 }
 
 .menu_txt {
-  display: inline-block;
+  display: block;
+  cursor: pointer;
   padding-left: 0.5rem;
   padding-right: 0.5rem;
   padding-top: 1.25rem;
@@ -1166,11 +1174,59 @@ label {
   }
 }
 
+.sub_menu {
+  position: absolute;
+  margin-left: -0.5rem;
+  margin-top: 1.25rem;
+  display: none;
+  --tw-bg-opacity: 1;
+  background-color: rgb(0 0 0 / var(--tw-bg-opacity));
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
+.group:hover .sub_menu {
+  display: block;
+}
+
+.menu_txt_sub {
+  display: block;
+  cursor: pointer;
+  --tw-bg-opacity: 1;
+  background-color: rgb(0 0 0 / var(--tw-bg-opacity));
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity));
+}
+
+.menu_txt_sub:hover {
+  text-decoration-line: underline;
+}
+
+@media (min-width: 768px) {
+  .menu_txt_sub {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .menu_txt_sub {
+    font-size: 1rem;
+    line-height: 1.5rem;
+  }
+}
+
 .menu_dropdown_li {
   position: relative;
   cursor: pointer;
-  padding-left: 1rem;
-  padding-right: 1rem;
+  padding-left: 0.25rem;
+  padding-right: 0.25rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.025em;
@@ -1600,6 +1656,14 @@ label {
 
 .top-0 {
   top: 0px;
+}
+
+.z-40 {
+  z-index: 40;
+}
+
+.z-50 {
+  z-index: 50;
 }
 
 .col-span-1 {
@@ -2367,8 +2431,8 @@ label {
   padding-right: 0.25rem;
 }
 
-.pr-4 {
-  padding-right: 1rem;
+.pt-3 {
+  padding-top: 0.75rem;
 }
 
 .pt-6 {
@@ -2845,6 +2909,10 @@ label {
     width: 25%;
   }
 
+  .sm\:justify-end {
+    justify-content: flex-end;
+  }
+
   .sm\:px-4 {
     padding-left: 1rem;
     padding-right: 1rem;
@@ -2866,6 +2934,14 @@ label {
     margin-bottom: 0px;
   }
 
+  .md\:ml-24 {
+    margin-left: 6rem;
+  }
+
+  .md\:block {
+    display: block;
+  }
+
   .md\:w-1\/2 {
     width: 50%;
   }
@@ -2882,14 +2958,13 @@ label {
     flex-direction: row;
   }
 
+  .md\:justify-between {
+    justify-content: space-between;
+  }
+
   .md\:px-3 {
     padding-left: 0.75rem;
     padding-right: 0.75rem;
-  }
-
-  .md\:px-8 {
-    padding-left: 2rem;
-    padding-right: 2rem;
   }
 
   .md\:py-3 {
@@ -2906,6 +2981,11 @@ label {
     padding-top: 1.75rem;
     padding-bottom: 1.75rem;
   }
+
+  .md\:text-xl {
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+  }
 }
 
 @media (min-width: 1024px) {
@@ -2917,6 +2997,10 @@ label {
   .lg\:mx-4 {
     margin-left: 1rem;
     margin-right: 1rem;
+  }
+
+  .lg\:ml-28 {
+    margin-left: 7rem;
   }
 
   .lg\:w-1\/4 {
@@ -2935,11 +3019,6 @@ label {
 }
 
 @media (min-width: 1280px) {
-  .xl\:px-10 {
-    padding-left: 2.5rem;
-    padding-right: 2.5rem;
-  }
-
   .xl\:px-5 {
     padding-left: 1.25rem;
     padding-right: 1.25rem;
