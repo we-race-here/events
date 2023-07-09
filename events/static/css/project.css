@@ -894,7 +894,7 @@ label {
   position: absolute;
   left: 1px;
   top: 1px;
-  z-index: 30;
+  z-index: 50;
   height: auto;
   width: 5rem;
   border-radius: 9999px;

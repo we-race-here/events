@@ -73,7 +73,7 @@
           </a>
         </li>
       {% endif %}
-      {% for i in paginator.page_range %}
+      {% for i in custom_page_range %}
         {% if page_obj.number == i %}
           <li>
             <a href="?page={{ i }}{{ withpage }}" class="bg-blue-500 text-white font-bold py-2 px-4">
