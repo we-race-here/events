@@ -4,7 +4,7 @@
 
 @layer base {
     h1 {
-        @apply sm:text-2xl md:text-3xl lg:md:text-4xl mb-3 font-medium text-gray-900
+        @apply sm:text-2xl md:text-3xl lg:md:text-4xl mb-3 font-medium text-gray-900;
     }
 
     h2 {
