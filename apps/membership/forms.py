@@ -4,7 +4,7 @@ from apps.membership.models import Organization, OrganizationMember
 
 
 class OrganizationForm(forms.ModelForm):
-    description = forms.CharField(widget=forms.Textarea(attrs={"class": "ckeditor"}))
+    description = forms.CharField(widget=forms.Textarea(attrs={"class": "editor-basic"}))
 
     class Meta:
         model = Organization
