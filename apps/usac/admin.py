@@ -11,7 +11,6 @@ from django.shortcuts import redirect, render
 from django.urls import path
 
 from apps.usac.forms import CsvImportForm
-
 from . import models
 from .models import UsacDownload
 
@@ -28,7 +27,33 @@ def admin_url_wrap(view, admin_site, model_admin=None):
 
 
 class UsacDownloadAdmin(admin.ModelAdmin):
-    """This defiens the table view of usac recrods"""
+    """
+    This function is for importing USAC (USA Cycling) records from a CSV file.
+
+    Args:
+        csv_object (file): A CSV file object containing the USAC records.
+
+    Returns:
+        dict: A dictionary containing the following keys:
+            - 'attempted': Number of records attempted for import.
+            - 'duplicates': Number of duplicate records found.
+            - 'errors': List of error messages encountered during import.
+            - 'rows_created': Number of records successfully created in the database.
+
+    Raises:
+        Exception: If required fields are missing in the CSV or other unknown errors occur.
+
+    Note:
+        - The CSV file should contain the following required fields:
+            license_number, first_name, last_name, birth_date, race_age,
+            race_gender, sex, license_expiration, license_type, license_status, local_association.
+        - All other fields in the CSV will be treated as 'extra' fields and stored in a separate field in the UsacDownload model.
+        - The function skips any record that has a duplicate 'data_hash' in the UsacDownload model.
+        - If there are any issues with the 'birth_date' or 'license_expiration' fields in a record,
+          they are set to None and the record is still processed.
+        - If there are any issues with the 'license_number' field in a record, the record is skipped.
+        - All records are created in the UsacDownload model using the 'bulk_create' method for efficiency.
+    """
 
     list_display = (
         "id",

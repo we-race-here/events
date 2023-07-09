@@ -12,13 +12,13 @@
             <a href="{% url 'membership:organizations' %}" class="backtxt">Back to Club List</a>
             {% if org.hero %}
               <img
-                  src="{{ org.hero.url }}"
-                  alt="Club Banner" title="" class="object-contain h-500 w-500 justify-center">
+                src="{{ org.hero.url }}"
+                alt="Club Banner" title="" class="object-contain h-500 w-500 justify-center">
             {% endif %}
             {% if org.logo %}
               <img
-                  src="{{ org.logo.url }}"
-                  alt="Club Logo" title="" class="object-contain h-250 w-250 justify-start">
+                src="{{ org.logo.url }}"
+                alt="Club Logo" title="" class="object-contain h-250 w-250 justify-start">
             {% endif %}
             <div class="bg-white shadow-lg rounded p-4 mt-4">
               <h2 class="text-2xl font-bold">{{ org.name }}</h2>
@@ -34,13 +34,6 @@
               {% endif %}
             </div>
             <a href="{% url 'membership:organizations' %}" class="backtxt">Back to Club List</a>
-            <div class="bg-white shadow-lg rounded p-4 mt-4">
-              {% if Races %}
-                {% include 'results/race_result.html' %}
-              {% else %}
-                <h4> No race results for this club </h4>
-              {% endif %}
-            </div>
           </div>
 
           <!-- Right Side Content -->
@@ -77,9 +70,9 @@
                    target="_blank"
                 >Edit Club</a>
                 <a
-                    href="{% url 'membership:organization_admin' org.pk %}"
-                    class="mx-8 bg-orange-600 hover:bg-orange-800 text-white py-2 px-4 rounded block mt-4 text-center"
-                    target="_blank"
+                  href="{% url 'membership:organization_admin' org.pk %}"
+                  class="mx-8 bg-orange-600 hover:bg-orange-800 text-white py-2 px-4 rounded block mt-4 text-center"
+                  target="_blank"
                 >Club Admin</a>
               </div>
             {% endif %}
@@ -87,6 +80,15 @@
           <div class="clearfix"></div>
         </div>
       </div>
+    </div>
+  </section>
+  <section id="club_results" class="mx-auto px-4">
+    <div class="bg-white shadow-lg rounded p-4 mt-4">
+      {% if Races %}
+        {% include 'results/race_result.html' %}
+      {% else %}
+        <h4> No race results for this club </h4>
+      {% endif %}
     </div>
   </section>
 {% endblock %}

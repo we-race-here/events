@@ -312,13 +312,23 @@ SOCIALACCOUNT_FORMS = {"signup": "events.users.forms.UserSocialSignupForm"}
 # Custom stuff...
 # ------------------------------------------------------------------------------
 
-CKEDITOR_CONFIGS = {
-    "default": {
-        "toolbar": "Full",
-        "height": 300,
-        "width": 800,
-    },
-}
+# CKEDITOR_CONFIGS = {
+#     "default": {
+#         "toolbar": "basic",
+#         "height": 300,
+#         "width": 800,
+#     },
+#     "event_basic": {
+#         "toolbar": "Basic",
+#         "height": 300,
+#         "width": 800,
+#     },
+#     "event_full": {
+#         "toolbar": "Full",
+#         "height": 300,
+#         "width": 800,
+#     },
+# }
 
 # Turnstile Cloudflare
 TURNSTILE_SITEKEY = env("TURNSTILE_SITEKEY", default="")
