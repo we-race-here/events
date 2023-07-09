@@ -1,5 +1,6 @@
 from django.db import models
 
+
 # Will remove the following from WRH
 # class USACEvent(models.Model):
 # class USACClubTeam(models.Model):

@@ -3,7 +3,6 @@ from django.contrib.auth import get_user_model
 from django.forms import CharField, DateField, DateInput, ModelChoiceField, ModelForm, TimeField, TimeInput
 
 from apps.membership.models import Organization
-
 from .models import Event, Race, RaceResult, RaceSeries, event_types
 
 User = get_user_model()
@@ -82,9 +81,7 @@ class EventForm(forms.ModelForm):
 
     class Meta:
         model = Event
-        css = (
-
-        )
+        css = ()
         fields = [
             "name",
             "blurb",
