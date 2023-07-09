@@ -3,9 +3,9 @@
 @tailwind utilities;
 
 @layer base {
-  h1 {
-    @apply sm:text-2xl md:text-3xl lg:md:text-4xl mb-3 font-medium text-gray-900
-  }
+    h1 {
+        @apply sm:text-2xl md:text-3xl lg:md:text-4xl mb-3 font-medium text-gray-900;
+    }
 
   h2 {
     @apply capitalize font-bold sm:text-2xl text-xl mb-3 text-gray-900;
@@ -75,15 +75,15 @@
     focus:ring-4 focus:outline-none focus:ring-blue-300;
   }
 
-  .button_body_orange {
-    @apply px-3 py-1 m-2 text-xs md:text-base font-medium text-center text-white bg-orange-600 rounded-lg hover:bg-orange-700
-    focus:ring-4 focus:outline-none focus:ring-blue-300;
-  }
+    .button_body_orange {
+        @apply px-3 py-1 m-2 text-xs md:text-base font-medium text-center text-white bg-orange-600 rounded-lg hover:bg-orange-700
+        focus:ring-4 focus:outline-none focus:ring-blue-300;
+    }
 
-  .button_body_cyan {
-    @apply px-3 py-1 m-2 text-xs md:text-base font-medium text-center text-white bg-cyan-600 rounded-lg hover:bg-cyan-800
-    focus:ring-4 focus:outline-none focus:ring-blue-300;
-  }
+    .button_body_cyan {
+        @apply px-3 py-1 m-2 text-xs md:text-base font-medium text-center text-white bg-cyan-600 rounded-lg hover:bg-cyan-800
+        focus:ring-4 focus:outline-none focus:ring-blue-300;
+    }
 
   /*Header Menu*/
   .user_menu_txt {
@@ -208,17 +208,17 @@
     @apply text-sm text-gray-900 font-semibold select-none;
   }
 
-  .form_details {
-    @apply open:ring-1 leading-3 open:shadow-lg p-3 rounded-lg;
-  }
+    .form_details {
+        @apply open:ring-1 leading-3 open:shadow-lg p-3 rounded-lg;
+    }
 
-  .form_details_text {
-    @apply mt-3 text-sm text-gray-700;
-  }
+    .form_details_text {
+        @apply mt-3 text-sm text-gray-700;
+    }
 
-  .form_input {
-    @apply block w-full mt-1 border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500
-    focus:border-indigo-500 sm:text-sm;
-  }
+    .form_input {
+        @apply block w-full mt-1 border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500
+        focus:border-indigo-500 sm:text-sm;
+    }
 }
 

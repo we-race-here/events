@@ -230,8 +230,8 @@ TEMPLATES = [
 FORM_RENDERER = "django.forms.renderers.TemplatesSetting"
 
 # http://django-crispy-forms.readthedocs.io/en/latest/install.html#template-packs
-CRISPY_TEMPLATE_PACK = "bootstrap5"
-CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+CRISPY_TEMPLATE_PACK = "tailwind"
+CRISPY_ALLOWED_TEMPLATE_PACKS = "tailwind"
 
 # FIXTURES
 # ------------------------------------------------------------------------------
@@ -312,13 +312,23 @@ SOCIALACCOUNT_FORMS = {"signup": "events.users.forms.UserSocialSignupForm"}
 # Custom stuff...
 # ------------------------------------------------------------------------------
 
-CKEDITOR_CONFIGS = {
-    "default": {
-        "toolbar": "Full",
-        "height": 300,
-        "width": 800,
-    },
-}
+# CKEDITOR_CONFIGS = {
+#     "default": {
+#         "toolbar": "basic",
+#         "height": 300,
+#         "width": 800,
+#     },
+#     "event_basic": {
+#         "toolbar": "Basic",
+#         "height": 300,
+#         "width": 800,
+#     },
+#     "event_full": {
+#         "toolbar": "Full",
+#         "height": 300,
+#         "width": 800,
+#     },
+# }
 
 # Turnstile Cloudflare
 TURNSTILE_SITEKEY = env("TURNSTILE_SITEKEY", default="")

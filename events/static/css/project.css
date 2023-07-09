@@ -2431,12 +2431,12 @@ label {
   padding-right: 0.25rem;
 }
 
-.pt-6 {
-  padding-top: 1.5rem;
-}
-
 .pt-3 {
   padding-top: 0.75rem;
+}
+
+.pt-6 {
+  padding-top: 1.5rem;
 }
 
 .text-left {
@@ -2967,11 +2967,6 @@ label {
     padding-right: 0.75rem;
   }
 
-  .md\:px-8 {
-    padding-left: 2rem;
-    padding-right: 2rem;
-  }
-
   .md\:py-3 {
     padding-top: 0.75rem;
     padding-bottom: 0.75rem;
@@ -3024,11 +3019,6 @@ label {
 }
 
 @media (min-width: 1280px) {
-  .xl\:px-10 {
-    padding-left: 2.5rem;
-    padding-right: 2.5rem;
-  }
-
   .xl\:px-5 {
     padding-left: 1.25rem;
     padding-right: 1.25rem;
