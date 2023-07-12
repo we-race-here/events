@@ -11,6 +11,7 @@ module.exports = {
         '../../apps/membership/forms.py',
         '../../apps/store/forms.py',
         '../../apps/usac/forms.py',
+        "./node_modules/flowbite/**/*.js"
     ],
     // options: {
     //     safelist: [], // Specify the classes that should not be removed by purge
@@ -36,6 +37,7 @@ module.exports = {
         require('@tailwindcss/typography'),
         require('@tailwindcss/line-clamp'),
         require('@tailwindcss/aspect-ratio'),
-        require('@tailwindcss/container-queries')
+        require('@tailwindcss/container-queries'),
+        require('flowbite/plugin'),
     ],
 }
