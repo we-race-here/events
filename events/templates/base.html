@@ -3,17 +3,17 @@
 {% get_current_language as LANGUAGE_CODE %}
 <html lang="{{ LANGUAGE_CODE }}">
 
+<!-- Head static resources, javascript, ... -->
 {% include 'head_base.html' %}
 
+<!-- Main Body -->
 <body class="bg-gray-100 min-h-screen">
-<a href="{% url 'home' %}">
-  <img class="logo-container"
-       src="{% static 'images/BC_EventSupport_site_logo.png' %}"
-       alt="Logo"></a>
+
+<!-- Header NAV -->
 {% include 'header_base.html' with title="Events" %}
 
 <!-- Content -->
-<main class="container mx-auto mt-7">
+<main class="container mx-auto my-1 sm:my-2 md:my-4 lg:my-8">
   <!--   Content Goes here     -->
   {% block content %}
   {% endblock %}
@@ -21,7 +21,12 @@
 
 {% include 'footer_base.html' %}
 
-{% block modal %}{% endblock modal %}
+{% block modal %}
+  {% comment %}
+        Modal windows, if any. To use, add a link with the class "modal-open"
+        and a data-target attribute with the id of the modal window to open.
+  {% endcomment %}
+{% endblock modal %}
 
 {% block inline_javascript %}
   {% comment %}
@@ -30,7 +35,7 @@
         <script>
           window.addEventListener('DOMContentLoaded', () => {/* Run whatever you want */});
         </script>
-        {% endcomment %}
+  {% endcomment %}
 {% endblock inline_javascript %}
 {#<script>#}
 {#    function hideLoader(image) {#}
