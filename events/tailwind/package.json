@@ -28,6 +28,7 @@
     "tailwindcss": "^3.3.2"
   },
   "dependencies": {
-    "@tailwindcss/container-queries": "^0.1.1"
+    "@tailwindcss/container-queries": "^0.1.1",
+    "flowbite": "^1.7.0"
   }
 }

@@ -1,6 +1,6 @@
 {% load static i18n %}
 <a href="{% url 'home' %}">
-  <img class="logo-container"
+  <img class="nav_logo"
        src="{% static 'images/BC_EventSupport_site_logo.png' %}"
        alt="Logo">
 </a>
@@ -136,52 +136,82 @@
     </nav>
   </div>
 
-  <!-- Second level navigation -->
-  <nav class="flex flex-row justify-end items-center z-40">
-    <ul>
-      <li class="group menu_txt">
-        <a href="{% url  'event:event_list' %}">Events</a>
-        <ul class="sub_menu">
-          <li class="py-1"><a
-            class="menu_txt_sub"
-            href="{% url  'event:event_list' %}">Calendar</a>
+
+  <!-- New menu -->
+  <nav class="nav">
+    <div class="nav_div">
+      <a href="{% url 'home' %}" class="flex items-center">
+        <span class="nav_title">Event Support Program</span>
+      </a>
+      <button data-collapse-toggle="navbar-dropdown" type="button"
+              class="nav_mobile_button"
+              aria-controls="navbar-dropdown" aria-expanded="false">
+        <span class="sr-only">Open main menu</span>
+        <i class="fa-solid fa-bars fas fa-lg"></i>
+      </button>
+      <div class="hidden w-full md:block md:w-auto" id="navbar-dropdown">
+        <ul
+          class="nav_ul">
+          <li>
+            <a href="{% url 'home' %}"
+               class="nav_link"
+               aria-current="page">Home</a>
           </li>
-          <li class="py-1"><a
-            class="menu_txt_sub"
-            href="{% url  'event:event_create' %}">Submit</a>
+          <li>
+            <button id="dropdownNavbarLinkEvent" data-dropdown-toggle="dropdownHoverEvent" data-dropdown-trigger="hover"
+                    class="nav_link ">
+              Events <i class="fa-solid fa-square-caret-down"></i>
+            </button>
+            <!-- Dropdown menu -->
+            <div id="dropdownHoverEvent"
+                 class="nav_dropdown_div">
+              <ul class="nav_dropdown_ul">
+                <li>
+                  <a href="{% url  'event:event_list' %}" class="nav_dropdown_link"><i
+                    class="fa-solid fa-calendar-days"></i> Calendar</a>
+                </li>
+                <li>
+                  <a href="{% url  'event:event_create' %}" class="nav_dropdown_link"><i
+                    class="fa-solid fa-square-plus"></i> Submit</a>
+                </li>
+              </ul>
+            </div>
+          </li>
+          <li>
+            <button id="dropdownNavbarLinkResults" data-dropdown-toggle="dropdownHoverResults"
+                    data-dropdown-trigger="hover"
+                    class="nav_link ">
+              Results <i class="fa-solid fa-square-caret-down"></i>
+            </button>
+            <!-- Dropdown menu -->
+            <div id="dropdownHoverResults"
+                 class="nav_dropdown_div">
+              <ul class="nav_dropdown_ul">
+                <li>
+                  <a href="{% url "event:events_results_list" %}" class="nav_dropdown_link"><i
+                    class="fa-solid fa-list-ol"></i> Results</a>
+                </li>
+                <li>
+                  <a href="{% url  'event:events_results_list' %}#raceseries_list" class="nav_dropdown_link"><i
+                    class="fa-solid fa-trophy"></i> Cups</a>
+                </li>
+              </ul>
+            </div>
+          </li>
+          <li>
+            <a href="{% url 'membership:organizations' %}"
+               class="nav_link">Clubs</a>
+          </li>
+          <li>
+            <a href="{% url 'membership:promoters' %}"
+               class="nav_link">Promoters</a>
+          </li>
+          <li>
+            <a href="https://www.bicyclecolorado.org/events-2/event-support/" target="_blank"
+               class="nav_link">About</a>
           </li>
         </ul>
-      </li>
-    </ul>
-    <ul>
-      <li class="group menu_txt ">
-        <a href="{% url "event:events_results_list" %}">Results</a>
-        <ul class="sub_menu">
-          <li class="py-1"><a
-            class="menu_txt_sub"
-            href="{% url  'event:events_results_list' %}">Events</a>
-          </li>
-          <li class="py-1"><a
-            class="menu_txt_sub"
-            href="{% url  'event:events_results_list' %}#raceseries_list">Cups</a>
-          </li>
-        </ul>
-      </li>
-    </ul>
-    <ul>
-      <li>
-        <a class="menu_txt" href="{% url 'membership:organizations' %}">Clubs</a>
-      </li>
-    </ul>
-    <ul>
-      <li>
-        <a class="menu_txt" href="{% url 'membership:promoters' %}">Promoters</a>
-      </li>
-    </ul>
-    <ul>
-      <li>
-        <a class="menu_txt" href="https://www.bicyclecolorado.org/events-2/event-support/" target="_blank">ABOUT</a>
-      </li>
-    </ul>
+      </div>
+    </div>
   </nav>
 </header>
