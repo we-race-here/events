@@ -112,7 +112,7 @@
     @apply relative px-1 text-green-800 hover:text-green-900 cursor-pointer font-bold uppercase tracking-wide;
   }
 
-  /* NEW NAV*/
+  /* 2nd NAV flowbite based*/
   /*####################*/
   .nav_text {
     @apply font-semibold text-green-800 dark:text-green-800 hover:text-white dark:hover:text-white;
@@ -225,12 +225,11 @@
   /*INRO SECTION*/
   /*Css for top layout like on event list, home page, club list*/
   .section_intro_content {
-    @apply mx-auto flex px-5 py-5 md:flex-row flex-col justify-between
-    items-start;
+    @apply mx-auto flex px-5 py-5 md:flex-row flex-col justify-between items-center;
   }
 
   .hero_intro_image {
-    @apply lg:max-w-md lg:w-full md:w-1/2 w-5/6 mb-10 md:mb-0 sm:w-3/6 sm:mb-0;
+    @apply lg:max-w-md lg:w-full md:w-1/2 w-full mb-0 md:mb-0 sm:w-3/6 sm:mb-0;
   }
 
   .body_intro {
