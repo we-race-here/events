@@ -137,12 +137,12 @@
   </div>
 
 
-  <!-- New menu -->
+  <!-- Second Level -->
   <nav class="nav">
     <div class="nav_div">
-      <a href="{% url 'home' %}" class="flex items-center">
-        <span class="nav_title">Event Support Program</span>
-      </a>
+      {#      <a href="{% url 'home' %}" class="flex items-center">#}
+      {#        <span class="nav_title">Event Support Program</span>#}
+      {#      </a>#}
       <button data-collapse-toggle="navbar-dropdown" type="button"
               class="nav_mobile_button"
               aria-controls="navbar-dropdown" aria-expanded="false">
@@ -159,8 +159,9 @@
           </li>
           <li>
             <button id="dropdownNavbarLinkEvent" data-dropdown-toggle="dropdownHoverEvent" data-dropdown-trigger="hover"
+                    data-dropdown-offset-distance=0 data-dropdown-delay=5
                     class="nav_link ">
-              Events <i class="fa-solid fa-square-caret-down"></i>
+              Events
             </button>
             <!-- Dropdown menu -->
             <div id="dropdownHoverEvent"
@@ -179,9 +180,9 @@
           </li>
           <li>
             <button id="dropdownNavbarLinkResults" data-dropdown-toggle="dropdownHoverResults"
-                    data-dropdown-trigger="hover"
+                    data-dropdown-trigger="hover" data-dropdown-offset-distance=0 data-dropdown-delay=5
                     class="nav_link ">
-              Results <i class="fa-solid fa-square-caret-down"></i>
+              Results
             </button>
             <!-- Dropdown menu -->
             <div id="dropdownHoverResults"

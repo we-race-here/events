@@ -4,7 +4,7 @@
 
 @layer base {
   h1 {
-    @apply sm:text-2xl md:text-3xl lg:md:text-4xl mb-3 font-medium text-gray-900;
+    @apply sm:text-xl md:text-2xl lg:text-3xl mb-3 font-bold text-gray-900;
   }
 
   h2 {
@@ -124,7 +124,7 @@
   }
 
   .nav_div {
-    @apply w-full flex flex-wrap items-center justify-between  p-0 md:p-0;
+    @apply w-full flex flex-wrap items-center justify-end  p-0 md:p-0;
   }
 
   .nav_title {
@@ -151,12 +151,12 @@
 
   .nav_link {
     @apply block uppercase lg:text-xl md:text-sm py-4 px-2 nav_text bg-white hover:bg-black
-    rounded md:bg-transparent md:m-0;
+    rounded-t-md md:bg-transparent md:m-0;
     /*md:dark:text-blue-500 dark:bg-blue-600 md:dark:bg-transparent*/
   }
 
   .nav_dropdown_div {
-    @apply z-10 hidden font-normal bg-white divide-y divide-gray-100 rounded-lg shadow w-36;
+    @apply z-10 hidden font-normal -inset-y-3 bg-black divide-y divide-gray-100 rounded-md shadow w-36;
     /*dark:bg-gray-700 dark:divide-gray-600*/
   }
 
@@ -166,7 +166,7 @@
   }
 
   .nav_dropdown_link {
-    @apply block uppercase px-4 py-2 nav_text hover:bg-black
+    @apply block uppercase px-4 py-2 nav_text text-white hover:bg-black hover:text-gray-300 hover:underline;
     /*dark:hover:bg-gray-600*/
     /*dark:hover:text-white*/
   }
@@ -225,7 +225,7 @@
   /*INRO SECTION*/
   /*Css for top layout like on event list, home page, club list*/
   .section_intro_content {
-    @apply text-gray-600 font-normal container mx-auto flex px-5 py-5 md:flex-row flex-col justify-between
+    @apply mx-auto flex px-5 py-5 md:flex-row flex-col justify-between
     items-start;
   }
 
