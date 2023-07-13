@@ -3,6 +3,7 @@
 {% get_current_language as LANGUAGE_CODE %}
 <html lang="{{ LANGUAGE_CODE }}">
   <head>
+    <!-- Head static resources, javascript, ... -->
     {% include 'head_base.html' %}
   </head>
   <body>
@@ -11,10 +12,10 @@
       <!--   Content Goes here     -->
       {% block content %}
       {% endblock %}
-    </main>
-
+    </main>    
   </body>
   <!-- Footer -->
   {% include 'footer_base.html' %}
+
 
 </html>

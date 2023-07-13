@@ -26,18 +26,14 @@
   label {
     @apply block text-sm font-medium text-gray-700;
   }
-
-  /*Colors*/
-  .bcgreen {
-    @apply green-800 dark:green-800;
-  }
-
-  .bctextgreen {
-    @apply text-green-800 dark:text-green-800;
-  }
 }
 
+
 @layer components {
+
+  .bctextgreen {
+    @apply text-green-800 dark:text-green-800 hover:text-green-900 dark:hover:text-green-900;
+  }
 
   .logo-container {
     @apply z-50 absolute invisible sm:visible left-px top-px object-scale-down h-auto w-20 lg:w-28 md:w-24 rounded-full;
@@ -70,17 +66,19 @@
   }
 
   .signin_button {
-    @apply px-3 py-1 text-xs font-medium text-center text-white bg-cyan-600 rounded-lg hover:bg-cyan-800
+    @apply px-3 py-1 text-xs font-medium text-center text-white bg-bc_cyan rounded-lg hover:bg-bc_cyan_hover
     focus:ring-4 focus:outline-none focus:ring-blue-300;
   }
 
   .button_body_orange {
-    @apply px-3 py-1 m-2 text-xs md:text-base font-medium text-center text-white bg-orange-600 rounded-lg hover:bg-orange-700
+    @apply px-3 py-1 m-2 text-xs md:text-base font-medium text-center text-white bg-orange-600 rounded-lg
+    hover:bg-orange-700
     focus:ring-4 focus:outline-none focus:ring-blue-300;
   }
 
   .button_body_cyan {
-    @apply px-3 py-1 m-2 text-xs md:text-base font-medium text-center text-white bg-cyan-600 rounded-lg hover:bg-cyan-800
+    @apply px-3 py-1 m-2 text-xs md:text-base font-medium text-center text-white bg-bc_cyan rounded-lg
+    hover:bg-bc_cyan_hover
     focus:ring-4 focus:outline-none focus:ring-blue-300;
   }
 
@@ -106,14 +104,75 @@
   }
 
   .menu_txt_sub {
-    @apply block bg-black text-white font-semibold text-xs lg:text-base md:text-sm uppercase hover:underline cursor-pointer;
+    @apply block bg-black text-white font-semibold text-xs lg:text-base md:text-sm uppercase hover:underline
+    cursor-pointer;
   }
 
   .menu_dropdown_li {
     @apply relative px-1 text-green-800 hover:text-green-900 cursor-pointer font-bold uppercase tracking-wide;
   }
 
+  /* NEW NAV*/
+  /*####################*/
+  .nav_text {
+    @apply font-semibold text-green-800 dark:text-green-800 hover:text-white dark:hover:text-white;
+  }
+
+  .nav {
+    @apply bg-white;
+    /*dark:bg-gray-900 dark:border-gray-700*/
+  }
+
+  .nav_div {
+    @apply w-full flex flex-wrap items-center justify-between  p-0 md:p-0;
+  }
+
+  .nav_title {
+    @apply bctextgreen pb-8 pt-0 text-base font-semibold whitespace-nowrap md:text-xl
+    lg:ml-28 md:ml-24 sm:ml-20;
+    /*dark:text-white*/
+  }
+
+  .nav_logo {
+    @apply absolute invisible sm:visible left-px -top-px object-scale-down h-auto w-20 lg:w-28 md:w-24 rounded-full;
+  }
+
+  .nav_mobile_button {
+    @apply inline-flex items-center p-3  justify-center text-sm nav_text hover:text-white hover:bg-black
+    rounded-md md:hidden focus:outline-none focus:ring-2 focus:ring-gray-200;
+    /* dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600*/
+  }
+
+  .nav_ul {
+    @apply flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row
+    md:mt-0 md:border-0 md:bg-white;
+    /*dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700*/
+  }
+
+  .nav_link {
+    @apply block uppercase lg:text-xl md:text-sm py-4 px-2 nav_text bg-white hover:bg-black
+    rounded md:bg-transparent md:m-0;
+    /*md:dark:text-blue-500 dark:bg-blue-600 md:dark:bg-transparent*/
+  }
+
+  .nav_dropdown_div {
+    @apply z-10 hidden font-normal bg-white divide-y divide-gray-100 rounded-lg shadow w-36;
+    /*dark:bg-gray-700 dark:divide-gray-600*/
+  }
+
+  .nav_dropdown_ul {
+    @apply py-2 text-sm;
+    /*dark:text-gray-400;*/
+  }
+
+  .nav_dropdown_link {
+    @apply block uppercase px-4 py-2 nav_text hover:bg-black
+    /*dark:hover:bg-gray-600*/
+    /*dark:hover:text-white*/
+  }
+
   /*Custom text/font*/
+  /*####################*/
   .org_name {
     @apply text-base font-bold leading-none text-orange-600 hover:text-orange-800 mr-2;
   }
@@ -140,7 +199,7 @@
 
   /*Search and filters*/
   .submit_search {
-    @apply bg-cyan-600 hover:bg-cyan-800 text-white font-bold py-2 px-4 rounded-r;
+    @apply bg-bc_cyan hover:bg-bc_cyan_hover text-white font-bold py-2 px-4 rounded-r;
   }
 
   /*carrousel*/
@@ -158,7 +217,7 @@
   }
 
   .carrousel_card {
-    @apply cursor-pointer border-2 select-none hover:border-cyan-600 bg-white md:p-4 w-11/12;
+    @apply cursor-pointer border-2 select-none hover:border-bc_cyan bg-white md:p-4 w-11/12;
   }
 
 
@@ -218,6 +277,19 @@
   .form_input {
     @apply block w-full mt-1 border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500
     focus:border-indigo-500 sm:text-sm;
+  }
+
+  .form_textinput {
+    @apply block mt-1 border-0 rounded-md shadow-sm p-2 text-sm md:text-base;
+  }
+
+  .form_textarea {
+    @apply block mt-1 border-0 rounded-md shadow-sm p-2 text-sm md:text-base;
+  }
+
+  .form_name {
+    @apply form_textinput ;
+
   }
 }
 
