@@ -4,6 +4,7 @@ module.exports = {
             '../templates/**/*.html',
             '../../templates/**/*.html',
             '../../**/templates/**/*.html',
+            './node_modules/flowbite/**/*.js'
             // '../../**/*.js',
             // '../../**/*.py'
         ],
@@ -23,6 +24,8 @@ module.exports = {
         require('@tailwindcss/typography'),
         require('@tailwindcss/line-clamp'),
         require('@tailwindcss/aspect-ratio'),
-        require('@tailwindcss/container-queries')
+        require('@tailwindcss/container-queries'),
+        require('flowbite/plugin')
+
     ],
 }

@@ -1,5 +1,4 @@
 {% load static i18n %}
-<head>
   <title>{% block title %}{{ pagetitle|default:"Events" }}{% endblock title %}</title>
   <meta charset="utf-8">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -24,9 +23,12 @@
     <link href="{% static 'css/project.css' %}" rel="stylesheet">
     <!-- splide-->
     <link href="{% static 'css/splide.min.css' %}" rel="stylesheet">
+    <!--flowbite-->
+    <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.7.0/flowbite.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.7.0/datepicker.min.js"></script>
+
     {#    <script rel="stylesheet" src="{% static 'css/project.css' %}"></script>#}
-    <!-- Temparary hack to define custom tailwind css-->
-    <!--  <script src="https://cdn.tailwindcss.com"></script>-->
     {#        <link href="{% static 'css/tailwind.css' %}" rel="stylesheet">#}
   {% endblock %}
 

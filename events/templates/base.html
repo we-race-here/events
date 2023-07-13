@@ -2,45 +2,19 @@
 <!DOCTYPE html>
 {% get_current_language as LANGUAGE_CODE %}
 <html lang="{{ LANGUAGE_CODE }}">
+  <head>
+    {% include 'head_base.html' %}
+  </head>
+  <body>
+    {% include 'nav_base.html' %}
+    <main class="container mx-auto mt-7">
+      <!--   Content Goes here     -->
+      {% block content %}
+      {% endblock %}
+    </main>
 
-{% include 'head_base.html' %}
+  </body>
+  <!-- Footer -->
+  {% include 'footer_base.html' %}
 
-<body class="bg-gray-100 min-h-screen">
-<a href="{% url 'home' %}">
-  <img class="logo-container"
-       src="{% static 'images/BC_EventSupport_site_logo.png' %}"
-       alt="Logo"></a>
-{% include 'header_base.html' with title="Events" %}
-
-<!-- Content -->
-<main class="container mx-auto mt-7">
-  <!--   Content Goes here     -->
-  {% block content %}
-  {% endblock %}
-</main>
-
-{% include 'footer_base.html' %}
-
-{% block modal %}{% endblock modal %}
-
-{% block inline_javascript %}
-  {% comment %}
-        Script tags with only code, no src (defer by default). To run
-        with a "defer" so that you run inline code:
-        <script>
-          window.addEventListener('DOMContentLoaded', () => {/* Run whatever you want */});
-        </script>
-        {% endcomment %}
-{% endblock inline_javascript %}
-{#<script>#}
-{#    function hideLoader(image) {#}
-{#        // Hide the loader and show the image#}
-{#        image.previousElementSibling.classList.add('hidden');#}
-{#        image.classList.remove('hidden');#}
-{#    }#}
-{##}
-{#    // Show the loader initially#}
-{#    document.querySelector('.loader').classList.remove('hidden');#}
-{#</script>#}
-</body>
 </html>
