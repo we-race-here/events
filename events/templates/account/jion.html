@@ -1,0 +1,310 @@
+{% load i18n %}
+{% load tailwind_filters %}
+{% load crispy_forms_tags %}
+{% load widget_tweaks %}
+  
+  <!-- Main modal -->
+  <div id="jionModal" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+      <div class="relative w-full max-w-2xl max-h-full">
+          <!-- Modal content -->
+          <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+              <!-- Modal header -->
+              <div class="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
+                  <h3 class="text-xl text-orange-500 font-semibold text-gray-900 dark:text-white">
+                    {% translate "Join Now" %}
+                  </h3>
+                  {% comment %} <h2 class="text-center text-3xl font-extrabold text-orange-500">
+                    {% translate "Join Now" %}
+                  </h2> {% endcomment %}
+                  <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="jionModal">
+                      <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                      </svg>
+                      <span class="sr-only">Close modal</span>
+                  </button>
+              </div>
+              <!-- Modal body -->
+              <div class="p-1 space-y-6">
+                    <div class="max-w-md w-full space-y-8">
+                      <form method="post">
+                        {% csrf_token %}
+                        {% for error in form.non_field_errors %}
+                          <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                            <strong class="font-bold">Error!</strong>
+                            <span class="block sm:inline">{{ error }}</span>
+                            <button class="absolute top-0 bottom-0 right-0 px-4 py-3" onclick="this.parentElement.style.display='none'">
+                              <i class="fas fa-times h-6 w-6  cursor-pointer"></i>
+                            </button>
+                          </div>
+                        {% endfor %}
+                        <div class="mt-4">
+                          <label for="{{ form.first_name.id_for_label }}">First
+                            Name</label>
+                          {{ form.first_name|add_class:"block w-full mt-1 border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" }}
+                          {% if form.first_name.errors %}
+                            <div class="text-red-500 text-xs mt-1">{{ form.first_name.errors }}</div>
+                          {% endif %}
+                        </div>
+                  
+                        <div class="mt-4">
+                          <label for="{{ form.last_name.id_for_label }}">Last Name</label>
+                          {{ form.last_name|add_class:"block w-full mt-1 border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" }}
+                          {% if form.last_name.errors %}
+                            <div class="text-red-500 text-xs mt-1">{{ form.last_name.errors }}</div>
+                          {% endif %}
+                        </div>
+                  
+                        <div class="mt-4">
+                          <label for="{{ form.email.id_for_label }}">Email</label>
+                          {{ form.email|add_class:"block w-full mt-1 border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" }}
+                          {% if form.email.errors %}
+                            <div class="text-red-500 text-xs mt-1">{{ form.email.errors }}</div>
+                          {% endif %}
+                        </div>
+                  
+                        <div class="mt-4">
+                          <label for="{{ form.password.id_for_label }}">Password</label>
+                          {{ form.password1|add_class:"block w-full mt-1 border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" }}
+                          {% if form.password1.errors %}
+                            <div class="text-red-500 text-xs mt-1">{{ form.password1.errors }}</div>
+                          {% endif %}
+                        </div>
+                        <div class="mt-4">
+                          <label for="{{ form.password.id_for_label }}">Confirm
+                            Password</label>
+                          {{ form.password2|add_class:"block w-full mt-1 border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" }}
+                          {% if form.password2.errors %}
+                            <div class="text-red-500 text-xs mt-1">{{ form.password2.errors }}</div>
+                          {% endif %}
+                        </div>
+                        <div class="flex space-x-4">
+                  
+                          <div class="w-1/3">
+                            <label for="{{ form.birth_day.id_for_label }}">Day</label>
+                            {{ form.birth_day|add_class:"block w-full mt-1 border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" }}
+                            {% if form.birth_day.errors %}
+                              <div class="text-red-500 text-xs mt-1">{{ form.birth_day.errors }}</div>
+                            {% endif %}
+                          </div>
+                          <div class="w-1/3">
+                            <label for="{{ form.birth_month.id_for_label }}">Month</label>
+                            {{ form.birth_month|add_class:"block w-full mt-1 border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" }}
+                            {% if form.birth_month.errors %}
+                              <div class="text-red-500 text-xs mt-1">{{ form.birth_month.errors }}</div>
+                            {% endif %}
+                          </div>
+                          <div class="w-1/3">
+                            <label for="{{ form.birth_year.id_for_label }}">Year</label>
+                            {{ form.birth_year|add_class:"block w-full mt-1 border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" }}
+                            {% if form.birth_year.errors %}
+                              <div class="text-red-500 text-xs mt-1">{{ form.birth_year.errors }}</div>
+                            {% endif %}
+                          </div>
+                        </div>
+                  
+                        <div class="mt-4">
+                          <label for="{{ form.gender.id_for_label }}">Gender</label>
+                          {{ form.gender|add_class:"form_input" }}
+                          {% if form.gender.errors %}
+                            <div class="text-red-500 text-xs mt-1">{{ form.gender.errors }}</div>
+                          {% endif %}
+                        </div>
+                  
+                        <div id="parentFields" style="display: none;">
+                          <!-- Parent's name field -->
+                          <div class="mt-4">
+                            <label for="{{ form.parent_name.id_for_label }}">Parent's
+                              Name</label>
+                            {{ form.parent_name|add_class:"form_input" }}
+                            {% if form.parent_name.errors %}
+                              <div class="text-red-500 text-xs mt-1">{{ form.parent_name.errors }}</div>
+                            {% endif %}
+                          </div>
+                  
+                          <!-- Parent's email field -->
+                          <div class="mt-4">
+                            <label for="{{ form.parent_email.id_for_label }}">Parent's
+                              Email</label>
+                            {{ form.parent_email|add_class:"form_input" }}
+                            {% if form.parent_email.errors %}
+                              <div class="text-red-500 text-xs mt-1">{{ form.parent_email.errors }}</div>
+                            {% endif %}
+                          </div>
+                  
+                          <div>
+                            <details class="form_details">
+                              <summary class="form_summary">
+                                {{ form.parent_terms_of_service|add_class:"form-checkbox text-indigo-600" }} I agree to Terms and Service
+                                (Parent)
+                              </summary>
+                              <div class="form_details_text">
+                                {% include "TOS/TermsOfService.html" %}
+                              </div>
+                            </details>
+                            {% if form.parent_terms_of_service.errors %}
+                              <div class="text-red-500 text-xs mt-1">{{ form.parent_terms_of_service.errors }}</div>
+                            {% endif %}
+                  
+                          </div>
+                          <div>
+                            <details class="form_details">
+                              <summary class="form_summary">
+                                {{ form.parent_user_agreement_waiver|add_class:"form-checkbox text-indigo-600" }} I accept the waiver
+                                (Parent)
+                              </summary>
+                              <div class="form_details_text">
+                                {% include "TOS/WaiverReleaseAgreement.html" %}
+                              </div>
+                            </details>
+                            {% if form.parent_user_agreement_waiver.errors %}
+                              <div class="text-red-500 text-xs mt-1">{{ form.parent_user_agreement_waiver.errors }}</div>
+                            {% endif %}
+                          </div>
+                        </div>
+                  
+                        <div class="mt-2">
+                          <label for="{{ form.usac_number.id_for_label }}">USAC
+                            Number</label>
+                          {{ form.usac_number|add_class:"form_input" }}
+                          {% if form.usac_number.errors %}
+                            <div class="text-red-500 text-xs mt-1">{{ form.usac_number.errors }}</div>
+                          {% endif %}
+                        </div>
+                        <div id="id_opt_in">
+                          <details class="form_details">
+                            <summary class="form_summary">
+                              {{ form.opt_in_email|add_class:"form-checkbox text-indigo-600" }} Opt out of promotional emails
+                            </summary>
+                            <div class="form_details_text">
+                              {% include "TOS/PromotionalEmails.html" %}
+                            </div>
+                          </details>
+                          {% if form.opt_in_email.errors %}
+                            <div class="text-red-500 text-xs mt-1">{{ form.opt_in_email.errors }}</div>
+                          {% endif %}
+                        </div>
+                        <div>
+                          <details class="form_details">
+                            <summary class="form_summary">
+                              {{ form.terms_of_service|add_class:"form-checkbox text-indigo-600" }} I agree to Terms and Service
+                            </summary>
+                            <div class="form_details_text">
+                              {% include "TOS/TermsOfService.html" %}
+                            </div>
+                          </details>
+                          {% if form.terms_of_service.errors %}
+                            <div class="text-red-500 text-xs mt-1">{{ form.terms_of_service.errors }}</div>
+                          {% endif %}
+                        </div>
+                  
+                        <div>
+                          <details class="form_details">
+                            <summary class="form_summary">
+                              {{ form.user_agreement_waiver|add_class:"form-checkbox text-indigo-600" }} I accept the waiver
+                            </summary>
+                            <div class="form_details_text">
+                              {% include "TOS/WaiverReleaseAgreement.html" %}
+                            </div>
+                          </details>
+                          {% if form.user_agreement_waiver.errors %}
+                            <div class="text-red-500 text-xs mt-1">{{ form.user_agreement_waiver.errors }}</div>
+                          {% endif %}
+                        </div>
+                  
+                        <div>
+                          <details class="form_details">
+                            <summary class="form_summary">
+                              {{ form.privacy_policy|add_class:"form-checkbox text-indigo-600" }} I accept to Privacy Policy
+                            </summary>
+                            <div class="form_details_text">
+                              {% include "TOS/PrivacyPolicy.html" %}
+                            </div>
+                          </details>
+                          {% if form.user_agreement_waiver.errors %}
+                            <div class="text-red-500 text-xs mt-1">{{ form.user_agreement_waiver.errors }}</div>
+                          {% endif %}
+                  
+                        </div>
+                  
+                        <div class="my-2 flex flex-col items-center">
+                          {{ form.turnstile|add_class:"" }}
+                          {% if form.turnstile.errors %}
+                            <div class="text-red-500 text-xs mt-1">{{ form.turnstile.errors }}</div>
+                          {% endif %}
+                        </div>
+                        <div>
+                          <button type="submit"
+                                  class="group relative py-2 w-full flex justify-center button_body_orange">
+                            Sign In
+                          </button>
+                        </div>
+                        <!-- Add Register and Forgot Password links -->
+                        <div class="mt-6">
+                          <div class="text-center">
+                            {% if ACCOUNT_ALLOW_REGISTRATION %}
+                              <a href="{{ login_url }}" class="font-medium text-orange-600 hover:text-slate-950">
+                                {% translate "Have an account? Login" %}
+                              </a>
+                            {% endif %}
+                          </div>
+                        </div>
+                      </form>
+                  
+                    </div>
+                  
+                 
+              </div>
+              <!-- Modal footer -->
+              <div class="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
+                  <button data-modal-hide="jionModal" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">I accept</button>
+                  <button data-modal-hide="jionModal" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">Decline</button>
+              </div>
+          </div>
+      </div>
+  </div>
+  
+  <script>
+    function calculateAge(birthday) {
+      console.log(birthday)
+      var ageDifMs = Date.now() - birthday.getTime();
+      var ageDate = new Date(ageDifMs);
+      return Math.abs(new Date().getFullYear() - birthday.getFullYear());
+    }
+  
+    function cal_age() {
+      var day = document.getElementById('id_birth_day').value;
+      var month = document.getElementById('id_birth_month').value;
+      var year = document.getElementById('id_birth_year').value;
+      var parentFields = document.getElementById('parentFields');
+      var id_opt_in = document.getElementById('id_opt_in');
+  
+      if (day && month && year) {
+        var age = calculateAge(new Date(year, month - 1, day));
+        console.log(age)
+        if (age >= 13 && age < 18) {
+          parentFields.style.display = 'block';
+          id_opt_in.style.display = 'block'
+        } else if (age < 13) {
+          parentFields.style.display = 'block';
+          id_opt_in.style.display = 'none'
+        }
+      } else {
+        parentFields.style.display = 'none';
+        id_opt_in.style.display = 'block'
+      }
+  
+    }
+  
+    document.getElementById('id_birth_day').addEventListener('change', function () {
+      cal_age()
+    });
+  
+    document.getElementById('id_birth_month').addEventListener('change', function () {
+      cal_age()
+    });
+  
+    document.getElementById('id_birth_year').addEventListener('change', function () {
+      cal_age()
+    });
+    cal_age()
+  </script>

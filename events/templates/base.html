@@ -2,50 +2,20 @@
 <!DOCTYPE html>
 {% get_current_language as LANGUAGE_CODE %}
 <html lang="{{ LANGUAGE_CODE }}">
+  <head>
+    <!-- Head static resources, javascript, ... -->
+    {% include 'head_base.html' %}
+  </head>
+  <body>
+    {% include 'nav_base.html' %}
+    <main class="container mx-auto mt-7">
+      <!--   Content Goes here     -->
+      {% block content %}
+      {% endblock %}
+    </main>    
+  </body>
+  <!-- Footer -->
+  {% include 'footer_base.html' %}
 
-<!-- Head static resources, javascript, ... -->
-{% include 'head_base.html' %}
 
-<!-- Main Body -->
-<body class="bg-gray-100 min-h-screen">
-
-<!-- Header NAV -->
-{% include 'header_base.html' with title="Events" %}
-
-<!-- Content -->
-<main class="container mx-auto my-1 sm:my-2 md:my-4 lg:my-8">
-  <!--   Content Goes here     -->
-  {% block content %}
-  {% endblock %}
-</main>
-
-{% include 'footer_base.html' %}
-
-{% block modal %}
-  {% comment %}
-        Modal windows, if any. To use, add a link with the class "modal-open"
-        and a data-target attribute with the id of the modal window to open.
-  {% endcomment %}
-{% endblock modal %}
-
-{% block inline_javascript %}
-  {% comment %}
-        Script tags with only code, no src (defer by default). To run
-        with a "defer" so that you run inline code:
-        <script>
-          window.addEventListener('DOMContentLoaded', () => {/* Run whatever you want */});
-        </script>
-  {% endcomment %}
-{% endblock inline_javascript %}
-{#<script>#}
-{#    function hideLoader(image) {#}
-{#        // Hide the loader and show the image#}
-{#        image.previousElementSibling.classList.add('hidden');#}
-{#        image.classList.remove('hidden');#}
-{#    }#}
-{##}
-{#    // Show the loader initially#}
-{#    document.querySelector('.loader').classList.remove('hidden');#}
-{#</script>#}
-</body>
 </html>
