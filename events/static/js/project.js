@@ -1,19 +1,27 @@
 /* Project specific Javascript goes here. */
 
 // Basic Editor
-ClassicEditor
-        .create(document.querySelector('.editor-basic'), {
-            toolbar: ['bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote']
+var basicEditorElement = document.querySelector('.editor-basic');
+if (basicEditorElement) {
+    ClassicEditor
+            .create(basicEditorElement, {
+                toolbar: ['bold', 'italic', 'link', 'bulletedList', 'numberedList'],
+                removePlugins: ["MediaEmbedToolbar"],
+            })
+            .catch(error => {
+                console.error(error);
+            });
+}
+
+// Full Editor
+var fullEditorElement = document.querySelector('.editor-full');
+if (fullEditorElement) {
+    ClassicEditor
+        .create(fullEditorElement, {
+            removePlugins: ["MediaEmbedToolbar"],
+
         })
         .catch(error => {
             console.error(error);
         });
-
-// Full Editor
-ClassicEditor
-    .create(document.querySelector('.editor-full'), {
-        toolbar: ['bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote', 'imageUpload', 'insertTable', 'mediaEmbed']
-    })
-    .catch(error => {
-        console.error(error);
-    });
+}
