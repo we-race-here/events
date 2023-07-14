@@ -33,7 +33,7 @@ django-maintenance-mode@ https://github.com/fabiocaccamo/django-maintenance-mode
 # git+https://github.com/fabiocaccamo/django-maintenance-mode.git@main
 
 # Other
-stripe==5.4.0
+stripe==5.5.0
 
 # Database
 # This is the new for 4.2 you need both the binary and package.
