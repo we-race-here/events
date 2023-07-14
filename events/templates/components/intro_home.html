@@ -1,0 +1,53 @@
+{% load static %}
+<section class="fb_into_section">
+  <div class="fb_into_div_1">
+    <div class="fb_into_div_2">
+      <div class="fb_into_div_left">
+        <h1
+          class="fb_intro_h1">
+          Bicycle Colorado's</h1>
+        <p
+          class="fb_intro_p">
+          Create a member account to view your race results, join a club or team, participate in season-long Cup points
+          competitions, receive discount offers from our partners and opt-in to updates. Clubs and organizations can
+          create accounts to manage their members, events and race results.
+        </p>
+        {% if not request.user.is_authenticated %}
+          <p class="text-center">
+            <b class="justify-center">Join the organization that is working to support bike riders, clubs,
+              organizations and events across Colorado!</b>
+            <br>
+            <button onclick="location.href='{% url "home" %}#join'" class="button_body_orange">JOIN Bicycle Colorado
+            </button>
+          </p>
+        {% endif %}
+        <p class="fb_intro_p border-t-2 border-gray-400">
+          Bicycle Colorado (BC) is a Denver-based nonprofit organization that has been advocating for safer and more
+          equitable bicycling in Colorado for over 30 years. On January 1, 2023, BC acquired the nonprofit organization
+          Colorado Cycling, formerly known as the Bicycle Racing Association of Colorado (BRAC). BRAC played a critical
+          role in supporting amateur bicycle racing and served as the Local Association (LA) in Colorado for USA Cycling
+          (USAC). In 2023, Bicycle Colorado serves as the LA for USAC in Colorado, and a Racing Membership with BC is
+          included at no additional charge with the purchase of Race Membership in USAC.
+        </p>
+        <p class="fb_intro_p"> Our Event Support Program assumes the role played by BRAC and
+          supports the key
+          stakeholders in both
+          competitive
+          and non-competitive cycling events. We manage a comprehensive events calendar, help events with marketing and
+          promotion, provide advocacy support to make the sport safer, and help events manage relationships with
+          municipalities, permitting agencies and insurance providers.
+        </p>
+      </div>
+      <div class="fb_into_div_right ">
+        {#        <iframe class="mx-auto w-full max-w-xl h-64 rounded-lg sm:h-96"#}
+        {#                src="https://www.youtube.com/embed/4bnJG2UDr9A"#}
+        {#                title="YouTube video player" frameborder="0"#}
+        {#                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; #}
+        {#        picture-in-picture"#}
+        {#                allowfullscreen></iframe>#}
+        <img class="object-scale-down w-3/4 sm:w-full mx-auto" alt="hero"
+             src="{% static 'images/home_BCR_CX_Woman_Solo.jpg' %}">
+      </div>
+    </div>
+  </div>
+</section>
