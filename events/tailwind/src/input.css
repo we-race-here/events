@@ -213,7 +213,7 @@
   }
 
   .carrousel_image {
-    @apply object-scale-down max-h-[150px] mx-auto;
+    @apply object-scale-down max-h-[280px] mx-auto;
   }
 
   .carrousel_card {
