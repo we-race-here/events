@@ -112,7 +112,10 @@
     @apply relative px-1 text-green-800 hover:text-green-900 cursor-pointer font-bold uppercase tracking-wide;
   }
 
-  /* 2nd NAV flowbite based*/
+  /*########################################*/
+  /* FLOWBITE */
+  /*########################################*/
+  /* 2nd NAV FlowBite based*/
   /*####################*/
   .nav_text {
     @apply font-semibold text-green-800 dark:text-green-800 hover:text-white dark:hover:text-white;
@@ -171,6 +174,52 @@
     /*dark:hover:text-white*/
   }
 
+  .fb_into_section {
+    @apply bg-white;
+    /*dark:bg-gray-900*/
+  }
+
+  .fb_into_div_1 {
+    @apply py-4 pt-4 pb-1 px-4 mx-auto max-w-screen-xl lg:pb-2 lg:pt-8;
+  }
+
+  .fb_into_div_2 {
+    @apply grid gap-8 items-center mb-8 lg:mb-24 lg:gap-12 lg:grid-cols-12;
+  }
+
+  .fb_into_div_left {
+    @apply col-span-6 text-center sm:mb-6 lg:text-left lg:mb-0;
+  }
+
+  .fb_into_div_right {
+    @apply col-span-6;
+  }
+
+  .fb_intro_h1 {
+    @apply mb-4 text-4xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl xl:text-6xl;
+    /*dark:text-white*/
+  }
+
+  .fb_intro_p {
+    @apply mx-auto mb-6 max-w-xl font-light text-gray-500 lg:mx-0 xl:mb-8 md:text-lg xl:text-xl;
+  }
+
+  .fb_featured_strip {
+    @apply px-4 grid grid-cols-2 gap-8 bg-white mx-auto max-w-screen-xl text-gray-500 sm:gap-12 md:grid-cols-3
+    lg:grid-cols-6;
+  }
+
+  .fb_featured_strip_link {
+    @apply flex flex-col justify-start hover:border-2 hover:border-gray-300
+  }
+
+  .fb_featured_strip_img {
+    @apply max-h-40 sm:max-h-52 grayscale;
+  }
+
+  /*########################################*/
+  /* FLOWBITE END */
+  /*########################################*/
   /*Custom text/font*/
   /*####################*/
   .org_name {
