@@ -1,0 +1,25 @@
+{% load static %}
+<section class="fb_into_section">
+  <div class="fb_into_div_1">
+    <div class="fb_into_div_2">
+      <div class="fb_into_div_right">
+        {% include 'components/champion_card.html' %}
+      </div>
+      <div class="fb_into_div_left">
+        <h1
+          class="fb_intro_h1">
+          Event Calendar</h1>
+        <p
+          class="fb_intro_p">
+          BC is proud to host a comprehensive bicycle event calendar that is full of road, mountain, gravel, cross and
+          non-competitive events across the state, including fundraisers, clinics and scenic non-sanctioned rides. There
+          are so many ways to have fun on your bike(s)—this is the time to try something new!
+        </p>
+        <p class="text-center">
+          <button onclick="location.href='{% url 'event:event_create' %}'" class="button_body_orange">SUBMIT AN EVENT
+          </button>
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
