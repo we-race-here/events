@@ -1,4 +1,4 @@
-{% extends "account/base.html" %}
+{% extends "base.html" %}
 {% load static i18n %}
 
 {% block head_title %}E.B.C.{% endblock %}
@@ -6,11 +6,12 @@
 {% block content_title %}{{ block.super }}{% endblock %}
 
 
-{% block inner %}
-  <section id='home_content' class="section_intro_content">
-    {% include 'components/intro_home.html' %}
-  </section>
-  <section id="join" name="join">
+{% block content %}
+  {% include 'components/intro_right_image_base.html' %}
+  {% if featured_events %}
+    {% include 'components/featured_strip.html' %}
+  {% endif %}
+  <section id="join">
     {% if not request.user.is_authenticated %}
       {% include "account/short_signup_form.html" %}
     {% endif %}

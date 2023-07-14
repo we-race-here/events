@@ -38,7 +38,6 @@ class EventListView(ListView):
         #  Feature event
         context["featured"] = Event.objects.all().filter(featured_event=True)[:8]
         context["filtered"] = bool(self.request.GET)
-        print(f"pages: {context.get('page_obj', None)}")
 
         # Get page_obj from context
         page_obj = context.get("page_obj", None)

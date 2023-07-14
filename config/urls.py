@@ -1,14 +1,18 @@
+from datetime import date
+
 from allauth.account.views import SignupView
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.core.mail import send_mail
+from django.db.models import Q
 from django.shortcuts import render
 from django.template.loader import render_to_string
 from django.urls import include, path
 from django.views import defaults as default_views
 from django.views.generic import TemplateView
 
+from apps.event.models import Event
 from events.users.forms import UserSignupForm
 
 
@@ -16,6 +20,15 @@ class HomePageView(TemplateView):
     """This view loads if the user is logged in"""
 
     template_name = "pages/home.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        #  Feature event
+        context["featured_events"] = Event.objects.all().filter(
+            Q(logo__isnull=False) & ~Q(logo="") & Q(featured_event=True) & Q(end_date__gte=date.today())
+        )[:6]
+        print([(i.name, i.logo) for i in context["featured_events"]])
+        return context
 
 
 class HomePageSignUpView(SignupView):
