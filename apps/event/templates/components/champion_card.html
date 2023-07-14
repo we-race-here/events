@@ -1,79 +1,66 @@
 {% load static i18n %}
-<div class="splide mb-8 md:mb-0 sm:mb-0
-        w-5/6 md:w-1/2 sm:w-1/4" id="carousel">
-  <div class="splide__track">
-    <ul class="splide__list">
-      {% for event in champions %}
-        <li class="splide__slide carrousel_card">
-          <div name="card" class="p-4"
-               onclick="location.href='{% url 'event:event_detail' event.pk %}'">
-            <div class="block relative h-100 rounded overflow-hidden">
-              {% if event.logo and event.champion_event %}
-                <img alt="logo" class="carrousel_image" src="{{ event.logo.url }}">
-              {% else %}
-                <img alt="Logo" class="carrousel_image" src="{% static 'images/clear_250x250.png' %}">
-              {% endif %}
-            </div>
-            <h3 class="text-gray-500 text-sm tracking-widest title-font mb-1 text-center bg-[#e9f1c3]">
-              {{ event.start_date }}
-              {% if event.end_date %}
-                -{{ event.end_date }}
-              {% endif %}
-            </h3>
-            <h3 class="text-center">{{ event.name }}</h3>
-            <h3 class="text-gray-500 text-sm tracking-widest title-font mb-1 text-center font-semibold">
-              {% if event.city %}
-                {{ event.city }}
-              {% endif %}
-              {% if event.state %}
-                {{ event.state }}
-              {% endif %}
-            </h3>
-            {% if event.blurb %}
-              <p class="mt-1 text-justify">{{ event.blurb|truncatewords:50 }}</p>
-            {% endif %}
-          </div>
-        </li>
-      {% endfor %}
-    </ul>
+
+<div id="default-carousel" class="relative w-full" data-carousel="slide">
+  <!-- Carousel wrapper -->
+  <div class="relative h-56 overflow-hidden rounded-lg md:h-96">
+    {% for event in champions %}
+    <div class="hidden duration-700 ease-in-out" data-carousel-item>
+      {% if event.logo and event.champion_event %}
+      <img alt="logo" class="carrousel_image" src="{{ event.logo.url }}">
+      <h3 class="text-gray-500 text-sm tracking-widest title-font mb-1 text-center bg-[#e9f1c3]">
+        {{ event.start_date }}
+        {% if event.end_date %}
+          -{{ event.end_date }}
+        {% endif %}
+      </h3>
+      <h3 class="text-center">{{ event.name }}</h3>
+      <h3 class="text-gray-500 text-sm tracking-widest title-font mb-1 text-center font-semibold">
+        {% if event.city %}
+          {{ event.city }}
+        {% endif %}
+        {% if event.state %}
+          {{ event.state }}
+        {% endif %}
+      </h3>
+      {% if event.blurb %}
+        <p class="mt-1 text-justify">{{ event.blurb|truncatewords:50 }}</p>
+      {% endif %}
+      </img>
+      {% else %}
+      <img alt="Logo" class="carrousel_image"
+        src="{% static 'images/clear_250x250.png' %}">
+      {% endif %}
+    </div>
+    {% endfor %}
+    
+
   </div>
+  
+  <!-- Slider controls -->
+  <button type="button"
+    class="absolute top-0 left-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
+    data-carousel-prev>
+    <span
+      class="inline-flex items-center justify-center w-10 h-10 rounded-full  dark:bg-gray-800/30  dark:group-hover:bg-gray-800/60 group-focus:ring-4  dark:group-focus:ring-gray-800/70 group-focus:outline-none">
+      <svg class="w-4 h-4  dark:text-gray-800" aria-hidden="true"
+        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+        <path stroke="currentColor" stroke-linecap="round"
+          stroke-linejoin="round" stroke-width="2" d="M5 1 1 5l4 4" />
+      </svg>
+      <span class="sr-only">Previous</span>
+    </span>
+  </button>
+  <button type="button"
+    class="absolute top-0 right-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
+    data-carousel-next>
+    <span
+      class="inline-flex items-center justify-center w-10 h-10 rounded-full  dark:bg-gray-800/30  dark:group-hover:bg-gray-800/60 group-focus:ring-4  dark:group-focus:ring-gray-800/70 group-focus:outline-none">
+      <svg class="w-4 h-4  dark:text-gray-800" aria-hidden="true"
+        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+        <path stroke="currentColor" stroke-linecap="round"
+          stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4" />
+      </svg>
+      <span class="sr-only">Next</span>
+    </span>
+  </button>
 </div>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        new Splide('#carousel', {
-            type: 'loop',
-            perPage: 1,
-            autoplay: true,
-            interval: 5000,
-            breakpoints: {
-                640: {
-                    perPage: 1,
-                },
-                768: {
-                    perPage: 1,
-                },
-                1024: {
-                    perPage: 1,
-                },
-            },
-        }).mount();
-    });
-
-</script>
-
-<style>
-    .splide {
-        max-width: 60%; /* Adjust the width as needed */
-        margin: 0 auto;
-    }
-
-    .splide__slide {
-        width: 40%;
-    }
-
-    .splide__slide img {
-        width: 100%;
-        height: auto;
-    }
-</style>
