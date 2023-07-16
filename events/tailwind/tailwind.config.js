@@ -11,7 +11,7 @@ module.exports = {
         '../../apps/membership/forms.py',
         '../../apps/store/forms.py',
         '../../apps/usac/forms.py',
-        "./node_modules/flowbite/**/*.js"
+        "node_modules/flowbite/**/*.js"
     ],
     // options: {
     //     safelist: [], // Specify the classes that should not be removed by purge

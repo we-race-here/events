@@ -43,6 +43,24 @@ class CreateOrganizationView(LoginRequiredMixin, CreateView):
     form_class = OrganizationForm
     template_name = "org/create_organization.html"
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if self.request.GET.get("type") == "Club":
+            context["org_type"] = ((Organization.TYPE_CLUB, "Club"), (Organization.TYPE_ADVOCACY_VOLUNTEER, "Advocacy"))
+            context["form"].fields["type"].choices = context["org_type"]
+        elif self.request.GET.get("type") == "Promoter":
+            context["org_type"] = (
+                (Organization.TYPE_PROMOTER, "Club"),
+                (Organization.TYPE_ADVOCACY_VOLUNTEER, "Advocacy"),
+            )
+            context["form"].fields["type"].choices = context["org_type"]
+        # print(context["form"].fields["name"].widget.template_name)
+        # attrs
+        # use_fieldset
+        # template_name
+
+        return context
+
     def form_valid(self, form):
         organization = form.save(commit=False)
         organization.approved = self.request.user.is_staff

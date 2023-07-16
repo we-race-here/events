@@ -1,0 +1,11 @@
+{% load static %}
+<section id="featured_strip">
+  <div class="fb_featured_strip">
+    {% for  event in featured_events %}
+      <a href="{% url 'event:event_detail' event.pk %}" class="fb_featured_strip_link">
+        <p class="text-center bg-lime-100">{{ event.end_date|date:"d M Y" }}</p>
+        <img src="{{ event.logo.url }}" alt="{{ event.title }}" class="fb_featured_strip_img">
+      </a>
+    {% endfor %}
+  </div>
+</section>
