@@ -3,127 +3,139 @@
 
 {% block title %}Test or view emails{% endblock %}
 
-{% block content %}
-  <div class="bg-white">
-    <h2>LIST OF EMAILS</h2>
-    <ul><b>Each email has the following:</b>
-      I have defined a base plain txt and html email template.
-      <li><b>From:</b> We should standardize this with a DO_NOT_REPLY and a REPLYABLE option</li>
-      <li><b>To:</b> User name and/or related staff(admin) group as a google group or list of emails</li>
-      <li><b>Subject:</b></li>
-      <li><b>Plan text version:</b> This is only nessasary for important system email, like password reset.</li>
-      <li><b>HTML:</b></li>
-    </ul>
-    </p>
 
-    <div class="flex flex-col border-2 border-gray-400 my-2">
+
+{% block content %}
+  <style>
+
+    .preview_div {
+      p-2 m-2 ml-4 w-1/2 border-2 rounded-l-md border-cyan-800 bg-cyan-50;
+    }
+  </style>
+  <div class="bg-white">
+    <h2> LIST OF EMAILS</h2>
+    <b> Each email has the following:</b>
+    I have defined a base plain txt and html email template.
+    <ul>
+      <li><b> From:</b> We should standardize this with a DO_NOT_REPLY and a REPLYABLE option</li>
+      <li><b> To:</b> User name and/or related staff(admin) group as a google group or list of emails</li>
+      <li><b> Subject:</b></li>
+      <li><b> Plan text version:</b> This is only nessasary for important system email, like password reset.</li>
+      <li><b> HTML:</b></li>
+    </ul>
+
+
+    <div class="flex flex-col border-2 border-gray-400 rounded-xl m-2">
       <div class="pl-1 flex flex-col">
-        <b>Base html template</b>
-        <i class="bg-yellow-50">TODO<br>
+        <b> Base html template</b>
+        <i class="bg-yellow-50"> TODO<br>
           - ?<br>
         </i>
-        <i><b>File:</b> emails/email_base.html </i>
-        <i>context = {"NAME":"SOME NAME", "MESSAGE": "THIS IS THE EMAIL CREATED BELOW"}</i>
-        <span><b>Plan txt:</b> Plane text version</span>
+        <i><b> File:</b> emails/email_base.html </i>
+        <i> context = {"NAME":"SOME NAME", "MESSAGE": "THIS IS THE EMAIL CREATED BELOW"}</i>
+        <span><b> Plan txt:</b> Plane text version</span>
       </div>
-      <div class="pl-1 w-1/2 border-2 border-cyan-800 bg-cyan-50">
-        {% include "emails/email_base.html" with NAME="SOME NAME" MESSAGE="THIS IS THE EMAIL CREATED BELOW" %}
+      <div class="p-2 m-2 ml-4 w-1/2 border-2 rounded-l-md border-cyan-800 bg-cyan-50"
+      >{% include "emails/email_base.html" with NAME="SOME NAME" MESSAGE="THIS IS THE EMAIL CREATED BELOW" %}
       </div>
     </div>
-    
-    <div class="flex flex-col border-2 border-gray-400 my-2">
+
+    <div class="flex flex-col border-2 border-gray-400 rounded-xl m-2">
       <div class="pl-1 flex flex-col">
-        <b>New user email:</b>
-        <i class="bg-yellow-50">TODO<br>
+        <b> New user email:</b>
+        <i class="bg-yellow-50"> TODO<br>
           -create a preview<br>
         </i>
-        <i><b>File:</b> --- not customize yet</i>
-        <span><b>From: </b> "info@bicyclecolorado.org"</span>
-        <span><b>To: </b> "user_email"</span>
-        context = {user_email"} the primary logic is defined as part of AllAuth plugin, we can customize some
-        <span><b>Subject:</b> Pre-Defined</span>
-        <span><b>Plan txt:</b> Pre-defined</span>
+        <i><b> File:</b> --- not customize yet</i>
+        <span><b> From: </b> "info@bicyclecolorado.org"</span>
+        <span><b> To: </b> "user_email"</span>
+        context = {user_email
+        "} the primary logic is defined as part of AllAuth plugin, we can customize some
+        <span><b> Subject:</b> Pre-Defined</span>
+        <span><b> Plan txt:</b> Pre-defined</span>
       </div>
-      <div class="pl-1 w-1/2 border-2 border-cyan-800 bg-cyan-50">
+      <div class="p-2 m-2 ml-4 w-1/2 border-2 rounded-l-md border-cyan-800 bg-cyan-50">
         Pre-Defined, can customize.
         {#        {% include "account/../emails/new_account_parent_notifcation.html" with parent_name="John Smith" %}#}
       </div>
     </div>
 
 
-    <div class="flex flex-col border-2 border-gray-400 my-2">
+    <div class="flex flex-col border-2 border-gray-400 rounded-xl m-2">
       <div class="pl-1 flex flex-col">
-        <b>Forgot password email:</b>
-        <a class="text-blue-600" href="{% url 'account_reset_password' %}">Click here to test</a>
-        <i class="bg-yellow-50">TODO<br>
+        <b> Forgot password email:</b>
+        <a class="text-blue-600" href="{% url 'account_reset_password' %}"> Click here to test</a>
+        <i class="bg-yellow-50"> TODO<br>
         </i>
-        <i><b>File:</b> --- not custimized yet</i>
-        <span><b>From: </b> "info@bicyclecolorado.org"</span>
-        <span><b>To: </b> "user_email"</span>
-        context = {user_email"} the primary logic is defined as part of AllAuth plugin, we can customize some
-        <span><b>Subject:</b> Pre-defined</span>
-        <span><b>Plan txt:</b> Pre-defined</span>
+        <i><b> File:</b> --- not custimized yet</i>
+        <span><b> From: </b> "info@bicyclecolorado.org"</span>
+        <span><b> To: </b> "user_email"</span>
+        context = {user_email
+        "} the primary logic is defined as part of AllAuth plugin, we can customize some
+        <span><b> Subject:</b> Pre-defined</span>
+        <span><b> Plan txt:</b> Pre-defined</span>
       </div>
-      <div class="pl-1 w-1/2 border-2 border-cyan-800 bg-cyan-50">
+      <div class="p-2 m-2 ml-4 w-1/2 border-2 rounded-l-md border-cyan-800 bg-cyan-50">
         Pre-Defined, can customize
         {#        {% include "account/../emails/new_account_parent_notifcation.html" with parent_name="John Smith" %}#}
       </div>
     </div>
 
-    <div class="flex flex-col border-2 border-gray-400 my-2">
+    <div class="flex flex-col border-2 border-gray-400 rounded-xl m-2">
       <div class="pl-1 flex flex-col">
-        <b>Email sent to the parent is new user is less than 18</b>
-        <i class="bg-yellow-50">TODO<br>
+        <b> Email sent to the parent is new user is less than 18</b>
+        <i class="bg-yellow-50"> TODO<br>
           - send to a BC staff also<br>
           - from address
           - email Copy
         </i>
-        <i><b>File:</b> new_account_parent_notifcation.html</i>
-        <span><b>From: </b> "info@bicyclecolorado.org"</span>
-        <span><b>To: </b> ["Parent_email", "info@bicyclecolorado.org"]</span>
+        <i><b> File:</b> new_account_parent_notifcation.html</i>
+        <span><b> From: </b> "info@bicyclecolorado.org"</span>
+        <span><b> To: </b> ["Parent_email", "info@bicyclecolorado.org"]</span>
         context = {"parent_name": "John Smith"]
-        <span><b>Subject:</b> Your child has created an account at Bicycle Colorado</span>
-        <span><b>Plan txt:</b> f"Hello {parent_name},\n\nYour child has created an account at Bicycle Colorado\n
-          https://events.bicyclecolorado.org"</span>
+        <span><b> Subject:</b> Your child has created an account at Bicycle Colorado</span>
+        <span><b> Plan txt:</b> f"Hello {parent_name},\n\nYour child has created an account at Bicycle Colorado\n
+    https://events.bicyclecolorado.org"</span>
       </div>
-      <div class="pl-1 w-1/2 border-2 border-cyan-800 bg-cyan-50">
-        {% include "account/../emails/new_account_parent_notifcation.html" with parent_name="John Smith" %}
+      <div class="p-2 m-2 ml-4 w-1/2 border-2 rounded-l-md border-cyan-800 bg-cyan-50"
+      >{% include "account/../emails/new_account_parent_notifcation.html" with parent_name="John Smith" %}
       </div>
     </div>
 
-    <div class="flex flex-col border-2 border-gray-400 my-2">
+    <div class="flex flex-col border-2 border-gray-400 rounded-xl m-2">
       <div class="pl-1 flex flex-col">
-        <b>Email sent BC staff when new event is created, Should create an email group for this</b>
+        <b> Email sent BC staff when new event is created, Should create an email group for this</b>
         <i class="bg-yellow-50">
           TODO<br>
           - send to a BC staff or staff group<br>
           - email Copy
           - Can be the same email sent to the user
         </i>
-        <i><b>File:</b> new_event_create_staff_email.html</i>
+        <i><b> File:</b> new_event_create_staff_email.html</i>
         context = {"event_name": "Ride for the kids"]
-        <span><b>Subject</b>: ?????</span>
-        <span><b>Plan txt:</b> Dont need this</span>
+        <span><b> Subject</b> : ?????</span>
+        <span><b> Plan txt:</b> Dont need this</span>
       </div>
-      <div class="pl-1 w-1/2 border-2  border-cyan-800 bg-cyan-50">
-        {% include "emails/new_event_create_staff_email.html" with event_name="Ride for the Kids" %}
+      <div class="p-2 m-2 ml-4 w-1/2 border-2 rounded-l-md border-cyan-800 bg-cyan-50"
+      >{% include "emails/new_event_create_staff_email.html" with event_name="Ride for the Kids" %}
       </div>
     </div>
 
-    <div class="flex flex-col border-2 border-gray-400 my-2">
+    <div class="flex flex-col border-2 border-gray-400 rounded-xl m-2">
       <div class="pl-1 flex flex-col">
-        <b>Email sent to user that created an event</b>
+        <b> Email sent to user that created an event</b>
         <i class="bg-yellow-50">
           TODO<br>
           - email Copy<br>
           - txt version
         </i>
-        <i><b>File:</b> new_event_created_email.html</i>
-        context = {"event_name": "Ride for the kids", "full_name": "John Smith"]
+        <i><b> File:</b> new_event_created_email.html</i>
+        context = {"event_name": "Ride for the kids", "full_name":
+        "John Smith"]
         <span><b>Subject:</b> ?????</span>
         <span><b>Plan txt:</b> ???</span>
       </div>
-      <div class="pl-1 w-1/2 border-2  border-cyan-800 bg-cyan-50">
+      <div class="p-2 m-2 ml-4 w-1/2 border-2 rounded-l-md border-cyan-800 bg-cyan-50">
         {% include "emails/new_event_created_email.html" with event_name="Ride for the Kids" full_name="John Smith" %}
       </div>
     </div>
