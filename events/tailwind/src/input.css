@@ -205,7 +205,7 @@
   }
 
   .fb_featured_strip {
-    @apply px-4 grid grid-cols-2 gap-8 bg-white mx-auto max-w-screen-xl text-gray-500 sm:gap-12 md:grid-cols-3
+    @apply w-full px-4 grid grid-cols-2 gap-8 bg-white mx-auto text-gray-500 sm:gap-12 md:grid-cols-3
     lg:grid-cols-6;
   }
 

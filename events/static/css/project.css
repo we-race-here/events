@@ -2057,7 +2057,7 @@ label {
   margin-left: auto;
   margin-right: auto;
   display: grid;
-  max-width: 1280px;
+  width: 100%;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 2rem;
   --tw-bg-opacity: 1;
@@ -2565,16 +2565,12 @@ label {
   grid-column: span 8 / span 8;
 }
 
-.m-2 {
-  margin: 0.5rem;
-}
-
 .m-0 {
   margin: 0px;
 }
 
-.m-1 {
-  margin: 0.25rem;
+.m-2 {
+  margin: 0.5rem;
 }
 
 .mx-8 {
@@ -2804,20 +2800,20 @@ label {
   max-height: 250px;
 }
 
-.max-h-\[50px\] {
-  max-height: 50px;
-}
-
 .max-h-\[25px\] {
   max-height: 25px;
 }
 
-.min-h-screen {
-  min-height: 100vh;
+.max-h-\[50px\] {
+  max-height: 50px;
 }
 
 .min-h-\[25px\] {
   min-height: 25px;
+}
+
+.min-h-screen {
+  min-height: 100vh;
 }
 
 .w-1\/2 {
@@ -2910,12 +2906,6 @@ label {
 
 .table-auto {
   table-layout: auto;
-}
-
-.border-spacing-1 {
-  --tw-border-spacing-x: 0.25rem;
-  --tw-border-spacing-y: 0.25rem;
-  border-spacing: var(--tw-border-spacing-x) var(--tw-border-spacing-y);
 }
 
 .-translate-x-full {
@@ -3050,10 +3040,6 @@ label {
 
 .justify-between {
   justify-content: space-between;
-}
-
-.justify-evenly {
-  justify-content: space-evenly;
 }
 
 .gap-6 {
@@ -3390,11 +3376,6 @@ label {
 .bg-yellow-50 {
   --tw-bg-opacity: 1;
   background-color: rgb(253 253 234 / var(--tw-bg-opacity));
-}
-
-.bg-cyan-100 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(207 250 254 / var(--tw-bg-opacity));
 }
 
 .bg-opacity-50 {
@@ -4383,6 +4364,16 @@ label {
   .md\:text-5xl {
     font-size: 3rem;
     line-height: 1;
+  }
+
+  .md\:text-base {
+    font-size: 1rem;
+    line-height: 1.5rem;
+  }
+
+  .md\:text-lg {
+    font-size: 1.125rem;
+    line-height: 1.75rem;
   }
 
   .md\:text-xl {
