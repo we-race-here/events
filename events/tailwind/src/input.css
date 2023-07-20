@@ -205,7 +205,7 @@
   }
 
   .fb_featured_strip {
-    @apply px-4 grid grid-cols-2 gap-8 bg-white mx-auto max-w-screen-xl text-gray-500 sm:gap-12 md:grid-cols-3
+    @apply w-full px-4 grid grid-cols-2 gap-8 bg-white mx-auto text-gray-500 sm:gap-12 md:grid-cols-3
     lg:grid-cols-6;
   }
 
@@ -216,6 +216,17 @@
   .fb_featured_strip_img {
     @apply max-h-40 sm:max-h-52 grayscale;
   }
+
+  .fb_featured_card {
+    @apply p-6 bg-white rounded shadow;
+    /*dark:bg-gray-800*/
+  }
+
+  .fb_featured_card_image {
+    @apply p-4 object-scale-down min-h-[100px] max-h-[100px] sm:min-h-[175px] sm:max-h-[175px]
+    md:min-h-[250px] md:max-h-[250px] w-full rounded-lg shadow;
+  }
+
 
   /*########################################*/
   /* FLOWBITE END */
