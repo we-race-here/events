@@ -2764,10 +2764,6 @@ label {
   height: 1rem;
 }
 
-.h-48 {
-  height: 12rem;
-}
-
 .h-5 {
   height: 1.25rem;
 }
@@ -2794,10 +2790,6 @@ label {
 
 .h-full {
   height: 100%;
-}
-
-.max-h-\[250px\] {
-  max-height: 250px;
 }
 
 .max-h-\[25px\] {
