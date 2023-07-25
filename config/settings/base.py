@@ -221,6 +221,7 @@ TEMPLATES = [
                 "django.template.context_processors.tz",
                 "django.contrib.messages.context_processors.messages",
                 "events.users.context_processors.allauth_settings",
+                "events.users.context_processors.version",
             ],
         },
     }
