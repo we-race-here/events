@@ -27,7 +27,7 @@ class HomePageView(TemplateView):
         context["featured_events"] = Event.objects.all().filter(
             Q(logo__isnull=False) & ~Q(logo="") & Q(featured_event=True) & Q(end_date__gte=date.today())
         )[:6]
-        print([(i.name, i.logo) for i in context["featured_events"]])
+        # print(f"featured list: {[(i.name, i.logo) for i in context['featured_events']]}")
         return context
 
 
@@ -36,6 +36,15 @@ class HomePageSignUpView(SignupView):
 
     template_name = "pages/home.html"  # your custom template
     form_class = UserSignupForm  # your custom form
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        #  Feature event
+        context["featured_events"] = Event.objects.all().filter(
+            Q(logo__isnull=False) & ~Q(logo="") & Q(featured_event=True) & Q(end_date__gte=date.today())
+        )[:6]
+        # print(f"featured list: {[(i.name, i.logo) for i in context['featured_events']]}")
+        return context
 
     def form_valid(self, form):
         # Here we can add our custom logic for login
@@ -49,7 +58,8 @@ class HomePageSignUpView(SignupView):
         )
         send_mail(
             "Your child has created an account at Bicycle Colorado"
-            f"Hello {parent_name},\n\nYour child has created an account at Bicycle Colorado\n https://events.bicyclecolorado.org",
+            f"Hello {parent_name},\n\nYour child has created an account at Bicycle Colorado\n "
+            f"https://events.bicyclecolorado.org",
             "info@bicyclecolorado.org",
             [parent_email],
             fail_silently=False,
