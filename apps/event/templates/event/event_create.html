@@ -3,9 +3,38 @@
 {% block content %}
   <div class="container mx-auto px-4 py-8">
   <h1 class="text-3xl font-bold mb-4">Submit an Event for the Bicycle Colorado Calendar</h1>
+  <div>
+
+    <ul class="list-disc">
+      <b>BC offers different levels of calendar listings:</b>
+      <li>Basic (no charge) - Submit a Basic Listing in our comprehensive calendar and get noticed by riders across the
+        state! This free listing provides date, location, and a link to your event.
+      </li>
+      <li>EBC User (no charge)</li>
+      <li>Event Promoter Membership Listing ($100 per year) - Join BC as an Club or Event Promoter for $100 per year. As
+        a BC Club or Event Promoter, your event listings will include a logo, date, location and link to your event
+        page. Clubs and Event Promoters have the ability to edit the event listing, manage participant information and
+        communication, upload waivers, and have access to BC’s Race Kit (which includes event supplies such as
+        signage, cones, tables, chairs, tents, CX stakes, tape, laptops, printers, lap counters and more).
+      </li>
+    </ul>
+    <p class="text-justify">BC welcomes the submission of all cycling-related events in Colorado. Event Director Members
+      can purchase a Featured Event Promotional Package ($750 per event) that includes a robust event listing
+      (photos, video, enhanced description, large logo) and promotion on BC’s social media channels.
+    </p>
+
+  </div>
   {% if not user.is_authenticated %}
-    <h3>Editing or submitting an event as of the cycling community</h3>
-    <p>Login or create a user account for more options</p>
+    <div class="flex flex-col justify-center">
+      <b class="text-center">Become a Bicycle Colorado Featured Event and boost your listing with social media posts,
+        dramatic content including a large logo, robust event description, images and videos. Check out the Featured
+        Event Promotional Document and contact Hilary for more information.</b>
+      <p class="text-center">
+        <button onclick="location.href='{% url "home" %}#join'" class="button_body_orange">JOIN Bicycle Colorado
+        </button>
+      </p>
+      <b class="text-center">Then</b>
+    </div>
     {% include 'forms/event_submit_community.html' %}
   {% elif user.is_authenticated and not IsOrgAdmin %}
     <h3>Editing or submitting an event as a regular user</h3>
