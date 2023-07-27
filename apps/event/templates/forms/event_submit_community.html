@@ -107,6 +107,12 @@
               {% endif %}
             </div>
           </div>
+          <div class="sm:col-span-2">
+            {{ form.turnstile }}
+            {% if form.turnstile.errors %}
+              <div class="text-red-500 text-xs mt-1">{{ form.turnstile.errors }}</div>
+            {% endif %}
+          </div>
         </div>
         <div class="items-center space-y-4 sm:flex sm:space-y-0 sm:space-x-4">
           <button {% if form.errors %}data-modal-show="submitEventModal"{% endif %} type="submit"
