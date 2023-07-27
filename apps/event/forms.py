@@ -60,15 +60,264 @@ class RaceResultsImport(forms.Form):
 
 
 class EventStaffForm(forms.ModelForm):
-    pass
+    tags = forms.MultipleChoiceField(
+        label="Select Event Tag(s)",
+        choices=event_types,
+        widget=SelectMultiple(
+            attrs={"class": "fb_select_multiple", "placeholder": "Event tags and type", "help_text": "select multiple"}
+        ),
+    )
+    description = forms.CharField(
+        widget=forms.Textarea(
+            attrs={
+                "placeholder": "A longer event description with basic formatting and links",
+            }
+        )
+    )
+
+    class Meta:
+        model = Event
+        fields = [
+            "name",
+            "blurb",
+            "description",
+            "start_date",
+            "end_date",
+            "website",
+            "city",
+            "state",
+            "tags",
+        ]
+        labels = {
+            "name": "Event Name",
+            "blurb": "Event Blurb",
+            "description": "Event Description",
+            "start_date": "Event Start Date",
+            "end_date": "Event End Date",
+            "website": "Event Website or other URL",
+            "city": "Event City",
+            "state": "Event State",
+            "tags": "Event Tags",
+        }
+        widgets = {
+            "name": TextInput(
+                attrs={
+                    "class": "fb_text_input_field",
+                    "placeholder": "event name (50 characters max)",
+                    "max_length": 50,
+                }
+            ),
+            "blurb": Textarea(
+                attrs={
+                    "class": "fb_text_area_field",
+                    "placeholder": "short description of the event (250 characters max)",
+                    "rows": 4,
+                    "max_length": 250,
+                }
+            ),
+            "start_date": SelectDateWidget(
+                attrs={"class": "fb_select_date_field"},
+                years=range(datetime.now().year, datetime.now().year + 3),
+            ),
+            "end_date": SelectDateWidget(
+                attrs={"class": "fb_select_date_field"},
+                years=range(datetime.now().year, datetime.now().year + 3),
+            ),
+            "website": TextInput(
+                attrs={
+                    "class": "fb_text_input_field",
+                    "placeholder": "Website, Facebook, Instagram, etc.",
+                }
+            ),
+            "event_city": TextInput(
+                attrs={
+                    "class": "fb_text_input_field",
+                    "placeholder": "Nearest City",
+                    "max_length": 50,
+                }
+            ),
+            "event_state": TextInput(
+                attrs={
+                    "class": "fb_text_input_field",
+                    "placeholder": "event name (50 characters max)",
+                    "max_length": 50,
+                }
+            ),
+        }
 
 
 class EventOrgAdminForm(forms.ModelForm):
-    pass
+    tags = forms.MultipleChoiceField(
+        label="Select Event Tag(s)",
+        choices=event_types,
+        widget=SelectMultiple(
+            attrs={"class": "fb_select_multiple", "placeholder": "Event tags and type", "help_text": "select multiple"}
+        ),
+    )
+    description = forms.CharField(
+        widget=forms.Textarea(
+            attrs={
+                "placeholder": "A longer event description with basic formatting and links",
+            }
+        )
+    )
+
+    class Meta:
+        model = Event
+        fields = [
+            "name",
+            "blurb",
+            "description",
+            "start_date",
+            "end_date",
+            "website",
+            "city",
+            "state",
+            "tags",
+        ]
+        labels = {
+            "name": "Event Name",
+            "blurb": "Event Blurb",
+            "description": "Event Description",
+            "start_date": "Event Start Date",
+            "end_date": "Event End Date",
+            "website": "Event Website or other URL",
+            "city": "Event City",
+            "state": "Event State",
+            "tags": "Event Tags",
+        }
+        widgets = {
+            "name": TextInput(
+                attrs={
+                    "class": "fb_text_input_field",
+                    "placeholder": "event name (50 characters max)",
+                    "max_length": 50,
+                }
+            ),
+            "blurb": Textarea(
+                attrs={
+                    "class": "fb_text_area_field",
+                    "placeholder": "short description of the event (250 characters max)",
+                    "rows": 4,
+                    "max_length": 250,
+                }
+            ),
+            "start_date": SelectDateWidget(
+                attrs={"class": "fb_select_date_field"},
+                years=range(datetime.now().year, datetime.now().year + 3),
+            ),
+            "end_date": SelectDateWidget(
+                attrs={"class": "fb_select_date_field"},
+                years=range(datetime.now().year, datetime.now().year + 3),
+            ),
+            "website": TextInput(
+                attrs={
+                    "class": "fb_text_input_field",
+                    "placeholder": "Website, Facebook, Instagram, etc.",
+                }
+            ),
+            "event_city": TextInput(
+                attrs={
+                    "class": "fb_text_input_field",
+                    "placeholder": "Nearest City",
+                    "max_length": 50,
+                }
+            ),
+            "event_state": TextInput(
+                attrs={
+                    "class": "fb_text_input_field",
+                    "placeholder": "event name (50 characters max)",
+                    "max_length": 50,
+                }
+            ),
+        }
 
 
 class EventAuthenticatedUserForm(forms.ModelForm):
-    pass
+    tags = forms.MultipleChoiceField(
+        label="Select Event Tag(s)",
+        choices=event_types,
+        widget=SelectMultiple(
+            attrs={"class": "fb_select_multiple", "placeholder": "Event tags and type", "help_text": "select multiple"}
+        ),
+    )
+    description = forms.CharField(
+        widget=forms.Textarea(
+            attrs={
+                "placeholder": "A longer event description with basic formatting and links",
+            }
+        )
+    )
+
+    class Meta:
+        model = Event
+        fields = [
+            "name",
+            "blurb",
+            "description",
+            "start_date",
+            "end_date",
+            "website",
+            "city",
+            "state",
+            "tags",
+        ]
+        labels = {
+            "name": "Event Name",
+            "blurb": "Event Blurb",
+            "description": "Event Description",
+            "start_date": "Event Start Date",
+            "end_date": "Event End Date",
+            "website": "Event Website or other URL",
+            "city": "Event City",
+            "state": "Event State",
+            "tags": "Event Tags",
+        }
+        widgets = {
+            "name": TextInput(
+                attrs={
+                    "class": "fb_text_input_field",
+                    "placeholder": "event name (50 characters max)",
+                    "max_length": 50,
+                }
+            ),
+            "blurb": Textarea(
+                attrs={
+                    "class": "fb_text_area_field",
+                    "placeholder": "short description of the event (250 characters max)",
+                    "rows": 4,
+                    "max_length": 250,
+                }
+            ),
+            "start_date": SelectDateWidget(
+                attrs={"class": "fb_select_date_field"},
+                years=range(datetime.now().year, datetime.now().year + 3),
+            ),
+            "end_date": SelectDateWidget(
+                attrs={"class": "fb_select_date_field"},
+                years=range(datetime.now().year, datetime.now().year + 3),
+            ),
+            "website": TextInput(
+                attrs={
+                    "class": "fb_text_input_field",
+                    "placeholder": "Website, Facebook, Instagram, etc.",
+                }
+            ),
+            "event_city": TextInput(
+                attrs={
+                    "class": "fb_text_input_field",
+                    "placeholder": "Nearest City",
+                    "max_length": 50,
+                }
+            ),
+            "event_state": TextInput(
+                attrs={
+                    "class": "fb_text_input_field",
+                    "placeholder": "event name (50 characters max)",
+                    "max_length": 50,
+                }
+            ),
+        }
 
 
 class EventCommunityForm(forms.ModelForm):

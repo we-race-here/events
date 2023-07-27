@@ -5,10 +5,12 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Exists, OuterRef, Q
 from django.shortcuts import get_object_or_404, render
+from django.template.loader import render_to_string
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, DetailView, ListView, UpdateView
 
 from events.users.permission_utils import is_org_admin
+from events.utils.events_utils import sys_send_mail
 from .forms import (
     RaceForm,
     RaceResultForm,
@@ -148,35 +150,34 @@ class EventCreateView(CreateView):
         else:
             return EventCommunityForm
 
-    # def form_valid(self, form):
-    #     """add unicode for calendar to subject \U0001F4C5"""
-    #     response = super().form_valid(form)
-    #     if not self.request.user.is_anonymous:
-    #         user_email = self.request.user.email
-    #         user_name = self.request.user.full_name
-    #     else:
-    #         user_email = response.cleaned_data["submitter_email"]
-    #         user_name = form.cleaned_data["user_name"]
-    #
-    #     html_message = render_to_string(
-    #         "emails/new_event_created_email.html",
-    #         {
-    #             "NAME": response.cleaned_data[user_name],
-    #             "EVENT_NAME": response.cleaned_data["name"],
-    #         },
-    #     )
-    #
-    #     sys_send_mail(
-    #         subject=f"\U0001F4C5 {response.cleaned_data['name']} event submitted for review",
-    #         message="Thanks for submitting an event to Bicycle Colorado. We review each event manually and will let you "
-    #         "know when it is approved.",
-    #         from_email=None,
-    #         recipient_list=[user_email],
-    #         recipient_system=settings.CALENDAR_EMAILS,
-    #         html_message=html_message,
-    #         fail_silently=False,
-    #     )
-    #     return response
+    def form_valid(self, form):
+        """add unicode for calendar to subject \U0001F4C5"""
+        if not self.request.user.is_anonymous:
+            user_email = self.request.user.email
+            user_name = self.request.user.full_name
+        else:
+            user_email = form.cleaned_data["submitter_email"]
+            user_name = form.cleaned_data["user_name"]
+
+        html_message = render_to_string(
+            "emails/new_event_created_email.html",
+            {
+                "NAME": user_name,
+                "EVENT_NAME": form.cleaned_data["name"],
+            },
+        )
+
+        sys_send_mail(
+            subject=f"\U0001F4C5 {form.cleaned_data['name']} event submitted for review",
+            message="Thanks for submitting an event to Bicycle Colorado. We review each event manually and will let you "
+            "know when it is approved.",
+            from_email=None,
+            recipient_list=[user_email],
+            recipient_system=settings.CALENDAR_EMAILS,
+            html_message=html_message,
+            fail_silently=False,
+        )
+        return super().form_valid(form)
 
 
 # Update

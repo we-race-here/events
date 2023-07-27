@@ -260,6 +260,12 @@ EMAIL_TIMEOUT = 5
 
 EMAIL_DEFAULT_FROM = env("DJANGO_EMAIL_DEFAULT_FROM", default="info@bicyclecolorado.org")
 
+CALENDAR_EMAILS = env.list("DJANGO_CALENDAR_EMAILS", default=["developer@vdavis.net"])
+STAFF_EMAILS = env.list("DJANGO_STAFF_EMAILS", default=["developer@vdavis.net"])
+NOISY_EMAILS = env.list("DJANGO_NOISY_EMAILS", default=["developer@bicyclecolorado.org"])
+
+PREPEND_SUBJECT = env("DJANGO_PREPEND_SUBJECT", default="")
+
 # ADMIN
 # ------------------------------------------------------------------------------
 # Django Admin URL.
