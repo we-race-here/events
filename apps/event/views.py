@@ -157,7 +157,7 @@ class EventCreateView(CreateView):
             user_name = self.request.user.full_name
         else:
             user_email = form.cleaned_data["user_email"]
-            user_name = form.cleaned_data["user_first_name"] + " " + form.cleaned_data["user_last_name"]
+            user_name = form.cleaned_data["user_first"] + " " + form.cleaned_data["user_last"]
 
         html_message = render_to_string(
             "emails/new_event_created_email.html",
