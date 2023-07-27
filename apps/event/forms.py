@@ -321,14 +321,25 @@ class EventAuthenticatedUserForm(forms.ModelForm):
 
 
 class EventCommunityForm(forms.ModelForm):
-    user_name = forms.CharField(
-        label="Full Name",
+    user_first = forms.CharField(
+        label="First Name",
         required=True,
-        max_length=50,
+        max_length=75,
         widget=TextInput(
             attrs={
                 "class": "fb_text_input_field",
-                "placeholder": "Full name",
+                "placeholder": "last name",
+            },
+        ),
+    )
+    user_last = forms.CharField(
+        label="Last Name",
+        required=True,
+        max_length=75,
+        widget=TextInput(
+            attrs={
+                "class": "fb_text_input_field",
+                "placeholder": "last name",
                 "max_length": 50,
             }
         ),
@@ -336,6 +347,7 @@ class EventCommunityForm(forms.ModelForm):
     user_email = forms.EmailField(
         label="Your Email Address",
         required=True,
+        max_length=75,
         widget=TextInput(
             attrs={
                 "class": "fb_text_input_field",
@@ -353,11 +365,15 @@ class EventCommunityForm(forms.ModelForm):
         ),
     )
     description = forms.CharField(
+        max_length=2500,
         widget=forms.Textarea(
             attrs={
-                "placeholder": "A longer event description with basic formatting and links",
-            }
-        )
+                # "class": "editor-basic",
+                "class": "fb_text_area_field",
+                "rows": 10,
+                "placeholder": "A longer event description with basic formatting and links (2500 characters max)",
+            },
+        ),
     )
 
     class Meta:
@@ -397,8 +413,8 @@ class EventCommunityForm(forms.ModelForm):
                     "class": "fb_text_area_field",
                     "placeholder": "short description of the event (250 characters max)",
                     "rows": 4,
-                    "max_length": 250,
-                }
+                    "max_length": 50,
+                },
             ),
             "start_date": SelectDateWidget(
                 attrs={"class": "fb_select_date_field"},

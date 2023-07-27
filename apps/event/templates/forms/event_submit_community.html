@@ -38,10 +38,17 @@
 
         <div class="grid gap-4 mb-4 sm:grid-cols-2">
           <div>
-            <label for="{{ form.user_name.auto_id }}" class="fb_text_label">{{ form.user_name.label }}</label>
-            {{ form.user_name }}
-            {% if form.user_name.errors %}
-              <div class="text-red-500 text-xs mt-1">{{ form.user_name.errors }}</div>
+            <label for="{{ form.user_first.auto_id }}" class="fb_text_label">{{ form.user_first.label }}</label>
+            {{ form.user_first }}
+            {% if form.user_first.errors %}
+              <div class="text-red-500 text-xs mt-1">{{ form.user_first.errors }}</div>
+            {% endif %}
+          </div>
+          <div>
+            <label for="{{ form.user_last.auto_id }}" class="fb_text_label">{{ form.user_last.label }}</label>
+            {{ form.user_last }}
+            {% if form.user_last.errors %}
+              <div class="text-red-500 text-xs mt-1">{{ form.user_last.errors }}</div>
             {% endif %}
           </div>
           <div>
@@ -102,7 +109,7 @@
           </div>
         </div>
         <div class="items-center space-y-4 sm:flex sm:space-y-0 sm:space-x-4">
-          <button type="submit"
+          <button {% if form.errors %}data-modal-show="submitEventModal"{% endif %} type="submit"
                   class="w-full justify-center sm:w-auto text-white  button_body_cyan">
             <i class="fa-solid fa-square-check mr-1"></i>Submit event for review
           </button>
