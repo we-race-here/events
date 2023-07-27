@@ -1,9 +1,12 @@
-<div class="flex flex-col">
-  Hello <b>{{ full_name }}!</b><br>
-  New event created: <b>{{ event_name }}</b>
-  <i>Instructions</i>
-  <ul>
-    <li>- waiting for approval</li>
-    <li>- ....</li>
-  </ul>
-</div>
+{% extends "emails/email_base.html" %}
+{% block emailmessage %}
+  <div class="flex flex-col">
+    New event created: <b>{{ EVENT_NAME }}</b>
+    <i>Instructions</i>
+    <ul>
+      <li>- waiting for approval</li>
+      <li>- ....</li>
+    </ul>
+  </div>
+{% endblock %}
+```
