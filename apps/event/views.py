@@ -172,7 +172,7 @@ class EventCreateView(CreateView):
             subject=f"\U0001F4C5 {form.cleaned_data['name']} event submitted for review",
             message="Thanks for submitting an event to Bicycle Colorado. We review each event manually and will let you "
             "know when it is approved.",
-            from_email=None,
+            from_email="donotreply@bicyclecolorado.org",
             recipient_list=[user_email],
             recipient_system=settings.CALENDAR_EMAILS,
             html_message=html_message,
