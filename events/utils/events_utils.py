@@ -19,7 +19,7 @@ def sys_send_mail(
         subject=subject,
         message=message,
         from_email=from_email or settings.DJANGO_DEFAULT_FROM_EMAIL,
-        recipient_list=recipient_system + settings.NOISY_EMAILS,
+        recipient_list=set(recipient_system + settings.NOISY_EMAILS),
         html_message=html_message,
         fail_silently=fail_silently,
     )
