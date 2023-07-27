@@ -8,7 +8,18 @@ from django.shortcuts import get_object_or_404, render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, DetailView, ListView, UpdateView
 
-from .forms import EventForm, RaceForm, RaceResultForm, RaceResultsImport, RaceSeriesForm
+from events.users.permission_utils import is_org_admin
+from .forms import (
+    RaceForm,
+    RaceResultForm,
+    RaceResultsImport,
+    RaceSeriesForm,
+    EventStaffForm,
+    EventOrgAdminForm,
+    EventAuthenticatedUserForm,
+    EventCommunityForm,
+    EventUpdateForm,
+)
 from .models import Event, Race, RaceResult, RaceSeries
 from .validators import ImportResults
 from ..membership.models import OrganizationMember
@@ -79,53 +90,6 @@ class EventListView(ListView):
                 queryset = queryset & queryset.filter(featured_event=True)
         return queryset
 
-    # def get_queryset(self, **kwargs):
-    #     queryset = super().get_queryset(**kwargs)
-    #
-    #     if "past_events" not in self.request.GET:
-    #         queryset = queryset.filter(end_date__gte=date.today())
-    #
-    #     self.filter = EventFilter(self.request.GET, queryset=queryset)
-    #     print(self.filter)
-    #     return self.filter.qs
-
-
-# class EventListView(ListView):
-#     model = Event
-#     template_name = "event/event_list.html"
-#
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         context["events"] = Event.objects.all().order_by("start_date").filter(end_date__gte=date.today())
-#         context["featured"] = context["events"].filter(featured_event=True)[:4]
-#         return context
-#
-#     def get(self, *args, **kwargs):
-#         context = self.get_context_data(**kwargs)
-#         queryset = Event.objects.all().order_by("start_date").filter(end_date__gte=date.today())
-#         search_query = self.request.GET.get("search", "")
-#         filter_usac = self.request.GET.get("filter_usac", "")
-#         filter_featured = self.request.GET.get("filter_featured", "")
-#         if any([search_query, filter_usac, filter_featured]):
-#             if search_query:
-#                 queryset = queryset.filter(
-#                     Q(name__icontains=search_query)
-#                     | Q(website__icontains=search_query)
-#                     | Q(city__icontains=search_query)
-#                     | Q(state__icontains=search_query)
-#                 )
-#             if filter_usac:
-#                 queryset = queryset.filter(is_usac_permitted=True)
-#             if filter_featured:
-#                 queryset = queryset.filter(featured_event=True)
-#             context["featured"] = None
-#             context["events"] = queryset
-#             return self.render_to_response(context)
-#         else:
-#             context["featured"] = queryset.filter(featured_event=True)[:4]
-#             context["events"] = queryset
-#             return self.render_to_response(context)
-
 
 class EventResultListView(ListView):
     model = Event
@@ -168,38 +132,57 @@ class EventDetailView(DetailView):
         return context
 
 
-# Create
 class EventCreateView(CreateView):
-    """ "
-    Form fields
-    ['name', 'featured_event', 'blurb', 'description', 'start_date', 'end_date', 'email', 'website',
-     'registration_website',
-     'permit_no', 'is_usac_permitted', 'city', 'state', 'country', 'tags', 'panels', 'organization', 'publish_type',
-     'approved']"""
-
-    # TODO: If user is_staff, approved is set to True
-    # TODO: Org admins can only select their own organizations
-    # TODO: is_staff can share with any org
-    # TODO: Default Org is BC
-    # TODO: add turnstile is not is_authenticaed user
     model = Event
-    form_class = EventForm
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context.update(event_edit_fields)
-        context["IsOrgAdmin"] = OrganizationMember.objects.filter(user=self.request.user.id, is_admin=True)
-        return context
-
-    # TODO: send email to user and staff
     template_name = "event/event_create.html"
     success_url = reverse_lazy("event:event_list")
+
+    def get_form_class(self):
+        if not self.request.user.is_anonymous:
+            if self.request.user.is_staff:
+                return EventStaffForm
+            elif is_org_admin(self.request.user):
+                return EventOrgAdminForm
+            elif self.request.user.is_authenticated:
+                return EventAuthenticatedUserForm
+        else:
+            return EventCommunityForm
+
+    # def form_valid(self, form):
+    #     """add unicode for calendar to subject \U0001F4C5"""
+    #     response = super().form_valid(form)
+    #     if not self.request.user.is_anonymous:
+    #         user_email = self.request.user.email
+    #         user_name = self.request.user.full_name
+    #     else:
+    #         user_email = response.cleaned_data["submitter_email"]
+    #         user_name = form.cleaned_data["user_name"]
+    #
+    #     html_message = render_to_string(
+    #         "emails/new_event_created_email.html",
+    #         {
+    #             "NAME": response.cleaned_data[user_name],
+    #             "EVENT_NAME": response.cleaned_data["name"],
+    #         },
+    #     )
+    #
+    #     sys_send_mail(
+    #         subject=f"\U0001F4C5 {response.cleaned_data['name']} event submitted for review",
+    #         message="Thanks for submitting an event to Bicycle Colorado. We review each event manually and will let you "
+    #         "know when it is approved.",
+    #         from_email=None,
+    #         recipient_list=[user_email],
+    #         recipient_system=settings.CALENDAR_EMAILS,
+    #         html_message=html_message,
+    #         fail_silently=False,
+    #     )
+    #     return response
 
 
 # Update
 class EventUpdateView(LoginRequiredMixin, UpdateView):
     model = Event
-    form_class = EventForm
+    form_class = EventUpdateForm
     template_name = "event/event_update.html"
     success_url = reverse_lazy("event:event_list")
 

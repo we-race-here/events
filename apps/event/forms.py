@@ -1,6 +1,18 @@
 from django import forms
 from django.contrib.auth import get_user_model
-from django.forms import CharField, DateField, DateInput, ModelChoiceField, ModelForm, TimeField, TimeInput
+from django.forms import (
+    CharField,
+    DateField,
+    DateInput,
+    ModelChoiceField,
+    ModelForm,
+    TimeField,
+    TimeInput,
+    TextInput,
+    SelectMultiple,
+)
+from django.forms.widgets import Textarea, SelectDateWidget
+from django.utils.datetime_safe import datetime
 
 from apps.membership.models import Organization
 from .models import Event, Race, RaceResult, RaceSeries, event_types
@@ -47,75 +59,133 @@ class RaceResultsImport(forms.Form):
     results_file = forms.FileField()
 
 
-class EventForm(forms.ModelForm):
+class EventStaffForm(forms.ModelForm):
+    pass
+
+
+class EventOrgAdminForm(forms.ModelForm):
+    pass
+
+
+class EventAuthenticatedUserForm(forms.ModelForm):
+    pass
+
+
+class EventCommunityForm(forms.ModelForm):
+    user_name = forms.CharField(
+        label="Full Name",
+        required=True,
+        max_length=50,
+        widget=TextInput(
+            attrs={
+                "class": "fb_text_input_field",
+                "placeholder": "Full name",
+                "max_length": 50,
+            }
+        ),
+    )
+    user_email = forms.EmailField(
+        label="Your Email Address",
+        required=True,
+        widget=TextInput(
+            attrs={
+                "class": "fb_text_input_field",
+                "placeholder": "your emails address",
+                "max_length": 50,
+            }
+        ),
+    )
+
     tags = forms.MultipleChoiceField(
-        widget=forms.CheckboxSelectMultiple,
+        label="Select Event Tag(s)",
         choices=event_types,
-        required=False,
-    )
-    start_date = DateField(
-        required=True,
-        label="Start Date",
-        widget=DateInput(
-            attrs={
-                "type": "date",
-                "class": "appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 "
-                "placeholder-gray-500 text-gray-900 rounded-t-md  rounded-b-md focus:outline-none "
-                "focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm",
-            }
+        widget=SelectMultiple(
+            attrs={"class": "fb_select_multiple", "placeholder": "Event tags and type", "help_text": "select multiple"}
         ),
     )
-    end_date = DateField(
-        required=True,
-        label="End Date",
-        widget=DateInput(
+    description = forms.CharField(
+        widget=forms.Textarea(
             attrs={
-                "type": "date",
-                "class": "appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 "
-                "placeholder-gray-500 text-gray-900 rounded-t-md  rounded-b-md focus:outline-none "
-                "focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm",
+                "placeholder": "A longer event description with basic formatting and links",
             }
-        ),
+        )
     )
-    description = forms.CharField(widget=forms.Textarea(attrs={"class": "editor-basic"}))
 
     class Meta:
         model = Event
-        css = ()
         fields = [
             "name",
             "blurb",
             "description",
-            "logo",
-            "hero",
             "start_date",
             "end_date",
-            "email",
             "website",
-            "registration_website",
-            "permit_no",
-            "is_usac_permitted",
             "city",
             "state",
-            "country",
             "tags",
-            "organization",
-            "publish_type",
-            "featured_event",
         ]
-        widgets = {
-            "name": forms.TextInput(attrs={"class": css}),
-            "blurb": forms.TextInput(attrs={"class": css}),
-            "start_date": forms.Textarea(attrs={"class": css}),
-            "email": forms.TextInput(attrs={"class": css}),
-            "website": forms.TextInput(attrs={"class": css}),
-            "registration_website": forms.TextInput(attrs={"class": css}),
-            "permit_no": forms.TextInput(attrs={"class": css}),
-            "city": forms.TextInput(attrs={"class": css}),
-            "state": forms.TextInput(attrs={"class": css}),
-            "country": forms.TextInput(attrs={"class": css}),
-            # "tags": forms.SelectMultiple(attrs={"class": css}, choices=event_types),
+        labels = {
+            "name": "Event Name",
+            "blurb": "Event Blurb",
+            "description": "Event Description",
+            "start_date": "Event Start Date",
+            "end_date": "Event End Date",
+            "website": "Event Website or other URL",
+            "city": "Event City",
+            "state": "Event State",
+            "tags": "Event Tags",
         }
+        widgets = {
+            "name": TextInput(
+                attrs={
+                    "class": "fb_text_input_field",
+                    "placeholder": "event name (50 characters max)",
+                    "max_length": 50,
+                }
+            ),
+            "blurb": Textarea(
+                attrs={
+                    "class": "fb_text_area_field",
+                    "placeholder": "short description of the event (250 characters max)",
+                    "rows": 4,
+                    "max_length": 250,
+                }
+            ),
+            "start_date": SelectDateWidget(
+                attrs={"class": "fb_select_date_field"},
+                years=range(datetime.now().year, datetime.now().year + 3),
+            ),
+            "end_date": SelectDateWidget(
+                attrs={"class": "fb_select_date_field"},
+                years=range(datetime.now().year, datetime.now().year + 3),
+            ),
+            "website": TextInput(
+                attrs={
+                    "class": "fb_text_input_field",
+                    "placeholder": "Website, Facebook, Instagram, etc.",
+                }
+            ),
+            "event_city": TextInput(
+                attrs={
+                    "class": "fb_text_input_field",
+                    "placeholder": "Nearest City",
+                    "max_length": 50,
+                }
+            ),
+            "event_state": TextInput(
+                attrs={
+                    "class": "fb_text_input_field",
+                    "placeholder": "event name (50 characters max)",
+                    "max_length": 50,
+                }
+            ),
+        }
+
+
+class EventUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Event
+        fields = "__all__"
 
 
 class RaceSeriesForm(forms.ModelForm):
