@@ -6,3 +6,8 @@ def allauth_settings(request):
     return {
         "ACCOUNT_ALLOW_REGISTRATION": settings.ACCOUNT_ALLOW_REGISTRATION,
     }
+
+
+def version(context):
+    """Expose the version of the application and alert to debug mode."""
+    return {"DEBUG": settings.DEBUG}

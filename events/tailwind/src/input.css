@@ -227,7 +227,37 @@
     md:min-h-[250px] md:max-h-[250px] w-full rounded-lg shadow;
   }
 
+  /*--------------------*/
+  /*FlowBite Forms*/
+  /*--------------------*/
+  .fb_text_label {
+    @apply block mb-2 text-sm font-medium text-gray-900;
+  }
 
+  .fb_text_input_field {
+    @apply bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600
+    block w-full p-2.5;
+  }
+
+  .fb_select_multiple {
+    @apply bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500
+    focus:border-blue-500 block w-full p-2.5;
+  }
+
+  .fb_text_area_field {
+    @apply block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500
+    focus:border-blue-500;
+  }
+
+  .fb_date_picker_field {
+    @apply bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5;
+    /*dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500;*/
+  }
+
+  .fb_select_date_field {
+    @apply m-1 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2;
+  }
+  
   /*########################################*/
   /* FLOWBITE END */
   /*########################################*/
