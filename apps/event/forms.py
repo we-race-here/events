@@ -364,15 +364,32 @@ class EventCommunityForm(forms.ModelForm):
             attrs={"class": "fb_select_multiple", "placeholder": "Event tags and type", "help_text": "select multiple"}
         ),
     )
-    description = forms.CharField(
-        max_length=2500,
-        widget=forms.Textarea(
-            attrs={
-                # "class": "editor-basic",
-                "class": "fb_text_area_field",
-                "rows": 10,
-                "placeholder": "A longer event description with basic formatting and links (2500 characters max)",
-            },
+    # description = forms.CharField(
+    #     max_length=2500,
+    #     widget=forms.Textarea(
+    #         attrs={
+    #             # "class": "editor-basic",
+    #             "class": "fb_text_area_field",
+    #             "rows": 10,
+    #             "placeholder": "A longer event description with basic formatting and links (2500 characters max)",
+    #         },
+    #     ),
+    # )
+
+    start_date = forms.DateField(
+        initial=datetime.now(),
+        required=True,
+        widget=SelectDateWidget(
+            attrs={"class": "fb_select_date_field"},
+            years=range(datetime.now().year, datetime.now().year + 3),
+        ),
+    )
+    end_date = forms.DateField(
+        initial=datetime.now(),
+        required=True,
+        widget=SelectDateWidget(
+            attrs={"class": "fb_select_date_field"},
+            years=range(datetime.now().year, datetime.now().year + 3),
         ),
     )
 
@@ -381,7 +398,7 @@ class EventCommunityForm(forms.ModelForm):
         fields = [
             "name",
             "blurb",
-            "description",
+            # "description",
             "start_date",
             "end_date",
             "website",
@@ -392,7 +409,7 @@ class EventCommunityForm(forms.ModelForm):
         labels = {
             "name": "Event Name",
             "blurb": "Event Blurb",
-            "description": "Event Description",
+            # "description": "Event Description",
             "start_date": "Event Start Date",
             "end_date": "Event End Date",
             "website": "Event Website or other URL",
@@ -415,14 +432,6 @@ class EventCommunityForm(forms.ModelForm):
                     "rows": 4,
                     "max_length": 50,
                 },
-            ),
-            "start_date": SelectDateWidget(
-                attrs={"class": "fb_select_date_field"},
-                years=range(datetime.now().year, datetime.now().year + 3),
-            ),
-            "end_date": SelectDateWidget(
-                attrs={"class": "fb_select_date_field"},
-                years=range(datetime.now().year, datetime.now().year + 3),
             ),
             "website": TextInput(
                 attrs={
