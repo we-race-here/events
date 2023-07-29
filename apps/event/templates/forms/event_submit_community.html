@@ -10,7 +10,7 @@
 
 <!-- Main modal -->
 {% if form.errors %}
-  <div id="submitEventModal" tabindex="-1" class="fb_model_content" aria-modal="true" role="dialog">
+  <div id="submitEventModal" tabindex="-1" class="fb_model_content flex" aria-modal="true" role="dialog">
 {% else %}
   <div id="submitEventModal" tabindex="-1" aria-hidden="true"
        class="hidden fb_model_content">
@@ -111,14 +111,16 @@
             {% endif %}
           </div>
         </div>
-        <div class="sm:col-span-2">
-          {{ form.turnstile }}
-          {% if form.turnstile.errors %}
-            <div class="text-red-500 text-xs mt-1">{{ form.turnstile.errors }}</div>
-          {% endif %}
+        <div class="flex sm:col-span-2 justify-center">
+          <div>
+            {{ form.turnstile }}
+            {% if form.turnstile.errors %}
+              <div class="text-red-500 text-xs mt-1">{{ form.turnstile.errors }}</div>
+            {% endif %}
+          </div>
         </div>
       </div>
-      <div class="items-center space-y-4 sm:flex sm:space-y-0 sm:space-x-4">
+      <div class="items-center space-y-4 sm:flex justify-between">{% comment %}sm:space-y-0 sm:space-x-4{% endcomment %}
         <button type="submit"
                 class="w-full justify-center sm:w-auto text-white  button_body_cyan">
           <i class="fa-solid fa-square-check mr-1"></i>Submit event for review

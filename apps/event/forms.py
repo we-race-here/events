@@ -13,6 +13,7 @@ from django.forms import (
 )
 from django.forms.widgets import Textarea, SelectDateWidget
 from django.utils.datetime_safe import datetime
+from turnstile.fields import TurnstileField
 
 from apps.membership.models import Organization
 from .models import Event, Race, RaceResult, RaceSeries, event_types
@@ -321,6 +322,8 @@ class EventAuthenticatedUserForm(forms.ModelForm):
 
 
 class EventCommunityForm(forms.ModelForm):
+    turnstile = TurnstileField(label="")
+
     user_first = forms.CharField(
         label="First Name",
         required=True,
