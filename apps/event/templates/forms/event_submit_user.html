@@ -7,7 +7,6 @@
     Create and submit an event
   </button>
 </div>
-
 <!-- Main modal -->
 <div id="submitEventModal" tabindex="-1" aria-hidden="true" 
      class="hidden overflow-y-auto fixed inset-0 z-50 flex items-center justify-center w-full h-full">
@@ -58,13 +57,14 @@
                    for="{{ form.logo.id_for_label }}">
               Event Logo
             </label>
-            <div class="items-center w-full sm:flex">
-              {{ form.logo }}
-              <div class="w-full">
-                <p class="mt-1 text-xs font-normal text-gray-500 dark:text-gray-300" id="file_input_help">SVG, PNG, JPG
-                  or GIF (MAX. 800x400px).</p>
-              </div>
+            <div class="sm:col-span-2">
+              <div class="items-center w-full sm:flex">
+                  <div class="w-full">
+                    {{ form.logo }}
+                      <p class="mt-1 text-xs font-normal text-gray-500 dark:text-gray-300" id="file_input_help">SVG, PNG, JPG or GIF (MAX. 800x400px).</p>                  
+                </div>
             </div>
+          </div>
             {% if form.logo.errors %}
               <div class="text-red-500 text-xs mt-1">{{ form.logo.errors }}</div>
             {% endif %}

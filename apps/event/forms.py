@@ -10,6 +10,7 @@ from django.forms import (
     TimeInput,
     TextInput,
     SelectMultiple,
+    FileInput
 )
 from django.forms.widgets import Textarea, SelectDateWidget, ClearableFileInput
 from django.utils.datetime_safe import datetime
@@ -76,6 +77,13 @@ event_fields = {
                 "placeholder": "A longer event description with basic formatting and links (2500 characters max)",
             },
         ),
+    ),
+    "logo": forms.CharField(
+        widget=FileInput(
+            attrs= {
+                "class": "w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+            }
+        )
     ),
     "user_first": forms.CharField(
         label="First Name",
@@ -321,7 +329,7 @@ class EventAuthenticatedUserForm(EventCommunityForm):
     description = event_fields["description"]
     start_date = event_fields["start_date"]
     end_date = event_fields["end_date"]
-
+    logo = event_fields["logo"]
     class Meta:
         model = Event
         fields = event_fields_authenticated
