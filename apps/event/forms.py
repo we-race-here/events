@@ -148,7 +148,6 @@ event_fields_base = [
     "tags",
 ]
 event_fields_authenticated = event_fields_base + ["logo", "description"]
-
 event_labels_base = {
     "name": "Event Name",
     "blurb": "Event Blurb",
@@ -323,7 +322,7 @@ class EventAuthenticatedUserForm(EventCommunityForm):
     start_date = event_fields["start_date"]
     end_date = event_fields["end_date"]
 
-    class meta:
+    class Meta:
         model = Event
         fields = event_fields_authenticated
         labels = event_labels_authenticated
