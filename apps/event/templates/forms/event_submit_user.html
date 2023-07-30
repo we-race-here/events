@@ -7,15 +7,14 @@
     Create and submit an event
   </button>
 </div>
-
 <!-- Main modal -->
-<div id="submitEventModal" tabindex="-1" aria-hidden="true"
-     class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-modal md:h-full">
-  <div class="relative p-4 w-full max-w-3xl h-full md:h-auto">
+<div id="submitEventModal" tabindex="-1" aria-hidden="true" 
+     class="hidden overflow-y-auto fixed inset-0 z-50 flex items-center justify-center w-full h-full">
+  <div class="relative p-4 w-full max-w-3xl">
     <!-- Modal content -->
-    <div class="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5">
+    <div class="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5 overflow-y-auto h-modal">
       <!-- Modal header -->
-      <div class="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
+      <div class="flex justify-between items-center pb-4 mb-4 border-b sm:mb-5 dark:border-gray-600">
         <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
           Submit an event to the Bicycle Colorado Calendar
 
@@ -34,7 +33,7 @@
       </div>
 
       <!-- Modal body -->
-      <form method="post" enctype="multipart/form-data">
+      <form method="post" id="authenticated_user_form" enctype="multipart/form-data">
         {% csrf_token %}
 
         <div class="grid gap-4 mb-4 sm:grid-cols-2">
@@ -54,6 +53,23 @@
             {% endif %}
           </div>
           <div class="sm:col-span-2">
+            <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                   for="{{ form.logo.id_for_label }}">
+              Event Logo
+            </label>
+            <div class="sm:col-span-2">
+              <div class="items-center w-full sm:flex">
+                  <div class="w-full">
+                    {{ form.logo }}
+                      <p class="mt-1 text-xs font-normal text-gray-500 dark:text-gray-300" id="file_input_help">SVG, PNG, JPG or GIF (MAX. 800x400px).</p>                  
+                </div>
+            </div>
+          </div>
+            {% if form.logo.errors %}
+              <div class="text-red-500 text-xs mt-1">{{ form.logo.errors }}</div>
+            {% endif %}
+          </div>
+          <div class="sm:col-span-2">
             <label for="{{ form.blurb.auto_id }}" class="fb_text_label">{{ form.blurb.label }}</label>
             {{ form.blurb }}
             {% if form.blurb.errors %}
@@ -61,7 +77,8 @@
             {% endif %}
           </div>
           <div class="sm:col-span-2">
-            <label for="{{ form.description.auto_id }}" class="fb_text_label">{{ form.description.label }}</label>
+            <label for="{{ form.description.auto_id }}"
+                   class="fb_text_label">{{ form.description.label }}</label>
             {{ form.description }}
             <div>
               {% if form.description.errors %}
@@ -104,9 +121,8 @@
   </div>
 </div>
 
-<script>
-  document.addEventListener("DOMContentLoaded", function (event) {
-    document.getElementById('createEventButton').click();
-  });
-</script>
-
+<style>
+  .h-modal {
+    max-height: calc(100vh - 2rem);
+  }
+</style>

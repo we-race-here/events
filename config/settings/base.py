@@ -16,8 +16,10 @@ if os.getenv("DJANGO_SETTINGS_MODULE") == "config.settings.local":
     # OS environment variables take precedence over variables from .env
     envs_path = Path(f"{BASE_DIR}/.envs")
     if envs_path.is_dir():
+        print(BASE_DIR / ".envs" / ".local" / ".django")
         env.read_env(BASE_DIR / ".envs" / ".local" / ".django")
     else:
+        print(BASE_DIR / ".env")
         env.read_env(BASE_DIR / ".env")
 # GENERAL
 # ------------------------------------------------------------------------------
@@ -257,14 +259,13 @@ EMAIL_BACKEND = env(
 )
 # https://docs.djangoproject.com/en/dev/ref/settings/#email-timeout
 EMAIL_TIMEOUT = 5
+DJANGO_DEFAULT_FROM_EMAIL = env("DJANGO_DEFAULT_FROM_EMAIL", default="donotreply@bicyclecolorado.org")
+DO_NOT_REPLY = env("DO_NOT_REPLY", default="donotreply@bicyclecolorado.org")
+CALENDAR_EMAILS = env.list("CALENDAR_EMAILS", default=["developer@vdavis.net"])
+STAFF_EMAILS = env.list("STAFF_EMAILS", default=["developer@bicyclecolorado.org"])
+NOISY_EMAILS = env.list("NOISY_EMAILS", default=["developer@bicyclecolorado.org"])
 
-EMAIL_DEFAULT_FROM = env("DJANGO_EMAIL_DEFAULT_FROM", default="info@bicyclecolorado.org")
-
-CALENDAR_EMAILS = env.list("DJANGO_CALENDAR_EMAILS", default=["developer@vdavis.net"])
-STAFF_EMAILS = env.list("DJANGO_STAFF_EMAILS", default=["developer@vdavis.net"])
-NOISY_EMAILS = env.list("DJANGO_NOISY_EMAILS", default=["developer@bicyclecolorado.org"])
-
-PREPEND_SUBJECT = env("DJANGO_PREPEND_SUBJECT", default="")
+PREPEND_SUBJECT = env("PREPEND_SUBJECT", default="")
 
 # ADMIN
 # ------------------------------------------------------------------------------

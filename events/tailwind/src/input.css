@@ -228,6 +228,16 @@
   }
 
   /*--------------------*/
+  /*FlowBite Modals*/
+  /*--------------------*/
+  /*This does not include the "hidden" value*/
+  .fb_model_content {
+    @apply overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0
+    z-50 justify-center items-center w-full md:inset-0 h-modal md:h-full;
+  }
+
+
+  /*--------------------*/
   /*FlowBite Forms*/
   /*--------------------*/
   .fb_text_label {
@@ -257,7 +267,8 @@
   .fb_select_date_field {
     @apply m-1 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2;
   }
-  
+
+
   /*########################################*/
   /* FLOWBITE END */
   /*########################################*/

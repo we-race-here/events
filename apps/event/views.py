@@ -139,6 +139,19 @@ class EventCreateView(CreateView):
     template_name = "event/event_create.html"
     success_url = reverse_lazy("event:event_list")
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if not self.request.user.is_anonymous:
+            if self.request.user.is_staff:
+                context["user_type"] = "EventStaffForm"
+            elif is_org_admin(self.request.user):
+                context["user_type"] = "EventOrgAdminForm"
+            elif self.request.user.is_authenticated:
+                context["user_type"] = "EventAuthenticatedUserForm"
+        else:
+            context["user_type"] = "EventCommunityForm"
+        return context
+
     def get_form_class(self):
         if not self.request.user.is_anonymous:
             if self.request.user.is_staff:
@@ -150,19 +163,24 @@ class EventCreateView(CreateView):
         else:
             return EventCommunityForm
 
+    # def form_invalid(self, form):
+    #     print("invalide form")
+
     def form_valid(self, form):
         """add unicode for calendar to subject \U0001F4C5"""
+        print("here")
         if not self.request.user.is_anonymous:
             user_email = self.request.user.email
             user_name = self.request.user.full_name
         else:
             user_email = form.cleaned_data["user_email"]
-            user_name = form.cleaned_data["user_name"]
+            user_name = form.cleaned_data["user_first"] + " " + form.cleaned_data["user_last"]
 
         html_message = render_to_string(
             "emails/new_event_created_email.html",
             {
                 "NAME": user_name,
+                "EMAIL": user_email,
                 "EVENT_NAME": form.cleaned_data["name"],
             },
         )
@@ -171,7 +189,7 @@ class EventCreateView(CreateView):
             subject=f"\U0001F4C5 {form.cleaned_data['name']} event submitted for review",
             message="Thanks for submitting an event to Bicycle Colorado. We review each event manually and will let you "
             "know when it is approved.",
-            from_email=None,
+            from_email="donotreply@bicyclecolorado.org",
             recipient_list=[user_email],
             recipient_system=settings.CALENDAR_EMAILS,
             html_message=html_message,
