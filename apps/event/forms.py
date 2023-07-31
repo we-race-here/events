@@ -12,7 +12,7 @@ from django.forms import (
     SelectMultiple,
     FileInput,
 )
-from django.forms.widgets import Textarea, SelectDateWidget, ClearableFileInput
+from django.forms.widgets import Textarea, SelectDateWidget, ClearableFileInput, Select, CheckboxInput
 from django.utils.datetime_safe import datetime
 from turnstile.fields import TurnstileField
 
@@ -20,6 +20,59 @@ from apps.membership.models import Organization
 from .models import Event, Race, RaceResult, RaceSeries, event_types
 
 User = get_user_model()
+
+STATE_CHOICES = [
+    ("AL", "Alabama"),
+    ("AK", "Alaska"),
+    ("AZ", "Arizona"),
+    ("AR", "Arkansas"),
+    ("CA", "California"),
+    ("CO", "Colorado"),
+    ("CT", "Connecticut"),
+    ("DE", "Delaware"),
+    ("FL", "Florida"),
+    ("GA", "Georgia"),
+    ("HI", "Hawaii"),
+    ("ID", "Idaho"),
+    ("IL", "Illinois"),
+    ("IN", "Indiana"),
+    ("IA", "Iowa"),
+    ("KS", "Kansas"),
+    ("KY", "Kentucky"),
+    ("LA", "Louisiana"),
+    ("ME", "Maine"),
+    ("MD", "Maryland"),
+    ("MA", "Massachusetts"),
+    ("MI", "Michigan"),
+    ("MN", "Minnesota"),
+    ("MS", "Mississippi"),
+    ("MO", "Missouri"),
+    ("MT", "Montana"),
+    ("NE", "Nebraska"),
+    ("NV", "Nevada"),
+    ("NH", "New Hampshire"),
+    ("NJ", "New Jersey"),
+    ("NM", "New Mexico"),
+    ("NY", "New York"),
+    ("NC", "North Carolina"),
+    ("ND", "North Dakota"),
+    ("OH", "Ohio"),
+    ("OK", "Oklahoma"),
+    ("OR", "Oregon"),
+    ("PA", "Pennsylvania"),
+    ("RI", "Rhode Island"),
+    ("SC", "South Carolina"),
+    ("SD", "South Dakota"),
+    ("TN", "Tennessee"),
+    ("TX", "Texas"),
+    ("UT", "Utah"),
+    ("VT", "Vermont"),
+    ("VA", "Virginia"),
+    ("WA", "Washington"),
+    ("WV", "West Virginia"),
+    ("WI", "Wisconsin"),
+    ("WY", "Wyoming"),
+]
 
 
 class UploadValidateFile(forms.Form):
@@ -116,7 +169,19 @@ event_fields = {
             attrs={
                 "class": "fb_text_input_field",
                 "placeholder": "your emails address",
-                "max_length": 50,
+                "max_length": 75,
+            }
+        ),
+    ),
+    "email": forms.EmailField(
+        label="Event Contact Email Address",
+        required=True,
+        max_length=75,
+        widget=TextInput(
+            attrs={
+                "class": "fb_text_input_field",
+                "placeholder": "emails address",
+                "max_length": 75,
             }
         ),
     ),
@@ -143,6 +208,41 @@ event_fields = {
             years=range(datetime.now().year, datetime.now().year + 3),
         ),
     ),
+    "website": forms.URLField(
+        required=False,
+        widget=TextInput(
+            attrs={
+                "class": "fb_text_input_field",
+                "placeholder": "Website, Facebook, or other URL",
+                "max_length": 100,
+            }
+        ),
+    ),
+    "registration_website": forms.URLField(
+        required=False,
+        widget=TextInput(
+            attrs={
+                "class": "fb_text_input_field",
+                "placeholder": "bikereg, or other URL",
+                "max_length": 100,
+            }
+        ),
+    ),
+    "state": forms.ChoiceField(
+        initial="CO",
+        label="Event State",
+        required=True,
+        choices=STATE_CHOICES,
+        widget=Select(attrs={"class": "fb_select_multiple", "placeholder": "Event State"}),
+    ),
+    "is_permitted": forms.BooleanField(
+        label="USAC Permited", required=False, widget=CheckboxInput(attrs={"class": "fb_checkbox_field"})
+    ),
+    "permit_no": forms.CharField(
+        label="Permit Number",
+        required=False,
+        widget=TextInput(attrs={"class": "fb_text_input_field", "placeholder": "123"}),
+    ),
 }
 
 event_fields_base = [
@@ -155,15 +255,20 @@ event_fields_base = [
     "state",
     "tags",
 ]
-event_fields_authenticated = event_fields_base + ["logo", "description"]
+event_fields_authenticated = event_fields_base + [
+    "email",
+    "logo",
+    "description",
+    "registration_website",
+    "is_permitted",
+    "permit_no",
+]
 event_labels_base = {
     "name": "Event Name",
     "blurb": "Event Blurb",
     "start_date": "Event Start Date",
     "end_date": "Event End Date",
     "website": "Event Website or other URL",
-    "city": "Event City",
-    "state": "Event State",
     "tags": "Event Tags",
 }
 event_labels_authenticated = event_labels_base.copy()
@@ -196,17 +301,10 @@ event_widgets_base = {
             "placeholder": "Website, Facebook, Instagram, etc.",
         }
     ),
-    "event_city": TextInput(
+    "city": TextInput(
         attrs={
             "class": "fb_text_input_field",
             "placeholder": "Nearest City",
-            "max_length": 50,
-        }
-    ),
-    "event_state": TextInput(
-        attrs={
-            "class": "fb_text_input_field",
-            "placeholder": "event name (50 characters max)",
             "max_length": 50,
         }
     ),
@@ -316,6 +414,7 @@ class EventCommunityForm(forms.ModelForm):
     tags = event_fields["tags"]
     start_date = event_fields["start_date"]
     end_date = event_fields["end_date"]
+    state = event_fields["state"]
 
     class Meta:
         model = Event
@@ -330,6 +429,11 @@ class EventAuthenticatedUserForm(forms.ModelForm):
     start_date = event_fields["start_date"]
     end_date = event_fields["end_date"]
     logo = event_fields["logo"]
+    state = event_fields["state"]
+    email = event_fields["email"]
+    registration_website = event_fields["registration_website"]
+    is_permitted = event_fields["is_permitted"]
+    permit_no = event_fields["permit_no"]
 
     class Meta:
         model = Event
