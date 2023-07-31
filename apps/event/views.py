@@ -165,6 +165,8 @@ class EventCreateView(CreateView):
 
     # def form_invalid(self, form):
     #     print("invalide form")
+    #     print(form.errors)
+    #     return super().form_invalid(form)
 
     def form_valid(self, form):
         """add unicode for calendar to subject \U0001F4C5"""

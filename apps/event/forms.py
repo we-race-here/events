@@ -10,7 +10,7 @@ from django.forms import (
     TimeInput,
     TextInput,
     SelectMultiple,
-    FileInput
+    FileInput,
 )
 from django.forms.widgets import Textarea, SelectDateWidget, ClearableFileInput
 from django.utils.datetime_safe import datetime
@@ -80,7 +80,7 @@ event_fields = {
     ),
     "logo": forms.CharField(
         widget=FileInput(
-            attrs= {
+            attrs={
                 "class": "w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
             }
         )
@@ -324,12 +324,13 @@ class EventCommunityForm(forms.ModelForm):
         widgets = event_widgets_base
 
 
-class EventAuthenticatedUserForm(EventCommunityForm):
+class EventAuthenticatedUserForm(forms.ModelForm):
     tags = event_fields["tags"]
     description = event_fields["description"]
     start_date = event_fields["start_date"]
     end_date = event_fields["end_date"]
     logo = event_fields["logo"]
+
     class Meta:
         model = Event
         fields = event_fields_authenticated
