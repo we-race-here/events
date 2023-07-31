@@ -30,8 +30,8 @@ User = get_user_model()
 
 # Read
 event_edit_fields = {
-    "PublicFields": ["name", "start_date", "end_date", "website", "city", "state", "country"],
-    "UserFields": ["blurb", "description", "email", "registration_website", "is_usac_permitted", "permit_no", "tags"],
+    "PublicFields": ["name", "start_date", "end_date", "website", "city", "state", "country", "tags"],
+    "UserFields": ["blurb", "description", "email", "registration_website", "is_usac_permitted", "permit_no"],
     "OrgAdminFields": ["featured_event", "publish_type", "panels"],
     "StaffFields": ["organization", "approved"],
 }
