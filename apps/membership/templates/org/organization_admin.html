@@ -7,6 +7,8 @@
 {% block title %}Club: {{ object.name }}{% endblock %}
 
 {% block content %}
+  {% include 'components/purchase_club_dues.html' %}
+  {% include 'components/purchase_featured_event_package.html' %}
   <section>
     <div class="message_box">
       <ul class="message_list">Action Items:
