@@ -339,6 +339,7 @@ class EventStaffForm(forms.ModelForm):
         model = Event
         fields = [
             "name",
+            "tags",
             "blurb",
             "description",
             "start_date",
@@ -346,7 +347,6 @@ class EventStaffForm(forms.ModelForm):
             "website",
             "city",
             "state",
-            "tags",
         ]
         labels = {
             "name": "Event Name",
@@ -371,7 +371,7 @@ class EventStaffForm(forms.ModelForm):
                 attrs={
                     "class": "fb_text_area_field",
                     "placeholder": "short description of the event (250 characters max)",
-                    "rows": 4,
+                    "rows": 6,
                     "max_length": 250,
                 }
             ),
@@ -389,14 +389,14 @@ class EventStaffForm(forms.ModelForm):
                     "placeholder": "Website, Facebook, Instagram, etc.",
                 }
             ),
-            "event_city": TextInput(
+            "city": TextInput(
                 attrs={
                     "class": "fb_text_input_field",
                     "placeholder": "Nearest City",
                     "max_length": 50,
                 }
             ),
-            "event_state": TextInput(
+            "state": TextInput(
                 attrs={
                     "class": "fb_text_input_field",
                     "placeholder": "event name (50 characters max)",
