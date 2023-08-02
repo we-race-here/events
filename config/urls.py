@@ -1,6 +1,6 @@
 from datetime import date
 
-from allauth.account.views import SignupView
+from allauth.account.views import SignupView, LoginView
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
@@ -72,6 +72,16 @@ class HomePageSignUpView(SignupView):
         return render(self.request, self.template_name, {"form": form})
 
 
+class SiteLoginModal(LoginView):
+    print("login modal")
+    template_name = "forms/login_form.html"
+
+    def form_valid(self, form):
+        # Here we can add our custom logic for login
+        print("valid")
+        return super().form_valid(form)
+
+
 if "events.bicycecolorado.org" in settings.ALLOWED_HOSTS:
     robots = "prod_robots.txt"
 else:
@@ -80,6 +90,7 @@ else:
 urlpatterns = [
     path("", HomePageSignUpView.as_view(), name="home"),
     path("home", HomePageView.as_view(), name="homepage"),
+    path("login_modal", SiteLoginModal.as_view(), name="login_modal"),
     # Django Admin, use {% url 'admin:index' %}
     path(settings.ADMIN_URL, admin.site.urls),
     # User management

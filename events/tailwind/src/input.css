@@ -236,6 +236,10 @@
     z-50 justify-center items-center w-full md:inset-0 h-modal md:h-full;
   }
 
+  .fb_modal_content {
+    @apply relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5
+  }
+
 
   /*--------------------*/
   /*FlowBite Forms*/
@@ -267,7 +271,6 @@
   .fb_select_date_field {
     @apply m-1 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2;
   }
-
 
   /*########################################*/
   /* FLOWBITE END */

@@ -16,7 +16,7 @@
     class="flex flex-row border-b-2 py-2 border-gray-200 sm:justify-end md:justify-between justify-end items-center">
     <a class="hidden md:block md:text-xl font-semibold bctextgreen lg:ml-28 md:ml-24"
        href="https://www.bicyclecolorado.org/events-2/event-support/" target="_blank">Event Support Program</a>
-    <nav class="flex flex-row justify-end items-center z-50">
+    <nav class="flex flex-row justify-end items-center z-40">
       <ul>
         <li class="group menu_dropdown_li">
           <a href="https://www.bicyclecolorado.org/" target="_blank"><i class="fa-solid fa-bars pr-1"></i>BICYCLE
@@ -133,11 +133,20 @@
           </button>
 
         {% endif %}
-        {# URL provided by django-allauth/account/urls.py #}
+        {#        URL provided by django-allauth/account/urls.py#}
         <button type="button" onclick="location.href='{% url 'account_login' %}'"
                 class="ml-1 signin_button">
           {% translate "Sign In" %}
         </button>
+        <div>
+          <button hx-get="{% url "login_modal" %}" hx-target="#ModelLoginForm"
+                  id="LoginUserButton" data-modal-toggle="LoginUserAccordionModal"
+                  class="signin_button block focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg
+                text-sm px-5 py-2.5 text-center"
+                  type="button">
+            "New signin"
+          </button>
+        </div>
       {% endif %}
     </nav>
   </div>
@@ -223,3 +232,4 @@
     </div>
   </nav>
 </header>
+
