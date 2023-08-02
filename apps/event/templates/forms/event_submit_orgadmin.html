@@ -7,21 +7,20 @@
     Create and submit an event
   </button>
 </div>
-
 <!-- Main modal -->
 <div id="submitEventModal" tabindex="-1" aria-hidden="true"
-     class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-modal md:h-full">
-  <div class="relative p-4 w-full max-w-3xl h-full md:h-auto">
+     class="hidden overflow-y-auto fixed inset-0 z-50 flex items-center justify-center w-full h-full">
+  <div class="relative p-4 w-full max-w-3xl">
     <!-- Modal content -->
-    <div class="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5">
+    <div class="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5 overflow-y-auto h-modal">
       <!-- Modal header -->
-      <div class="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
+      <div class="flex justify-between items-center pb-4 mb-4 border-b sm:mb-5 dark:border-gray-600">
         <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
           Submit an event to the Bicycle Colorado Calendar
-
         </h3>
         <button type="button"
-                class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5
+                ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
                 data-modal-toggle="submitEventModal">
           <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
                xmlns="http://www.w3.org/2000/svg">
@@ -34,10 +33,11 @@
       </div>
 
       <!-- Modal body -->
-      <form method="post" enctype="multipart/form-data">
+      <form method="post" id="authenticated_user_form" enctype="multipart/form-data">
         {% csrf_token %}
-
         <div class="grid gap-4 mb-4 sm:grid-cols-2">
+
+          <!-- Event Name -->
           <div>
             <label for="{{ form.name.auto_id }}" class="fb_text_label">{{ form.name.label }}</label>
             {{ form.name }}
@@ -45,6 +45,55 @@
               <div class="text-red-500 text-xs mt-1">{{ form.name.errors }}</div>
             {% endif %}
           </div>
+
+          <!-- Event Website -->
+          <div>
+            <label for="{{ form.website.auto_id }}" class="fb_text_label">{{ form.website.label }}</label>
+            {{ form.website }}
+            {% if form.website.errors %}
+              <div class="text-red-500 text-xs mt-1">{{ form.website.errors }}</div>
+            {% endif %}
+          </div>
+
+          <!-- Registration Website -->
+          <div>
+            <label for="{{ form.registration_website.auto_id }}"
+                   class="fb_text_label">{{ form.registration_website.label }}</label>
+            {{ form.registration_website }}
+            {% if form.registration_website.errors %}
+              <div class="text-red-500 text-xs mt-1">{{ form.registration_website.errors }}</div>
+            {% endif %}
+          </div>
+
+          <!-- Event Email -->
+          <div>
+            <label for="{{ form.email.auto_id }}" class="fb_text_label">{{ form.email.label }}</label>
+            {{ form.email }}
+            {% if form.email.errors %}
+              <div class="text-red-500 text-xs mt-1">{{ form.email.errors }}</div>
+            {% endif %}
+          </div>
+
+          <!-- Event USAC permitted -->
+          <div class="flex items-center">
+            {{ form.is_permitted }}
+            <label for="{{ form.is_permitted.auto_id }}"
+                   class="fb_text_label ml-2">{{ form.is_permitted.label }}</label>
+            {% if form.is_permitted.errors %}
+              <div class="text-red-500 text-xs mt-1">{{ form.is_permitted.errors }}</div>
+            {% endif %}
+          </div>
+
+          <!-- Event USAC permitted number-->
+          <div>
+            <label for="{{ form.permit_no.auto_id }}" class="fb_text_label">{{ form.permit_no.label }}</label>
+            {{ form.permit_no }}
+            {% if form.permit_no.errors %}
+              <div class="text-red-500 text-xs mt-1">{{ form.permit_no.errors }}</div>
+            {% endif %}
+          </div>
+
+          <!-- Event Type/tags -->
           <div>
             <label for="{{ form.tags.auto_id }}"
                    class="fb_text_label">{{ form.tags.label }}</label>
@@ -53,6 +102,28 @@
               <div class="text-red-500 text-xs mt-1">{{ form.name.errors }}</div>
             {% endif %}
           </div>
+
+          <!-- Event Logo -->
+          <div class="sm:col-span-2">
+            <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                   for="{{ form.logo.id_for_label }}">
+              Event Logo
+            </label>
+            <div class="sm:col-span-2">
+              <div class="items-center w-full sm:flex">
+                <div class="w-full">
+                  {{ form.logo }}
+                  <p class="mt-1 text-xs font-normal text-gray-500 dark:text-gray-300" id="file_input_help">SVG, PNG,
+                    JPG or GIF (MAX. 800x400px).</p>
+                </div>
+              </div>
+            </div>
+            {% if form.logo.errors %}
+              <div class="text-red-500 text-xs mt-1">{{ form.logo.errors }}</div>
+            {% endif %}
+          </div>
+
+          <!-- Blurb -->
           <div class="sm:col-span-2">
             <label for="{{ form.blurb.auto_id }}" class="fb_text_label">{{ form.blurb.label }}</label>
             {{ form.blurb }}
@@ -60,8 +131,11 @@
               <div class="text-red-500 text-xs mt-1">{{ form.blurb.errors }}</div>
             {% endif %}
           </div>
+
+          <!-- Description -->
           <div class="sm:col-span-2">
-            <label for="{{ form.description.auto_id }}" class="fb_text_label">{{ form.description.label }}</label>
+            <label for="{{ form.description.auto_id }}"
+                   class="fb_text_label">{{ form.description.label }}</label>
             {{ form.description }}
             <div>
               {% if form.description.errors %}
@@ -69,6 +143,8 @@
               {% endif %}
             </div>
           </div>
+
+          <!-- Start Date -->
           <div>
             <label for="{{ form.start_date.auto_id }}" class="fb_text_label">{{ form.start_date.label }}</label>
             <div>
@@ -78,6 +154,8 @@
               {% endif %}
             </div>
           </div>
+
+          <!-- End Date -->
           <div>
             <label for="{{ form.end_date.auto_id }}" class="fb_text_label">{{ form.end_date.label }}</label>
             <div>
@@ -87,7 +165,54 @@
               {% endif %}
             </div>
           </div>
+
+          <!-- Event City -->
+          <div>
+            <label class="fb_text_label" for="{{ form.city.auto_id }}">{{ form.city.label }}</label>
+            {{ form.city }}
+            {% if form.city.errors %}
+              <div class="text-red-500 text-xs mt-1">{{ form.city.errors }}</div>
+            {% endif %}
+          </div>
+
+          <!-- Event State -->
+          <div>
+            <label for="{{ form.state.auto_id }}" class="fb_text_label">{{ form.state.label }}</label>
+            {{ form.state }}
+            {% if form.state.errors %}
+              <div class="text-red-500 text-xs mt-1">{{ form.state.errors }}</div>
+            {% endif %}
+          </div>
         </div>
+
+        <!-- Event State -->
+        <div>
+          <label for="{{ form.state.auto_id }}" class="fb_text_label">{{ form.state.label }}</label>
+          {{ form.state }}
+          {% if form.state.errors %}
+            <div class="text-red-500 text-xs mt-1">{{ form.state.errors }}</div>
+          {% endif %}
+        </div>
+
+        <!-- Organization -->
+        <div>
+          <label for="{{ form.organization.auto_id }}" class="fb_text_label">{{ form.organization.label }}</label>
+          {{ form.organization }}
+          {% if form.organization.errors %}
+            <div class="text-red-500 text-xs mt-1">{{ form.organization.errors }}</div>
+          {% endif %}
+        </div>
+
+        <!-- Publish type -->
+        <div>
+          <label for="{{ form.publish_type.auto_id }}" class="fb_text_label">{{ form.publish_type.label }}</label>
+          {{ form.publish_type }}
+          {% if form.publish_type.errors %}
+            <div class="text-red-500 text-xs mt-1">{{ form.publish_type.errors }}</div>
+          {% endif %}
+        </div>
+
+        <!-- End of fields, start of buttons -->
         <div class="items-center space-y-4 sm:flex sm:space-y-0 sm:space-x-4">
           <button type="submit"
                   class="w-full justify-center sm:w-auto text-white  button_body_cyan">
@@ -99,16 +224,14 @@
             Cancel
           </button>
         </div>
+        <div>{{ form.errors }}</div>
       </form>
     </div>
   </div>
 </div>
 
-<script>
-  {#document.addEventListener("DOMContentLoaded", function (event) {#}
-  {#  document.getElementById('createEventButton').click();#}
-  {#})
-    ;
-  #}
-</script>
-
+<style>
+  .h-modal {
+    max-height: calc(100vh - 2rem);
+  }
+</style>

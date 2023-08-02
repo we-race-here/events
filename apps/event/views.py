@@ -24,7 +24,7 @@ from .forms import (
 )
 from .models import Event, Race, RaceResult, RaceSeries
 from .validators import ImportResults
-from ..membership.models import OrganizationMember
+from ..membership.models import OrganizationMember, Organization
 
 User = get_user_model()
 
@@ -163,10 +163,20 @@ class EventCreateView(CreateView):
         else:
             return EventCommunityForm
 
-    # def form_invalid(self, form):
-    #     print("invalide form")
-    #     print(form.errors)
-    #     return super().form_invalid(form)
+    def get_form(self):
+        form = super().get_form()
+        if "organization" in form.fields:
+            if self.request.user.is_staff:
+                queryset = Organization.objects.all()
+            else:
+                queryset = Organization.objects.filter(Q(members__user=self.request.user) & Q(members__is_admin=True))
+            form.fields["organization"].queryset = queryset
+        return form
+
+    def form_invalid(self, form):
+        print("invalide form")
+        print(form.errors)
+        return super().form_invalid(form)
 
     def form_valid(self, form):
         """add unicode for calendar to subject \U0001F4C5"""

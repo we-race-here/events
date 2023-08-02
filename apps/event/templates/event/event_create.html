@@ -67,9 +67,8 @@
       {% include 'forms/event_submit_orgadmin.html' %}
     {% endif %}
     {% if user_type == 'EventStaffForm' %}
-      <h3>Editing or submitting an event as a Promoter or Club admin</h3>
-      <p> you have full edit permissions and options.</p>
-      <b>Consider purchasing a Featured Event Promotional Package ($750 per event)</b>
+      <h3>Welcome EBC Staff {{ user.full_name }}</h3>
+      <p> You have full editing permissions and options for all events.</p>
       {% include 'forms/event_submit_staff.html' %}
     {% endif %}
   </div>
@@ -95,8 +94,8 @@
         content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
       });
     {% endif %}
-    </script>
-    
+  </script>
+
 {% endblock %}
 
 {#    <form method="post" enctype="multipart/form-data">#}
