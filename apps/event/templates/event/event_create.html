@@ -66,20 +66,36 @@
       <b>Consider purchasing a Featured Event Promotional Package ($750 per event)</b>
       {% include 'forms/event_submit_orgadmin.html' %}
     {% endif %}
+    {% if user_type == 'EventStaffForm' %}
+      <h3>Welcome EBC Staff {{ user.full_name }}</h3>
+      <p> You have full editing permissions and options for all events.</p>
+      {% include 'forms/event_submit_staff.html' %}
+    {% endif %}
   </div>
   <script>
-    tinymce.init({
-      selector: "textarea#id_description",
-      height: 500,
-      menubar: false,
-      plugins: ['link'],
-      toolbar: 'undo redo |' +
-        'bold italic link |' +
-        'alignleft aligncenter alignright alignjustify |' +
-        'outdent indent |' + 'removeformat',
-      content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
-    });
+    {% if user_type == 'EventCommunityForm' %}
+      // Do nothing, no description field
+    {% elif user_type == 'EventAuthenticatedUserForm' %}
+      tinymce.init({
+        selector: "textarea#id_description",
+        height: 500,
+        menubar: false,
+        plugins: ['link'],
+        toolbar: 'undo redo | bold italic link | alignleft aligncenter alignright alignjustify | outdent indent | removeformat',
+        content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
+      });
+    {% elif user_type == 'EventStaffForm' or user_type == 'EventOrgAdminForm' %}
+      tinymce.init({
+        selector: "textarea#id_description",
+        height: 500,
+        menubar: false,
+        plugins: ['link', 'image', 'media', 'lists', 'table'],  // Added media plugin
+        toolbar: 'undo redo | bold | italic | link | alignleft aligncenter alignright alignjustify | outdent indent | removeformat | image | media | numlist bullist | table',
+        content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
+      });
+    {% endif %}
   </script>
+
 {% endblock %}
 
 {#    <form method="post" enctype="multipart/form-data">#}

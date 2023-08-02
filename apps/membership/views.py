@@ -54,6 +54,7 @@ class CreateOrganizationView(LoginRequiredMixin, CreateView):
                 (Organization.TYPE_ADVOCACY_VOLUNTEER, "Advocacy"),
             )
             context["form"].fields["type"].choices = context["org_type"]
+
         # print(context["form"].fields["name"].widget.template_name)
         # attrs
         # use_fieldset

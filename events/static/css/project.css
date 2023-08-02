@@ -3206,10 +3206,6 @@ label {
   justify-content: space-between;
 }
 
-.justify-evenly {
-  justify-content: space-evenly;
-}
-
 .gap-4 {
   gap: 1rem;
 }
@@ -3280,10 +3276,6 @@ label {
 
 .overflow-y-auto {
   overflow-y: auto;
-}
-
-.overflow-x-hidden {
-  overflow-x: hidden;
 }
 
 .whitespace-nowrap {
@@ -4540,10 +4532,6 @@ label {
 }
 
 @media (min-width: 768px) {
-  .md\:inset-0 {
-    inset: 0px;
-  }
-
   .md\:ml-24 {
     margin-left: 6rem;
   }
@@ -4558,10 +4546,6 @@ label {
 
   .md\:h-auto {
     height: auto;
-  }
-
-  .md\:h-full {
-    height: 100%;
   }
 
   .md\:w-1\/2 {
