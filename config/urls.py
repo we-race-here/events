@@ -61,11 +61,6 @@ class HomePageSignUpView(SignupView):
                 "Your child has created an account at Bicycle Colorado"
                 f"Hello {parent_name},\n\nYour child has created an account at Bicycle Colorado\n "
                 f"https://events.bicyclecolorado.org",
-                "
-            send_mail(
-                "Your child has created an account at Bicycle Colorado"
-                f"Hello {parent_name},\n\nYour child has created an account at Bicycle Colorado\n "
-                f"https://events.bicyclecolorado.org",
                 "info@bicyclecolorado.org",
                 [parent_email],
                 fail_silently=False,
