@@ -199,7 +199,17 @@ event_fields = {
         ),
     ),
     "logo": forms.CharField(
-        label="Event logo. Suggested size (250X250)",
+        label="Event logo",
+        required=False,
+        widget=FileInput(
+            attrs={
+                "class": "w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer "
+                "focus:outline-none"
+            }
+        ),
+    ),
+    "hero": forms.CharField(
+        label="Event banner image",
         required=False,
         widget=FileInput(
             attrs={
@@ -330,6 +340,7 @@ event_fields_orgadmin = event_fields_authenticated + [
     "featured_event",
     "organization",
     "publish_type",
+    "hero",
 ]
 
 event_fields_staff = event_fields_orgadmin + ["approved"]
@@ -384,10 +395,14 @@ class EventOrgAdminForm(forms.ModelForm):
     start_date = event_fields["start_date"]
     end_date = event_fields["end_date"]
     logo = event_fields["logo"]
+    hero = event_fields["hero"]
     city = event_fields["city"]
     state = event_fields["state"]
+    publish_type = event_fields["publish_type"]
     is_permitted = event_fields["is_permitted"]
     permit_no = event_fields["permit_no"]
+    # We add the queryset in the view
+    organization = event_fields["organization"]
 
     class Meta:
         model = Event
@@ -403,6 +418,7 @@ class EventStaffForm(forms.ModelForm):
     permit_no = event_fields["permit_no"]
     tags = event_fields["tags"]
     logo = event_fields["logo"]
+    hero = event_fields["hero"]
     blurb = event_fields["blurb"]
     description = event_fields["description"]
     start_date = event_fields["start_date"]
