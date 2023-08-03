@@ -4,7 +4,6 @@ from allauth.account.views import SignupView
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.core.mail import send_mail
 from django.db.models import Q
 from django.shortcuts import render
 from django.template.loader import render_to_string
@@ -57,14 +56,15 @@ class HomePageSignUpView(SignupView):
             },
         )
         if parent_email:
-            send_mail(
-                "Your child has created an account at Bicycle Colorado"
-                f"Hello {parent_name},\n\nYour child has created an account at Bicycle Colorado\n "
-                f"https://events.bicyclecolorado.org",
-                "info@bicyclecolorado.org",
-                [parent_email],
-                fail_silently=False,
-            )
+            pass
+            # send_mail(
+            #     "Your child has created an account at Bicycle Colorado"
+            #     f"Hello {parent_name},\n\nYour child has created an account at Bicycle Colorado\n "
+            #     f"https://events.bicyclecolorado.org",
+            #     "info@bicyclecolorado.org",
+            #     [parent_email],
+            #     fail_silently=False,
+            # )
         # Don't forget to call super
         return super().form_valid(form)
 
