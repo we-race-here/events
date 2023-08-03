@@ -56,14 +56,20 @@ class HomePageSignUpView(SignupView):
                 "parent_name": parent_name,
             },
         )
-        send_mail(
-            "Your child has created an account at Bicycle Colorado"
-            f"Hello {parent_name},\n\nYour child has created an account at Bicycle Colorado\n "
-            f"https://events.bicyclecolorado.org",
-            "info@bicyclecolorado.org",
-            [parent_email],
-            fail_silently=False,
-        )
+        if parent_email:
+            send_mail(
+                "Your child has created an account at Bicycle Colorado"
+                f"Hello {parent_name},\n\nYour child has created an account at Bicycle Colorado\n "
+                f"https://events.bicyclecolorado.org",
+                "
+            send_mail(
+                "Your child has created an account at Bicycle Colorado"
+                f"Hello {parent_name},\n\nYour child has created an account at Bicycle Colorado\n "
+                f"https://events.bicyclecolorado.org",
+                "info@bicyclecolorado.org",
+                [parent_email],
+                fail_silently=False,
+            )
         # Don't forget to call super
         return super().form_valid(form)
 
