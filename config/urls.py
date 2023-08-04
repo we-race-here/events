@@ -13,6 +13,7 @@ from django.views.generic import TemplateView
 
 from apps.event.models import Event
 from events.users.forms import UserSignupForm
+from events.utils.events_utils import sys_send_mail
 
 
 class HomePageView(TemplateView):
@@ -56,15 +57,12 @@ class HomePageSignUpView(SignupView):
             },
         )
         if parent_email:
-            pass
-            # send_mail(
-            #     "Your child has created an account at Bicycle Colorado"
-            #     f"Hello {parent_name},\n\nYour child has created an account at Bicycle Colorado\n "
-            #     f"https://events.bicyclecolorado.org",
-            #     "info@bicyclecolorado.org",
-            #     [parent_email],
-            #     fail_silently=False,
-            # )
+            subject = "Your child has created an account at Bicycle Colorado"
+            message = f"Hello {parent_name},\n\nYour child has created an account at Bicycle Colorado\n "
+            from_email = "donotreply@bicyclecolorado.org"
+            recipient_list = [parent_email]
+            sys_send_mail(subject=subject, message=message, from_email=from_email, recipient_list=recipient_list)
+
         # Don't forget to call super
         return super().form_valid(form)
 

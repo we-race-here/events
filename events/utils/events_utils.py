@@ -3,7 +3,13 @@ from django.core.mail import send_mail
 
 
 def sys_send_mail(
-    subject, message, from_email=None, recipient_list=[], recipient_system=[], fail_silently=False, html_message=None
+    subject: str,
+    message: str,
+    from_email: str = None,
+    recipient_list: list = [],
+    recipient_system: list = [],
+    fail_silently: bool = False,
+    html_message: str = None,
 ):
     # send to user
     send_mail(
