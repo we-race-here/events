@@ -50,7 +50,7 @@ class RaceSeriesAdmin(admin.ModelAdmin):
 class EventAdmin(admin.ModelAdmin):
     list_display = ("id", "name", "start_date", "is_usac_permitted", "featured_event", "city", "organization")
     search_fields = ("name",)
-    list_filter = ("is_usac_permitted", "featured_event", "organization")
+    list_filter = ("approved", "is_usac_permitted", "featured_event", "organization")
 
 
 admin.site.register(models.Race, RaceAdmin)

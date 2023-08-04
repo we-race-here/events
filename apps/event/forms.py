@@ -294,7 +294,7 @@ event_fields = {
         widget=TextInput(attrs={"class": "fb_text_input_field", "placeholder": "123"}),
     ),
     "featured_event": forms.BooleanField(
-        label="Post as a featured Event (requires featured event credit)",
+        label="Featured (Payment Required)",
         initial=False,
         widget=CheckboxInput(attrs={"class": "fb_checkbox_field"}),
     ),
@@ -399,6 +399,7 @@ class EventOrgAdminForm(forms.ModelForm):
     city = event_fields["city"]
     state = event_fields["state"]
     publish_type = event_fields["publish_type"]
+    featured_event = event_fields["featured_event"]
     is_permitted = event_fields["is_permitted"]
     permit_no = event_fields["permit_no"]
     # We add the queryset in the view
@@ -414,6 +415,7 @@ class EventStaffForm(forms.ModelForm):
     website = event_fields["website"]
     registration_website = event_fields["registration_website"]
     email = event_fields["email"]
+    featured_event = event_fields["featured_event"]
     is_permitted = event_fields["is_permitted"]
     permit_no = event_fields["permit_no"]
     tags = event_fields["tags"]

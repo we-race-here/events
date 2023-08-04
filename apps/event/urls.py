@@ -13,6 +13,7 @@ from .views import (
     RaceSeriesCreateView,
     RaceSeriesDetailView,
     RaceSeriesUpdateView,
+    EventsWaitingApproval,
 )
 
 app_name = "event"
@@ -30,4 +31,5 @@ urlpatterns = [
     path("raceseries/<int:pk>/update/", RaceSeriesUpdateView.as_view(), name="raceseries_update"),
     path("race/create/", RaceCreateView.as_view(), name="race_create"),
     path("raceresult/create/", RaceResultCreateView.as_view(), name="raceresult_create"),
+    path("events/approval/", EventsWaitingApproval.as_view(), name="events_waiting_approval"),
 ]
