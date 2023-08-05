@@ -217,19 +217,6 @@ class EventUpdateView(LoginRequiredMixin, UpdateView):
     template_name = "event/event_update.html"
     success_url = reverse_lazy("event:event_list")
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        if not self.request.user.is_anonymous:
-            if self.request.user.is_staff:
-                context["user_type"] = "EventStaffForm"
-            elif is_org_admin(self.request.user):
-                context["user_type"] = "EventOrgAdminForm"
-            elif self.request.user.is_authenticated:
-                context["user_type"] = "EventAuthenticatedUserForm"
-        else:
-            context["user_type"] = "EventCommunityForm"
-        return context
-
     def get_form_class(self):
         if self.request.user.is_staff:
             return EventStaffForm
