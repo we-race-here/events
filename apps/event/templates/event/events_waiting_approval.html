@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% load static i18n %}
+{% block content %}
+  <section class="bg-gray-50 p-3 sm:p-5">
+    <div class="mx-auto max-w-screen-xl px-4 lg:px-12">
+      <!-- Start coding here -->
+      <div class="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <tr>
+              <th scope="col" class="px-4 py-3">Event Name</th>
+              <th scope="col" class="px-4 py-3">Start Date</th>
+              <th scope="col" class="px-4 py-3">Promoter or Club</th>
+              <th scope="col" class="px-4 py-3">User</th>
+              <th scope="col" class="px-4 py-3">Submitted Date</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for event in events %}
+              <tr class="border-b">
+                <td class="px-4 py-3">{{ event.name }}</td>
+                <td class="px-4 py-3">{{ event.start_date }}</td>
+                <td class="px-4 py-3">{{ event.organization.name }}</td>
+                <td class="px-4 py-3">
+                  {% if event.create_by %}
+                    <a href="{% url 'users:detail' event.create_by.pk %}">
+                      {{ event.create_by }} <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                    </a>
+                  {% else %}
+                    Community user
+                  {% endif %}
+                </td>
+                <td class="px-4 py-3">{{ event.create_datetime }}</td>
+                <td class="px-4 py-3"><a href="{% url 'event:event_detail' event.pk %}">View Event<i
+                  class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                </td>
+              </tr>
+            {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock %}
+

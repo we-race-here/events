@@ -9,7 +9,7 @@ from django.template.loader import render_to_string
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, DetailView, ListView, UpdateView
 
-from events.users.permission_utils import is_org_admin
+from events.users.permission_utils import is_org_admin, StaffRequiredMixin
 from events.utils.events_utils import sys_send_mail
 from .forms import (
     RaceForm,
@@ -20,21 +20,12 @@ from .forms import (
     EventOrgAdminForm,
     EventAuthenticatedUserForm,
     EventCommunityForm,
-    EventUpdateForm,
 )
 from .models import Event, Race, RaceResult, RaceSeries
 from .validators import ImportResults
 from ..membership.models import OrganizationMember, Organization
 
 User = get_user_model()
-
-# Read
-event_edit_fields = {
-    "PublicFields": ["name", "start_date", "end_date", "website", "city", "state", "country", "tags"],
-    "UserFields": ["blurb", "description", "email", "registration_website", "is_usac_permitted", "permit_no"],
-    "OrgAdminFields": ["featured_event", "publish_type", "panels"],
-    "StaffFields": ["organization", "approved"],
-}
 
 
 class EventListView(ListView):
@@ -91,6 +82,17 @@ class EventListView(ListView):
             if filter_featured:
                 queryset = queryset & queryset.filter(featured_event=True)
         return queryset
+
+
+class EventsWaitingApproval(StaffRequiredMixin, LoginRequiredMixin, ListView):
+    model = Event
+    template_name = "event/events_waiting_approval.html"
+    context_object_name = "events"
+    ordering = ["start_date"]
+
+    def get_queryset(self, **kwargs):
+        queryset = super().get_queryset(**kwargs)
+        return queryset & queryset.filter(approved=False)
 
 
 class EventResultListView(ListView):
@@ -173,14 +175,13 @@ class EventCreateView(CreateView):
             form.fields["organization"].queryset = queryset
         return form
 
-    def form_invalid(self, form):
-        print("invalide form")
-        print(form.errors)
-        return super().form_invalid(form)
+    # def form_invalid(self, form):
+    #     print("invalide form")
+    #     print(form.errors)
+    #     return super().form_invalid(form)
 
     def form_valid(self, form):
         """add unicode for calendar to subject \U0001F4C5"""
-        print("here")
         if not self.request.user.is_anonymous:
             user_email = self.request.user.email
             user_name = self.request.user.full_name
@@ -213,21 +214,30 @@ class EventCreateView(CreateView):
 # Update
 class EventUpdateView(LoginRequiredMixin, UpdateView):
     model = Event
-    form_class = EventUpdateForm
     template_name = "event/event_update.html"
     success_url = reverse_lazy("event:event_list")
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context.update(event_edit_fields)
-        context["EventAdmin"] = OrganizationMember.objects.filter(
-            Q(user=self.request.user.id) & Q(is_admin=True) & Q(organization=self.object.organization)
-        )
-        return context
+    def get_form_class(self):
+        if self.request.user.is_staff:
+            return EventStaffForm
+        elif is_org_admin(self.request.user):
+            return EventOrgAdminForm
+        else:
+            return None
+
+    def get_form(self):
+        form = super().get_form()
+        if "organization" in form.fields:
+            if self.request.user.is_staff:
+                queryset = Organization.objects.all()
+            else:
+                queryset = Organization.objects.filter(Q(members__user=self.request.user) & Q(members__is_admin=True))
+            form.fields["organization"].queryset = queryset
+        return form
 
 
 # Delete
-class EventDeleteView(LoginRequiredMixin, DeleteView):
+class EventDeleteView(StaffRequiredMixin, LoginRequiredMixin, DeleteView):
     model = Event
     template_name = "event/event_delete.html"
     success_url = reverse_lazy("event_list")

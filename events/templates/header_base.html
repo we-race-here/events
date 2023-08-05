@@ -115,6 +115,13 @@
                     href="{% url 'users:emails' %}"><i class="fas fa-solid fa-envelopes-bulk px-2"></i>Test
                     Emails</a>
                   </li>
+                  <li class="py-1"><a
+                    class="user_menu_txt"
+                    href="{% url 'event:events_waiting_approval' %}"><i
+                    class="fa-solid fa-calendar-days"></i>
+                    Approve Events
+                  </a>
+                  </li>
                 {% endif %}
               </ul>
             </div>
