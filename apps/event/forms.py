@@ -193,6 +193,7 @@ event_fields = {
     ),
     "tags": forms.MultipleChoiceField(
         label="Select Event Tag(s) or Type(s)",
+        required=True,
         choices=event_types,
         widget=SelectMultiple(
             attrs={"class": "fb_select_multiple", "placeholder": "Event tags and type", "help_text": "select multiple"}
@@ -220,6 +221,7 @@ event_fields = {
     ),
     "blurb": forms.CharField(
         label="Short Description",
+        required=True,
         widget=Textarea(
             attrs={
                 "class": "fb_text_area_field",
@@ -296,6 +298,7 @@ event_fields = {
     "featured_event": forms.BooleanField(
         label="Featured (Payment Required)",
         initial=False,
+        required=False,
         widget=CheckboxInput(attrs={"class": "fb_checkbox_field"}),
     ),
     "publish_type": forms.ChoiceField(
@@ -308,10 +311,12 @@ event_fields = {
     "approved": forms.BooleanField(
         label="Approve the event to be published",
         initial=False,
+        required=False,
         widget=CheckboxInput(attrs={"class": "fb_checkbox_field"}),
     ),
     "organization": forms.ModelChoiceField(
         label="The organization (Club or Promoter) which will be listed as the event host",
+        required=False,
         queryset=Organization.objects.filter(name="Bicycle Colorado"),
         widget=Select(attrs={"class": "fb_select_multiple", "placeholder": "Select an Organization"}),
     ),

@@ -124,12 +124,12 @@ class Event(models.Model):
     create_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     location_lat = models.FloatField(null=True, blank=True)
     location_lon = models.FloatField(null=True, blank=True)
-    permit_no = models.CharField(max_length=25, blank=True, null=True)
+    permit_no = models.CharField(max_length=25, blank=True)
     is_usac_permitted = models.BooleanField(default=False)
     featured_event = models.BooleanField(default=False)
     champion_event = models.BooleanField(default=False)
     approved = models.BooleanField(default=False, null=True)
-    publish_type = models.CharField(max_length=32, choices=PUBLISH_TYPE_CHOICES, null=True)
+    publish_type = models.CharField(max_length=32, choices=PUBLISH_TYPE_CHOICES)
     create_datetime = models.DateTimeField(auto_now_add=True)
     update_datetime = models.DateTimeField(auto_now=True)
     history = HistoricalRecords()
@@ -147,16 +147,16 @@ class EventAttachment(models.Model):
     event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name="attachments", null=True, blank=False)
     file = models.FileField(upload_to=event_attachment_file_path_func)
     file_name = models.CharField(max_length=256)
-    title = models.CharField(max_length=256, null=True, blank=True)
+    title = models.CharField(max_length=256, blank=True)
     create_datetime = models.DateTimeField(auto_now_add=True)
     history = HistoricalRecords()
+
+    def __str__(self):
+        return self.file_name
 
     def save(self, *args, **kwargs):
         self.file_name = self.file.name
         return super().save(*args, **kwargs)
-
-    def __str__(self):
-        return self.file_name
 
 
 class Race(models.Model):
@@ -180,14 +180,14 @@ class Race(models.Model):
     class Meta:
         unique_together = (("name", "event"),)
 
+    def __str__(self):
+        return f"{self.name}: {self.start_date}"
+
     @property
     def race_results(self):
         categories = set(self.raceresult_set.all().values_list("category", flat=True))
         for category in categories:
             yield category, self.raceresult_set.filter(category=category).order_by("place")
-
-    def __str__(self):
-        return f"{self.name}: {self.start_date}"
 
 
 class RaceResult(models.Model):
@@ -218,11 +218,11 @@ class RaceResult(models.Model):
         (FINISH_STATUS_DNF, "DNF"),
     )
     rider = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name="race_results")
-    name = models.CharField(max_length=256, null=True, blank=False)
+    name = models.CharField(max_length=256, blank=False)
     race = models.ForeignKey(Race, on_delete=models.CASCADE, null=True, blank=False)
     place = models.IntegerField(validators=[MinValueValidator(1)], null=True)
     finish_status = models.CharField(max_length=16, default=FINISH_STATUS_OK, choices=FINISH_STATUS_CHOICES)
-    category = models.CharField(max_length=32, null=True, blank=False)
+    category = models.CharField(max_length=32, blank=False)
     time = models.CharField(max_length=32, null=True, blank=True)
     gap = models.CharField(max_length=32, null=True, blank=True)
     bib_number = models.CharField(max_length=32, null=True, blank=True)
@@ -407,7 +407,7 @@ class RaceSeries(models.Model):
     @property
     def by_rider_points(self) -> dict:
         points = defaultdict(int)
-        for cat, result in self.all_results_by_category:
+        for _cat, result in self.all_results_by_category:
             points[result.rider] += result.points
         return points
 

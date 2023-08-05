@@ -85,5 +85,5 @@ generated-members = [
 [tool.ruff]
 target-version = "py311"
 line-length = 120
-select = ["E", "F", "B", "DJ"]
+select = ["E", "F", "B", "DJ", "FLY"]
 
