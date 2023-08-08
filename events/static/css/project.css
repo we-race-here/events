@@ -2729,6 +2729,10 @@ label {
   margin: 0.5rem;
 }
 
+.m-4 {
+  margin: 1rem;
+}
+
 .m-5 {
   margin: 1.25rem;
 }
@@ -3564,6 +3568,10 @@ label {
   --tw-bg-opacity: 0.5;
 }
 
+.bg-opacity-80 {
+  --tw-bg-opacity: 0.8;
+}
+
 .fill-current {
   fill: currentColor;
 }
@@ -3602,6 +3610,10 @@ label {
 
 .p-2\.5 {
   padding: 0.625rem;
+}
+
+.p-3 {
+  padding: 0.75rem;
 }
 
 .p-4 {
@@ -4501,6 +4513,10 @@ label {
     margin-bottom: calc(0px * var(--tw-space-y-reverse));
   }
 
+  .sm\:rounded-lg {
+    border-radius: 0.5rem;
+  }
+
   .sm\:p-5 {
     padding: 1.25rem;
   }
@@ -4638,6 +4654,11 @@ label {
 
   .lg\:grid-cols-3 {
     grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .lg\:px-12 {
+    padding-left: 3rem;
+    padding-right: 3rem;
   }
 
   .lg\:px-6 {
