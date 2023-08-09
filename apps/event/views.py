@@ -38,9 +38,11 @@ class EventListView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         # Champion Events
-        context["champions"] = Event.objects.all().filter(Q(champion_event=True) & Q(end_date__gte=date.today()))
+        context["champions"] = Event.objects.all().filter(
+            Q(champion_event=True) & Q(end_date__gte=date.today()) & Q(approved=True)
+        )
         #  Feature event
-        context["featured"] = Event.objects.all().filter(featured_event=True)[:8]
+        context["featured"] = Event.objects.all().filter(Q(featured_event=True) & Q(approved=True))[:8]
         context["filtered"] = bool(self.request.GET)
 
         # Get page_obj from context
