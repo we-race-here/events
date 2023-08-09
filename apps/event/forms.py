@@ -181,7 +181,7 @@ event_fields = {
     ),
     "email": forms.EmailField(
         label="Event Contact Email Address",
-        required=True,
+        required=False,
         max_length=75,
         widget=TextInput(
             attrs={
@@ -286,7 +286,7 @@ event_fields = {
         widget=Select(attrs={"class": "fb_select_multiple", "placeholder": "Event State"}),
     ),
     "is_permitted": forms.BooleanField(
-        label="USAC Permited", required=False, widget=CheckboxInput(attrs={"class": "fb_checkbox_field"})
+        initial=False, label="USAC Permited", required=False, widget=CheckboxInput(attrs={"class": "fb_checkbox_field"})
     ),
     "permit_no": forms.CharField(
         label="Permit Number",
@@ -294,6 +294,7 @@ event_fields = {
         widget=TextInput(attrs={"class": "fb_text_input_field", "placeholder": "123"}),
     ),
     "featured_event": forms.BooleanField(
+        required=False,
         label="Featured (Payment Required)",
         initial=False,
         widget=CheckboxInput(attrs={"class": "fb_checkbox_field"}),
