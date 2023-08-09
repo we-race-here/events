@@ -38,9 +38,11 @@ class EventListView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         # Champion Events
-        context["champions"] = Event.objects.all().filter(Q(champion_event=True) & Q(end_date__gte=date.today()))
+        context["champions"] = Event.objects.all().filter(
+            Q(champion_event=True) & Q(end_date__gte=date.today()) & Q(approved=True)
+        )
         #  Feature event
-        context["featured"] = Event.objects.all().filter(featured_event=True)[:8]
+        context["featured"] = Event.objects.all().filter(Q(featured_event=True) & Q(approved=True))[:8]
         context["filtered"] = bool(self.request.GET)
 
         # Get page_obj from context
@@ -63,9 +65,9 @@ class EventListView(ListView):
     def get_queryset(self, **kwargs):
         queryset = super().get_queryset(**kwargs)
         if "past_events" not in self.request.GET:
-            queryset = queryset.filter(end_date__gte=date.today())
+            queryset = queryset.filter(Q(end_date__gte=date.today()) & Q(approved=True))
         else:
-            queryset = queryset.filter(start_date__lte=date.today())
+            queryset = queryset.filter(Q(start_date__lte=date.today()) & Q(approved=True))
         search_query = self.request.GET.get("search", "")
         filter_usac = self.request.GET.get("filter_usac", "")
         filter_featured = self.request.GET.get("filter_featured", "")

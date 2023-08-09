@@ -41,7 +41,11 @@ class HomePageSignUpView(SignupView):
         context = super().get_context_data(**kwargs)
         #  Feature event
         context["featured_events"] = Event.objects.all().filter(
-            Q(logo__isnull=False) & ~Q(logo="") & Q(featured_event=True) & Q(end_date__gte=date.today())
+            Q(logo__isnull=False)
+            & ~Q(logo="")
+            & Q(featured_event=True)
+            & Q(end_date__gte=date.today())
+            & Q(approved=True)
         )[:6]
         # print(f"featured list: {[(i.name, i.logo) for i in context['featured_events']]}")
         return context
