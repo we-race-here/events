@@ -65,9 +65,9 @@ class EventListView(ListView):
     def get_queryset(self, **kwargs):
         queryset = super().get_queryset(**kwargs)
         if "past_events" not in self.request.GET:
-            queryset = queryset.filter(end_date__gte=date.today())
+            queryset = queryset.filter(Q(end_date__gte=date.today()) & Q(approved=True))
         else:
-            queryset = queryset.filter(start_date__lte=date.today())
+            queryset = queryset.filter(Q(start_date__lte=date.today()) & Q(approved=True))
         search_query = self.request.GET.get("search", "")
         filter_usac = self.request.GET.get("filter_usac", "")
         filter_featured = self.request.GET.get("filter_featured", "")
