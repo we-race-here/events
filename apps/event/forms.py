@@ -300,7 +300,6 @@ event_fields = {
         required=False,
         label="Featured (Payment Required)",
         initial=False,
-        required=False,
         widget=CheckboxInput(attrs={"class": "fb_checkbox_field"}),
     ),
     "publish_type": forms.ChoiceField(
