@@ -248,7 +248,7 @@ event_fields = {
         ),
     ),
     "website": forms.URLField(
-        label="Event website or other URL",
+        label="Event website or other URL. Include https://...",
         required=False,
         widget=TextInput(
             attrs={
@@ -259,6 +259,7 @@ event_fields = {
         ),
     ),
     "registration_website": forms.URLField(
+        label="Registration website. Include https://...",
         required=False,
         widget=TextInput(
             attrs={
