@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django import forms
 from django.contrib.auth import get_user_model
 from django.forms import (
@@ -13,7 +15,6 @@ from django.forms import (
     FileInput,
 )
 from django.forms.widgets import Textarea, SelectDateWidget, Select, CheckboxInput
-from django.utils.datetime_safe import datetime
 from turnstile.fields import TurnstileField
 
 from apps.membership.models import Organization
