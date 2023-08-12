@@ -63,22 +63,26 @@ INSTALLED_APPS += ["django_extensions"]  # noqa: F405
 
 # Your stuff...
 # ------------------------------------------------------------------------------
-
+#
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": True,
     "formatters": {
         "verbose": {"format": "%(levelname)s %(asctime)s %(module)s " "%(process)d %(thread)d %(message)s"},
         "standard": {
-            "format": "[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s",
+            "format": "local: [%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s",
             "datefmt": "%d/%b/%Y %H:%M:%S",
+        },
+        "console": {
+            "format": "local: %(levelname)s [%(asctime)s] [%(name)s:%(lineno)s] %(message)s",
+            "datefmt": "%H:%M:%S",
         },
     },
     "handlers": {
         "console": {
-            "level": "DEBUG",
+            "level": "WARNING",
             "class": "logging.StreamHandler",
-            "formatter": "standard",
+            "formatter": "console",
         },
         "file": {
             "level": "INFO",
@@ -87,10 +91,10 @@ LOGGING = {
             "formatter": "standard",
         },
     },
-    "root": {"level": "INFO", "handlers": ["console"]},
+    # "root": {"level": "INFO", "handlers": ["console"]},
     "loggers": {
         "django": {
-            "handlers": ["console", "file"],
+            "handlers": ["console"],
             "level": "INFO",
             "propagate": True,
         }
