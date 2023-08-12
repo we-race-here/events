@@ -223,11 +223,11 @@ class RaceResult(models.Model):
     place = models.IntegerField(validators=[MinValueValidator(1)], null=True)
     finish_status = models.CharField(max_length=16, default=FINISH_STATUS_OK, choices=FINISH_STATUS_CHOICES)
     category = models.CharField(max_length=32, blank=False)
-    time = models.CharField(max_length=32, null=True, blank=True)
-    gap = models.CharField(max_length=32, null=True, blank=True)
-    bib_number = models.CharField(max_length=32, null=True, blank=True)
-    usac_license = models.CharField(max_length=32, null=True, blank=True)
-    club = models.CharField(max_length=256, null=True, blank=True)
+    time = models.CharField(max_length=32, blank=True)
+    gap = models.CharField(max_length=32, blank=True)
+    bib_number = models.CharField(max_length=32, blank=True)
+    usac_license = models.CharField(max_length=32, blank=True)
+    club = models.CharField(max_length=256, blank=True)
     date_of_birth = models.DateField(null=True, blank=True)
     more_data = models.JSONField(
         null=True,
@@ -238,6 +238,23 @@ class RaceResult(models.Model):
 
     class Meta:
         unique_together = (("rider", "race"),)
+
+    def __str__(self):
+        return f"{self.place}--{self.name}--{self.rider}--{self.category}--Race: {self.race}"
+
+    def save(self, *args, **kwargs):
+        if not isinstance(self.place, int):
+            self.place = None
+            self.finish_status = self.place
+        if not self.rider:
+            self.rider = self.match_user(
+                usac_license=self.usac_license,
+                email=self.more_data.get("email", None),
+                first_name=self.more_data.get("first_name", None),
+                last_name=self.more_data.get("last_name", None),
+                date_of_birth=self.date_of_birth,
+            )
+        return super().save(*args, **kwargs)
 
     @classmethod
     def match_user(cls, usac_license=None, email=None, first_name=None, last_name=None, date_of_birth=None):
@@ -258,20 +275,6 @@ class RaceResult(models.Model):
             except User.DoesNotExist:
                 pass
         return None
-
-    def save(self, *args, **kwargs):
-        if not isinstance(self.place, int):
-            self.place = None
-            self.finish_status = self.place
-        if not self.rider:
-            self.rider = self.match_user(
-                usac_license=self.usac_license,
-                email=self.more_data.get("email", None),
-                first_name=self.more_data.get("first_name", None),
-                last_name=self.more_data.get("last_name", None),
-                date_of_birth=self.date_of_birth,
-            )
-        return super().save(*args, **kwargs)
 
     @property
     def points(self):
@@ -325,9 +328,6 @@ class RaceResult(models.Model):
         except Organization.DoesNotExist:
             return None
 
-    def __str__(self):
-        return f"{self.place}--{self.name}--{self.rider}--{self.category}--Race: {self.race}"
-
 
 def raceseries_logo_file_path_func(instance, filename):
     # Extract the file extension
@@ -362,16 +362,19 @@ class RaceSeries(models.Model):
     name = models.CharField(unique=True, max_length=256)
     events = models.ManyToManyField(Event, related_name="race_series")
     races = models.ManyToManyField(Race, related_name="race_series", blank=True)
-    description = models.TextField(null=True, blank=True, default="")
+    description = models.TextField(blank=True, default="")
     logo = models.ImageField(null=True, blank=True, upload_to=raceseries_logo_file_path_func)
     categories = ArrayField(models.CharField(max_length=100, blank=False), size=50, null=True, blank=False)
     points_map = models.JSONField(null=True, blank=True)  # this is a list, index position value = points
-    point_system = models.CharField(choices=POINTSYSTEM, max_length=16, null=True, blank=False)
+    point_system = models.CharField(choices=POINTSYSTEM, max_length=16, blank=False)
     organization = models.ForeignKey(
         Organization, on_delete=models.CASCADE, related_name="race_series", null=True, blank=True
     )
     create_datetime = models.DateTimeField(auto_now_add=True)
     history = HistoricalRecords()
+
+    def __str__(self):
+        return self.name
 
     @property
     def all_results(self) -> list[RaceResult]:
@@ -434,6 +437,3 @@ class RaceSeries(models.Model):
                     if result.points:
                         cat_results[cat][result.name] = result.points
         return cat_results
-
-    def __str__(self):
-        return self.name
