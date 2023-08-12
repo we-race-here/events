@@ -2,7 +2,7 @@
 {% load static %}
 {% block inner %}
   <!-- content -->
-  <section class="content">
+  <section id="Event Detail" class="content">
     <!-- event detail -->
     <div class="bg-gray-100 py-10">
       <div class="container mx-auto px-4">
@@ -12,13 +12,13 @@
             <a href="{% url 'event:event_list' %}" class="text-orange-600 hover:underline">Back To Events</a>
             {% if object.hero %}
               <img
-                  src="{{ object.hero }}"
-                  alt="Event Banner" title="" class="object-contain h-500 w-500 justify-center">
+                src="{{ object.hero }}"
+                alt="Event Banner" title="" class="object-contain h-500 w-500 justify-center">
             {% endif %}
             {% if object.logo %}
               <img
-                  src="{{ object.logo.url }}"
-                  alt="Event Logo" title="" class="object-contain h-250 w-250 justify-start">
+                src="{{ object.logo.url }}"
+                alt="Event Logo" title="" class="object-contain h-250 w-250 justify-start">
             {% endif %}
             <div class="bg-white shadow-lg rounded p-4 mt-4">
               <h2 class="text-2xl font-bold">{{ object.name }}</h2>
@@ -46,13 +46,6 @@
               {% endif %}
             </div>
             <a href="{% url 'event:event_list' %}" class="text-orange-600 mt-4">Back To Events</a>
-            <div class="bg-white shadow-lg rounded p-4 mt-4">
-              {% if Races %}
-                {% include 'results/race_result.html' %}
-              {% else %}
-                <h3> No race results for this event </h3>
-              {% endif %}
-            </div>
           </div>
 
           <!-- Right Side Content -->
@@ -113,14 +106,14 @@
               <div class="bg-white shadow-lg rounded p-4 mt-4">
                 <h4>Event Admin</h4>
                 <a
-                    href="{% url 'event:event_update' object.pk %}"
-                    class="mx-8 bg-orange-600 hover:bg-orange-800 text-white py-2 px-4 rounded block mt-4 text-center"
-                    target="_blank"
+                  href="{% url 'event:event_update' object.pk %}"
+                  class="mx-8 bg-orange-600 hover:bg-orange-800 text-white py-2 px-4 rounded block mt-4 text-center"
+                  target="_blank"
                 >Edit Event</a>
                 <a
-                    href="{% url 'event:import_race_results' object.pk %}"
-                    class="mx-8 bg-cyan-600 hover:bg-cyan-800 text-white py-2 px-4 rounded block mt-4 text-center"
-                    target="_blank"
+                  href="{% url 'event:import_race_results' object.pk %}"
+                  class="mx-8 bg-cyan-600 hover:bg-cyan-800 text-white py-2 px-4 rounded block mt-4 text-center"
+                  target="_blank"
                 >Upload Results</a>
               </div>
             {% endif %}
@@ -130,5 +123,13 @@
       </div>
     </div>
   </section>
+  </section id="RaceResults" class="content">
+  <div class="bg-white shadow-lg rounded p-4 mt-4">
+    {% if Races %}
+      {% include 'results/race_result.html' %}
+    {% else %}
+      <h3> No race results for this event </h3>
+    {% endif %}
+  </div>
 
 {% endblock %}
