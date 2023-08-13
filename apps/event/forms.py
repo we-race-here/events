@@ -16,6 +16,7 @@ from django.utils.datetime_safe import datetime
 
 from apps.membership.models import Organization
 from .models import Event, Race, RaceResult, RaceSeries, event_types
+from apps.setup.custom_widgets import DateInput
 
 User = get_user_model()
 
@@ -363,6 +364,8 @@ class EventCommunityForm(forms.ModelForm):
     class Meta:
         model = Event
         fields = [
+            "user_name",
+            "user_email",
             "name",
             "blurb",
             "description",
@@ -385,6 +388,22 @@ class EventCommunityForm(forms.ModelForm):
             "tags": "Event Tags",
         }
         widgets = {
+            "user_name": TextInput(
+                attrs={
+                    "class": "fb_text_input_field",
+                    "placeholder": "event name (50 characters max)",
+                    "max_length": 50,
+                    "grid_size": "w-1/3"
+                }
+            ),
+            "user_email": TextInput(
+                attrs={
+                    "class": "fb_text_input_field",
+                    "placeholder": "event name (50 characters max)",
+                    "max_length": 50,
+                    "grid_size": "w-1/3"
+                }
+            ),
             "name": TextInput(
                 attrs={
                     "class": "fb_text_input_field",
@@ -400,32 +419,36 @@ class EventCommunityForm(forms.ModelForm):
                     "max_length": 250,
                 }
             ),
-            "start_date": SelectDateWidget(
-                attrs={"class": "fb_select_date_field"},
-                years=range(datetime.now().year, datetime.now().year + 3),
-            ),
-            "end_date": SelectDateWidget(
-                attrs={"class": "fb_select_date_field"},
-                years=range(datetime.now().year, datetime.now().year + 3),
+            "start_date": DateInput(attrs={
+                "class": "fb_select_date_field",
+                "grid_size": "w-1/2"
+            }),
+            "end_date": DateInput(
+                attrs={
+                    "class": "fb_select_date_field",
+                       "grid_size":"w-1/2"},
             ),
             "website": TextInput(
                 attrs={
                     "class": "fb_text_input_field",
                     "placeholder": "Website, Facebook, Instagram, etc.",
+                    "grid_size": "w-1/3"
                 }
             ),
-            "event_city": TextInput(
+            "city": TextInput(
                 attrs={
-                    "class": "fb_text_input_field",
+                    "class": "fb_text_input_field ml-2",
                     "placeholder": "Nearest City",
                     "max_length": 50,
+                    "grid_size": "w-1/3"
                 }
             ),
-            "event_state": TextInput(
+            "state": TextInput(
                 attrs={
-                    "class": "fb_text_input_field",
+                    "class": "fb_text_input_field ml-4",
                     "placeholder": "event name (50 characters max)",
                     "max_length": 50,
+                    "grid_size": "w-1/3"
                 }
             ),
         }

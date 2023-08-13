@@ -91,6 +91,7 @@ urlpatterns = [
     path("", include("apps.membership.urls")),
     path("", include("apps.usac.urls")),
     path("", include("apps.store.urls")),
+    path("", include("apps.setup.urls")),
     # Your stuff: custom urls includes go here
     path(
         "robots.txt",
