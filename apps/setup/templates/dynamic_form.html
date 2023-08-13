@@ -6,12 +6,10 @@
 <div class="alert alert-success">Form submitted successfully!</div>
 {% endif %}
 
-
-
 <form
   class="flex flex-wrap"
   method="post"
-  hx-post="/form/?type=event.EventCommunityForm"
+  hx-post="/form/?type={{form_type}}"
   hx-trigger="submit"
 >
 <!-- Overlay -->

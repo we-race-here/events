@@ -16,9 +16,9 @@ class DynamicFormView(View):
         form_class = self.get_form_class(app_name, form_name)
 
         if form_class:
-            return render(request, self.template_name, {'form': form_class()})
+            return render(request, self.template_name, {'form': form_class(),'form_type' : form_type})
         else:
-            return render(request, 'error.html', {'error': 'Invalid form type'})
+            return render(request, 'error.html', {'error': 'Invalid form type', 'form_type' : form_type})
 
     def post(self, request, *args, **kwargs):
         form_type = request.GET.get('type')
@@ -28,7 +28,7 @@ class DynamicFormView(View):
         form = form_class(request.POST)
         if form.is_valid():
             # Handle successful form submission
-            return render(request, 'success.html')
+            return render(request,self.template_name)
         else:
             # Return form with validation errors
-            return render(request, self.template_name, {'form': form})
+            return render(request, self.template_name, {'form': form, 'form_type' : form_type})
