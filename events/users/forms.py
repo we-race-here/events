@@ -6,9 +6,10 @@ from allauth.socialaccount.forms import SignupForm as SocialSignupForm
 from django import forms
 from django.contrib.auth import forms as admin_forms
 from django.contrib.auth import get_user_model
-from django.forms import BooleanField, CharField, CheckboxInput, ChoiceField, EmailField
+from django.forms import BooleanField, CharField, CheckboxInput, ChoiceField, EmailField, TextInput, PasswordInput
 from django.utils.translation import gettext_lazy as _
 from turnstile.fields import TurnstileField
+
 
 User = get_user_model()
 
@@ -34,45 +35,55 @@ class UserAdminCreationForm(admin_forms.UserCreationForm):
         }
 
 
-class UserSignupForm(SignupForm):
-    """
-    Form that will be rendered on a user sign up section/screen.
-    Default fields will be added automatically.
-    Check UserSocialSignupForm for accounts created from social.
-    """
+def widget_attrs(class_name, grid_size=None, placeholder=None):
+    """Helper function to return common widget attributes."""
+    attrs = {"class": class_name}
+    if grid_size:
+        attrs["grid_size"] = grid_size
+    if placeholder:
+        attrs["placeholder"] = placeholder
+    return attrs
 
+
+class UserSignupForm(SignupForm):
+    """Form for user sign-up."""
+
+    # Birth Date Fields
     DAY_CHOICES = [(None, "Select Day")] + [(day, day) for day in range(1, 32)]
     MONTH_CHOICES = [(None, "Select Month")] + [(month, month) for month in range(1, 13)]
-    YEAR_CHOICES = [(None, "Select Year")] + [
-        (year, year) for year in range(2023, 1899, -1)
-    ]  # Adjust the range accordingly
-    first_name = forms.CharField(max_length=30, label="First Name")
-    last_name = forms.CharField(max_length=30, label="Last Name")
-    password1 = forms.PasswordInput()
-    password2 = forms.PasswordInput()
-    birth_day = forms.ChoiceField(
-        choices=DAY_CHOICES, required=True, label="Birth Day", widget=forms.Select(attrs={"id": "id_birth_day"})
-    )
-    birth_month = forms.ChoiceField(
-        choices=MONTH_CHOICES, required=True, label="Birth Month", widget=forms.Select(attrs={"id": "id_birth_month"})
-    )
-    birth_year = forms.ChoiceField(
-        choices=YEAR_CHOICES, required=True, label="Birth Year", widget=forms.Select(attrs={"id": "id_birth_year"})
-    )
+    YEAR_CHOICES = [(None, "Select Year")] + [(year, year) for year in range(2023, 1899, -1)]
 
-    gender = ChoiceField(choices=[("", "Select Gender"), ("M", "Male"), ("F", "Female"), ("O", "Other")], required=True)
-    usac_number = CharField(required=False, label="USAC Number", empty_value=None)
-    opt_in_email = BooleanField(widget=CheckboxInput(), label="Opt out of promotional emails", required=False)
-    terms_of_service = BooleanField(required=True, widget=CheckboxInput(), label="I agree to Terms and Service")
-    privacy_policy = BooleanField(required=True, widget=CheckboxInput(), label="I agree to Privacy Policy")
-    user_agreement_waiver = BooleanField(required=True, widget=CheckboxInput(), label="I accept the waiver")
-    parent_user_agreement_waiver = BooleanField(required=False, widget=CheckboxInput(), label="I accept the waiver")
-    parent_terms_of_service = BooleanField(required=False, widget=CheckboxInput(), label="I agree to Terms and Service")
+    birth_day = forms.ChoiceField(choices=DAY_CHOICES,
+                                  widget=forms.Select(attrs=widget_attrs("fb_select_multiple", "w-1/3")))
+    birth_month = forms.ChoiceField(choices=MONTH_CHOICES,
+                                    widget=forms.Select(attrs=widget_attrs("fb_select_multiple", "w-1/3")))
+    birth_year = forms.ChoiceField(choices=YEAR_CHOICES,
+                                   widget=forms.Select(attrs=widget_attrs("fb_select_multiple", "w-1/3")))
 
-    turnstile = TurnstileField(label="")
+    # User Information Fields
+    first_name = forms.CharField(widget=forms.TextInput(attrs=widget_attrs("fb_select_multiple", "w-1/2")))
+    last_name = forms.CharField(widget=forms.TextInput(attrs=widget_attrs("fb_select_multiple", "w-1/2")))
+    gender = forms.ChoiceField(choices=[("", "Select Gender"), ("M", "Male"), ("F", "Female"), ("O", "Other")],
+                               widget=forms.Select(attrs=widget_attrs("fb_select_multiple", "w-1/2")))
+    usac_number = forms.CharField(required=False,
+                                  widget=forms.TextInput(attrs=widget_attrs("fb_select_multiple", "w-1/2")))
 
-    parent_name = forms.CharField(required=False)
-    parent_email = forms.EmailField(required=False)
+    # Agreement Fields
+    opt_in_email = forms.BooleanField(widget=forms.CheckboxInput(), required=False,
+                                      label="Opt out of promotional emails")
+    terms_of_service = forms.BooleanField(widget=forms.CheckboxInput(), label="I agree to Terms and Service")
+    privacy_policy = forms.BooleanField(widget=forms.CheckboxInput(), label="I agree to Privacy Policy")
+    user_agreement_waiver = forms.BooleanField(widget=forms.CheckboxInput(), label="I accept the waiver")
+
+    # Metadata
+    class Meta:
+        fields = []
+
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if User.objects.filter(email=email).exists():
+            raise forms.ValidationError("An account with this email already exists.")
+        return email
 
     def clean(self):
         cleaned_data = super().clean()
@@ -131,6 +142,18 @@ class UserSignupForm(SignupForm):
         #     send_parent_email(user)
 
         return user
+    def __init__(self, *args, **kwargs):
+        super(UserSignupForm, self).__init__(*args, **kwargs)
+        # Modify the email field's widget
+        self.fields['email'].widget = TextInput(
+            attrs={
+                "class": "fb_text_input_field",
+                "placeholder": "E-mail",
+                "max_length": 20,
+            }
+        )
+
+
 
 
 class UserLoginForm(LoginForm):
@@ -139,8 +162,25 @@ class UserLoginForm(LoginForm):
     Default fields will be added automatically.
     Check UserSocialSignupForm for accounts created from social.
     """
+    # turnstile = TurnstileField(label="")
 
-    turnstile = TurnstileField(label="")
+
+    def __init__(self, *args, **kwargs):
+        super(UserLoginForm, self).__init__(*args, **kwargs)
+        # Modify the email field's widget
+        self.fields['login'].widget = TextInput(
+            attrs={
+                "class": "fb_text_input_field",
+                "placeholder": "E-mail",
+                "max_length": 20,
+            }
+        )
+
+        # Add class to password field's widget
+        self.fields['password'].widget.attrs.update({
+            "class": "fb_text_input_field",
+        })
+
 
 
 class UserSocialSignupForm(SocialSignupForm):

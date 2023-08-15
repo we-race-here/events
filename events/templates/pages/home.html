@@ -11,9 +11,9 @@
   {% if featured_events %}
     {% include 'components/featured_strip.html' %}
   {% endif %}
-  <section id="join">
+  {% comment %} <section id="join">
     {% if not request.user.is_authenticated %}
       {% include "account/short_signup_form.html" %}
     {% endif %}
-  </section>
+  </section> {% endcomment %}
 {% endblock %}

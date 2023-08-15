@@ -127,17 +127,21 @@
           {#            <button type="button" onclick="location.href='{% url 'account_signup' %}'"#}
           {#              {% translate "JOIN" %}#}
           {#            </button>#}
-          <button type="button" onclick="location.href='{% url "home" %}#join'"
+          
+          {% comment %} <button type="button" onclick="location.href='{% url "home" %}#join'"
                   class="join_button">
             {% translate "JOIN" %}
-          </button>
+          </button> {% endcomment %}
+          {% include "account/join_dialog.html" %}
 
         {% endif %}
         {# URL provided by django-allauth/account/urls.py #}
-        <button type="button" onclick="location.href='{% url 'account_login' %}'"
+        {% include "account/signin_dialog.html" %}
+
+        {% comment %} <button type="button" onclick="location.href='{% url 'account_login' %}'"
                 class="ml-1 signin_button">
           {% translate "Sign In" %}
-        </button>
+        </button> {% endcomment %}
       {% endif %}
     </nav>
   </div>
