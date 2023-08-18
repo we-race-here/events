@@ -18,6 +18,7 @@ from django.forms.widgets import Textarea, SelectDateWidget, Select, CheckboxInp
 from turnstile.fields import TurnstileField
 
 from apps.membership.models import Organization
+from config.helpers.widgets import GoogleMapsWidget
 from .models import Event, Race, RaceResult, RaceSeries, event_types
 
 User = get_user_model()
@@ -361,6 +362,8 @@ class EventCommunityForm(forms.ModelForm):
     name = event_fields["name"]
     tags = event_fields["tags"]
     blurb = event_fields["blurb"]
+    website = event_fields["website"]
+    city = event_fields["city"]
     start_date = event_fields["start_date"]
     end_date = event_fields["end_date"]
     state = event_fields["state"]
@@ -383,8 +386,26 @@ class EventAuthenticatedUserForm(forms.ModelForm):
     logo = event_fields["logo"]
     city = event_fields["city"]
     state = event_fields["state"]
+    location = forms.CharField(widget=GoogleMapsWidget(), required=False)
     is_permitted = event_fields["is_permitted"]
     permit_no = event_fields["permit_no"]
+
+    def clean(self):
+        cleaned_data = super().clean()
+        lat = self.data.get("location_lat")
+        lon = self.data.get("location_lon")
+        if lat and lon:
+            cleaned_data["location_lat"] = lat
+            cleaned_data["location_lon"] = lon
+        return cleaned_data
+
+    def save(self, commit=True):
+        instance = super(EventAuthenticatedUserForm, self).save(commit=False)
+        instance.location_lat = self.cleaned_data.get("location_lat")
+        instance.location_lon = self.cleaned_data.get("location_lon")
+        if commit:
+            instance.save()
+        return instance
 
     class Meta:
         model = Event
@@ -405,12 +426,30 @@ class EventOrgAdminForm(forms.ModelForm):
     hero = event_fields["hero"]
     city = event_fields["city"]
     state = event_fields["state"]
+    location = forms.CharField(widget=GoogleMapsWidget(), required=False)
     publish_type = event_fields["publish_type"]
     featured_event = event_fields["featured_event"]
     is_permitted = event_fields["is_permitted"]
     permit_no = event_fields["permit_no"]
     # We add the queryset in the view
     organization = event_fields["organization"]
+
+    def clean(self):
+        cleaned_data = super().clean()
+        lat = self.data.get("location_lat")
+        lon = self.data.get("location_lon")
+        if lat and lon:
+            cleaned_data["location_lat"] = lat
+            cleaned_data["location_lon"] = lon
+        return cleaned_data
+
+    def save(self, commit=True):
+        instance = super(EventOrgAdminForm, self).save(commit=False)
+        instance.location_lat = self.cleaned_data.get("location_lat")
+        instance.location_lon = self.cleaned_data.get("location_lon")
+        if commit:
+            instance.save()
+        return instance
 
     class Meta:
         model = Event
@@ -434,10 +473,28 @@ class EventStaffForm(forms.ModelForm):
     end_date = event_fields["end_date"]
     city = event_fields["city"]
     state = event_fields["state"]
+    location = forms.CharField(widget=GoogleMapsWidget(), required=False)
     publish_type = event_fields["publish_type"]
     # We add the queryset in the view
     organization = event_fields["organization"]
     approved = event_fields["approved"]
+
+    def clean(self):
+        cleaned_data = super().clean()
+        lat = self.data.get("location_lat")
+        lon = self.data.get("location_lon")
+        if lat and lon:
+            cleaned_data["location_lat"] = lat
+            cleaned_data["location_lon"] = lon
+        return cleaned_data
+
+    def save(self, commit=True):
+        instance = super(EventStaffForm, self).save(commit=False)
+        instance.location_lat = self.cleaned_data.get("location_lat")
+        instance.location_lon = self.cleaned_data.get("location_lon")
+        if commit:
+            instance.save()
+        return instance
 
     class Meta:
         model = Event
