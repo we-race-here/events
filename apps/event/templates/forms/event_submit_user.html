@@ -183,6 +183,14 @@
               <div class="text-red-500 text-xs mt-1">{{ form.state.errors }}</div>
             {% endif %}
           </div>
+          <!-- Event location -->
+        <div>
+          <label for="{{ form.location.auto_id }}" class="fb_text_label">{{ form.location.label }}</label>
+          {{ form.location }}
+          {% if form.location.errors %}
+            <div class="text-red-500 text-xs mt-1">{{ form.location.errors }}</div>
+          {% endif %}
+        </div>
         </div>
 
         <!-- End of fields, start of buttons -->

@@ -37,6 +37,9 @@
     <script defer src="{% static 'js/ckeditor_config.js' %}"></script>
     <!-- flowbite-->
     <script src="{% static 'js/flowbite.min.js' %}"></script>
+    <!-- Google map -->
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key={{GOOGLE_MAP_API_TOKEN}}&callback=initMap"></script>
+    <script src="{% static 'js/google_maps.js' %}"></script>
     <!-- usefathon analytics -->
     {% if 'events.bicyclecolorado.org' in request.get_host %}
       <script src="https://cdn.usefathom.com/script.js" data-site="ARATEZFL" defer></script>

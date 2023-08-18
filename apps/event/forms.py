@@ -19,7 +19,7 @@ from turnstile.fields import TurnstileField
 
 from apps.membership.models import Organization
 from .models import Event, Race, RaceResult, RaceSeries, event_types
-
+from config.helpers.widgets import GoogleMapsWidget 
 User = get_user_model()
 
 STATE_CHOICES = [
@@ -361,9 +361,29 @@ class EventCommunityForm(forms.ModelForm):
     name = event_fields["name"]
     tags = event_fields["tags"]
     blurb = event_fields["blurb"]
+    website = event_fields["website"]
+    city = event_fields["city"]
     start_date = event_fields["start_date"]
     end_date = event_fields["end_date"]
     state = event_fields["state"]
+    location = forms.CharField(widget=GoogleMapsWidget(), required=False)
+
+    def clean(self):
+        cleaned_data = super().clean()
+        lat = self.data.get('location_lat')
+        lon = self.data.get('location_lon')
+        if lat and lon:
+            cleaned_data['location_lat'] = lat
+            cleaned_data['location_lon'] = lon
+        return cleaned_data
+
+    def save(self, commit=True):
+        instance = super(EventCommunityForm, self).save(commit=False)
+        instance.location_lat = self.cleaned_data.get('location_lat')
+        instance.location_lon = self.cleaned_data.get('location_lon')
+        if commit:
+            instance.save()
+        return instance
 
     class Meta:
         model = Event
@@ -385,7 +405,25 @@ class EventAuthenticatedUserForm(forms.ModelForm):
     state = event_fields["state"]
     is_permitted = event_fields["is_permitted"]
     permit_no = event_fields["permit_no"]
+    location = forms.CharField(widget=GoogleMapsWidget(), required=False)
 
+    def clean(self):
+        cleaned_data = super().clean()
+        lat = self.data.get('location_lat')
+        lon = self.data.get('location_lon')
+        if lat and lon:
+            cleaned_data['location_lat'] = lat
+            cleaned_data['location_lon'] = lon
+        return cleaned_data
+
+    def save(self, commit=True):
+        instance = super(EventCommunityForm, self).save(commit=False)
+        instance.location_lat = self.cleaned_data.get('location_lat')
+        instance.location_lon = self.cleaned_data.get('location_lon')
+        if commit:
+            instance.save()
+        return instance
+        
     class Meta:
         model = Event
         fields = event_fields_authenticated
