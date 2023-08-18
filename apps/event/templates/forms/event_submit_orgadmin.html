@@ -208,23 +208,33 @@
               <div class="text-red-500 text-xs mt-1">{{ form.state.errors }}</div>
             {% endif %}
           </div>
+
+          <!-- Organization -->
+          <div>
+            <label for="{{ form.organization.auto_id }}" class="fb_text_label">{{ form.organization.label }}</label>
+            {{ form.organization }}
+            {% if form.organization.errors %}
+              <div class="text-red-500 text-xs mt-1">{{ form.organization.errors }}</div>
+            {% endif %}
+          </div>
+
+          <!-- Publish type -->
+          <div>
+            <label for="{{ form.publish_type.auto_id }}" class="fb_text_label">{{ form.publish_type.label }}</label>
+            {{ form.publish_type }}
+            {% if form.publish_type.errors %}
+              <div class="text-red-500 text-xs mt-1">{{ form.publish_type.errors }}</div>
+            {% endif %}
+          </div>
+
         </div>
 
-        <!-- Organization -->
+        <!-- Event location Google maps-->
         <div>
-          <label for="{{ form.organization.auto_id }}" class="fb_text_label">{{ form.organization.label }}</label>
-          {{ form.organization }}
-          {% if form.organization.errors %}
-            <div class="text-red-500 text-xs mt-1">{{ form.organization.errors }}</div>
-          {% endif %}
-        </div>
-
-        <!-- Publish type -->
-        <div>
-          <label for="{{ form.publish_type.auto_id }}" class="fb_text_label">{{ form.publish_type.label }}</label>
-          {{ form.publish_type }}
-          {% if form.publish_type.errors %}
-            <div class="text-red-500 text-xs mt-1">{{ form.publish_type.errors }}</div>
+          <label for="{{ form.location.auto_id }}" class="fb_text_label">{{ form.location.label }}</label>
+          {{ form.location }}
+          {% if form.location.errors %}
+            <div class="text-red-500 text-xs mt-1">{{ form.location.errors }}</div>
           {% endif %}
         </div>
 

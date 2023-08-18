@@ -185,6 +185,15 @@
           </div>
         </div>
 
+        <!-- Event location Google maps-->
+        <div>
+          <label for="{{ form.location.auto_id }}" class="fb_text_label">{{ form.location.label }}</label>
+          {{ form.location }}
+          {% if form.location.errors %}
+            <div class="text-red-500 text-xs mt-1">{{ form.location.errors }}</div>
+          {% endif %}
+        </div>
+
         <!-- End of fields, start of buttons -->
         <div class="items-center space-y-4 sm:flex sm:space-y-0 sm:space-x-4">
           <button type="submit"

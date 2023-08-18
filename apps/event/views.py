@@ -154,6 +154,7 @@ class EventCreateView(CreateView):
                 context["user_type"] = "EventAuthenticatedUserForm"
         else:
             context["user_type"] = "EventCommunityForm"
+        context["GOOGLE_MAP_API_TOKEN"] = settings.GOOGLE_MAP_API_TOKEN
         return context
 
     def get_form_class(self):
