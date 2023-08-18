@@ -4,10 +4,10 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Exists, OuterRef, Q
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, render, redirect
 from django.template.loader import render_to_string
-from django.urls import reverse_lazy
-from django.views.generic import CreateView, DeleteView, DetailView, ListView, UpdateView
+from django.urls import reverse_lazy, reverse
+from django.views.generic import CreateView, DeleteView, DetailView, ListView, UpdateView, FormView
 
 from events.users.permission_utils import is_org_admin, StaffRequiredMixin
 from events.utils.events_utils import sys_send_mail
@@ -92,10 +92,21 @@ class EventsWaitingApproval(StaffRequiredMixin, LoginRequiredMixin, ListView):
     context_object_name = "events"
     ordering = ["start_date"]
 
-    def get_queryset(self, **kwargs):
-        queryset = super().get_queryset(**kwargs)
-        return queryset & queryset.filter(approved=False)
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        queryset = queryset.filter(approved=False)
 
+        search_term = self.request.GET.get('search_term')
+        if search_term:
+            queryset = queryset.filter(name__icontains=search_term)
+
+        return queryset
+
+    def post(self, request, *args, **kwargs):
+        event_ids = request.POST.getlist('event_ids')
+        if event_ids:
+            Event.objects.filter(id__in=event_ids).update(approved=True)
+        return redirect(reverse('event:events_waiting_approval'))  # Redirect back to the same page after approval
 
 class EventResultListView(ListView):
     model = Event
