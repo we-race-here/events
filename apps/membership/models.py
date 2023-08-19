@@ -10,7 +10,6 @@ from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils import timezone
-
 # from jsonschema import Validator TODO: what is this?
 from phonenumber_field.modelfields import PhoneNumberField
 from simple_history.models import HistoricalRecords
@@ -143,23 +142,23 @@ class Organization(models.Model):
     )
     name = models.CharField(max_length=256, unique=True)
     type = models.CharField(max_length=32, choices=TYPE_CHOICES)
-    blurb = models.TextField(max_length=500, null=True, blank=True)
-    description = models.TextField(null=True, blank=True)
+    blurb = models.TextField(max_length=500, blank=True)
+    description = models.TextField(blank=True)
     social_media = models.JSONField(null=True, blank=True)
-    website = models.URLField(null=True, blank=True)
+    website = models.URLField(blank=True)
     phone = PhoneNumberField(max_length=50, null=True, blank=True)
-    email = models.EmailField(null=True, blank=True)
-    address = models.CharField(max_length=256, blank=True, null=True)
-    country = models.CharField(max_length=128, blank=True, null=True)
-    city = models.CharField(max_length=128, blank=True, null=True)
-    state = models.CharField(max_length=128, blank=True, null=True)
-    zipcode = models.CharField(max_length=10, blank=True, null=True)
+    email = models.EmailField(blank=True)
+    address = models.CharField(max_length=256, blank=True)
+    country = models.CharField(max_length=128, blank=True, default="USA")
+    city = models.CharField(max_length=128, blank=True)
+    state = models.CharField(max_length=128, blank=True)
+    zipcode = models.CharField(max_length=10, blank=True)
     logo = models.ImageField(null=True, blank=True, max_length=500, upload_to=organization_logo_file_path_func)
     hero = models.ImageField(null=True, blank=True, max_length=500, upload_to=organization_hero_file_path_func)
     user = models.ManyToManyField(User, related_name="organizations", through=OrganizationMember)
     membership_open = models.BooleanField(default=False, null=True, blank=True)
     approved = models.BooleanField(default=False, null=True)  # New orgs must be approved by BC staff
-    waiver_text = models.TextField(default=None, null=True, blank=True)
+    waiver_text = models.TextField(blank=True)
 
     def save(self, *args, **kwargs):
         if self.email:

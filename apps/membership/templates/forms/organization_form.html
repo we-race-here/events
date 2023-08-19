@@ -1,0 +1,187 @@
+{% load static %}
+{% load widget_tweaks %}
+
+<!-- Form body -->
+<form method="post" id="authenticated_user_form" enctype="multipart/form-data">
+  {% csrf_token %}
+  <div class="grid gap-4 mb-4 sm:grid-cols-2">
+
+    <!-- Org Name -->
+    <div>
+      <label for="{{ form.name.auto_id }}" class="fb_text_label">{{ form.name.label }}</label>
+      {{ form.name }}
+      {% if form.name.errors %}
+        <div class="text-red-500 text-xs mt-1">{{ form.name.errors }}</div>
+      {% endif %}
+    </div>
+
+    <!-- Org Website -->
+    <div>
+      <label for="{{ form.website.auto_id }}" class="fb_text_label">{{ form.website.label }}</label>
+      {{ form.website }}
+      {% if form.website.errors %}
+        <div class="text-red-500 text-xs mt-1">{{ form.website.errors }}</div>
+      {% endif %}
+    </div>
+
+    <!-- Phone -->
+    <div>
+      <label for="{{ form.phone.auto_id }}"
+             class="fb_text_label">{{ form.phone.label }}</label>
+      {{ form.phone }}
+      {% if form.phone.errors %}
+        <div class="text-red-500 text-xs mt-1">{{ form.phone.errors }}</div>
+      {% endif %}
+    </div>
+
+    <!-- Org Email -->
+    <div>
+      <label for="{{ form.email.auto_id }}" class="fb_text_label">{{ form.email.label }}</label>
+      {{ form.email }}
+      {% if form.email.errors %}
+        <div class="text-red-500 text-xs mt-1">{{ form.email.errors }}</div>
+      {% endif %}
+    </div>
+
+    <!-- Address -->
+    <div>
+      <label for="{{ form.is_permitted.auto_id }}"
+             class="fb_text_label ml-2">{{ form.address.label }}</label>
+      {{ form.address }}
+      {% if form.address.errors %}
+        <div class="text-red-500 text-xs mt-1">{{ form.address.errors }}</div>
+      {% endif %}
+    </div>
+
+    <!-- Org City -->
+    <div>
+      <label class="fb_text_label" for="{{ form.city.auto_id }}">{{ form.city.label }}</label>
+      {{ form.city }}
+      {% if form.city.errors %}
+        <div class="text-red-500 text-xs mt-1">{{ form.city.errors }}</div>
+      {% endif %}
+    </div>
+
+    <!-- Org State -->
+    <div>
+      <label for="{{ form.state.auto_id }}" class="fb_text_label">{{ form.state.label }}</label>
+      {{ form.state }}
+      {% if form.state.errors %}
+        <div class="text-red-500 text-xs mt-1">{{ form.state.errors }}</div>
+      {% endif %}
+    </div>
+
+    <!-- Org Logo -->
+    <div class="sm:col-span-2">
+      <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+             for="{{ form.logo.id_for_label }}">
+        {{ form.logo.label }}
+      </label>
+      <div class="sm:col-span-2">
+        <div class="items-center w-full sm:flex">
+          <div class="w-full">
+            {{ form.logo }}
+            <p class="mt-1 text-xs font-normal text-gray-500 dark:text-gray-300" id="file_input_help">SVG, PNG,
+              Suggested size (250x250px)</p>
+          </div>
+        </div>
+      </div>
+      {% if form.logo.errors %}
+        <div class="text-red-500 text-xs mt-1">{{ form.logo.errors }}</div>
+      {% endif %}
+    </div>
+
+    <!-- Org Hero -->
+    <div class="sm:col-span-2">
+      <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+             for="{{ form.logo.id_for_label }}">
+        {{ form.hero.label }}
+      </label>
+      <div class="sm:col-span-2">
+        <div class="items-center w-full sm:flex">
+          <div class="w-full">
+            {{ form.logo }}
+            <p class="mt-1 text-xs font-normal text-gray-500 dark:text-gray-300" id="file_input_help">SVG, PNG,
+              Suggested size (1920X1080)</p>
+          </div>
+        </div>
+      </div>
+      {% if form.logo.errors %}
+        <div class="text-red-500 text-xs mt-1">{{ form.logo.errors }}</div>
+      {% endif %}
+    </div>
+
+    <!-- Blurb -->
+    <div class="sm:col-span-2">
+      <label for="{{ form.blurb.auto_id }}" class="fb_text_label">{{ form.blurb.label }}</label>
+      {{ form.blurb }}
+      {% if form.blurb.errors %}
+        <div class="text-red-500 text-xs mt-1">{{ form.blurb.errors }}</div>
+      {% endif %}
+    </div>
+
+    <!-- Description -->
+    <div class="sm:col-span-2">
+      <label for="{{ form.description.auto_id }}"
+             class="fb_text_label">{{ form.description.label }}</label>
+      {{ form.description }}
+      <div>
+        {% if form.description.errors %}
+          <div class="text-red-500 text-xs mt-1">{{ form.description.errors }}</div>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Waiver text -->
+    <div class="sm:col-span-2">
+      <label for="{{ form.waiver_text.auto_id }}"
+             class="fb_text_label">{{ form.waiver_text.label }}</label>
+      {{ form.waiver_text }}
+      <div>
+        {% if form.waiver_text.errors %}
+          <div class="text-red-500 text-xs mt-1">{{ form.waiver_text.errors }}</div>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- membership_open -->
+    <div class="flex items-center">
+      {{ form.membership_open }}
+      <label for="{{ form.membership_open.auto_id }}"
+             class="fb_text_label ml-2">{{ form.membership_open.label }}</label>
+      {% if form.membership_open.errors %}
+        <div class="text-red-500 text-xs mt-1">{{ form.membership_open.errors }}</div>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- End of fields, start of buttons -->
+  <div class="items-center">
+    <button type="submit"
+            class="w-full justify-center sm:w-auto text-white  button_body_cyan">
+      <i class="fa-solid fa-square-check mr-1"></i>Create Club
+    </button>
+  </div>
+  <div>{% if form.errors %} Form Errors are {{ form.errors }} {% endif %}</div>
+</form>
+
+<script>
+  tinymce.init({
+    selector: "textarea#id_description",
+    height: 500,
+    menubar: false,
+    plugins: ['link', 'image', 'media', 'lists', 'table'],
+    toolbar: "undo redo | bold | italic | link | alignleft aligncenter alignright alignjustify | outdent indent | removeformat | image | media | numlist bullist",
+    content_style: "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }"
+  });
+
+  tinymce.init({
+    selector: "textarea#id_waiver_text",
+    height: 500,
+    menubar: false,
+    plugins: ['link'],
+    toolbar: "undo redo | bold italic link | alignleft aligncenter alignright alignjustify | outdent indent | removeformat",
+    content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
+  });
+</script>
+
