@@ -2,7 +2,7 @@
 {% load widget_tweaks %}
 
 <!-- Form body -->
-<form method="post" id="authenticated_user_form" enctype="multipart/form-data">
+<form method="post" id="organization_form" enctype="multipart/form-data">
   {% csrf_token %}
   <div class="grid gap-4 mb-4 sm:grid-cols-2">
 
@@ -183,17 +183,17 @@
     toolbar: "undo redo | bold italic link | alignleft aligncenter alignright alignjustify | outdent indent | removeformat",
     content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
   });
-  document.getElementById('authenticated_user_form').addEventListener('submit', function(e) {
+  document.getElementById('organization_form').addEventListener('submit', function (e) {
     const descriptionContent = document.getElementById('id_description').value.trim();
     if (!descriptionContent) {
-        e.preventDefault();
-        alert('Description is required');
+      e.preventDefault();
+      alert('Description is required');
     }
     const waiverContent = document.getElementById('id_waiver_text').value.trim();
     if (!waiverContent) {
-        e.preventDefault();
-        alert('Waiver is required');
+      e.preventDefault();
+      alert('Waiver is required');
     }
-});
+  });
 </script>
 

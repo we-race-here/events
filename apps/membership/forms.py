@@ -60,7 +60,7 @@ STATE_CHOICES = [
 
 class OrganizationForm(forms.ModelForm):
     name = forms.CharField(
-        label="Club Name",
+        label="Club Name (required)",
         required=True,
         max_length=75,
         widget=TextInput(
@@ -113,7 +113,7 @@ class OrganizationForm(forms.ModelForm):
         ),
     )
     city = forms.CharField(
-        label="City",
+        label="City (required)",
         required=True,
         max_length=75,
         widget=TextInput(
@@ -126,7 +126,7 @@ class OrganizationForm(forms.ModelForm):
     )
     state = forms.ChoiceField(
         initial="CO",
-        label="State",
+        label="State (required)",
         required=True,
         choices=STATE_CHOICES,
         widget=Select(attrs={"class": "fb_select_multiple", "placeholder": "State"}),
@@ -164,7 +164,7 @@ class OrganizationForm(forms.ModelForm):
         ),
     )
     blurb = forms.CharField(
-        label="Short Description",
+        label="Short Description (required)",
         required=True,
         widget=Textarea(
             attrs={
@@ -176,7 +176,7 @@ class OrganizationForm(forms.ModelForm):
         ),
     )
     description = forms.CharField(
-        label="Description of the club",
+        label="Description of the club (required)",
         required=False,
         max_length=2500,
         widget=forms.Textarea(
@@ -188,7 +188,7 @@ class OrganizationForm(forms.ModelForm):
         ),
     )
     waiver_text = forms.CharField(
-        label="Waiver text or other test you want members to agree to when they join.",
+        label="Waiver text or other test you want members to agree to when they join.  (required)",
         required=False,
         max_length=2500,
         widget=forms.Textarea(
