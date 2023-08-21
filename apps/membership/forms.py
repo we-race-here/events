@@ -177,7 +177,7 @@ class OrganizationForm(forms.ModelForm):
     )
     description = forms.CharField(
         label="Description of the club",
-        required=True,
+        required=False,
         max_length=2500,
         widget=forms.Textarea(
             attrs={
