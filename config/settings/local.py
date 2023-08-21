@@ -80,22 +80,22 @@ LOGGING = {
     },
     "handlers": {
         "console": {
-            "level": "WARNING",
+            "level": "INFO",
             "class": "logging.StreamHandler",
             "formatter": "console",
         },
-        "file": {
-            "level": "INFO",
-            "class": "logging.FileHandler",
-            "filename": "events.log",
-            "formatter": "standard",
-        },
+        # "file": {
+        #     "level": "INFO",
+        #     "class": "logging.FileHandler",
+        #     "filename": "events.log",
+        #     "formatter": "standard",
+        # },
     },
     # "root": {"level": "INFO", "handlers": ["console"]},
     "loggers": {
         "django": {
             "handlers": ["console"],
-            "level": "INFO",
+            "level": "DEBUG",
             "propagate": True,
         }
     },

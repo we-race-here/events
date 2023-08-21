@@ -4,7 +4,6 @@ import stripe
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.core.mail import send_mail
 from django.db.models import Q
 from django.shortcuts import redirect
 from django.template.loader import render_to_string
@@ -15,6 +14,7 @@ from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, DeleteView, FormView, UpdateView
 
 from events.users.permission_utils import StaffRequiredMixin
+from events.utils.events_utils import sys_send_mail
 from .forms import OrganizationForm, OrganizationMemberJoinForm
 from .member_utils import club_report, get_club_payments
 from .models import Organization, OrganizationMember
@@ -45,26 +45,17 @@ class CreateOrganizationView(LoginRequiredMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        if self.request.GET.get("type") == "Club":
-            context["org_type"] = ((Organization.TYPE_CLUB, "Club"), (Organization.TYPE_ADVOCACY_VOLUNTEER, "Advocacy"))
-            context["form"].fields["type"].choices = context["org_type"]
-        elif self.request.GET.get("type") == "Promoter":
-            context["org_type"] = (
-                (Organization.TYPE_PROMOTER, "Club"),
-                (Organization.TYPE_ADVOCACY_VOLUNTEER, "Advocacy"),
-            )
-            context["form"].fields["type"].choices = context["org_type"]
-
-        # print(context["form"].fields["name"].widget.template_name)
-        # attrs
-        # use_fieldset
-        # template_name
-
+        if self.request.GET.get("org_type") == "Club":
+            context["org_type"] = (Organization.TYPE_CLUB, "Club")
+        elif self.request.GET.get("org_type") == "Promoter":
+            context["org_type"] = ((Organization.TYPE_PROMOTER, "Club"),)
         return context
 
     def form_valid(self, form):
+        # print("VALID")
+        # print(form.cleaned_data)
         organization = form.save(commit=False)
-        organization.approved = self.request.user.is_staff
+        organization.approved = True
         organization.save()
 
         # Create a new OrganizationMember instance with is_admin set to True
@@ -74,32 +65,23 @@ class CreateOrganizationView(LoginRequiredMixin, CreateView):
         # TODO: is it possible to get the Org id so that we can link to the org detail page from the email?
         # Use - organization
         html_message = render_to_string(
-            "org/new_org_email.html",
+            "emails/new_org_email.html",
             {
-                "TYPE": form.cleaned_data["type"],
+                "TYPE": self.request.GET.get("org_type"),
                 "NAME": form.cleaned_data["name"],
                 "BYNAME": self.request.user.full_name,
             },
         )
-        plain_message = strip_tags(html_message)
-        # This email is to the submitter
-        send_mail(
-            f"New {form.cleaned_data['type']} named: {form.cleaned_data['name']} is waiting approval",
-            plain_message,
-            "donotreply@bicyclecolorado.org",
-            [self.request.user.email],
+        sys_send_mail(
+            subject=f"\U0001F4C5 {form.cleaned_data['name']} event submitted for review",
+            message=strip_tags(html_message),
+            from_email="donotreply@bicyclecolorado.org",
+            recipient_list=[self.request.user.email],
+            recipient_system=settings.CALENDAR_EMAILS,
             html_message=html_message,
+            fail_silently=False,
         )
-        # This email is to the staff
-        # [user.email for user in User.objects.filter(is_staff=True)]
-        send_mail(
-            f"New {form.cleaned_data['type']} named: {form.cleaned_data['name']} is waiting approval",
-            plain_message,
-            "donotreply@bicyclecolorado.org",
-            ["developer@bicyclecolorado.org"],
-            html_message=html_message,
-        )
-        return redirect("membership:organizations")
+        return redirect("membership:organization_detail", pk=organization.pk)
 
 
 class OrganizationDetailView(DetailView):

@@ -228,8 +228,8 @@ event_fields = {
             attrs={
                 "class": "fb_text_area_field",
                 "placeholder": "short description of the event (250 characters max)",
-                "rows": 4,
-                "max_length": 50,
+                "rows": 3,
+                "max_length": 250,
             },
         ),
     ),
