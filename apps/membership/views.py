@@ -45,10 +45,11 @@ class CreateOrganizationView(LoginRequiredMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        print(self.request.GET.get("org_type"))
         if self.request.GET.get("org_type") == "Club":
             context["org_type"] = (Organization.TYPE_CLUB, "Club")
         elif self.request.GET.get("org_type") == "Promoter":
-            context["org_type"] = ((Organization.TYPE_PROMOTER, "Club"),)
+            context["org_type"] = (Organization.TYPE_PROMOTER, "Promoter")
         return context
 
     def form_valid(self, form):

@@ -7,10 +7,10 @@
       {% if org_type.1 == 'Club' %}
         {% include 'components/create_club_intro.html' %}
       {% endif %}
-      {% if org_type == 'Promoter' %}
+      {% if org_type.1 == 'Promoter' %}
         {% include 'components/create_promoter_intro.html' %}
       {% endif %}
-      {% if org_type == 'Photographer' %}
+      {% if org_type.1 == 'Photographer' %}
         {% include 'components/create_photographer_intro.html' %}
       {% endif %}
       {% include "forms/organization_form.html" %}
