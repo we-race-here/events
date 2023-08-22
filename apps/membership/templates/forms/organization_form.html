@@ -184,6 +184,7 @@
     content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
   });
   document.getElementById('organization_form').addEventListener('submit', function (e) {
+    tinymce.triggerSave();  // Save content from TinyMCE back to textarea
     const descriptionContent = document.getElementById('id_description').value.trim();
     if (!descriptionContent) {
       e.preventDefault();
