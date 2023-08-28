@@ -1,9 +1,13 @@
 import stripe
+from django.conf import settings
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from stripe import ListObject
 
 from config.helpers.Exception import exception
+
+stripe.api_key = settings.STRIPE_SECRET_KEY
+stripe.api_version = settings.STRIPE_API_VERSION
 
 
 def products() -> tuple[ListObject, list[str]]:

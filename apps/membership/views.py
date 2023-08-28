@@ -22,6 +22,7 @@ from ..store.stripe_utils import single_item_checkout
 
 User = get_user_model()
 stripe.api_key = settings.STRIPE_SECRET_KEY
+stripe.api_version = settings.STRIPE_API_VERSION
 
 
 class IsStaffMixin(UserPassesTestMixin):
