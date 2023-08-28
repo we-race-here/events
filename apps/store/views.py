@@ -13,6 +13,8 @@ from apps.store.stripe_utils import products
 from events.users.permission_utils import StaffRequiredMixin
 
 logger = logging.getLogger(__name__)
+stripe.api_key = settings.STRIPE_SECRET_KEY
+stripe.api_version = settings.STRIPE_API_VERSION
 
 
 def index(request):

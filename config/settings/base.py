@@ -350,6 +350,8 @@ GOOGLE_MAP_API_TOKEN = env("GOOGLE_MAP_API_TOKEN", default="")
 STRIPE_PUBLIC_KEY = env("STRIPE_PUBLIC_KEY", default="")
 STRIPE_SECRET_KEY = env("STRIPE_SECRET_KEY", default="")
 STRIPE_WEBHOOK_SECRET = env("STRIPE_WEBHOOK_SECRET", default="")
+STRIPE_API_VERSION = "2023-08-16"
+
 
 # django-maintenance-mode
 # ------------------------------------------------------------------------------
