@@ -98,10 +98,14 @@ class OrganizationDetailView(DetailView):
         context["OrgAdmins"] = OrganizationMember.objects.filter(
             Q(user=self.request.user.id) & Q(is_admin=True) & Q(organization=self.object)
         )
-        context["is_member"] = OrganizationMember.objects.filter(
-            user=self.request.user,
-            organization=self.object
-        ).exists()
+        # Check if the user is authenticated before filtering
+        if self.request.user.is_authenticated:
+            context["is_member"] = OrganizationMember.objects.filter(
+                user=self.request.user,
+                organization=self.object
+            ).exists()
+        else:
+            context["is_member"] = False
         return context
 
 
@@ -257,7 +261,7 @@ class ClubAdmin(LoginRequiredMixin, StaffRequiredMixin, TemplateView):
         return self.render_to_response(context)
 
 
-class JoinClubView(View):
+class JoinClubView(LoginRequiredMixin, View):
     def get(self, request, pk):
         org = get_object_or_404(Organization, pk=pk)
         return render(request, 'org/join_club.html', {'org': org})
@@ -280,7 +284,7 @@ class JoinClubView(View):
         return render(request, 'join_club.html', {'org': org})
 
 
-class LeaveClubView(View):
+class LeaveClubView(LoginRequiredMixin, View):
     def post(self, request, pk):
         org = get_object_or_404(Organization, pk=pk)
 
