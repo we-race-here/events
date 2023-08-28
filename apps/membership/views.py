@@ -5,14 +5,16 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.db.models import Q
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 from django.template.loader import render_to_string
 from django.urls import reverse, reverse_lazy
 from django.utils.html import strip_tags
 from django.views.generic import ListView, TemplateView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, DeleteView, FormView, UpdateView
-
+from django.shortcuts import redirect, get_object_or_404
+from django.contrib import messages
+from django.views import View
 from events.users.permission_utils import StaffRequiredMixin
 from events.utils.events_utils import sys_send_mail
 from .forms import OrganizationForm, OrganizationMemberJoinForm
@@ -96,6 +98,10 @@ class OrganizationDetailView(DetailView):
         context["OrgAdmins"] = OrganizationMember.objects.filter(
             Q(user=self.request.user.id) & Q(is_admin=True) & Q(organization=self.object)
         )
+        context["is_member"] = OrganizationMember.objects.filter(
+            user=self.request.user,
+            organization=self.object
+        ).exists()
         return context
 
 
@@ -249,3 +255,44 @@ class ClubAdmin(LoginRequiredMixin, StaffRequiredMixin, TemplateView):
     def get(self, *args, **kwargs):
         context = self.get_context_data(**kwargs)
         return self.render_to_response(context)
+
+
+class JoinClubView(View):
+    def get(self, request, pk):
+        org = get_object_or_404(Organization, pk=pk)
+        return render(request, 'org/join_club.html', {'org': org})
+
+    def post(self, request, pk):
+        org = get_object_or_404(Organization, pk=pk)
+        accepted_waiver = request.POST.get('accept_waiver') == 'on'
+
+        if accepted_waiver:
+            OrganizationMember.objects.create(
+                organization=org,
+                user=request.user,
+                is_admin=False,
+                is_active=True,
+            )
+            messages.success(request, 'Successfully joined the club.')
+            return redirect(reverse('membership:organization_detail', kwargs={'pk': org.pk}))
+
+        messages.error(request, 'You must accept the waiver to join.')
+        return render(request, 'join_club.html', {'org': org})
+
+
+class LeaveClubView(View):
+    def post(self, request, pk):
+        org = get_object_or_404(Organization, pk=pk)
+
+        try:
+            org_member = OrganizationMember.objects.get(
+                organization=org,
+                user=request.user
+            )
+            org_member.delete()
+
+            messages.success(request, 'Successfully left the club.')
+        except OrganizationMember.DoesNotExist:
+            messages.error(request, 'You are not a member of this club.')
+
+        return redirect(reverse('membership:organization_detail', kwargs={'pk': org.pk}))
