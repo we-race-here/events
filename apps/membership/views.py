@@ -1,5 +1,6 @@
 # views.py
 import csv
+import datetime
 
 import stripe
 from django.conf import settings
@@ -287,6 +288,7 @@ class JoinClubView(LoginRequiredMixin, View):
                 user=request.user,
                 is_admin=False,
                 is_active=True,
+                start_date=datetime.datetime.now()
             )
             messages.success(request, 'Successfully joined the club.')
             return redirect(reverse('membership:organization_detail', kwargs={'pk': org.pk}))
