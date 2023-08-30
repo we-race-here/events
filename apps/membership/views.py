@@ -1,10 +1,13 @@
 # views.py
+import csv
+import datetime
 
 import stripe
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.db.models import Q
+from django.http import JsonResponse, HttpResponse
 from django.shortcuts import redirect, render
 from django.template.loader import render_to_string
 from django.urls import reverse, reverse_lazy
@@ -238,6 +241,15 @@ class OrganizationAdmin(LoginRequiredMixin, DetailView):
         context["product"] = stripe.Product.retrieve("prod_NvhFVL6FC3AdKr")
         context["price"] = context["product"]["default_price"]
         context["club_payments"] = get_club_payments(self.object)
+        # Check if the request.user is an admin in this organization
+        is_request_user_admin = OrganizationMember.objects.filter(
+            organization=self.object,
+            user=self.request.user,
+            is_admin=True
+        ).exists()
+
+        context['is_request_user_admin'] = is_request_user_admin
+        context['current_user'] = self.request.user
         return context
 
     def post(self, *args, **kwargs):
@@ -276,6 +288,7 @@ class JoinClubView(LoginRequiredMixin, View):
                 user=request.user,
                 is_admin=False,
                 is_active=True,
+                start_date=datetime.datetime.now()
             )
             messages.success(request, 'Successfully joined the club.')
             return redirect(reverse('membership:organization_detail', kwargs={'pk': org.pk}))
@@ -300,3 +313,45 @@ class LeaveClubView(LoginRequiredMixin, View):
             messages.error(request, 'You are not a member of this club.')
 
         return redirect(reverse('membership:organization_detail', kwargs={'pk': org.pk}))
+
+
+class PromoteMemberView(LoginRequiredMixin, View):
+
+    def get(self, request, pk, member_id, *args, **kwargs):
+        try:
+            # Validate that the organization exists and the user is an admin
+            org = Organization.objects.get(pk=pk)
+            if not OrganizationMember.objects.filter(user=request.user, organization=org, is_admin=True).exists():
+                return JsonResponse({'status': 'Unauthorized'}, status=401)
+
+            # Validate that the member exists within this organization
+            member = OrganizationMember.objects.get(id=member_id, organization=org)
+            member.is_admin = not member.is_admin  # Toggle the is_admin flag
+            member.save()
+
+            return JsonResponse({'status': 'success'})
+
+        except Organization.DoesNotExist:
+            return JsonResponse({'status': 'Organization does not exist'}, status=404)
+        except OrganizationMember.DoesNotExist:
+            return JsonResponse({'status': 'Member does not exist'}, status=404)
+        except Exception as e:
+            return JsonResponse({'status': 'An error occurred: ' + str(e)}, status=500)
+
+class ExportCSV(LoginRequiredMixin, View):
+    def get(self, request, pk, *args, **kwargs):
+        # Find the organization and its members
+        org = Organization.objects.get(pk=pk)
+        members = OrganizationMember.objects.filter(organization=org)
+
+        # Create the HttpResponse object with the appropriate headers
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = f'attachment; filename="{org.name}.csv"'
+
+        writer = csv.writer(response)
+        writer.writerow(['Name', 'Email', 'Phone', 'Address'])  # Header
+
+        for member in members:
+            writer.writerow([member.user.full_name, member.user.email, member.user.phone, member.user.address1])
+
+        return response

@@ -12,7 +12,9 @@ from .views import (
     UpdateOrganizationView,
     PromoterListView,
     JoinClubView,
-    LeaveClubView
+    LeaveClubView,
+    PromoteMemberView,
+    ExportCSV
 
 )
 
@@ -31,4 +33,6 @@ urlpatterns = [
     path("org/leave/<int:pk>/", LeaveClubView.as_view(), name="leave_club"),
     path("org/join/<int:organization_id>/", JoinOrganizationView.as_view(), name="join_organization_from_details"),
     path("org/clubs_admin/", ClubAdmin.as_view(), name="clubs_admin"),
+    path('org/<int:pk>/promote/<int:member_id>/', PromoteMemberView.as_view(), name='promote_member'),
+    path('org/<int:pk>/export_csv/', ExportCSV.as_view(), name='export_csv'),
 ]
