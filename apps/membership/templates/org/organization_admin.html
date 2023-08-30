@@ -7,9 +7,14 @@
 {% block title %}Club: {{ object.name }}{% endblock %}
 
 {% block content %}
-  <section>
-    <div class="message_box">
-      <ul class="message_list">Action Items:
+<div class="flex p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+  <svg class="flex-shrink-0 inline w-4 h-4 mr-3 mt-[2px]" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+    <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
+  </svg>
+  <span class="sr-only">Danger</span>
+  <div>
+    <span class="font-medium">Ensure that these requirements are met:</span>
+      <ul class="mt-1.5 ml-4 list-disc list-inside">
         {% if club_payments.status == "Expired" %}
           <li> - Join or renew Club membership: {% if club_payments.status == "Expired" %}
             <form action="{% url 'membership:organization_admin' org.pk %}" method="POST">
@@ -20,17 +25,35 @@
             </form>
           {% endif %}</li>
         {% endif %}
-        <li> - Do more, invite Members</li>
-      </ul>
-    </div>
-    <b> {{ org.name }} Admin page</b>
+    </ul>
+  </div>
+</div>
+
+<div class="mb-4 border-b border-gray-200 dark:border-gray-700">
+    <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" id="myTab" data-tabs-toggle="#myTabContent" role="tablist">
+        <li class="mr-2" role="presentation">
+            <button class="inline-block p-4 border-b-2 rounded-t-lg" id="org-detail-tab" data-tabs-target="#org-detail" type="button" role="tab" aria-controls="org-detail" aria-selected="false">Org Details</button>
+        </li>
+        <li class="mr-2" role="presentation">
+            <button class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="payment-Records-tab" data-tabs-target="#payment-Records" type="button" role="tab" aria-controls="payment-Records" aria-selected="false">Payment Records</button>
+        </li>
+        <li class="mr-2" role="presentation">
+            <button class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="club-membership-tab" data-tabs-target="#club-membership" type="button" role="tab" aria-controls="club-membership" aria-selected="false">Membership list</button>
+        </li>
+    </ul>
+</div>
+<div id="myTabContent">
+    <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="org-detail" role="tabpanel" aria-labelledby="org-detail-tab">
+          <b> {{ org.name }} Admin page</b>
     <a href="{% url 'membership:update_organization' org.id %}"
        class="bg-cyan-600 hover:bg-cyan-600 text-xs text-white font-bold p-1 rounded">
       <i class="far fa-edit mr-2"></i> Edit Club
     </a>
     <br>
     <b>Current club status</b>: {{ club_payments.status }}
-    <div class="flex flex-col">
+    </div>
+    <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="payment-Records" role="tabpanel" aria-labelledby="payment-Records-tab">
+        <div class="flex flex-col">
       <details>
         <summary class="font-bold">Payment Records</summary>
         <table class="table-auto">
@@ -53,30 +76,15 @@
         </table>
       </details>
     </div>
-    <div class="flex flex-col">
-      <details>
-        <summary class="font-bold">Membership list</summary>
-        <table class="table-auto">
-          <tbody>
-          <tr class="border-1 border-gray-400">
-            <th>Member</th>
-            <th>Email</th>
-            <th>USAC Status</th>
-          </tr>
-          {% for m in org.membership_set.all %}
-            <tr>
-              {#            #TODO link to profile#}
-              <td>{{ m.user.full_name }}</td>
-              <td><a href="mailto{{ m.user.email }}">{{ m.user.email }}</a></td>
-              <td>{{ m.user.usac_status }}</td>
-            </tr>
-          {% endfor %}
-          </tbody>
-        </table>
-
-      </details>
     </div>
-  </section>
+    <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="club-membership" role="tabpanel" aria-labelledby="club-membership-tab">
+        {% include 'components/club_members.html' %}
+    </div>
+
+</div>
+
+
+
   <section>
     {#    <b>Club BC membership status: {{ club_payments.status }}</b>#}
     {#    <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore#}
