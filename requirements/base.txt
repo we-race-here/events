@@ -15,9 +15,9 @@ phonenumbers==8.13.19  # https://github.com/daviddrysdale/python-phonenumbers
 # Django
 # ------------------------------------------------------------------------------
 django==4.1.10  # pyup: < 4.2  # https://www.djangoproject.com/
-django-environ==0.10.0  # https://github.com/joke2k/django-environ
+django-environ==0.11.1  # https://github.com/joke2k/django-environ
 django-model-utils==4.3.1  # https://github.com/jazzband/django-model-utils
-django-allauth==0.55.0  # https://github.com/pennersr/django-allauth
+django-allauth==0.55.2  # https://github.com/pennersr/django-allauth
 django-crispy-forms==2.0  # https://github.com/django-crispy-forms/django-crispy-forms
 # crispy-bootstrap5==0.7  # https://github.com/django-crispy-forms/crispy-bootstrap5
 crispy-tailwind@ https://github.com/django-crispy-forms/crispy-tailwind/archive/refs/heads/main.zip
@@ -34,7 +34,7 @@ django-maintenance-mode@ https://github.com/fabiocaccamo/django-maintenance-mode
 # git+https://github.com/fabiocaccamo/django-maintenance-mode.git@main
 
 # Other
-stripe==6.1.0
+stripe==6.2.0
 
 # Database
 # This is the new for 4.2 you need both the binary and package.
