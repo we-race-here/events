@@ -8,14 +8,16 @@
       <form method="post" class="space-y-4">
         {% csrf_token %}
         <div class="border p-4 rounded">
-          <h3 class="text-lg font-semibold">Waiver Text</h3>
-          <p class="text-sm">{{org.waiver_text}}</p>
+          <h3 class="text-lg font-semibold">Membership Agreement</h3>
+          <p>Your profile information will be share with the organization admins</p>
+          <p class="text-sm">{{ org.waiver_text }}</p>
         </div>
         <div class="flex items-center">
-          <input required type="checkbox" id="accept_waiver" name="accept_waiver" class="form-checkbox h-5 w-5 text-blue-600">
-          <label for="accept_waiver" class="ml-2 text-sm">I accept the waiver</label>
+          <input required type="checkbox" id="accept_waiver" name="accept_waiver"
+                 class="form-checkbox h-5 w-5 text-blue-600">
+          <label for="accept_waiver" class="ml-2 text-sm">I accept the membership agreement</label>
         </div>
-        <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+        <button type="submit" class="button_body_cyan">
           Join
         </button>
       </form>
