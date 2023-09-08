@@ -69,6 +69,9 @@ class CreateOrganizationView(LoginRequiredMixin, CreateView):
         organization_member = OrganizationMember(user=self.request.user, organization=organization, is_admin=True)
         organization_member.save()
 
+         # Generate the full URL for the organization detail page
+        organization_detail_url = self.request.build_absolute_uri(reverse('membership:organization_detail', args=[organization.pk]))
+
         # TODO: is it possible to get the Org id so that we can link to the org detail page from the email?
         # Use - organization
         html_message = render_to_string(
@@ -77,6 +80,7 @@ class CreateOrganizationView(LoginRequiredMixin, CreateView):
                 "TYPE": self.request.GET.get("org_type"),
                 "NAME": form.cleaned_data["name"],
                 "BYNAME": self.request.user.full_name,
+                "ORGANIZATION_DETAIL_URL": organization_detail_url
             },
         )
         sys_send_mail(
