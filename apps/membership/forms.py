@@ -143,7 +143,7 @@ class OrganizationForm(forms.ModelForm):
             }
         ),
     )
-    logo = forms.CharField(
+    logo = forms.FileField(
         label="Club logo",
         required=False,
         widget=FileInput(
@@ -153,7 +153,7 @@ class OrganizationForm(forms.ModelForm):
             }
         ),
     )
-    hero = forms.CharField(
+    hero = forms.FileField(
         label="Club banner image",
         required=False,
         widget=FileInput(
