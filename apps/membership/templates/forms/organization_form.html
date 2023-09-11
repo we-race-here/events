@@ -71,6 +71,15 @@
       {% endif %}
     </div>
 
+    <!-- Org zipcode -->
+    <div>
+      <label for="{{ form.zipcode.auto_id }}" class="fb_text_label">{{ form.zipcode.label }}</label>
+      {{ form.zipcode }}
+      {% if form.zipcode.errors %}
+        <div class="text-red-500 text-xs mt-1">{{ form.zipcode.errors }}</div>
+      {% endif %}
+    </div>
+
     <!-- Org Logo -->
     <div class="sm:col-span-2">
       <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"

@@ -1,7 +1,7 @@
 from django import forms
 from django.forms.widgets import TextInput, Textarea, Select, FileInput, CheckboxInput
 from phonenumber_field.formfields import PhoneNumberField
-
+from django.core.exceptions import ValidationError
 from apps.membership.models import Organization, OrganizationMember
 
 STATE_CHOICES = [
@@ -59,6 +59,7 @@ STATE_CHOICES = [
 
 
 class OrganizationForm(forms.ModelForm):
+
     name = forms.CharField(
         label="Club Name (required)",
         required=True,
@@ -224,6 +225,15 @@ class OrganizationForm(forms.ModelForm):
             "waiver_text",
             "membership_open",
         ]
+    # Validations
+    def clean_zipcode(self):
+        zipcode = self.cleaned_data.get('zipcode')
+
+        # validation logic here
+        if len(zipcode) not in [5, 9]:  # U.S. Zip Codes are either 5 or 9 digits
+            raise ValidationError('Invalid Zip Code. Must be either 5 or 9 digits.')
+
+        return zipcode
 
 
 class OrganizationMemberJoinForm(forms.ModelForm):
