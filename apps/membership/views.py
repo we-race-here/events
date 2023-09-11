@@ -51,16 +51,33 @@ class CreateOrganizationView(LoginRequiredMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        print(self.request.GET.get("org_type"))
-        if self.request.GET.get("org_type") == "Club":
-            context["org_type"] = (Organization.TYPE_CLUB, "Club")
-        elif self.request.GET.get("org_type") == "Promoter":
-            context["org_type"] = (Organization.TYPE_PROMOTER, "Promoter")
+
+        # As we are saving org_type in form_valid - commenting out
+        # if self.request.GET.get("org_type") == "Club":
+        #     context["org_type"] = (Organization.TYPE_CLUB, "Club")
+        # elif self.request.GET.get("org_type") == "Promoter":
+        #     context["org_type"] = (Organization.TYPE_PROMOTER, "Promoter")
+
         return context
 
     def form_valid(self, form):
         # print("VALID")
         # print(form.cleaned_data)
+
+        # Update ORG Type
+        # If we need to show in frontend of selecting type. then we have to change the logic
+        org_type = self.request.GET.get("org_type")
+        if org_type == "Club":
+            form.instance.type = Organization.TYPE_CLUB
+        elif org_type == "Regional":
+            form.instance.type = Organization.TYPE_REGIONAL
+        elif org_type == "Advocacy, Volunteer":
+            form.instance.type = Organization.TYPE_ADVOCACY_VOLUNTEER
+        elif org_type == "Photographer":
+            form.instance.type = Organization.TYPE_PHOTOGRAPHER
+        elif org_type == "Promoter":
+            form.instance.type = Organization.TYPE_PROMOTER
+
         organization = form.save(commit=False)
         organization.approved = True
         organization.save()
