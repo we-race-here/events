@@ -152,6 +152,7 @@ MIDDLEWARE = [
     "simple_history.middleware.HistoryRequestMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "maintenance_mode.middleware.MaintenanceModeMiddleware",
+    "allauth.account.middleware.AccountMiddleware",
 ]
 
 # STATIC
