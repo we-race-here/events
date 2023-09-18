@@ -103,20 +103,20 @@
     <!-- Org Hero -->
     <div class="sm:col-span-2">
       <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-             for="{{ form.logo.id_for_label }}">
+             for="{{ form.hero.id_for_label }}">
         {{ form.hero.label }}
       </label>
       <div class="sm:col-span-2">
         <div class="items-center w-full sm:flex">
           <div class="w-full">
-            {{ form.logo }}
+            {{ form.hero }}
             <p class="mt-1 text-xs font-normal text-gray-500 dark:text-gray-300" id="file_input_help">SVG, PNG,
               Suggested size (1920X1080)</p>
           </div>
         </div>
       </div>
-      {% if form.logo.errors %}
-        <div class="text-red-500 text-xs mt-1">{{ form.logo.errors }}</div>
+      {% if form.hero.errors %}
+        <div class="text-red-500 text-xs mt-1">{{ form.hero.errors }}</div>
       {% endif %}
     </div>
 
